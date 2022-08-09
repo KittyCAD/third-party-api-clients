@@ -4861,29 +4861,35 @@ pub enum EventResponseType {
 
 #[doc = "Type of resource"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Eq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    tabled :: Tabled,
+    clap :: ValueEnum,
+    parse_display :: FromStr,
+    parse_display :: Display,
 )]
-pub struct MetaType {}
-
-impl std::fmt::Display for MetaType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for MetaType {
-    const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
-        vec![]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![]
-    }
+pub enum MetaType {
+    #[serde(rename = "teamate")]
+    #[display("teamate")]
+    Teamate,
+    #[serde(rename = "inbox")]
+    #[display("inbox")]
+    Inbox,
+    #[serde(rename = "tag")]
+    #[display("tag")]
+    Tag,
+    #[serde(rename = "comment")]
+    #[display("comment")]
+    Comment,
+    #[serde(rename = "message")]
+    #[display("message")]
+    Message,
 }
 
 #[doc = "Metadata about the resource"]
@@ -4984,29 +4990,38 @@ impl tabled::Tabled for EventResponseSource {
 
 #[doc = "Type of resource"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Eq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    tabled :: Tabled,
+    clap :: ValueEnum,
+    parse_display :: FromStr,
+    parse_display :: Display,
 )]
-pub struct TargetMetaType {}
-
-impl std::fmt::Display for TargetMetaType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for TargetMetaType {
-    const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
-        vec![]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![]
-    }
+pub enum TargetMetaType {
+    #[serde(rename = "teamate")]
+    #[display("teamate")]
+    Teamate,
+    #[serde(rename = "inbox")]
+    #[display("inbox")]
+    Inbox,
+    #[serde(rename = "tag")]
+    #[display("tag")]
+    Tag,
+    #[serde(rename = "comment")]
+    #[display("comment")]
+    Comment,
+    #[serde(rename = "message")]
+    #[display("message")]
+    Message,
+    #[serde(rename = "link")]
+    #[display("link")]
+    Link,
 }
 
 #[doc = "The resource which received the event"]

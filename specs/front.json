@@ -1806,6 +1806,7 @@
                 "description": "Metadata about the resource",
                 "properties": {
                   "type": {
+                    "type": "string",
                     "description": "Type of resource",
                     "enum": [
                       "teamate",
@@ -1846,6 +1847,7 @@
                 "properties": {
                   "type": {
                     "description": "Type of resource",
+                    "type": "string",
                     "enum": [
                       "teamate",
                       "inbox",
