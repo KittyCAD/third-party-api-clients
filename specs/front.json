@@ -5689,6 +5689,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "createContact",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6044,6 +6045,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "listContactConversations",
         "parameters": [
           {
             "in": "path",
@@ -6079,6 +6081,7 @@
         "tags": [
           "Contact Notes"
         ],
+        "operationId": "listNotes",
         "parameters": [
           {
             "in": "path",
@@ -6103,6 +6106,7 @@
         "tags": [
           "Contact Notes"
         ],
+        "operationId": "addNote",
         "parameters": [
           {
             "in": "path",
@@ -6138,6 +6142,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "listChannels",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfChannels"
@@ -6152,6 +6157,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "listTeamChannels",
         "parameters": [
           {
             "in": "path",
@@ -6178,6 +6184,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "listTeammateChannels",
         "parameters": [
           {
             "in": "path",
@@ -6204,6 +6211,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "getChannel",
         "parameters": [
           {
             "in": "path",
@@ -6228,6 +6236,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "updateChannel",
         "parameters": [
           {
             "in": "path",
@@ -6264,6 +6273,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "validateChannel",
         "parameters": [
           {
             "in": "path",
@@ -6290,6 +6300,7 @@
         "tags": [
           "Channels"
         ],
+        "operationId": "createChannel",
         "parameters": [
           {
             "in": "path",
@@ -6324,6 +6335,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "listInboxChannels",
         "parameters": [
           {
             "in": "path",
@@ -6350,6 +6362,7 @@
         "tags": [
           "Comments"
         ],
+        "operationId": "listConversationComments",
         "parameters": [
           {
             "in": "path",
@@ -6374,6 +6387,7 @@
         "tags": [
           "Comments"
         ],
+        "operationId": "createComment",
         "parameters": [
           {
             "in": "path",
@@ -6409,6 +6423,7 @@
         "tags": [
           "Comments"
         ],
+        "operationId": "getComment",
         "parameters": [
           {
             "in": "path",
@@ -6435,6 +6450,7 @@
         "tags": [
           "Comments"
         ],
+        "operationId": "listCommentMentions",
         "parameters": [
           {
             "in": "path",
@@ -6534,6 +6550,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "update-conversation",
         "parameters": [
           {
             "in": "path",
@@ -6569,6 +6586,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "update-conversation-assignee",
         "parameters": [
           {
             "in": "path",
@@ -6604,6 +6622,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "add-conversation-tag",
         "parameters": [
           {
             "in": "path",
@@ -6638,6 +6657,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "remove-conversation-tag",
         "parameters": [
           {
             "in": "path",
@@ -6674,6 +6694,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "add-conversation-link",
         "parameters": [
           {
             "in": "path",
@@ -6725,6 +6746,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "remove-conversation-link",
         "parameters": [
           {
             "in": "path",
@@ -6773,6 +6795,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "list-conversation-inboxes",
         "parameters": [
           {
             "in": "path",
@@ -6799,6 +6822,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "list-conversation-followers",
         "parameters": [
           {
             "in": "path",
@@ -6823,6 +6847,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "add-conversation-followers",
         "parameters": [
           {
             "in": "path",
@@ -6869,6 +6894,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "delete-conversation-followers",
         "parameters": [
           {
             "in": "path",
@@ -6917,6 +6943,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "list-conversation-messages",
         "parameters": [
           {
             "in": "path",
@@ -6947,6 +6974,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "reply-to-conversation",
         "parameters": [
           {
             "in": "path",
@@ -6982,6 +7010,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "list-conversation-events",
         "parameters": [
           {
             "in": "path",
@@ -7014,6 +7043,7 @@
         "tags": [
           "Conversations"
         ],
+        "operationId": "update-conversation-reminders",
         "parameters": [
           {
             "in": "path",
@@ -7081,6 +7111,7 @@
         "tags": [
           "Custom Fields"
         ],
+        "operationId": "update-custom-field",
         "parameters": [
           {
             "in": "path",
@@ -7117,6 +7148,7 @@
         "tags": [
           "Drafts"
         ],
+        "operationId": "list-conversation-drafts",
         "parameters": [
           {
             "in": "path",
@@ -7141,6 +7173,7 @@
         "tags": [
           "Drafts"
         ],
+        "operationId": "create-draft-reply",
         "parameters": [
           {
             "in": "path",
@@ -7176,6 +7209,7 @@
         "tags": [
           "Drafts"
         ],
+        "operationId": "create-draft",
         "parameters": [
           {
             "in": "path",
@@ -7211,6 +7245,7 @@
         "tags": [
           "Drafts"
         ],
+        "operationId": "edit-draft",
         "parameters": [
           {
             "in": "path",
@@ -7246,6 +7281,7 @@
         "tags": [
           "Drafts"
         ],
+        "operationId": "delete-draft",
         "parameters": [
           {
             "in": "path",
@@ -7281,6 +7317,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "list-inboxes",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfInboxes"
@@ -7293,6 +7330,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "create-inbox",
         "requestBody": {
           "description": "Inbox details",
           "content": {
@@ -7317,6 +7355,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "list-team-inboxes",
         "parameters": [
           {
             "in": "path",
@@ -7341,6 +7380,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "create-team-inbox",
         "parameters": [
           {
             "in": "path",
@@ -7377,6 +7417,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "get-inbox",
         "parameters": [
           {
             "in": "path",
@@ -7403,6 +7444,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "list-inbox-conversations",
         "parameters": [
           {
             "in": "path",
@@ -7438,6 +7480,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "list-inbox-teammates",
         "parameters": [
           {
             "in": "path",
@@ -7462,6 +7505,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "add-inbox-teammates",
         "parameters": [
           {
             "in": "path",
@@ -7496,6 +7540,7 @@
         "tags": [
           "Inboxes"
         ],
+        "operationId": "remove-inbox-teammates",
         "parameters": [
           {
             "in": "path",
@@ -7532,6 +7577,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "get-message",
         "parameters": [
           {
             "in": "path",
@@ -7558,6 +7604,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "get-message-seen-status",
         "parameters": [
           {
             "in": "path",
@@ -7582,6 +7629,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "mark-message-seen",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7617,6 +7665,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "create-conversation",
         "parameters": [
           {
             "in": "path",
@@ -7652,6 +7701,7 @@
         "tags": [
           "Messages"
         ],
+        "operationId": "receive-custom-message",
         "parameters": [
           {
             "in": "path",
@@ -7723,6 +7773,7 @@
         "tags": [
           "Rules"
         ],
+        "operationId": "list-rules",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfRules"
@@ -7737,6 +7788,7 @@
         "tags": [
           "Rules"
         ],
+        "operationId": "list-team-rules",
         "parameters": [
           {
             "in": "path",
@@ -7763,6 +7815,7 @@
         "tags": [
           "Rules"
         ],
+        "operationId": "list-teammate-rules",
         "parameters": [
           {
             "in": "path",
@@ -7789,6 +7842,7 @@
         "tags": [
           "Rules"
         ],
+        "operationId": "get-rule",
         "parameters": [
           {
             "in": "path",
@@ -7861,6 +7915,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "create-shift",
         "requestBody": {
           "description": "Shift to create details",
           "content": {
@@ -7885,6 +7940,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "list-team-shifts",
         "parameters": [
           {
             "in": "path",
@@ -7909,6 +7965,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "create-team-shift",
         "parameters": [
           {
             "in": "path",
@@ -7945,6 +8002,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "list-teammate-shifts",
         "parameters": [
           {
             "in": "path",
@@ -7971,6 +8029,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "get-shift",
         "parameters": [
           {
             "in": "path",
@@ -7997,6 +8056,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "list-shift-teammates",
         "parameters": [
           {
             "in": "path",
@@ -8021,6 +8081,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "add-teammates-to-shift",
         "parameters": [
           {
             "in": "path",
@@ -8055,6 +8116,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "remove-teammates-from-shift",
         "parameters": [
           {
             "in": "path",
@@ -8091,6 +8153,7 @@
         "tags": [
           "Shifts"
         ],
+        "operationId": "update-shift",
         "parameters": [
           {
             "in": "path",
@@ -8127,6 +8190,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "list-teammate-signatures",
         "parameters": [
           {
             "in": "path",
@@ -8151,6 +8215,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "create-teammate-signature",
         "requestBody": {
           "description": "Signature to create",
           "content": {
@@ -8187,6 +8252,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "list-team-signatures",
         "parameters": [
           {
             "in": "path",
@@ -8211,6 +8277,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "create-team-signature",
         "requestBody": {
           "description": "Signature to create",
           "content": {
@@ -8247,6 +8314,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "get-signature",
         "parameters": [
           {
             "in": "path",
@@ -8271,6 +8339,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "delete-signature",
         "parameters": [
           {
             "in": "path",
@@ -8295,6 +8364,7 @@
         "tags": [
           "Signatures"
         ],
+        "operationId": "update-signature",
         "requestBody": {
           "description": "Signature to update",
           "content": {
@@ -8331,6 +8401,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "list-tags",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfTags"
@@ -8343,6 +8414,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "create-tag",
         "requestBody": {
           "description": "Tag to create",
           "content": {
@@ -8367,6 +8439,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "list-team-tags",
         "parameters": [
           {
             "in": "path",
@@ -8391,6 +8464,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "create-team-tag",
         "parameters": [
           {
             "in": "path",
@@ -8427,6 +8501,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "list-teammate-tags",
         "parameters": [
           {
             "in": "path",
@@ -8451,6 +8526,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "create-teammate-tag",
         "parameters": [
           {
             "in": "path",
@@ -8487,6 +8563,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "create-child-tag",
         "parameters": [
           {
             "in": "path",
@@ -8521,6 +8598,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "list-tag-children",
         "parameters": [
           {
             "in": "path",
@@ -8547,6 +8625,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "update-tag",
         "parameters": [
           {
             "in": "path",
@@ -8581,6 +8660,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "get-tag",
         "parameters": [
           {
             "in": "path",
@@ -8605,6 +8685,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "delete-tag",
         "parameters": [
           {
             "in": "path",
@@ -8631,6 +8712,7 @@
         "tags": [
           "Tags"
         ],
+        "operationId": "list-tagged-conversations",
         "parameters": [
           {
             "in": "path",
@@ -8666,6 +8748,7 @@
         "tags": [
           "Teams"
         ],
+        "operationId": "list-teams",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfTeams"
@@ -8680,6 +8763,7 @@
         "tags": [
           "Teams"
         ],
+        "operationId": "get-team",
         "parameters": [
           {
             "in": "path",
@@ -8706,6 +8790,7 @@
         "tags": [
           "Teams"
         ],
+        "operationId": "add-teammates-to-team",
         "parameters": [
           {
             "in": "path",
@@ -8740,6 +8825,7 @@
         "tags": [
           "Teams"
         ],
+        "operationId": "remove-teammates-from-team",
         "parameters": [
           {
             "in": "path",
@@ -8776,6 +8862,7 @@
         "tags": [
           "Teammates"
         ],
+        "operationId": "list-teammates",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfTeammates"
@@ -8790,6 +8877,7 @@
         "tags": [
           "Teammates"
         ],
+        "operationId": "get-teammate",
         "parameters": [
           {
             "in": "path",
@@ -8814,6 +8902,7 @@
         "tags": [
           "Teammates"
         ],
+        "operationId": "update-teammate",
         "parameters": [
           {
             "in": "path",
@@ -8849,6 +8938,7 @@
         "tags": [
           "Teammates"
         ],
+        "operationId": "list-assigned-conversations",
         "parameters": [
           {
             "in": "path",
@@ -8885,6 +8975,7 @@
         "tags": [
           "Teammates"
         ],
+        "operationId": "list-teammate-inboxes",
         "parameters": [
           {
             "in": "path",
@@ -8947,6 +9038,7 @@
         "tags": [
           "Links"
         ],
+        "operationId": "list-links",
         "parameters": [
           {
             "$ref": "#/components/parameters/topicQuery"
@@ -8970,6 +9062,7 @@
         "tags": [
           "Links"
         ],
+        "operationId": "create-link",
         "requestBody": {
           "description": "Link to create",
           "content": {
@@ -8994,6 +9087,7 @@
         "tags": [
           "Links"
         ],
+        "operationId": "get-link",
         "parameters": [
           {
             "in": "path",
@@ -9018,6 +9112,7 @@
         "tags": [
           "Links"
         ],
+        "operationId": "update-link",
         "parameters": [
           {
             "in": "path",
