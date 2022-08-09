@@ -3159,6 +3159,17 @@
       }
     },
     "schemas": {
+      "audit_method_type": {
+          "type": "string",
+          "description": "Describes the method used to perform the action:\n\n`browser` -- authenticated user session. Session value is not returned in the `truncated_token` field.\n\n`oauth` -- access token obtained via the OAuth flow. Truncated token value is returned in the `truncated_token` field.\n\n`api_token` -- Pagerduty API token. Truncated token value is returned in the `truncated_token` field.\n\n`identity_provider` -- action performed by an Identity provider on behalf of a user. No value is returned in the `truncated_token` field.\n\n`other` -- Method that does not fall in the predefined categories. Truncated token value MAY be returned in the `truncated_token` field.\n",
+          "enum": [
+            "browser",
+            "oauth",
+            "api_token",
+            "identity_provider",
+            "other"
+          ]
+      },
       "StatusUpdateNotificationRule": {
         "type": "object",
         "description": "A rule for contacting the user for Incident Status Updates.",
@@ -3530,7 +3541,7 @@
                 "example": "3xyz"
               },
               "type": {
-                "$ref": "#/components/parameters/audit_method_type/schema"
+                "$ref": "#/components/schemas/audit_method_type"
               }
             },
             "required": [
