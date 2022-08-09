@@ -4320,6 +4320,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "listAccounts",
         "parameters": [
           {
             "$ref": "#/components/parameters/limit"
@@ -4346,6 +4347,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "createAccount",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4372,6 +4374,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "fetchAccount",
         "parameters": [
           {
             "in": "path",
@@ -4396,6 +4399,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "updateAccount",
         "parameters": [
           {
             "in": "path",
@@ -4429,6 +4433,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "deleteAccount",
         "parameters": [
           {
             "in": "path",
@@ -4455,6 +4460,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "listAccountContacts",
         "parameters": [
           {
             "in": "path",
@@ -4485,6 +4491,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "addContactsToAccount",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4518,6 +4525,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "removeContactsFromAccount",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4553,6 +4561,7 @@
         "tags": [
           "Events"
         ],
+        "operationId": "listEvents",
         "parameters": [
           {
             "$ref": "#/components/parameters/activityQuery"
@@ -4578,6 +4587,7 @@
         "tags": [
           "Events"
         ],
+        "operationId": "getEvent",
         "parameters": [
           {
             "in": "path",
@@ -4732,6 +4742,7 @@
         "tags": [
           "Attachments"
         ],
+        "operationId": "downloadAttachment",
         "parameters": [
           {
             "in": "path",
@@ -4758,6 +4769,7 @@
         ],
         "summary": "API Token details",
         "description": "Fetch the details of the API token.",
+        "operationId": "getTokenIdentity",
         "responses": {
           "200": {
             "$ref": "#/components/responses/identity"
@@ -4772,6 +4784,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "listFolders",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfCannedAnswerFolders"
@@ -4784,6 +4797,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "createFolder",
         "requestBody": {
           "description": "Message template folder to create",
           "content": {
@@ -4808,6 +4822,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "listTeamFolders",
         "parameters": [
           {
             "in": "path",
@@ -4832,6 +4847,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "createTeamFolder",
         "requestBody": {
           "description": "Message template folder to create",
           "content": {
@@ -4868,6 +4884,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "listTeammateFolders",
         "parameters": [
           {
             "in": "path",
@@ -4892,6 +4909,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "createTeammateFolder",
         "requestBody": {
           "description": "Message template folder to create",
           "content": {
@@ -4928,6 +4946,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "getChildFolders",
         "parameters": [
           {
             "in": "path",
@@ -4952,6 +4971,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "createChildFolder",
         "requestBody": {
           "description": "Message template folder to create",
           "content": {
@@ -4988,6 +5008,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "getChildTemplates",
         "parameters": [
           {
             "in": "path",
@@ -5012,6 +5033,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "createChildTemplate",
         "requestBody": {
           "description": "Message template to create",
           "content": {
@@ -5048,6 +5070,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "getFolder",
         "parameters": [
           {
             "in": "path",
@@ -5072,6 +5095,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "updateFolder",
         "requestBody": {
           "description": "Message template folder to update",
           "content": {
@@ -5106,6 +5130,7 @@
         "tags": [
           "Message Template Folders"
         ],
+        "operationId": "deleteFolder",
         "parameters": [
           {
             "in": "path",
@@ -5132,6 +5157,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "listMessageTemplates",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfCannedAnswers"
@@ -5144,6 +5170,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "createMessageTemplate",
         "requestBody": {
           "description": "Message template to create",
           "content": {
@@ -5168,6 +5195,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "listTeamMessageTemplates",
         "parameters": [
           {
             "in": "path",
@@ -5192,6 +5220,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "createTeamMessageTemplate",
         "requestBody": {
           "description": "Message template to create",
           "content": {
@@ -5228,6 +5257,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "listTeammateMessageTemplates",
         "parameters": [
           {
             "in": "path",
@@ -5252,6 +5282,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "createTeammateMessageTemplate",
         "requestBody": {
           "description": "Message template to create",
           "content": {
@@ -5288,6 +5319,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "getMessageTemplate",
         "parameters": [
           {
             "in": "path",
@@ -5312,6 +5344,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "updateMessageTemplate",
         "requestBody": {
           "description": "Message template to update",
           "content": {
@@ -5346,6 +5379,7 @@
         "tags": [
           "Message Templates"
         ],
+        "operationId": "deleteMessageTemplate",
         "parameters": [
           {
             "in": "path",
@@ -5372,6 +5406,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "listGroups",
         "responses": {
           "200": {
             "$ref": "#/components/responses/listOfContactGroups"
@@ -5384,6 +5419,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "createGroup",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5407,6 +5443,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "listTeamGroups",
         "parameters": [
           {
             "in": "path",
@@ -5431,6 +5468,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "createTeamGroup",
         "parameters": [
           {
             "in": "path",
@@ -5466,6 +5504,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "listTeammateGroups",
         "parameters": [
           {
             "in": "path",
@@ -5490,6 +5529,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "createTeammateGroup",
         "parameters": [
           {
             "in": "path",
@@ -5525,6 +5565,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "deleteGroup",
         "parameters": [
           {
             "in": "path",
@@ -5551,6 +5592,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "listGroupContacts",
         "parameters": [
           {
             "in": "path",
@@ -5581,6 +5623,7 @@
         "tags": [
           "Contact Groups"
         ],
+        "operationId": "addContactsToGroup",
         "parameters": [
           {
             "in": "path",
@@ -5616,6 +5659,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "listContacts",
         "parameters": [
           {
             "$ref": "#/components/parameters/cardQuery"
@@ -5668,6 +5712,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "listTeamContacts",
         "parameters": [
           {
             "in": "path",
@@ -5707,6 +5752,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "createTeamContact",
         "parameters": [
           {
             "in": "path",
@@ -5742,6 +5788,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "listTeammateContacts",
         "parameters": [
           {
             "in": "path",
@@ -5781,6 +5828,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "createTeammateContact",
         "parameters": [
           {
             "in": "path",
@@ -5816,6 +5864,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "getContact",
         "parameters": [
           {
             "in": "path",
@@ -5840,6 +5889,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "updateContact",
         "parameters": [
           {
             "in": "path",
@@ -5873,6 +5923,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "deleteContact",
         "parameters": [
           {
             "in": "path",
@@ -5899,6 +5950,7 @@
         "tags": [
           "Contacts"
         ],
+        "operationId": "mergeContacts",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5922,6 +5974,7 @@
         "tags": [
           "Contact Handles"
         ],
+        "operationId": "addContactHandle",
         "parameters": [
           {
             "in": "path",
@@ -5955,6 +6008,7 @@
         "tags": [
           "Contact Handles"
         ],
+        "operationId": "deleteContactHandle",
         "parameters": [
           {
             "in": "path",
