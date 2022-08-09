@@ -146,12 +146,12 @@ impl Inboxes {
         }
     }
 
-    #[doc = "Get inbox\n\nFetch an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_get_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.inboxes().get_inbox(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get inbox\n\nFetch an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_get_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::InboxResponse = client.inboxes().get_inbox(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_inbox<'a>(
         &'a self,
         inbox_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::InboxResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

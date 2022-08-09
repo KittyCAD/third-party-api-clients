@@ -166,7 +166,7 @@ impl Links {
     pub async fn update<'a>(
         &'a self,
         link_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::UpdateLink,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,

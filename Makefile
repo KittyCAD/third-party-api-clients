@@ -20,3 +20,14 @@ front:
 		--name front-api \
 		--base-url https://api2.frontapp.com \
 		--description "A fully generated & opinionated API client for the Front API."
+
+# Spec is from: https://github.com/PagerDuty/api-schema/blob/main/reference/REST/openapiv3.json
+.PHONY: pagerduty
+pagerduty:
+	../kittycad.rs/target/debug/openapitor \
+		--input specs/pagerduty.json \
+		--version 0.0.1 \
+		--output ./pagerduty \
+		--name pagerduty-api \
+		--base-url https://api.pagerduty.com \
+		--description "A fully generated & opinionated API client for the PagerDuty API."

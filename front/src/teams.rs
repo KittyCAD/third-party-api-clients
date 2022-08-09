@@ -37,12 +37,12 @@ impl Teams {
         }
     }
 
-    #[doc = "Get team\n\nFetch a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The Team ID (required)\n\n```rust,no_run\nasync fn example_teams_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.teams().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get team\n\nFetch a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The Team ID (required)\n\n```rust,no_run\nasync fn example_teams_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TeamResponse = client.teams().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         team_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::TeamResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

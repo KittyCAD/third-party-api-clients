@@ -11,13 +11,13 @@ impl Messages {
         Self { client }
     }
 
-    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn reply_to_conversation<'a>(
         &'a self,
         conversation_id: &'a str,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::OutboundReplyMessage,
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -45,12 +45,12 @@ impl Messages {
         }
     }
 
-    #[doc = "Get message\n\nFetch a message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The message ID (required)\n\n```rust,no_run\nasync fn example_messages_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.messages().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get message\n\nFetch a message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The message ID (required)\n\n```rust,no_run\nasync fn example_messages_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client.messages().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         message_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -133,13 +133,13 @@ impl Messages {
         }
     }
 
-    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_conversation<'a>(
         &'a self,
         channel_id: &'a str,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::OutboundMessage,
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -171,7 +171,7 @@ impl Messages {
     pub async fn receive_custom<'a>(
         &'a self,
         channel_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::CustomMessage,
     ) -> Result<crate::types::ReceiveCustomMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -204,7 +204,7 @@ impl Messages {
     pub async fn import_inbox<'a>(
         &'a self,
         inbox_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::ImportMessage,
     ) -> Result<crate::types::ImportInboxMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,

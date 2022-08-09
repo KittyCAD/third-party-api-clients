@@ -41,7 +41,7 @@ impl Shifts {
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
-        body: &serde_json::Value,
+        body: &crate::types::CreateShift,
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -101,7 +101,7 @@ impl Shifts {
     pub async fn create_team<'a>(
         &'a self,
         team_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::CreateShift,
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -274,7 +274,7 @@ impl Shifts {
         }
     }
 
-    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Red),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Black),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,

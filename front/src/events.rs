@@ -54,12 +54,12 @@ impl Events {
         }
     }
 
-    #[doc = "Get event\n\nFetch an event.\n> ⚠\u{fe0f} Deprecated field may be included\n>\n> This route return the deprecated `last_message` conversation field for conversations\n> associated with individual events. Please use the conversation's\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `event_id: &'astr`: The event ID (required)\n\n```rust,no_run\nasync fn example_events_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.events().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get event\n\nFetch an event.\n> ⚠\u{fe0f} Deprecated field may be included\n>\n> This route return the deprecated `last_message` conversation field for conversations\n> associated with individual events. Please use the conversation's\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `event_id: &'astr`: The event ID (required)\n\n```rust,no_run\nasync fn example_events_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::EventResponse = client.events().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         event_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::EventResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

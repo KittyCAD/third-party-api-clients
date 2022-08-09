@@ -43,13 +43,13 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Create child template\n\nCreate a new message template as a child of the given folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The parent message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_child_template() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_templates()\n        .create_child_template(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateAsChild {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create child template\n\nCreate a new message template as a child of the given folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The parent message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_child_template() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_child_template(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateAsChild {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_child_template<'a>(
         &'a self,
         message_template_folder_id: &'a str,
         body: &crate::types::CreateMessageTemplateAsChild,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -103,12 +103,12 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Create message template\n\nCreate a new message template.\n\n```rust,no_run\nasync fn example_message_templates_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_templates()\n        .create(&front_api::types::CreateSharedMessageTemplate {\n            name: \"some-string\".to_string(),\n            subject: Some(\"some-string\".to_string()),\n            body: \"some-string\".to_string(),\n            folder_id: Some(\"some-string\".to_string()),\n            inbox_ids: Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create message template\n\nCreate a new message template.\n\n```rust,no_run\nasync fn example_message_templates_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create(&front_api::types::CreateSharedMessageTemplate {\n            name: \"some-string\".to_string(),\n            subject: Some(\"some-string\".to_string()),\n            body: \"some-string\".to_string(),\n            folder_id: Some(\"some-string\".to_string()),\n            inbox_ids: Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         body: &crate::types::CreateSharedMessageTemplate,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "message_templates"),
@@ -162,13 +162,13 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Create team message template\n\nCreate a new message template for the given team\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_templates()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team message template\n\nCreate a new message template for the given team\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
         team_id: &'a str,
         body: &crate::types::CreateSharedMessageTemplate,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -227,13 +227,13 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Create teammate message template\n\nCreate a new message template for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_templates()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate message template\n\nCreate a new message template for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_message_templates_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
         teammate_id: &'a str,
         body: &crate::types::CreatePrivateMessageTemplate,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -260,12 +260,12 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Get message template\n\nFetch a message template.\n\n**Parameters:**\n\n- `message_template_id: &'astr`: The message template ID (required)\n\n```rust,no_run\nasync fn example_message_templates_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.message_templates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get message template\n\nFetch a message template.\n\n**Parameters:**\n\n- `message_template_id: &'astr`: The message template ID (required)\n\n```rust,no_run\nasync fn example_message_templates_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse =\n        client.message_templates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         message_template_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -317,13 +317,13 @@ impl MessageTemplates {
         }
     }
 
-    #[doc = "Update message template\n\nUpdate message template\n\n**Parameters:**\n\n- `message_template_id: &'astr`: The message template ID (required)\n\n```rust,no_run\nasync fn example_message_templates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_templates()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update message template\n\nUpdate message template\n\n**Parameters:**\n\n- `message_template_id: &'astr`: The message template ID (required)\n\n```rust,no_run\nasync fn example_message_templates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
         message_template_id: &'a str,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::UpdateMessageTemplate,
+    ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             &format!(

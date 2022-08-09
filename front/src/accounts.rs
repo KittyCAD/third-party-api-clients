@@ -11,7 +11,7 @@ impl Accounts {
         Self { client }
     }
 
-    #[doc = "List Accounts\n\nList the accounts of the company.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n\n```rust,no_run\nasync fn example_accounts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListAccountsResponse = client\n        .accounts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Desc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Accounts\n\nList the accounts of the company.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n\n```rust,no_run\nasync fn example_accounts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListAccountsResponse = client\n        .accounts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Asc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -59,12 +59,12 @@ impl Accounts {
         }
     }
 
-    #[doc = "Create account\n\nCreate a new account.\n\n```rust,no_run\nasync fn example_accounts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .accounts()\n        .create(&front_api::types::Account {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            domains: Some(vec![\"some-string\".to_string()]),\n            external_id: Some(\"some-string\".to_string()),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create account\n\nCreate a new account.\n\n```rust,no_run\nasync fn example_accounts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client\n        .accounts()\n        .create(&front_api::types::Account {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            domains: Some(vec![\"some-string\".to_string()]),\n            external_id: Some(\"some-string\".to_string()),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         body: &crate::types::Account,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "accounts"),
@@ -87,12 +87,12 @@ impl Accounts {
         }
     }
 
-    #[doc = "Fetch an account\n\nFetches an account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_fetch() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.accounts().fetch(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Fetch an account\n\nFetches an account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_fetch() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client.accounts().fetch(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn fetch<'a>(
         &'a self,
         account_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -142,13 +142,13 @@ impl Accounts {
         }
     }
 
-    #[doc = "Update account\n\nUpdates an account.\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .accounts()\n        .update(\n            \"some-string\",\n            &front_api::types::Account {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                domains: Some(vec![\"some-string\".to_string()]),\n                external_id: Some(\"some-string\".to_string()),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update account\n\nUpdates an account.\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client\n        .accounts()\n        .update(\n            \"some-string\",\n            &front_api::types::Account {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                domains: Some(vec![\"some-string\".to_string()]),\n                external_id: Some(\"some-string\".to_string()),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
         account_id: &'a str,
         body: &crate::types::Account,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             &format!(

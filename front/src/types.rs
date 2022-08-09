@@ -4859,6 +4859,33 @@ pub enum EventResponseType {
     SendingError,
 }
 
+#[doc = "Type of resource"]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct MetaType {}
+
+impl std::fmt::Display for MetaType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for MetaType {
+    const LENGTH: usize = 0;
+    fn fields(&self) -> Vec<String> {
+        vec![]
+    }
+
+    fn headers() -> Vec<String> {
+        vec![]
+    }
+}
+
 #[doc = "Metadata about the resource"]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -4866,7 +4893,7 @@ pub enum EventResponseType {
 pub struct Meta {
     #[doc = "Type of resource"]
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<serde_json::Value>,
+    pub type_: Option<MetaType>,
 }
 
 impl std::fmt::Display for Meta {
@@ -4892,6 +4919,22 @@ impl tabled::Tabled for Meta {
     fn headers() -> Vec<String> {
         vec!["type_".to_string()]
     }
+}
+
+#[doc = "The resource which triggered the event"]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    tabled :: Tabled,
+)]
+pub enum Data {
+    RuleResponse(RuleResponse),
+    TeammateResponse(TeammateResponse),
+    InboxResponse(Vec<InboxResponse>),
 }
 
 #[doc = "Event source"]
@@ -4939,6 +4982,52 @@ impl tabled::Tabled for EventResponseSource {
     }
 }
 
+#[doc = "Type of resource"]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct TargetMetaType {}
+
+impl std::fmt::Display for TargetMetaType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for TargetMetaType {
+    const LENGTH: usize = 0;
+    fn fields(&self) -> Vec<String> {
+        vec![]
+    }
+
+    fn headers() -> Vec<String> {
+        vec![]
+    }
+}
+
+#[doc = "The resource which received the event"]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    tabled :: Tabled,
+)]
+pub enum TargetMetaData {
+    TeammateResponse(TeammateResponse),
+    InboxResponse(InboxResponse),
+    TagResponse(TagResponse),
+    CommentResponse(CommentResponse),
+    MessageResponse(MessageResponse),
+    LinkResponse(LinkResponse),
+}
+
 #[doc = "Metadata about the resource"]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -4946,10 +5035,10 @@ impl tabled::Tabled for EventResponseSource {
 pub struct TargetMeta {
     #[doc = "Type of resource"]
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<serde_json::Value>,
+    pub type_: Option<TargetMetaType>,
     #[doc = "The resource which received the event"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub data: Option<Data>,
+    pub data: Option<TargetMetaData>,
 }
 
 impl std::fmt::Display for TargetMeta {
@@ -5042,7 +5131,7 @@ pub struct EventResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub target: Option<Target>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub conversation: Option<serde_json::Value>,
+    pub conversation: Option<ConversationResponse>,
 }
 
 impl std::fmt::Display for EventResponse {
@@ -5428,7 +5517,7 @@ pub struct AnalyticsReportResponse2 {
     pub progress: Option<i64>,
     #[doc = "The metrics computed for the report."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub metrics: Option<Vec<serde_json::Value>>,
+    pub metrics: Option<Vec<AnalyticsScalar2>>,
 }
 
 impl std::fmt::Display for AnalyticsReportResponse2 {
@@ -5487,7 +5576,7 @@ pub struct AnalyticsScalar2 {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<AnalyticsScalarType>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<serde_json::Value>,
+    pub value: Option<AnalyticsScalarValue>,
 }
 
 impl std::fmt::Display for AnalyticsScalar2 {
@@ -5554,6 +5643,22 @@ pub enum AnalyticsScalarType {
     #[serde(rename = "duration")]
     #[display("duration")]
     Duration,
+}
+
+#[doc = "The value of a scalar metric."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    tabled :: Tabled,
+)]
+pub enum Value {
+    I64(i64),
+    String(String),
+    Value(Value),
 }
 
 #[derive(
@@ -5962,7 +6067,7 @@ pub struct MessageTemplateResponse {
     pub body: Option<String>,
     #[doc = "List of files attached to the response"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub attachments: Option<Vec<serde_json::Value>>,
+    pub attachments: Option<Vec<Attachment>>,
     #[doc = "Whether or not the template is available in all inboxes."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_available_for_all_inboxes: Option<bool>,
@@ -6198,7 +6303,7 @@ impl tabled::Tabled for ContactGroupResponses {
 pub struct ContactNoteResponses {
     #[doc = "A teammate is a user in Front."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub author: Option<serde_json::Value>,
+    pub author: Option<TeammateResponse>,
     #[doc = "Content of the note"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<String>,
@@ -6628,7 +6733,7 @@ pub struct CommentResponse {
     pub id: Option<String>,
     #[doc = "A teammate is a user in Front."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub author: Option<serde_json::Value>,
+    pub author: Option<TeammateResponse>,
     #[doc = "Content of the comment"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<String>,
@@ -6637,7 +6742,7 @@ pub struct CommentResponse {
     pub posted_at: Option<i64>,
     #[doc = "List of files attached to the comment"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub attachments: Option<Vec<serde_json::Value>>,
+    pub attachments: Option<Vec<Attachment>>,
 }
 
 impl std::fmt::Display for CommentResponse {
@@ -6824,7 +6929,7 @@ pub struct ContactResponse {
     pub links: Option<Vec<String>>,
     #[doc = "List of the groups the contact belongs to."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub groups: Option<Vec<serde_json::Value>>,
+    pub groups: Option<Vec<ContactGroupResponses>>,
     #[doc = "List of the handles and sources with which the contact is reachable."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub handles: Option<Vec<ContactHandle>>,
@@ -7136,9 +7241,9 @@ pub struct ConversationResponse {
     pub status: Option<ConversationResponseStatus>,
     #[doc = "A teammate is a user in Front."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub assignee: Option<serde_json::Value>,
+    pub assignee: Option<TeammateResponse>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub recipient: Option<serde_json::Value>,
+    pub recipient: Option<RecipientResponse>,
     #[doc = "List of the tags for this conversation"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tags: Option<Vec<TagResponse>>,
@@ -7153,7 +7258,7 @@ pub struct ConversationResponse {
     pub is_private: Option<bool>,
     #[doc = "List of scheduled (non-expired and non-canceled) reminders for this conversation"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub scheduled_reminders: Option<Vec<serde_json::Value>>,
+    pub scheduled_reminders: Option<Vec<Reminder>>,
     #[doc = "Optional metadata about the conversation"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<ConversationResponseMetadata>,
@@ -7890,9 +7995,9 @@ pub struct MessageResponse {
     pub blurb: Option<String>,
     #[doc = "A teammate is a user in Front."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub author: Option<serde_json::Value>,
+    pub author: Option<TeammateResponse>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub recipients: Option<Vec<serde_json::Value>>,
+    pub recipients: Option<Vec<RecipientResponse>>,
     #[doc = "Body of the message"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<String>,
@@ -7901,9 +8006,9 @@ pub struct MessageResponse {
     pub text: Option<String>,
     #[doc = "List of files attached to the message"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub attachments: Option<Vec<serde_json::Value>>,
+    pub attachments: Option<Vec<Attachment>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub signature: Option<serde_json::Value>,
+    pub signature: Option<SignatureResponse>,
     #[doc = "Optional metadata about the message"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<MessageResponseMetadata>,
@@ -9366,10 +9471,10 @@ pub struct TeamResponse {
     pub name: Option<String>,
     #[doc = "List of the inboxes in the team"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub inboxes: Option<Vec<serde_json::Value>>,
+    pub inboxes: Option<Vec<InboxResponse>>,
     #[doc = "List of the teammates that have access to the team"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub members: Option<Vec<serde_json::Value>>,
+    pub members: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for TeamResponse {
@@ -9834,7 +9939,7 @@ pub struct ListOfCannedAnswersApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfCannedAnswersApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListOfCannedAnswersApplicationJson {
@@ -9925,7 +10030,7 @@ pub struct ListOfCannedAnswerFoldersApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListOfCannedAnswerFoldersApplicationJson {
@@ -10016,7 +10121,7 @@ pub struct ListOfSignaturesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfSignaturesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<SignatureResponse>>,
 }
 
 impl std::fmt::Display for ListOfSignaturesApplicationJson {
@@ -10101,7 +10206,7 @@ pub struct ListOfInboxesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfInboxesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<InboxResponse>>,
 }
 
 impl std::fmt::Display for ListOfInboxesApplicationJson {
@@ -10177,7 +10282,7 @@ pub struct ListOfCommentsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfCommentsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<CommentResponse>>,
 }
 
 impl std::fmt::Display for ListOfCommentsApplicationJson {
@@ -10253,7 +10358,7 @@ pub struct ListOfTeamsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfTeamsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeamResponse>>,
 }
 
 impl std::fmt::Display for ListOfTeamsApplicationJson {
@@ -10329,7 +10434,7 @@ pub struct ListOfTeammatesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfTeammatesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListOfTeammatesApplicationJson {
@@ -10487,7 +10592,7 @@ pub struct ListOfContactsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfContactsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListOfContactsApplicationJson {
@@ -10578,7 +10683,7 @@ pub struct ListOfAccountsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfAccountsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<AccountResponse>>,
 }
 
 impl std::fmt::Display for ListOfAccountsApplicationJson {
@@ -10663,7 +10768,7 @@ pub struct ListOfContactGroupsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfContactGroupsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactGroupResponses>>,
 }
 
 impl std::fmt::Display for ListOfContactGroupsApplicationJson {
@@ -10821,7 +10926,7 @@ pub struct ListOfMessagesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfMessagesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageResponse>>,
 }
 
 impl std::fmt::Display for ListOfMessagesApplicationJson {
@@ -10912,7 +11017,7 @@ pub struct ListOfSeenReceiptsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfSeenReceiptsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<SeenReceiptResponse>>,
 }
 
 impl std::fmt::Display for ListOfSeenReceiptsApplicationJson {
@@ -11003,7 +11108,7 @@ pub struct ListOfConversationsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfConversationsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListOfConversationsApplicationJson {
@@ -11061,7 +11166,7 @@ pub struct ListOfConversationSearchResultsApplicationJson {
     #[serde(rename = "_total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<i64>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListOfConversationSearchResultsApplicationJson {
@@ -11152,7 +11257,7 @@ pub struct ListOfEventsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfEventsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<EventResponse>>,
 }
 
 impl std::fmt::Display for ListOfEventsApplicationJson {
@@ -11237,7 +11342,7 @@ pub struct ListOfRolesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfRolesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<RoleResponse>>,
 }
 
 impl std::fmt::Display for ListOfRolesApplicationJson {
@@ -11313,7 +11418,7 @@ pub struct ListOfRulesApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfRulesApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<RuleResponse>>,
 }
 
 impl std::fmt::Display for ListOfRulesApplicationJson {
@@ -11541,7 +11646,7 @@ pub struct ListOfChannelsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfChannelsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ChannelResponse>>,
 }
 
 impl std::fmt::Display for ListOfChannelsApplicationJson {
@@ -11617,7 +11722,7 @@ pub struct ListOfCustomFieldsApplicationJson {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListOfCustomFieldsApplicationJsonUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<CustomFieldResponse>>,
 }
 
 impl std::fmt::Display for ListOfCustomFieldsApplicationJson {
@@ -11821,7 +11926,7 @@ pub struct ListAccountsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListAccountsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<AccountResponse>>,
 }
 
 impl std::fmt::Display for ListAccountsResponse {
@@ -11912,7 +12017,7 @@ pub struct ListAccountContactsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListAccountContactsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListAccountContactsResponse {
@@ -12003,7 +12108,7 @@ pub struct ListEventsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListEventsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<EventResponse>>,
 }
 
 impl std::fmt::Display for ListEventsResponse {
@@ -12094,7 +12199,7 @@ pub struct ListFoldersResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListFoldersResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListFoldersResponse {
@@ -12185,7 +12290,7 @@ pub struct ListTeamFoldersResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamFoldersResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListTeamFoldersResponse {
@@ -12276,7 +12381,7 @@ pub struct ListTeammateFoldersResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateFoldersResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateFoldersResponse {
@@ -12367,7 +12472,7 @@ pub struct GetChildFoldersResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<GetChildFoldersResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for GetChildFoldersResponse {
@@ -12458,7 +12563,7 @@ pub struct GetChildTemplatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<GetChildTemplatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for GetChildTemplatesResponse {
@@ -12595,7 +12700,7 @@ pub struct ListMessageTemplatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListMessageTemplatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListMessageTemplatesResponse {
@@ -12686,7 +12791,7 @@ pub struct ListTeamMessageTemplatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamMessageTemplatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListTeamMessageTemplatesResponse {
@@ -12777,7 +12882,7 @@ pub struct ListTeammateMessageTemplatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateMessageTemplatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageTemplateResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateMessageTemplatesResponse {
@@ -12862,7 +12967,7 @@ pub struct ListGroupsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListGroupsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactGroupResponses>>,
 }
 
 impl std::fmt::Display for ListGroupsResponse {
@@ -12938,7 +13043,7 @@ pub struct ListTeamGroupsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamGroupsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactGroupResponses>>,
 }
 
 impl std::fmt::Display for ListTeamGroupsResponse {
@@ -13014,7 +13119,7 @@ pub struct ListTeammateGroupsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateGroupsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactGroupResponses>>,
 }
 
 impl std::fmt::Display for ListTeammateGroupsResponse {
@@ -13096,7 +13201,7 @@ pub struct ListGroupContactsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListGroupContactsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListGroupContactsResponse {
@@ -13187,7 +13292,7 @@ pub struct ListContactsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListContactsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListContactsResponse {
@@ -13278,7 +13383,7 @@ pub struct ListTeamContactsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamContactsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListTeamContactsResponse {
@@ -13369,7 +13474,7 @@ pub struct ListTeammateContactsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateContactsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ContactResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateContactsResponse {
@@ -13460,7 +13565,7 @@ pub struct ListContactConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListContactConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListContactConversationsResponse {
@@ -13621,7 +13726,7 @@ pub struct ListChannelsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListChannelsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ChannelResponse>>,
 }
 
 impl std::fmt::Display for ListChannelsResponse {
@@ -13697,7 +13802,7 @@ pub struct ListTeamChannelsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamChannelsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ChannelResponse>>,
 }
 
 impl std::fmt::Display for ListTeamChannelsResponse {
@@ -13773,7 +13878,7 @@ pub struct ListTeammateChannelsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateChannelsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ChannelResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateChannelsResponse {
@@ -13882,7 +13987,7 @@ pub struct ListInboxChannelsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListInboxChannelsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ChannelResponse>>,
 }
 
 impl std::fmt::Display for ListInboxChannelsResponse {
@@ -13958,7 +14063,7 @@ pub struct ListConversationCommentsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationCommentsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<CommentResponse>>,
 }
 
 impl std::fmt::Display for ListConversationCommentsResponse {
@@ -14034,7 +14139,7 @@ pub struct ListCommentMentionsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListCommentMentionsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListCommentMentionsResponse {
@@ -14116,7 +14221,7 @@ pub struct ListConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListConversationsResponse {
@@ -14275,7 +14380,7 @@ pub struct ListConversationInboxesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationInboxesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<InboxResponse>>,
 }
 
 impl std::fmt::Display for ListConversationInboxesResponse {
@@ -14351,7 +14456,7 @@ pub struct ListConversationFollowersResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationFollowersResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListConversationFollowersResponse {
@@ -14491,7 +14596,7 @@ pub struct ListConversationMessagesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationMessagesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageResponse>>,
 }
 
 impl std::fmt::Display for ListConversationMessagesResponse {
@@ -14582,7 +14687,7 @@ pub struct ListConversationEventsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationEventsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<EventResponse>>,
 }
 
 impl std::fmt::Display for ListConversationEventsResponse {
@@ -14667,7 +14772,7 @@ pub struct ListContactCustomFieldsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListContactCustomFieldsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<CustomFieldResponse>>,
 }
 
 impl std::fmt::Display for ListContactCustomFieldsResponse {
@@ -14743,7 +14848,7 @@ pub struct ListCustomFieldsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListCustomFieldsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<CustomFieldResponse>>,
 }
 
 impl std::fmt::Display for ListCustomFieldsResponse {
@@ -14825,7 +14930,7 @@ pub struct ListConversationDraftsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListConversationDraftsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<MessageResponse>>,
 }
 
 impl std::fmt::Display for ListConversationDraftsResponse {
@@ -14910,7 +15015,7 @@ pub struct ListInboxesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListInboxesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<InboxResponse>>,
 }
 
 impl std::fmt::Display for ListInboxesResponse {
@@ -14986,7 +15091,7 @@ pub struct ListTeamInboxesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamInboxesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<InboxResponse>>,
 }
 
 impl std::fmt::Display for ListTeamInboxesResponse {
@@ -15068,7 +15173,7 @@ pub struct ListInboxConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListInboxConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListInboxConversationsResponse {
@@ -15153,7 +15258,7 @@ pub struct ListInboxTeammatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListInboxTeammatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListInboxTeammatesResponse {
@@ -15235,7 +15340,7 @@ pub struct GetMessageSeenStatusResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<GetMessageSeenStatusResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<SeenReceiptResponse>>,
 }
 
 impl std::fmt::Display for GetMessageSeenStatusResponse {
@@ -15432,7 +15537,7 @@ pub struct ListRulesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListRulesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<RuleResponse>>,
 }
 
 impl std::fmt::Display for ListRulesResponse {
@@ -15508,7 +15613,7 @@ pub struct ListTeamRulesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamRulesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<RuleResponse>>,
 }
 
 impl std::fmt::Display for ListTeamRulesResponse {
@@ -15584,7 +15689,7 @@ pub struct ListTeammateRulesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateRulesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<RuleResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateRulesResponse {
@@ -15633,7 +15738,7 @@ pub struct SearchConversationsResponse {
     #[serde(rename = "_total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<i64>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for SearchConversationsResponse {
@@ -15946,7 +16051,7 @@ pub struct ListShiftTeammatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListShiftTeammatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListShiftTeammatesResponse {
@@ -16028,7 +16133,7 @@ pub struct ListTeammateSignaturesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateSignaturesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<SignatureResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateSignaturesResponse {
@@ -16119,7 +16224,7 @@ pub struct ListTeamSignaturesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamSignaturesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<SignatureResponse>>,
 }
 
 impl std::fmt::Display for ListTeamSignaturesResponse {
@@ -16514,7 +16619,7 @@ pub struct ListTaggedConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTaggedConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListTaggedConversationsResponse {
@@ -16599,7 +16704,7 @@ pub struct ListTeamsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeamsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeamResponse>>,
 }
 
 impl std::fmt::Display for ListTeamsResponse {
@@ -16675,7 +16780,7 @@ pub struct ListTeammatesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammatesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<TeammateResponse>>,
 }
 
 impl std::fmt::Display for ListTeammatesResponse {
@@ -16757,7 +16862,7 @@ pub struct ListAssignedConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListAssignedConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListAssignedConversationsResponse {
@@ -16842,7 +16947,7 @@ pub struct ListTeammateInboxesResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListTeammateInboxesResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<InboxResponse>>,
 }
 
 impl std::fmt::Display for ListTeammateInboxesResponse {
@@ -16924,7 +17029,7 @@ pub struct ListLinkConversationsResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
     pub underscore_links: Option<ListLinkConversationsResponseUnderscoreLinks>,
     #[serde(rename = "_results", default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<serde_json::Value>>,
+    pub results: Option<Vec<ConversationResponse>>,
 }
 
 impl std::fmt::Display for ListLinkConversationsResponse {

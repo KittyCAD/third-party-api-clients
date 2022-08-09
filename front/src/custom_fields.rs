@@ -68,7 +68,7 @@ impl CustomFields {
     pub async fn update<'a>(
         &'a self,
         custom_field_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::UpdateCustomField,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,

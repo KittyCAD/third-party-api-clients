@@ -99,12 +99,12 @@ impl Rules {
         }
     }
 
-    #[doc = "Get rule\n\nFetche a rule.\n\n**Parameters:**\n\n- `rule_id: &'astr`: The Rule ID (required)\n\n```rust,no_run\nasync fn example_rules_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.rules().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get rule\n\nFetche a rule.\n\n**Parameters:**\n\n- `rule_id: &'astr`: The Rule ID (required)\n\n```rust,no_run\nasync fn example_rules_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::RuleResponse = client.rules().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         rule_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::RuleResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

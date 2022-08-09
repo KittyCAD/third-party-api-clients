@@ -11,7 +11,7 @@ impl Contacts {
         Self { client }
     }
 
-    #[doc = "List contacts\n\nList the contacts of the company.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n\n```rust,no_run\nasync fn example_contacts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactsResponse = client\n        .contacts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Desc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List contacts\n\nList the contacts of the company.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n\n```rust,no_run\nasync fn example_contacts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactsResponse = client\n        .contacts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Asc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -64,12 +64,12 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create contact\n\nCreate a new contact.\n\n```rust,no_run\nasync fn example_contacts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .contacts()\n        .create(&front_api::types::CreateContact {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            avatar: Some(bytes::Bytes::from(\"some-string\")),\n            is_spammer: Some(false),\n            links: Some(vec![\"some-string\".to_string()]),\n            group_names: Some(vec![\"some-string\".to_string()]),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n            handles: Some(vec![front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Twitter,\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create contact\n\nCreate a new contact.\n\n```rust,no_run\nasync fn example_contacts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create(&front_api::types::CreateContact {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            avatar: Some(bytes::Bytes::from(\"some-string\")),\n            is_spammer: Some(false),\n            links: Some(vec![\"some-string\".to_string()]),\n            group_names: Some(vec![\"some-string\".to_string()]),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n            handles: Some(vec![front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Facebook,\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         body: &crate::types::CreateContact,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "contacts"),
@@ -150,13 +150,13 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create team contact\n\nCreate a contact for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .contacts()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Email,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team contact\n\nCreate a contact for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(true),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Twitter,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
         team_id: &'a str,
         body: &crate::types::CreateContact,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -183,7 +183,7 @@ impl Contacts {
         }
     }
 
-    #[doc = "List teammate contacts\n\nList the contacts of a teammate.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateContactsResponse = client\n        .contacts()\n        .list_teammate(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Asc),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate contacts\n\nList the contacts of a teammate.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n- `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n- `sort_by: Option<String>`: Field used to sort the records\n- `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateContactsResponse = client\n        .contacts()\n        .list_teammate(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Desc),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate<'a>(
         &'a self,
@@ -241,13 +241,13 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create teammate contact\n\nCreate a contact for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .contacts()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Intercom,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate contact\n\nCreate a contact for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(true),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Email,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
         teammate_id: &'a str,
         body: &crate::types::CreateContact,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -274,12 +274,12 @@ impl Contacts {
         }
     }
 
-    #[doc = "Get contact\n\nFetch a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contacts_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.contacts().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get contact\n\nFetch a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contacts_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client.contacts().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         contact_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -355,12 +355,12 @@ impl Contacts {
         }
     }
 
-    #[doc = "Merge contacts\n\nMerges the contacts specified into a single contact, deleting the merged-in contacts.\nIf a target contact ID is supplied, the other contacts will be merged into that one.\nOtherwise, some contact in the contact ID list will be treated as the target contact.\nMerge conflicts will be resolved in the following ways:\n  * name will prioritize manually-updated and non-private contact names\n  * descriptions will be concatenated and separated by newlines in order from\n    oldest to newest with the (optional) target contact's description first\n  * all handles, groups, links, and notes will be preserved\n  * other conflicts will use the most recently updated contact's value\n\n\n```rust,no_run\nasync fn example_contacts_merge() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .contacts()\n        .merge(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Merge contacts\n\nMerges the contacts specified into a single contact, deleting the merged-in contacts.\nIf a target contact ID is supplied, the other contacts will be merged into that one.\nOtherwise, some contact in the contact ID list will be treated as the target contact.\nMerge conflicts will be resolved in the following ways:\n  * name will prioritize manually-updated and non-private contact names\n  * descriptions will be concatenated and separated by newlines in order from\n    oldest to newest with the (optional) target contact's description first\n  * all handles, groups, links, and notes will be preserved\n  * other conflicts will use the most recently updated contact's value\n\n\n```rust,no_run\nasync fn example_contacts_merge() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .merge(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn merge<'a>(
         &'a self,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::MergeContacts,
+    ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "contacts/merge"),

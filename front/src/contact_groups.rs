@@ -246,7 +246,7 @@ impl ContactGroups {
     pub async fn add_contacts_to_group<'a>(
         &'a self,
         contact_group_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::AddContactsToGroup,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,

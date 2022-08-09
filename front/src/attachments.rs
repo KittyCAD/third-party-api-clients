@@ -11,12 +11,12 @@ impl Attachments {
         Self { client }
     }
 
-    #[doc = "Download attachment\n\nDownload an attachment file.\n\n**Parameters:**\n\n- `attachment_link_id: &'astr`: The Attachment ID (required)\n\n```rust,no_run\nasync fn example_attachments_download() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.attachments().download(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Download attachment\n\nDownload an attachment file.\n\n**Parameters:**\n\n- `attachment_link_id: &'astr`: The Attachment ID (required)\n\n```rust,no_run\nasync fn example_attachments_download() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::Attachment = client.attachments().download(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn download<'a>(
         &'a self,
         attachment_link_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::Attachment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

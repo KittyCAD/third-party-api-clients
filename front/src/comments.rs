@@ -43,13 +43,13 @@ impl Comments {
         }
     }
 
-    #[doc = "Create comment\n\nAdd a comment to a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_comments_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .comments()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create comment\n\nAdd a comment to a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_comments_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client\n        .comments()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         conversation_id: &'a str,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::CreateComment,
+    ) -> Result<crate::types::CommentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -77,12 +77,12 @@ impl Comments {
         }
     }
 
-    #[doc = "Get comment\n\nFetches a comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The Comment ID (required)\n\n```rust,no_run\nasync fn example_comments_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.comments().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get comment\n\nFetches a comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The Comment ID (required)\n\n```rust,no_run\nasync fn example_comments_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client.comments().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         comment_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::CommentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

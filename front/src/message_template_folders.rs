@@ -37,12 +37,12 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Create folder\n\nCreate a new message template folder.\n\n```rust,no_run\nasync fn example_message_template_folders_create_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .create_folder(&front_api::types::CreateMessageTemplateFolder {\n            name: \"some-string\".to_string(),\n            parent_folder_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create folder\n\nCreate a new message template folder.\n\n```rust,no_run\nasync fn example_message_template_folders_create_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_folder(&front_api::types::CreateMessageTemplateFolder {\n            name: \"some-string\".to_string(),\n            parent_folder_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_folder<'a>(
         &'a self,
         body: &crate::types::CreateMessageTemplateFolder,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "message_template_folders"),
@@ -96,13 +96,13 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Create team folder\n\nCreate a new message template folder belonging to the requested team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_team_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .create_team_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team folder\n\nCreate a new message template folder belonging to the requested team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_team_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_team_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team_folder<'a>(
         &'a self,
         team_id: &'a str,
         body: &crate::types::CreateMessageTemplateFolder,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -161,13 +161,13 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Create teammate folder\n\nCreate a new message template folder belonging to the requested teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_teammate_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .create_teammate_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate folder\n\nCreate a new message template folder belonging to the requested teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_teammate_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_teammate_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate_folder<'a>(
         &'a self,
         teammate_id: &'a str,
         body: &crate::types::CreateMessageTemplateFolder,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -227,13 +227,13 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Create child folder\n\nCreate a new message template folder as a child of the given folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The parent message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_child_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .create_child_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolderAsChild {\n                name: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create child folder\n\nCreate a new message template folder as a child of the given folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The parent message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_create_child_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_child_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolderAsChild {\n                name: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_child_folder<'a>(
         &'a self,
         message_template_folder_id: &'a str,
         body: &crate::types::CreateMessageTemplateFolderAsChild,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -261,12 +261,12 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Get folder\n\nFetch a message template folder.\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_get_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .get_folder(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get folder\n\nFetch a message template folder.\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_get_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .get_folder(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_folder<'a>(
         &'a self,
         message_template_folder_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -325,13 +325,13 @@ impl MessageTemplateFolders {
         }
     }
 
-    #[doc = "Update folder\n\nUpdate message template folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_update_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .message_template_folders()\n        .update_folder(\n            \"some-string\",\n            &front_api::types::UpdateMessageTemplateFolder {\n                name: Some(\"some-string\".to_string()),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update folder\n\nUpdate message template folder\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_update_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .update_folder(\n            \"some-string\",\n            &front_api::types::UpdateMessageTemplateFolder {\n                name: Some(\"some-string\".to_string()),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_folder<'a>(
         &'a self,
         message_template_folder_id: &'a str,
         body: &crate::types::UpdateMessageTemplateFolder,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             &format!(

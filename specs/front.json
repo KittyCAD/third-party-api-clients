@@ -1988,6 +1988,7 @@
         }
       },
       "AnalyticsScalar2": {
+        "type": "object",
         "properties": {
           "id": {
             "$ref": "#/components/schemas/AnalyticsMetricId"
@@ -2010,6 +2011,7 @@
         ]
       },
       "AnalyticsScalarValue": {
+        "type": "object",
         "properties": {
           "id": {
             "$ref": "#/components/schemas/AnalyticsMetricId"

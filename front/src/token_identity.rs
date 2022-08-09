@@ -11,9 +11,11 @@ impl TokenIdentity {
         Self { client }
     }
 
-    #[doc = "API Token details\n\nFetch the details of the API token.\n\n```rust,no_run\nasync fn example_token_identity_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.token_identity().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "API Token details\n\nFetch the details of the API token.\n\n```rust,no_run\nasync fn example_token_identity_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::IdentityResponse = client.token_identity().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get<'a>(&'a self) -> Result<serde_json::Value, crate::types::error::Error> {
+    pub async fn get<'a>(
+        &'a self,
+    ) -> Result<crate::types::IdentityResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!("{}/{}", self.client.base_url, "me"),

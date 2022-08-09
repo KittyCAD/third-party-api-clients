@@ -42,13 +42,13 @@ impl Signatures {
         }
     }
 
-    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
         teammate_id: &'a str,
         body: &crate::types::CreatePrivateSignature,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -106,13 +106,13 @@ impl Signatures {
         }
     }
 
-    #[doc = "Create team signature\n\nCreate a new signature for the given team\n\n**Parameters:**\n\n- `team_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .signatures()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: Some(true),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team signature\n\nCreate a new signature for the given team\n\n**Parameters:**\n\n- `team_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: Some(true),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
         team_id: &'a str,
         body: &crate::types::CreateSharedSignature,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -139,12 +139,12 @@ impl Signatures {
         }
     }
 
-    #[doc = "Get signatures\n\nGet the given signature.\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.signatures().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get signatures\n\nGet the given signature.\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client.signatures().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         signature_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -194,13 +194,13 @@ impl Signatures {
         }
     }
 
-    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(true),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: Some(true),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
         signature_id: &'a str,
         body: &crate::types::UpdateSignature,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             &format!(

@@ -54,12 +54,12 @@ impl Conversations {
         }
     }
 
-    #[doc = "Create conversation\n\nCreate a conversation.\n> ⚠\u{fe0f} Currently, only discussions can be created with this endpoint.\n\n\n```rust,no_run\nasync fn example_conversations_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .conversations()\n        .create(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create conversation\n\nCreate a conversation.\n> ⚠\u{fe0f} Currently, only discussions can be created with this endpoint.\n\n\n```rust,no_run\nasync fn example_conversations_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse = client\n        .conversations()\n        .create(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
-        body: &serde_json::Value,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+        body: &crate::types::CreateConversation,
+    ) -> Result<crate::types::ConversationResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!("{}/{}", self.client.base_url, "conversations"),
@@ -82,12 +82,12 @@ impl Conversations {
         }
     }
 
-    #[doc = "Get conversation\n\nFetch a conversation.\n> ⚠\u{fe0f} Deprecated field included\n>\n> This endpoint returns a deprecated `last_message` field in the main body. Please use the\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_get_by_id() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client.conversations().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get conversation\n\nFetch a conversation.\n> ⚠\u{fe0f} Deprecated field included\n>\n> This endpoint returns a deprecated `last_message` field in the main body. Please use the\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_get_by_id() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse =\n        client.conversations().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_by_id<'a>(
         &'a self,
         conversation_id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::ConversationResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
@@ -118,7 +118,7 @@ impl Conversations {
     pub async fn update<'a>(
         &'a self,
         conversation_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::UpdateConversation,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
@@ -144,7 +144,7 @@ impl Conversations {
     pub async fn update_assignee<'a>(
         &'a self,
         conversation_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::UpdateConversationAssignee,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
@@ -485,7 +485,7 @@ impl Conversations {
     pub async fn update_reminders<'a>(
         &'a self,
         conversation_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::UpdateConversationReminders,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,

@@ -43,13 +43,13 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_reply<'a>(
         &'a self,
         conversation_id: &'a str,
         body: &crate::types::ReplyDraft,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -77,13 +77,13 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         channel_id: &'a str,
         body: &crate::types::CreateDraft,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
             &format!(
@@ -110,13 +110,13 @@ impl Drafts {
         }
     }
 
-    #[doc = "Edit draft\n\nEdit a draft message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The draft ID (required)\n\n```rust,no_run\nasync fn example_drafts_edit() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .edit(\n            \"some-string\",\n            &front_api::types::EditDraft::Shared {\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Edit draft\n\nEdit a draft message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The draft ID (required)\n\n```rust,no_run\nasync fn example_drafts_edit() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .edit(\n            \"some-string\",\n            &front_api::types::EditDraft::Shared {\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn edit<'a>(
         &'a self,
         message_id: &'a str,
         body: &crate::types::EditDraft,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             &format!(
@@ -148,7 +148,7 @@ impl Drafts {
     pub async fn delete<'a>(
         &'a self,
         draft_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::DeleteDraft,
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
