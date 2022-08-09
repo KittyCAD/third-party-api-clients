@@ -1601,17 +1601,107 @@ impl tabled::Tabled for ContactHandle {
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub enum CreateContact {
-    Contact(Contact),
-    CreateContact(CreateContact),
+pub struct CreateContact {
+    #[doc = "Contact name"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[doc = "Contact description"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[doc = "Binary data of avatar. Must use `Content-Type: multipart/form-data` if specified."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub avatar: Option<bytes::Bytes>,
+    #[doc = "Whether or not the contact is marked as a spammer"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub is_spammer: Option<bool>,
+    #[doc = "List of all the links of the contact"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub links: Option<Vec<String>>,
+    #[doc = "List of all the group names the contact belongs to. It will automatically create \
+             missing groups"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group_names: Option<Vec<String>>,
+    #[doc = "Custom field attributes for this contact. Leave empty if you do not wish to update \
+             the attributes. Not sending existing attributes will automatically remove them."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub custom_fields: Option<std::collections::HashMap<String, String>>,
+    #[doc = "List of the handles for this contact. Each handle object should include `handle` and \
+             `source` fields."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub handles: Option<Vec<ContactHandle>>,
+}
+
+impl std::fmt::Display for CreateContact {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for CreateContact {
+    const LENGTH: usize = 8;
+    fn fields(&self) -> Vec<String> {
+        vec![
+            if let Some(name) = &self.name {
+                format!("{:?}", name)
+            } else {
+                String::new()
+            },
+            if let Some(description) = &self.description {
+                format!("{:?}", description)
+            } else {
+                String::new()
+            },
+            if let Some(avatar) = &self.avatar {
+                format!("{:?}", avatar)
+            } else {
+                String::new()
+            },
+            if let Some(is_spammer) = &self.is_spammer {
+                format!("{:?}", is_spammer)
+            } else {
+                String::new()
+            },
+            if let Some(links) = &self.links {
+                format!("{:?}", links)
+            } else {
+                String::new()
+            },
+            if let Some(group_names) = &self.group_names {
+                format!("{:?}", group_names)
+            } else {
+                String::new()
+            },
+            if let Some(custom_fields) = &self.custom_fields {
+                format!("{:?}", custom_fields)
+            } else {
+                String::new()
+            },
+            if let Some(handles) = &self.handles {
+                format!("{:?}", handles)
+            } else {
+                String::new()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<String> {
+        vec![
+            "name".to_string(),
+            "description".to_string(),
+            "avatar".to_string(),
+            "is_spammer".to_string(),
+            "links".to_string(),
+            "group_names".to_string(),
+            "custom_fields".to_string(),
+            "handles".to_string(),
+        ]
+    }
 }
 
 #[derive(
@@ -2598,32 +2688,274 @@ impl tabled::Tabled for CreateDraft {
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub enum ReplyDraft {
-    CreateDraft(CreateDraft),
-    ReplyDraft(ReplyDraft),
+pub struct ReplyDraft {
+    #[doc = "ID of the teammate on behalf of whom the draft will be created"]
+    pub author_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub to: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cc: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bcc: Option<Vec<String>>,
+    #[doc = "Subject of the draft."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub subject: Option<String>,
+    #[doc = "Body of the draft"]
+    pub body: String,
+    #[doc = "Binary data of attached files. Must use `Content-Type: multipart/form-data` if specified. See [example](https://gist.github.com/hdornier/e04d04921032e98271f46ff8a539a4cb)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub attachments: Option<Vec<bytes::Bytes>>,
+    #[doc = "Mode of the draft to create. Can be 'private' (draft is visible to the author only) \
+             or 'shared' (draft is visible to all teammates with access to the conversation)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mode: Option<Mode>,
+    #[doc = "ID of the signature to attach to this draft. If null, no signature is attached."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub signature_id: Option<String>,
+    #[doc = "Whether or not Front should try to resolve a signature for the message. Is ignored \
+             if signature_id is included. Default false;"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub should_add_default_signature: Option<bool>,
+    #[doc = "ID of the channel from which the draft will be sent"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub channel_id: Option<String>,
 }
 
+impl std::fmt::Display for ReplyDraft {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for ReplyDraft {
+    const LENGTH: usize = 11;
+    fn fields(&self) -> Vec<String> {
+        vec![
+            self.author_id.clone(),
+            if let Some(to) = &self.to {
+                format!("{:?}", to)
+            } else {
+                String::new()
+            },
+            if let Some(cc) = &self.cc {
+                format!("{:?}", cc)
+            } else {
+                String::new()
+            },
+            if let Some(bcc) = &self.bcc {
+                format!("{:?}", bcc)
+            } else {
+                String::new()
+            },
+            if let Some(subject) = &self.subject {
+                format!("{:?}", subject)
+            } else {
+                String::new()
+            },
+            self.body.clone(),
+            if let Some(attachments) = &self.attachments {
+                format!("{:?}", attachments)
+            } else {
+                String::new()
+            },
+            if let Some(mode) = &self.mode {
+                format!("{:?}", mode)
+            } else {
+                String::new()
+            },
+            if let Some(signature_id) = &self.signature_id {
+                format!("{:?}", signature_id)
+            } else {
+                String::new()
+            },
+            if let Some(should_add_default_signature) = &self.should_add_default_signature {
+                format!("{:?}", should_add_default_signature)
+            } else {
+                String::new()
+            },
+            if let Some(channel_id) = &self.channel_id {
+                format!("{:?}", channel_id)
+            } else {
+                String::new()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<String> {
+        vec![
+            "author_id".to_string(),
+            "to".to_string(),
+            "cc".to_string(),
+            "bcc".to_string(),
+            "subject".to_string(),
+            "body".to_string(),
+            "attachments".to_string(),
+            "mode".to_string(),
+            "signature_id".to_string(),
+            "should_add_default_signature".to_string(),
+            "channel_id".to_string(),
+        ]
+    }
+}
+
+#[doc = "Mode of the draft to update. Can only be 'shared' (draft is visible to all teammates with \
+         access to the conversation)."]
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
+    Eq,
+    Hash,
     Debug,
     Clone,
     schemars :: JsonSchema,
     tabled :: Tabled,
+    clap :: ValueEnum,
+    parse_display :: FromStr,
+    parse_display :: Display,
 )]
-#[serde(tag = "mode")]
-pub enum EditDraft {
+pub enum EditDraftMode {
     #[serde(rename = "shared")]
-    Shared { version: Option<String> },
+    #[display("shared")]
+    Shared,
+}
+
+impl std::default::Default for EditDraftMode {
+    fn default() -> Self {
+        EditDraftMode::Shared
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct EditDraft {
+    #[doc = "ID of the teammate on behalf of whom the draft will be created"]
+    pub author_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub to: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cc: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bcc: Option<Vec<String>>,
+    #[doc = "Subject of the draft."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub subject: Option<String>,
+    #[doc = "Body of the draft"]
+    pub body: String,
+    #[doc = "Binary data of attached files. Must use `Content-Type: multipart/form-data` if specified. See [example](https://gist.github.com/hdornier/e04d04921032e98271f46ff8a539a4cb)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub attachments: Option<Vec<bytes::Bytes>>,
+    #[doc = "Mode of the draft to update. Can only be 'shared' (draft is visible to all teammates \
+             with access to the conversation)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mode: Option<EditDraftMode>,
+    #[doc = "ID of the signature to attach to this draft. If null, no signature is attached."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub signature_id: Option<String>,
+    #[doc = "Whether or not Front should try to resolve a signature for the message. Is ignored \
+             if signature_id is included. Default false;"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub should_add_default_signature: Option<bool>,
+    #[doc = "ID of the channel from which the draft will be sent"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub channel_id: Option<String>,
+    #[doc = "Version of the draft"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
+}
+
+impl std::fmt::Display for EditDraft {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for EditDraft {
+    const LENGTH: usize = 12;
+    fn fields(&self) -> Vec<String> {
+        vec![
+            self.author_id.clone(),
+            if let Some(to) = &self.to {
+                format!("{:?}", to)
+            } else {
+                String::new()
+            },
+            if let Some(cc) = &self.cc {
+                format!("{:?}", cc)
+            } else {
+                String::new()
+            },
+            if let Some(bcc) = &self.bcc {
+                format!("{:?}", bcc)
+            } else {
+                String::new()
+            },
+            if let Some(subject) = &self.subject {
+                format!("{:?}", subject)
+            } else {
+                String::new()
+            },
+            self.body.clone(),
+            if let Some(attachments) = &self.attachments {
+                format!("{:?}", attachments)
+            } else {
+                String::new()
+            },
+            if let Some(mode) = &self.mode {
+                format!("{:?}", mode)
+            } else {
+                String::new()
+            },
+            if let Some(signature_id) = &self.signature_id {
+                format!("{:?}", signature_id)
+            } else {
+                String::new()
+            },
+            if let Some(should_add_default_signature) = &self.should_add_default_signature {
+                format!("{:?}", should_add_default_signature)
+            } else {
+                String::new()
+            },
+            if let Some(channel_id) = &self.channel_id {
+                format!("{:?}", channel_id)
+            } else {
+                String::new()
+            },
+            if let Some(version) = &self.version {
+                format!("{:?}", version)
+            } else {
+                String::new()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<String> {
+        vec![
+            "author_id".to_string(),
+            "to".to_string(),
+            "cc".to_string(),
+            "bcc".to_string(),
+            "subject".to_string(),
+            "body".to_string(),
+            "attachments".to_string(),
+            "mode".to_string(),
+            "signature_id".to_string(),
+            "should_add_default_signature".to_string(),
+            "channel_id".to_string(),
+            "version".to_string(),
+        ]
+    }
 }
 
 #[derive(

@@ -561,6 +561,7 @@
         ]
       },
       "Contact": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -878,6 +879,7 @@
         }
       },
       "CreateDraft": {
+        "type": "object",
         "required": [
           "author_id",
           "body"

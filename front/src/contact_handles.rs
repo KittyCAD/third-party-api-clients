@@ -37,7 +37,7 @@ impl ContactHandles {
         }
     }
 
-    #[doc = "Delete contact handle\n\nRemove a handle from a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contact_handles_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .delete(\n            \"some-string\",\n            &front_api::types::DeleteContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Phone,\n                force: Some(true),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete contact handle\n\nRemove a handle from a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contact_handles_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .delete(\n            \"some-string\",\n            &front_api::types::DeleteContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Twitter,\n                force: Some(true),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(
         &'a self,

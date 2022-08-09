@@ -43,7 +43,7 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft::CreateDraft(serde_json::Value::String(\n                \"some-string\".to_string(),\n            )),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_reply<'a>(
         &'a self,
@@ -77,12 +77,12 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
         channel_id: &'a str,
-        body: &serde_json::Value,
+        body: &crate::types::CreateDraft,
     ) -> Result<serde_json::Value, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
