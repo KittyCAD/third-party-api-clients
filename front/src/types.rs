@@ -5660,6 +5660,124 @@ pub enum AnalyticsScalarType {
     Duration,
 }
 
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ResourceUnderscoreLinks {
+    #[doc = "Link to a resource."]
+    #[serde(rename = "self", default, skip_serializing_if = "Option::is_none")]
+    pub self_: Option<String>,
+}
+
+impl std::fmt::Display for ResourceUnderscoreLinks {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for ResourceUnderscoreLinks {
+    const LENGTH: usize = 1;
+    fn fields(&self) -> Vec<String> {
+        vec![if let Some(self_) = &self.self_ {
+            format!("{:?}", self_)
+        } else {
+            String::new()
+        }]
+    }
+
+    fn headers() -> Vec<String> {
+        vec!["self_".to_string()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Resource {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<f64>,
+    #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
+    pub underscore_links: Option<ResourceUnderscoreLinks>,
+}
+
+impl std::fmt::Display for Resource {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for Resource {
+    const LENGTH: usize = 2;
+    fn fields(&self) -> Vec<String> {
+        vec![
+            if let Some(id) = &self.id {
+                format!("{:?}", id)
+            } else {
+                String::new()
+            },
+            if let Some(underscore_links) = &self.underscore_links {
+                format!("{:?}", underscore_links)
+            } else {
+                String::new()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<String> {
+        vec!["id".to_string(), "underscore_links".to_string()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ValueOneOf {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub resource: Option<Resource>,
+}
+
+impl std::fmt::Display for ValueOneOf {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+impl tabled::Tabled for ValueOneOf {
+    const LENGTH: usize = 2;
+    fn fields(&self) -> Vec<String> {
+        vec![
+            if let Some(label) = &self.label {
+                format!("{:?}", label)
+            } else {
+                String::new()
+            },
+            if let Some(resource) = &self.resource {
+                format!("{:?}", resource)
+            } else {
+                String::new()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<String> {
+        vec!["label".to_string(), "resource".to_string()]
+    }
+}
+
 #[doc = "The value of a scalar metric."]
 #[derive(
     serde :: Serialize,
@@ -5673,7 +5791,7 @@ pub enum AnalyticsScalarType {
 pub enum Value {
     I64(i64),
     String(String),
-    Value(Value),
+    ValueOneOf(ValueOneOf),
 }
 
 #[derive(

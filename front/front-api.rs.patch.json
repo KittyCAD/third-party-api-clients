@@ -1,0 +1,1306 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = front-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `FRONT_API_TOKEN`.\nlet client = front_api::Client::new_from_env();",
+      "install": "[dependencies]\nfront-api = \"0.0.1\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts/get/x-rust",
+    "value": {
+      "example": "/// List Accounts\n/// \n/// List the accounts of the company.\n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `sort_by: Option<String>`: Field used to sort the records\n/// - `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\nasync fn example_accounts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListAccountsResponse = client\n        .accounts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Asc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts/post/x-rust",
+    "value": {
+      "example": "/// Create account\n/// \n/// Create a new account.\nasync fn example_accounts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client\n        .accounts()\n        .create(&front_api::types::Account {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            domains: Some(vec![\"some-string\".to_string()]),\n            external_id: Some(\"some-string\".to_string()),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete an account\n/// \n/// Deletes an account\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\nasync fn example_accounts_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.accounts().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}/get/x-rust",
+    "value": {
+      "example": "/// Fetch an account\n/// \n/// Fetches an account\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\nasync fn example_accounts_fetch() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client.accounts().fetch(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.fetch"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update account\n/// \n/// Updates an account.\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\nasync fn example_accounts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AccountResponse = client\n        .accounts()\n        .update(\n            \"some-string\",\n            &front_api::types::Account {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                domains: Some(vec![\"some-string\".to_string()]),\n                external_id: Some(\"some-string\".to_string()),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}~1contacts/delete/x-rust",
+    "value": {
+      "example": "/// Remove contact from Account\n/// \n/// Removes a list of contacts from an Account\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\nasync fn example_accounts_remove_contacts_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .accounts()\n        .remove_contacts_from(\n            \"some-string\",\n            &front_api::types::ContactIds {\n                contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.remove_contacts_from"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List account contacts\n/// \n/// Lists the contacts associated to an Account\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\nasync fn example_accounts_list_contacts() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListAccountContactsResponse = client\n        .accounts()\n        .list_contacts(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.list_contacts"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1accounts~1{account_id}~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Add contact to Account\n/// \n/// Adds a list of contacts to an Account\n/// \n/// **Parameters:**\n/// \n/// - `account_id: &'astr`: The Account ID (required)\nasync fn example_accounts_add_contacts_to() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .accounts()\n        .add_contacts_to(\n            \"some-string\",\n            &front_api::types::ContactIds {\n                contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/accounts/struct.Accounts.html#method.add_contacts_to"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1analytics~1exports/post/x-rust",
+    "value": {
+      "example": "/// Create a new analytics export.\n/// \n/// Create a new analytics export of messages or activities over a specific time span.\n/// The export will be executed asynchronously. The response will include a link that can be used to retrieve the\n/// export status & result.\n/// \nasync fn example_analytics_create_export() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsExportResponse2 = client\n        .analytics()\n        .create_export(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/analytics/struct.Analytics.html#method.create_export"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1analytics~1exports~1{export_id}/get/x-rust",
+    "value": {
+      "example": "/// Fetch an analytics export.\n/// \n/// **Parameters:**\n/// \n/// - `export_id: &'astr`: The export ID. (required)\nasync fn example_analytics_get_export() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsExportResponse2 =\n        client.analytics().get_export(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/analytics/struct.Analytics.html#method.get_export"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1analytics~1reports/post/x-rust",
+    "value": {
+      "example": "/// Create a new analytics report.\n/// \n/// Create a new analytics report for a set of metrics over a specific time span.\n/// The report will be executed asynchronously. The response will include a link that can be used to retrieve the\n/// report status & result.\n/// \nasync fn example_analytics_create_report() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsReportResponse2 = client\n        .analytics()\n        .create_report(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/analytics/struct.Analytics.html#method.create_report"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1analytics~1reports~1{report_uid}/get/x-rust",
+    "value": {
+      "example": "/// Fetch an analytics report.\n/// \n/// **Parameters:**\n/// \n/// - `report_uid: &'astr`: The report UID. (required)\nasync fn example_analytics_get_report() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsReportResponse2 =\n        client.analytics().get_report(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/analytics/struct.Analytics.html#method.get_report"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels/get/x-rust",
+    "value": {
+      "example": "/// List channels\n/// \n/// List the channels of the company.\nasync fn example_channels_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListChannelsResponse = client.channels().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}/get/x-rust",
+    "value": {
+      "example": "/// Get channel\n/// \n/// Fetch a channel.\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The Channel ID (required)\nasync fn example_channels_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ChannelResponse = client.channels().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update Channel\n/// \n/// Update a channel.\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The Channel ID (required)\nasync fn example_channels_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .channels()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}~1drafts/post/x-rust",
+    "value": {
+      "example": "/// Create draft\n/// \n/// Create a draft message which is the first message of a new conversation.\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The channel ID (required)\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/drafts/struct.Drafts.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}~1incoming_messages/post/x-rust",
+    "value": {
+      "example": "/// Receive custom messages\n/// \n/// Receive a custom message in Front. This endpoint is available for custom channels **ONLY**.\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The channel ID (required)\nasync fn example_messages_receive_custom() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ReceiveCustomMessageResponse = client\n        .messages()\n        .receive_custom(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.receive_custom"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}~1messages/post/x-rust",
+    "value": {
+      "example": "/// Create conversation\n/// \n/// Send a new message from a channel.\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The sending channel ID (required)\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.create_conversation"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1channels~1{channel_id}~1validate/post/x-rust",
+    "value": {
+      "example": "/// Validate channel\n/// \n/// Asynchronously validate a channel\n/// \n/// **Parameters:**\n/// \n/// - `channel_id: &'astr`: The Channel ID (required)\nasync fn example_channels_validate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ValidateChannelResponse =\n        client.channels().validate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.validate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1comments~1{comment_id}/get/x-rust",
+    "value": {
+      "example": "/// Get comment\n/// \n/// Fetches a comment.\n/// \n/// **Parameters:**\n/// \n/// - `comment_id: &'astr`: The Comment ID (required)\nasync fn example_comments_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client.comments().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/comments/struct.Comments.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1comments~1{comment_id}~1mentions/get/x-rust",
+    "value": {
+      "example": "/// List comment mentions\n/// \n/// List the teammates mentioned in a comment.\n/// \n/// **Parameters:**\n/// \n/// - `comment_id: &'astr`: The Comment ID (required)\nasync fn example_comments_list_mentions() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListCommentMentionsResponse =\n        client.comments().list_mentions(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/comments/struct.Comments.html#method.list_mentions"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contact_groups/get/x-rust",
+    "value": {
+      "example": "/// List groups\n/// \n/// List the contact groups.\nasync fn example_contact_groups_list_groups() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListGroupsResponse = client.contact_groups().list_groups().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.list_groups"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contact_groups/post/x-rust",
+    "value": {
+      "example": "/// Create group\n/// \n/// Create a new contact group in the default team.\nasync fn example_contact_groups_create_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .create_group(&front_api::types::CreateContactGroup {\n            name: \"some-string\".to_string(),\n        })\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.create_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contact_groups~1{contact_group_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete group\n/// \n/// Delete a contact group.\n/// \n/// **Parameters:**\n/// \n/// - `contact_group_id: &'astr`: The contact group ID (required)\nasync fn example_contact_groups_delete_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.contact_groups().delete_group(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.delete_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contact_groups~1{contact_group_id}~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List contacts in group\n/// \n/// List the contacts belonging to the requested group.\n/// \n/// **Parameters:**\n/// \n/// - `contact_group_id: &'astr`: The contact group ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\nasync fn example_contact_groups_list_group_contacts() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListGroupContactsResponse = client\n        .contact_groups()\n        .list_group_contacts(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.list_group_contacts"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contact_groups~1{contact_group_id}~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Add contacts to group\n/// \n/// Add contacts to the requested group.\n/// \n/// **Parameters:**\n/// \n/// - `contact_group_id: &'astr`: The contact group ID (required)\nasync fn example_contact_groups_add_contacts_to_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .add_contacts_to_group(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.add_contacts_to_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List contacts\n/// \n/// List the contacts of the company.\n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n/// - `sort_by: Option<String>`: Field used to sort the records\n/// - `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\nasync fn example_contacts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactsResponse = client\n        .contacts()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Desc),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Create contact\n/// \n/// Create a new contact.\nasync fn example_contacts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create(&front_api::types::CreateContact {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            avatar: Some(bytes::Bytes::from(\"some-string\")),\n            is_spammer: Some(true),\n            links: Some(vec![\"some-string\".to_string()]),\n            group_names: Some(vec![\"some-string\".to_string()]),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n            handles: Some(vec![front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Email,\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1custom_fields/get/x-rust",
+    "value": {
+      "example": "/// List Contact's custom fields\n/// \n/// Lists the custom fields in your company that are application to a Contact.\nasync fn example_custom_fields_list_contact() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactCustomFieldsResponse =\n        client.custom_fields().list_contact().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/custom_fields/struct.CustomFields.html#method.list_contact"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1merge/post/x-rust",
+    "value": {
+      "example": "/// Merge contacts\n/// \n/// Merges the contacts specified into a single contact, deleting the merged-in contacts.\n/// If a target contact ID is supplied, the other contacts will be merged into that one.\n/// Otherwise, some contact in the contact ID list will be treated as the target contact.\n/// Merge conflicts will be resolved in the following ways:\n///   * name will prioritize manually-updated and non-private contact names\n///   * descriptions will be concatenated and separated by newlines in order from\n///     oldest to newest with the (optional) target contact's description first\n///   * all handles, groups, links, and notes will be preserved\n///   * other conflicts will use the most recently updated contact's value\n/// \nasync fn example_contacts_merge() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .merge(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.merge"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete a contact\n/// \n/// Delete a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contacts_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.contacts().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}/get/x-rust",
+    "value": {
+      "example": "/// Get contact\n/// \n/// Fetch a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contacts_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client.contacts().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update a contact\n/// \n/// Updates a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contacts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contacts()\n        .update(\n            \"some-string\",\n            &front_api::types::Contact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List contact conversations\n/// \n/// List the conversations for a contact in reverse chronological order (newest first). For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The Contact ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\nasync fn example_contacts_list_conversations() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactConversationsResponse = client\n        .contacts()\n        .list_conversations(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.list_conversations"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}~1handles/delete/x-rust",
+    "value": {
+      "example": "/// Delete contact handle\n/// \n/// Remove a handle from a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contact_handles_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .delete(\n            \"some-string\",\n            &front_api::types::DeleteContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Custom,\n                force: Some(false),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_handles/struct.ContactHandles.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}~1handles/post/x-rust",
+    "value": {
+      "example": "/// Add contact handle\n/// \n/// Adds a new handle to a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contact_handles_add() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .add(\n            \"some-string\",\n            &front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Email,\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_handles/struct.ContactHandles.html#method.add"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}~1notes/get/x-rust",
+    "value": {
+      "example": "/// List notes\n/// \n/// List the notes added to a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contact_notes_list_notes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListNotesResponse =\n        client.contact_notes().list_notes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_notes/struct.ContactNotes.html#method.list_notes"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1contacts~1{contact_id}~1notes/post/x-rust",
+    "value": {
+      "example": "/// Add note\n/// \n/// Create a new note on a contact.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr`: The contact ID (required)\nasync fn example_contact_notes_add_note() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactNoteResponses = client\n        .contact_notes()\n        .add_note(\n            \"some-string\",\n            &front_api::types::CreateContactNote {\n                author_id: \"some-string\".to_string(),\n                body: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_notes/struct.ContactNotes.html#method.add_note"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List conversations\n/// \n/// List the conversations in the company in reverse chronological order (most recently updated first). For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\nasync fn example_conversations_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationsResponse = client\n        .conversations()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations/post/x-rust",
+    "value": {
+      "example": "/// Create conversation\n/// \n/// Create a conversation.\n/// > ⚠️ Currently, only discussions can be created with this endpoint.\n/// \nasync fn example_conversations_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse = client\n        .conversations()\n        .create(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1search~1{query}/get/x-rust",
+    "value": {
+      "example": "/// Search conversations\n/// \n/// Search for conversations. Response will include a count of total matches and an array of conversations in descending order by last activity.\n/// See the [search syntax documentation](https://dev.frontapp.com/docs/search-1) for usage examples.\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `query: &'astr`: Search query string. See available Conversation Search Parameters below (required)\nasync fn example_conversations_search() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SearchConversationsResponse = client\n        .conversations()\n        .search(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.search"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}/get/x-rust",
+    "value": {
+      "example": "/// Get conversation\n/// \n/// Fetch a conversation.\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the main body. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_get_by_id() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse =\n        client.conversations().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.get_by_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update conversation\n/// \n/// Update a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1assignee/put/x-rust",
+    "value": {
+      "example": "/// Update conversation assignee\n/// \n/// Assign or unassign a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_update_assignee() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update_assignee(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.update_assignee"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1comments/get/x-rust",
+    "value": {
+      "example": "/// List conversation comments\n/// \n/// List the comments in a conversation in reverse chronological order (newest first).\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_comments_list_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationCommentsResponse =\n        client.comments().list_conversation(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/comments/struct.Comments.html#method.list_conversation"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1comments/post/x-rust",
+    "value": {
+      "example": "/// Create comment\n/// \n/// Add a comment to a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_comments_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client\n        .comments()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/comments/struct.Comments.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1drafts/get/x-rust",
+    "value": {
+      "example": "/// List conversation drafts\n/// \n/// List the drafts in a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_drafts_list_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationDraftsResponse =\n        client.drafts().list_conversation(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/drafts/struct.Drafts.html#method.list_conversation"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1drafts/post/x-rust",
+    "value": {
+      "example": "/// Create draft reply\n/// \n/// Create a new draft as a reply to the last message in the conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/drafts/struct.Drafts.html#method.create_reply"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1events/get/x-rust",
+    "value": {
+      "example": "/// List conversation events\n/// \n/// List the events that occured for a conversation in reverse chronological order (newest first).\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\nasync fn example_conversations_list_events() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationEventsResponse = client\n        .conversations()\n        .list_events(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.list_events"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1followers/delete/x-rust",
+    "value": {
+      "example": "/// Delete conversation followers\n/// \n/// Removes teammates from the list of followers of a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_delete_followers() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .delete_followers(\n            \"some-string\",\n            &front_api::types::DeleteConversationFollowersRequestBody {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.delete_followers"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1followers/get/x-rust",
+    "value": {
+      "example": "/// List conversation followers\n/// \n/// List the teammates following a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_list_followers() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationFollowersResponse =\n        client.conversations().list_followers(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.list_followers"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1followers/post/x-rust",
+    "value": {
+      "example": "/// Add conversation followers\n/// \n/// Adds teammates to the list of followers of a conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_add_followers() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .add_followers(\n            \"some-string\",\n            &front_api::types::AddConversationFollowersRequestBody {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.add_followers"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1inboxes/get/x-rust",
+    "value": {
+      "example": "/// List conversation inboxes\n/// \n/// List the inboxes in which a conversation is listed.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_list_inboxes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationInboxesResponse =\n        client.conversations().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.list_inboxes"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1links/delete/x-rust",
+    "value": {
+      "example": "/// Remove conversation links\n/// \n/// Removes one or more links to a conversation\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_remove_link() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .remove_link(\n            \"some-string\",\n            &front_api::types::RemoveConversationLinkRequestBody {\n                link_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.remove_link"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1links/post/x-rust",
+    "value": {
+      "example": "/// Add conversation link\n/// \n/// Adds one or more links to a conversation\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_add_link() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .add_link(\n            \"some-string\",\n            &front_api::types::AddConversationLinkRequestBody {\n                link_ids: Some(vec![\"some-string\".to_string()]),\n                link_external_urls: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.add_link"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1messages/get/x-rust",
+    "value": {
+      "example": "/// List conversation messages\n/// \n/// List the messages in a conversation in reverse chronological order (newest first).\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\nasync fn example_conversations_list_messages() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationMessagesResponse = client\n        .conversations()\n        .list_messages(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.list_messages"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1messages/post/x-rust",
+    "value": {
+      "example": "/// Reply to conversation\n/// \n/// Reply to a conversation by sending a message and appending it to the conversation.\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.reply_to_conversation"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1reminders/patch/x-rust",
+    "value": {
+      "example": "/// Update conversation reminders\n/// \n/// Snooze or unsnooze a conversation for the provided user.\n/// For private conversations, reminders can only be created and edited through the API for teammates that own the conversation.\n/// For shared conversations, reminders created and edited through the API are shared for all teammates within the shared inbox(es) that the conversation belongs to.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_update_reminders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update_reminders(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.update_reminders"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1tags/delete/x-rust",
+    "value": {
+      "example": "/// Remove conversation tag\n/// \n/// Removes one or more tags to a conversation\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_remove_tag() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .remove_tag(\n            \"some-string\",\n            &front_api::types::TagIds {\n                tag_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.remove_tag"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1conversations~1{conversation_id}~1tags/post/x-rust",
+    "value": {
+      "example": "/// Add conversation tag\n/// \n/// Adds one or more tags to a conversation\n/// \n/// **Parameters:**\n/// \n/// - `conversation_id: &'astr`: The conversation ID (required)\nasync fn example_conversations_add_tag() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .add_tag(\n            \"some-string\",\n            &front_api::types::TagIds {\n                tag_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/conversations/struct.Conversations.html#method.add_tag"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom_fields/get/x-rust",
+    "value": {
+      "example": "/// List Contact's custom fields\n/// \n/// Lists the custom fields in your company that are application to a Contact.\n/// > ⚠️ Deprecated endpoint\n/// >\n/// > This endpoint has been deprecated. Please use the fully compatible `GET /contacts/custom_fields` endpoint instead.\n/// \n/// \n/// **NOTE:** This operation is marked as deprecated.\nasync fn example_custom_fields_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListCustomFieldsResponse = client.custom_fields().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/custom_fields/struct.CustomFields.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom_fields~1{custom_field_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update custom field\n/// \n/// Update a custom field. (⚠️ Deprecated)\n/// \n/// **Parameters:**\n/// \n/// - `custom_field_id: &'astr`: Custom Field ID (required)\n/// \n/// **NOTE:** This operation is marked as deprecated.\nasync fn example_custom_fields_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .custom_fields()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/custom_fields/struct.CustomFields.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1download~1{attachment_link_id}/get/x-rust",
+    "value": {
+      "example": "/// Download attachment\n/// \n/// Download an attachment file.\n/// \n/// **Parameters:**\n/// \n/// - `attachment_link_id: &'astr`: The Attachment ID (required)\nasync fn example_attachments_download() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::Attachment = client.attachments().download(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/attachments/struct.Attachments.html#method.download"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1drafts~1{draft_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete draft\n/// \n/// Delete a draft message.\n/// \n/// **Parameters:**\n/// \n/// - `draft_id: &'astr`: The draft ID (required)\nasync fn example_drafts_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .drafts()\n        .delete(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/drafts/struct.Drafts.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1drafts~1{message_id}~1/patch/x-rust",
+    "value": {
+      "example": "/// Edit draft\n/// \n/// Edit a draft message.\n/// \n/// **Parameters:**\n/// \n/// - `message_id: &'astr`: The draft ID (required)\nasync fn example_drafts_edit() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .edit(\n            \"some-string\",\n            &front_api::types::EditDraft::Shared {\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/drafts/struct.Drafts.html#method.edit"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1events/get/x-rust",
+    "value": {
+      "example": "/// List events\n/// \n/// Lists all the detailed events which occured in the inboxes of the company ordered in reverse chronological order (newest first).\n/// > ⚠️ Deprecated field may be included\n/// >\n/// > This route return the deprecated `last_message` conversation field for conversations\n/// > associated with individual events. Please use the conversation's\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with optional properties `before`, `after`, or `types`. `before` and `after` should be a timestamp in seconds with up to 3 decimal places. `types` should be a list of event types.\nasync fn example_events_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListEventsResponse = client\n        .events()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/events/struct.Events.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1events~1{event_id}/get/x-rust",
+    "value": {
+      "example": "/// Get event\n/// \n/// Fetch an event.\n/// > ⚠️ Deprecated field may be included\n/// >\n/// > This route return the deprecated `last_message` conversation field for conversations\n/// > associated with individual events. Please use the conversation's\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `event_id: &'astr`: The event ID (required)\nasync fn example_events_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::EventResponse = client.events().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/events/struct.Events.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes/get/x-rust",
+    "value": {
+      "example": "/// List inboxes\n/// \n/// List the inboxes of the company.\nasync fn example_inboxes_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxesResponse = client.inboxes().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes/post/x-rust",
+    "value": {
+      "example": "/// Create inbox\n/// \n/// Create an inbox in the default team.\nasync fn example_inboxes_create_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .create_inbox(&front_api::types::CreateInbox {\n            name: \"some-string\".to_string(),\n            teammate_ids: Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.create_inbox"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}/get/x-rust",
+    "value": {
+      "example": "/// Get inbox\n/// \n/// Fetch an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_inboxes_get_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::InboxResponse = client.inboxes().get_inbox(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.get_inbox"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1channels/get/x-rust",
+    "value": {
+      "example": "/// List inbox channels\n/// \n/// List the channels in an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_inboxes_list_inbox_channels() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxChannelsResponse =\n        client.inboxes().list_inbox_channels(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.list_inbox_channels"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1channels/post/x-rust",
+    "value": {
+      "example": "/// Create a channel\n/// \n/// Create a channel in an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_channels_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .channels()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List inbox conversations\n/// \n/// List the conversations in an inbox. For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\nasync fn example_inboxes_list_inbox_conversations() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxConversationsResponse = client\n        .inboxes()\n        .list_inbox_conversations(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.list_inbox_conversations"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1imported_messages/post/x-rust",
+    "value": {
+      "example": "/// Import message\n/// \n/// Import a new message in an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_messages_import_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ImportInboxMessageResponse = client\n        .messages()\n        .import_inbox(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.import_inbox"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1teammates/delete/x-rust",
+    "value": {
+      "example": "/// Removes inbox access\n/// \n/// Remove access of one or more teammates from an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_inboxes_remove_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .remove_inbox_teammates(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.remove_inbox_teammates"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1teammates/get/x-rust",
+    "value": {
+      "example": "/// List inbox access\n/// \n/// List the teammates with access to an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_inboxes_list_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxTeammatesResponse =\n        client.inboxes().list_inbox_teammates(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.list_inbox_teammates"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1inboxes~1{inbox_id}~1teammates/post/x-rust",
+    "value": {
+      "example": "/// Add inbox access\n/// \n/// Give access to one or more teammates to an inbox.\n/// \n/// **Parameters:**\n/// \n/// - `inbox_id: &'astr`: The Inbox ID (required)\nasync fn example_inboxes_add_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .add_inbox_teammates(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.add_inbox_teammates"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1links/get/x-rust",
+    "value": {
+      "example": "/// List links\n/// \n/// List the links of the company paginated by id. Allows filtering by link type via the q.types param.\n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `types`, whose value should be a list of link types (examples - `web`, `jira`, `asana` ).\nasync fn example_links_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListLinksResponse = client\n        .links()\n        .list(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/links/struct.Links.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1links/post/x-rust",
+    "value": {
+      "example": "/// Create link\n/// \n/// Create a link. If the link is resolved to an installed links integration, any name retrieved from the integration will override the provided name.\nasync fn example_links_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::LinkResponse = client\n        .links()\n        .create(&front_api::types::CreateLink {\n            name: Some(\"some-string\".to_string()),\n            external_url: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/links/struct.Links.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1links~1{link_id}/get/x-rust",
+    "value": {
+      "example": "/// Get link\n/// \n/// Fetch a link.\n/// \n/// **Parameters:**\n/// \n/// - `link_id: &'astr`: The link ID (required)\nasync fn example_links_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::LinkResponse = client.links().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/links/struct.Links.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1links~1{link_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update a link\n/// \n/// Update a link.\n/// \n/// **Parameters:**\n/// \n/// - `link_id: &'astr`: The link ID (required)\nasync fn example_links_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .links()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/links/struct.Links.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1links~1{link_id}~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List link conversations\n/// \n/// List the conversations linked to a specific link. For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `link_id: &'astr`: The Link ID (required)\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\nasync fn example_links_list_conversations() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListLinkConversationsResponse = client\n        .links()\n        .list_conversations(\n            Some(4 as i64),\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/links/struct.Links.html#method.list_conversations"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1me/get/x-rust",
+    "value": {
+      "example": "/// API Token details\n/// \n/// Fetch the details of the API token.\nasync fn example_token_identity_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::IdentityResponse = client.token_identity().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/token_identity/struct.TokenIdentity.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders/get/x-rust",
+    "value": {
+      "example": "/// List folders\n/// \n/// List the message template folders.\nasync fn example_message_template_folders_list_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListFoldersResponse =\n        client.message_template_folders().list_folders().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.list_folders"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders/post/x-rust",
+    "value": {
+      "example": "/// Create folder\n/// \n/// Create a new message template folder.\nasync fn example_message_template_folders_create_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_folder(&front_api::types::CreateMessageTemplateFolder {\n            name: \"some-string\".to_string(),\n            parent_folder_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.create_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete folder\n/// \n/// Delete a message template folder and child folders/templates\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The message template folder id (required)\nasync fn example_message_template_folders_delete_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::DeleteFolderResponse = client\n        .message_template_folders()\n        .delete_folder(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.delete_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}/get/x-rust",
+    "value": {
+      "example": "/// Get folder\n/// \n/// Fetch a message template folder.\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The message template folder ID (required)\nasync fn example_message_template_folders_get_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .get_folder(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.get_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update folder\n/// \n/// Update message template folder\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The message template folder ID (required)\nasync fn example_message_template_folders_update_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .update_folder(\n            \"some-string\",\n            &front_api::types::UpdateMessageTemplateFolder {\n                name: Some(\"some-string\".to_string()),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.update_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}~1message_template_folders/get/x-rust",
+    "value": {
+      "example": "/// Get child folders\n/// \n/// Fetch the child message templates folders of a message template folder.\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The message template folder ID (required)\nasync fn example_message_template_folders_get_child_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::GetChildFoldersResponse = client\n        .message_template_folders()\n        .get_child_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.get_child_folders"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}~1message_template_folders/post/x-rust",
+    "value": {
+      "example": "/// Create child folder\n/// \n/// Create a new message template folder as a child of the given folder\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The parent message template folder ID (required)\nasync fn example_message_template_folders_create_child_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_child_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolderAsChild {\n                name: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.create_child_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}~1message_templates/get/x-rust",
+    "value": {
+      "example": "/// Get child templates\n/// \n/// Fetch the child message templates of a message template folder.\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The message template folder ID (required)\nasync fn example_message_templates_get_child_templates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::GetChildTemplatesResponse = client\n        .message_templates()\n        .get_child_templates(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.get_child_templates"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_template_folders~1{message_template_folder_id}~1message_templates/post/x-rust",
+    "value": {
+      "example": "/// Create child template\n/// \n/// Create a new message template as a child of the given folder\n/// \n/// **Parameters:**\n/// \n/// - `message_template_folder_id: &'astr`: The parent message template folder ID (required)\nasync fn example_message_templates_create_child_template() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_child_template(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateAsChild {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.create_child_template"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_templates/get/x-rust",
+    "value": {
+      "example": "/// List message templates\n/// \n/// List the message templates.\nasync fn example_message_templates_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListMessageTemplatesResponse =\n        client.message_templates().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_templates/post/x-rust",
+    "value": {
+      "example": "/// Create message template\n/// \n/// Create a new message template.\nasync fn example_message_templates_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create(&front_api::types::CreateSharedMessageTemplate {\n            name: \"some-string\".to_string(),\n            subject: Some(\"some-string\".to_string()),\n            body: \"some-string\".to_string(),\n            folder_id: Some(\"some-string\".to_string()),\n            inbox_ids: Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_templates~1{message_template_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete message template\n/// \n/// Delete a message template\n/// \n/// **Parameters:**\n/// \n/// - `message_template_id: &'astr`: The message template ID (required)\nasync fn example_message_templates_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.message_templates().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_templates~1{message_template_id}/get/x-rust",
+    "value": {
+      "example": "/// Get message template\n/// \n/// Fetch a message template.\n/// \n/// **Parameters:**\n/// \n/// - `message_template_id: &'astr`: The message template ID (required)\nasync fn example_message_templates_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse =\n        client.message_templates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1message_templates~1{message_template_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update message template\n/// \n/// Update message template\n/// \n/// **Parameters:**\n/// \n/// - `message_template_id: &'astr`: The message template ID (required)\nasync fn example_message_templates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1messages~1{message_id}/get/x-rust",
+    "value": {
+      "example": "/// Get message\n/// \n/// Fetch a message.\n/// \n/// **Parameters:**\n/// \n/// - `message_id: &'astr`: The message ID (required)\nasync fn example_messages_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client.messages().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1messages~1{message_id}~1seen/get/x-rust",
+    "value": {
+      "example": "/// Get message seen status\n/// \n/// Get the seen receipts for the given message. If no seen-by information is available, there will be a single entry for the first time the message was seen by any recipient. If seen-by information is available, there will be an entry for each recipient who has seen the message.\n/// \n/// **Parameters:**\n/// \n/// - `message_id: &'astr`: The message ID (required)\nasync fn example_messages_get_seen_status() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::GetMessageSeenStatusResponse =\n        client.messages().get_seen_status(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.get_seen_status"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1messages~1{message_id}~1seen/post/x-rust",
+    "value": {
+      "example": "/// Mark message seen\n/// \n/// Mark an outbound message from Front as seen. Note, the message seen route should only be called in response to an actual end-user's message-seen action. In accordance with this behavior, the route is rate limited to 10 requests per hour.\n/// \n/// **Parameters:**\n/// \n/// - `message_id: &'astr`: The message ID (required)\nasync fn example_messages_mark_seen() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .messages()\n        .mark_seen(\"some-string\", &front_api::types::MarkMessageSeenRequestBody {})\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/messages/struct.Messages.html#method.mark_seen"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1rules/get/x-rust",
+    "value": {
+      "example": "/// List rule\n/// \n/// List the rules of the company.\nasync fn example_rules_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListRulesResponse = client.rules().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/rules/struct.Rules.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1rules~1{rule_id}/get/x-rust",
+    "value": {
+      "example": "/// Get rule\n/// \n/// Fetche a rule.\n/// \n/// **Parameters:**\n/// \n/// - `rule_id: &'astr`: The Rule ID (required)\nasync fn example_rules_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::RuleResponse = client.rules().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/rules/struct.Rules.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shift~1{shift_id}/get/x-rust",
+    "value": {
+      "example": "/// Get shift\n/// \n/// Fetch a shift.\n/// \n/// **Parameters:**\n/// \n/// - `shift_id: &'astr`: The Shift ID (required)\nasync fn example_shifts_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ShiftResponse = client.shifts().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shift~1{shift_id}~1teammates/delete/x-rust",
+    "value": {
+      "example": "/// Remove teammates from shift\n/// \n/// Remove teammates from a shift.\n/// \n/// **Parameters:**\n/// \n/// - `shift_id: &'astr`: The Shift ID (required)\nasync fn example_shifts_remove_teammates_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .remove_teammates_from(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.remove_teammates_from"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shift~1{shift_id}~1teammates/get/x-rust",
+    "value": {
+      "example": "/// List shift's teammates\n/// \n/// List the teammates assigned to a shift.\n/// \n/// **Parameters:**\n/// \n/// - `shift_id: &'astr`: The Shift ID (required)\nasync fn example_shifts_list_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListShiftTeammatesResponse =\n        client.shifts().list_teammates(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.list_teammates"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shift~1{shift_id}~1teammates/post/x-rust",
+    "value": {
+      "example": "/// Add teammates to shift\n/// \n/// Add teammates to a shift. The selected teammates must be in the team that owns the shift.\n/// \n/// **Parameters:**\n/// \n/// - `shift_id: &'astr`: The Shift ID (required)\nasync fn example_shifts_add_teammates_to() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .add_teammates_to(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.add_teammates_to"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shifts/get/x-rust",
+    "value": {
+      "example": "/// List Shifts\n/// \n/// List the shifts.\nasync fn example_shifts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListShiftsResponse = client.shifts().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shifts/post/x-rust",
+    "value": {
+      "example": "/// Create shift\n/// \n/// Create a shift.\nasync fn example_shifts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ShiftResponse = client\n        .shifts()\n        .create(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1shifts~1{shift_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update shift\n/// \n/// Update a shift.\n/// \n/// **Parameters:**\n/// \n/// - `shift_id: &'astr`: The Shift ID (required)\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Blue),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1signatures~1{signature_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete signature\n/// \n/// Delete signature\n/// \n/// **Parameters:**\n/// \n/// - `signature_id: &'astr`: The signature ID (required)\nasync fn example_signatures_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.signatures().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1signatures~1{signature_id}/get/x-rust",
+    "value": {
+      "example": "/// Get signatures\n/// \n/// Get the given signature.\n/// \n/// **Parameters:**\n/// \n/// - `signature_id: &'astr`: The signature ID (required)\nasync fn example_signatures_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client.signatures().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1signatures~1{signature_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update signature\n/// \n/// Update signature\n/// \n/// **Parameters:**\n/// \n/// - `signature_id: &'astr`: The signature ID (required)\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(true),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags/get/x-rust",
+    "value": {
+      "example": "/// List tags\n/// \n/// List the tags of the company.\nasync fn example_tags_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTagsResponse = client.tags().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags/post/x-rust",
+    "value": {
+      "example": "/// Create tag\n/// \n/// Create a tag.\nasync fn example_tags_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create(&front_api::types::CreateTag {\n            name: \"some-string\".to_string(),\n            highlight: Some(front_api::types::Highlight::Orange),\n            is_visible_in_conversation_lists: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete tag\n/// \n/// Delete a tag.\n/// \n/// **Parameters:**\n/// \n/// - `tag_id: &'astr`: The ID of the tag to delete (required)\nasync fn example_tags_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.tags().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}/get/x-rust",
+    "value": {
+      "example": "/// Get tag\n/// \n/// Fetche a tag.\n/// \n/// **Parameters:**\n/// \n/// - `tag_id: &'astr`: The tag ID (required)\nasync fn example_tags_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client.tags().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update a tag\n/// \n/// Update a tag.\n/// \n/// **Parameters:**\n/// \n/// - `tag_id: &'astr`: The tag ID (required)\nasync fn example_tags_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .tags()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}~1children/get/x-rust",
+    "value": {
+      "example": "/// List tag children\n/// \n/// List the children of a specific tag.\n/// \n/// **Parameters:**\n/// \n/// - `tag_id: &'astr`: The tag ID (required)\nasync fn example_tags_list_children() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTagChildrenResponse =\n        client.tags().list_children(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.list_children"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}~1children/post/x-rust",
+    "value": {
+      "example": "/// Create child tag\n/// \n/// Creates a child tag.\n/// \n/// **Parameters:**\n/// \n/// - `tag_id: &'astr`: The tag ID (required)\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Blue),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.create_child"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags~1{tag_id}~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List tagged conversations\n/// \n/// List the conversations tagged with a tag. For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\n/// - `tag_id: &'astr`: The ID of the tag (required)\nasync fn example_tags_list_tagged_conversations() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTaggedConversationsResponse = client\n        .tags()\n        .list_tagged_conversations(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.list_tagged_conversations"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates/get/x-rust",
+    "value": {
+      "example": "/// List teammates\n/// \n/// List the teammates in the company.\nasync fn example_teammates_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammatesResponse = client.teammates().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teammates/struct.Teammates.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}/get/x-rust",
+    "value": {
+      "example": "/// Get teammate\n/// \n/// Fetch a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_teammates_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TeammateResponse = client.teammates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teammates/struct.Teammates.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update teammate\n/// \n/// Update a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_teammates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teammates()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teammates/struct.Teammates.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1channels/get/x-rust",
+    "value": {
+      "example": "/// List teammate channels\n/// \n/// List the channels of a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_channels_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateChannelsResponse =\n        client.channels().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1contact_groups/get/x-rust",
+    "value": {
+      "example": "/// List teammate groups\n/// \n/// List the contact groups belonging to the requested teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_contact_groups_list_teammate_groups() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateGroupsResponse = client\n        .contact_groups()\n        .list_teammate_groups(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.list_teammate_groups"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1contact_groups/post/x-rust",
+    "value": {
+      "example": "/// Create teammate group\n/// \n/// Create a new contact group for the requested teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_contact_groups_create_teammate_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .create_teammate_group(\n            \"some-string\",\n            &front_api::types::CreateContactGroup {\n                name: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.create_teammate_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List teammate contacts\n/// \n/// List the contacts of a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n/// - `sort_by: Option<String>`: Field used to sort the records\n/// - `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_contacts_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateContactsResponse = client\n        .contacts()\n        .list_teammate(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Desc),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Create teammate contact\n/// \n/// Create a contact for a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_contacts_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(true),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Facebook,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.create_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1conversations/get/x-rust",
+    "value": {
+      "example": "/// List assigned conversations\n/// \n/// List the conversations assigned to a teammate in reverse chronological order (most recently updated first). For more advanced filtering, see the [search endpoint](https://dev.frontapp.com/reference/conversations#search-conversations).\n/// > ⚠️ Deprecated field included\n/// >\n/// > This endpoint returns a deprecated `last_message` field in the top-level conversation bodies listed. Please use the\n/// > `_links.related.last_message` field instead.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with a property `statuses`, whose value should be a list of conversation statuses (`assigned`, `unassigned`, `archived`, or `deleted`).\n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_teammates_list_assigned_conversations() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListAssignedConversationsResponse = client\n        .teammates()\n        .list_assigned_conversations(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teammates/struct.Teammates.html#method.list_assigned_conversations"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1inboxes/get/x-rust",
+    "value": {
+      "example": "/// List teammate inboxes\n/// \n/// Returns list of inboxes the teammate has access to.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\n/// \n/// **NOTE:** This operation is marked as deprecated.\nasync fn example_teammates_list_inboxes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateInboxesResponse =\n        client.teammates().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teammates/struct.Teammates.html#method.list_inboxes"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1message_template_folders/get/x-rust",
+    "value": {
+      "example": "/// List teammate folders\n/// \n/// List the message template folders belonging to the requested teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_message_template_folders_list_teammate_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateFoldersResponse = client\n        .message_template_folders()\n        .list_teammate_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.list_teammate_folders"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1message_template_folders/post/x-rust",
+    "value": {
+      "example": "/// Create teammate folder\n/// \n/// Create a new message template folder belonging to the requested teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_message_template_folders_create_teammate_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_teammate_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.create_teammate_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1message_templates/get/x-rust",
+    "value": {
+      "example": "/// List teammate message templates\n/// \n/// List the message templates belonging to the requested teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_message_templates_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateMessageTemplatesResponse = client\n        .message_templates()\n        .list_teammate(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1message_templates/post/x-rust",
+    "value": {
+      "example": "/// Create teammate message template\n/// \n/// Create a new message template for the given teammate\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_message_templates_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.create_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1rules/get/x-rust",
+    "value": {
+      "example": "/// List teammate rule\n/// \n/// List the rules of a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_rules_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateRulesResponse =\n        client.rules().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/rules/struct.Rules.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1shifts/get/x-rust",
+    "value": {
+      "example": "/// List Teammate Shifts\n/// \n/// Lists all the shifts for the teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_shifts_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateShiftsResponse =\n        client.shifts().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1signatures/get/x-rust",
+    "value": {
+      "example": "/// List teammate signatures\n/// \n/// List the signatures belonging to the given teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_signatures_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateSignaturesResponse =\n        client.signatures().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1signatures/post/x-rust",
+    "value": {
+      "example": "/// Create teammate signature\n/// \n/// Create a new signature for the given teammate\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.create_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1tags/get/x-rust",
+    "value": {
+      "example": "/// List teammate tags\n/// \n/// List the tags for a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_tags_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateTagsResponse =\n        client.tags().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.list_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teammates~1{teammate_id}~1tags/post/x-rust",
+    "value": {
+      "example": "/// Create teammate tag\n/// \n/// Create a tag for a teammate.\n/// \n/// **Parameters:**\n/// \n/// - `teammate_id: &'astr`: The teammate ID (required)\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Pink),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.create_teammate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams/get/x-rust",
+    "value": {
+      "example": "/// List teams\n/// \n/// List the teams in the company.\nasync fn example_teams_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamsResponse = client.teams().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teams/struct.Teams.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}/get/x-rust",
+    "value": {
+      "example": "/// Get team\n/// \n/// Fetch a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The Team ID (required)\nasync fn example_teams_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TeamResponse = client.teams().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teams/struct.Teams.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1channels/get/x-rust",
+    "value": {
+      "example": "/// List team channels\n/// \n/// List the channels of a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_channels_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamChannelsResponse =\n        client.channels().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/channels/struct.Channels.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1contact_groups/get/x-rust",
+    "value": {
+      "example": "/// List team groups\n/// \n/// List contact groups belonging to the requested team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_contact_groups_list_team_groups() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamGroupsResponse = client\n        .contact_groups()\n        .list_team_groups(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.list_team_groups"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1contact_groups/post/x-rust",
+    "value": {
+      "example": "/// Create team group\n/// \n/// Create a new contact group for the requested team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_contact_groups_create_team_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .create_team_group(\n            \"some-string\",\n            &front_api::types::CreateContactGroup {\n                name: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contact_groups/struct.ContactGroups.html#method.create_team_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List team contacts\n/// \n/// List the contacts of a team.\n/// \n/// **Parameters:**\n/// \n/// - `limit: Option<i64>`: Max number of results per page\n/// - `page_token: Option<String>`: Token to use to request the next page\n/// - `q: Option<String>`: Search query object with the optional properties `updated_after` and `updated_before`, whose value should be a timestamp in seconds with up to 3 decimal places.\n/// - `sort_by: Option<String>`: Field used to sort the records\n/// - `sort_order: Option<crate::types::SortOrder>`: Order by which results should be sorted\n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_contacts_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamContactsResponse = client\n        .contacts()\n        .list_team(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(front_api::types::SortOrder::Asc),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Create team contact\n/// \n/// Create a contact for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_contacts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(true),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Facebook,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/contacts/struct.Contacts.html#method.create_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1inboxes/get/x-rust",
+    "value": {
+      "example": "/// List team inboxes\n/// \n/// List the inboxes belonging to a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_inboxes_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamInboxesResponse =\n        client.inboxes().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1inboxes/post/x-rust",
+    "value": {
+      "example": "/// Create team inbox\n/// \n/// Create an inbox for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The tag ID (required)\nasync fn example_inboxes_create_team_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .create_team_inbox(\n            \"some-string\",\n            &front_api::types::CreateInbox {\n                name: \"some-string\".to_string(),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/inboxes/struct.Inboxes.html#method.create_team_inbox"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1message_template_folders/get/x-rust",
+    "value": {
+      "example": "/// List team folders\n/// \n/// List the message template folders belonging to the requested team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_message_template_folders_list_team_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamFoldersResponse = client\n        .message_template_folders()\n        .list_team_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.list_team_folders"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1message_template_folders/post/x-rust",
+    "value": {
+      "example": "/// Create team folder\n/// \n/// Create a new message template folder belonging to the requested team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_message_template_folders_create_team_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_team_folder(\n            \"some-string\",\n            &front_api::types::CreateMessageTemplateFolder {\n                name: \"some-string\".to_string(),\n                parent_folder_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_template_folders/struct.MessageTemplateFolders.html#method.create_team_folder"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1message_templates/get/x-rust",
+    "value": {
+      "example": "/// List team message templates\n/// \n/// List the message templates belonging to the requested team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_message_templates_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamMessageTemplatesResponse =\n        client.message_templates().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1message_templates/post/x-rust",
+    "value": {
+      "example": "/// Create team message template\n/// \n/// Create a new message template for the given team\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_message_templates_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateResponse = client\n        .message_templates()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedMessageTemplate {\n                name: \"some-string\".to_string(),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                folder_id: Some(\"some-string\".to_string()),\n                inbox_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/message_templates/struct.MessageTemplates.html#method.create_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1rules/get/x-rust",
+    "value": {
+      "example": "/// List team rules\n/// \n/// List the rules of a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_rules_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamRulesResponse =\n        client.rules().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/rules/struct.Rules.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1shifts/get/x-rust",
+    "value": {
+      "example": "/// List team Shifts\n/// \n/// List the shifts for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_shifts_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamShiftsResponse =\n        client.shifts().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1shifts/post/x-rust",
+    "value": {
+      "example": "/// Create team shift\n/// \n/// Create a shift for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The Team ID (required)\nasync fn example_shifts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ShiftResponse = client\n        .shifts()\n        .create_team(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/shifts/struct.Shifts.html#method.create_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1signatures/get/x-rust",
+    "value": {
+      "example": "/// List team signatures\n/// \n/// List the signatures belonging to the given team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_signatures_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamSignaturesResponse =\n        client.signatures().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1signatures/post/x-rust",
+    "value": {
+      "example": "/// Create team signature\n/// \n/// Create a new signature for the given team\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The teammate ID (required)\nasync fn example_signatures_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: Some(true),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/signatures/struct.Signatures.html#method.create_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1tags/get/x-rust",
+    "value": {
+      "example": "/// List team tags\n/// \n/// List the tags for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_tags_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamTagsResponse = client.tags().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.list_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1tags/post/x-rust",
+    "value": {
+      "example": "/// Create team tag\n/// \n/// Create a tag for a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The team ID (required)\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Pink),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/tags/struct.Tags.html#method.create_team"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1teammates/delete/x-rust",
+    "value": {
+      "example": "/// Remove teammates from team\n/// \n/// Remove one or more teammates from a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The Team ID (required)\nasync fn example_teams_remove_teammates_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teams()\n        .remove_teammates_from(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teams/struct.Teams.html#method.remove_teammates_from"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{team_id}~1teammates/post/x-rust",
+    "value": {
+      "example": "/// Add teammates to team\n/// \n/// Add one or more teammates to a team.\n/// \n/// **Parameters:**\n/// \n/// - `team_id: &'astr`: The Team ID (required)\nasync fn example_teams_add_teammates_to() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teams()\n        .add_teammates_to(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/front-api/latest/front-api/teams/struct.Teams.html#method.add_teammates_to"
+    }
+  }
+]
