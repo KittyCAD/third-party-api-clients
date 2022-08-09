@@ -10,9 +10,10 @@ gusto:
 		--token-endpoint "https://api.gusto.com/oauth/token" \
 		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
 
+# Spec is from: https://github.com/frontapp/front-api-specs/blob/main/core-api/core-api.json
 .PHONY: front
 front:
-	openapitor \
+	../kittycad.rs/target/debug/openapitor \
 		--input specs/front.json \
 		--version 0.0.1 \
 		--output ./front \

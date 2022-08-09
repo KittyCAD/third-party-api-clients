@@ -4,26 +4,26 @@
 //!
 //! ## API Details
 //!
-//! 
 //!
-//! 
+//!
+//!
 //!
 //! ### Contact
 //!
-//! 
+//!
 //! | name | email |
 //! |----|----|
 //! | Front Platform | api@frontapp.com |
-//! 
-//! 
+//!
+//!
 //!
 //! ## Client Details
 //!
-//! 
+//!
 //!
 //! The documentation for the crate is generated
 //! along with the code to make this library easy to use.
-//! 
+//!
 //!
 //! To install the library, add the following to your `Cargo.toml` file.
 //!
@@ -40,9 +40,7 @@
 //! ```rust,no_run
 //! use front_api::Client;
 //!
-//! let client = Client::new(
-//!     String::from("api-key"),
-//! );
+//! let client = Client::new(String::from("api-key"));
 //! ```
 //!
 //! Alternatively, the library can search for most of the variables required for
@@ -57,7 +55,6 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
-//!
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -66,15 +63,9 @@
 mod tests;
 pub mod types;
 #[doc(hidden)]
-
-
 use std::env;
 
-static APP_USER_AGENT: &str = concat!(
-    env!("CARGO_PKG_NAME"),
-    ".rs/",
-    env!("CARGO_PKG_VERSION"),
-);
+static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
@@ -90,9 +81,7 @@ impl Client {
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
     #[tracing::instrument]
-    pub fn new<T>(
-        token: T,
-    ) -> Self
+    pub fn new<T>(token: T) -> Self
     where
         T: ToString + std::fmt::Debug,
     {
@@ -136,13 +125,10 @@ impl Client {
 
     /// Create a new Client struct from the environment variable: `FRONT_API_TOKEN`.
     #[tracing::instrument]
-    pub fn new_from_env() -> Self
-    {
+    pub fn new_from_env() -> Self {
         let token = env::var("FRONT_API_TOKEN").expect("must set FRONT_API_TOKEN");
 
-        Client::new(
-            token,
-        )
+        Client::new(token)
     }
 
     /// Create a raw request to our API.
@@ -152,18 +138,14 @@ impl Client {
         method: reqwest::Method,
         uri: &str,
         body: Option<reqwest::Body>,
-    ) -> anyhow::Result<reqwest_middleware::RequestBuilder>
-    {
+    ) -> anyhow::Result<reqwest_middleware::RequestBuilder> {
         let u = if uri.starts_with("https://") || uri.starts_with("http://") {
             uri.to_string()
         } else {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(
-            method,
-            &u,
-        );
+        let mut req = self.client.request(method, &u);
 
         // Add in our authentication.
         req = req.bearer_auth(&self.token);
@@ -184,6 +166,4 @@ impl Client {
 
         Ok(req)
     }
-
-
 }
