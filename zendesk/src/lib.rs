@@ -1,5 +1,5 @@
-//! A library for working with the Pagerduty API.
-//! This library is an implementation of: <https://developer.pagerduty.com/api-reference/>
+//! A library for working with the Zendesk API.
+//! This library is an implementation of: <https://developers.getbase.com/docs/rest/reference/contacts>
 #![deny(missing_docs)]
 
 #[cfg(test)]
@@ -10,9 +10,9 @@ use anyhow::Result;
 use reqwest::{Method, Request, StatusCode, Url};
 use serde::{Deserialize, Serialize};
 
-use crate::types::{EscalationPolicy, EscalationPolicyListResponse, Service, ServiceListResponse, ServiceObject};
+use crate::types::{Contact, ContactData, ContactsListResponse, NewContact, NewContactData};
 
-/// Entrypoint for interacting with the Pagerduty API.
+/// Entrypoint for interacting with the Zendesk API.
 #[derive(Debug, Clone)]
 pub struct Client {
     client: reqwest_middleware::ClientWithMiddleware,
@@ -20,12 +20,10 @@ pub struct Client {
 }
 
 /// The default host for the API.
-pub const DEFAULT_HOST: &str = "https://api.pagerduty.com";
-/// The limit for paginating.
-pub const LIMIT: i64 = 30;
+pub const DEFAULT_HOST: &str = "https://api.getbase.com";
 
 impl Client {
-    /// Create a new Pagerduty client struct.
+    /// Create a new Zendesk client struct.
     #[tracing::instrument]
     pub fn new<T>(token: T) -> Self
     where
@@ -54,7 +52,7 @@ impl Client {
     /// Create a new Client struct from environment variables. As long as the function is
     /// given a valid API key and your requests will work.
     pub fn new_from_env() -> Self {
-        let token = std::env::var("PAGERDUTY_TOKEN").expect("must set PAGERDUTY_TOKEN");
+        let token = std::env::var("ZENDESK_TOKEN").expect("must set ZENDESK_TOKEN");
 
         Client::new(token)
     }
@@ -74,10 +72,10 @@ impl Client {
         let mut rb = self.client.request(method.clone(), url);
 
         // Add our token to the request.
-        rb = rb.header("Authorization", &format!("Token token={}", self.token));
+        rb = rb.bearer_auth(self.token.as_str());
 
         // Add our user agent.
-        rb = rb.header("User-Agent", "kittycad/pagerduty-rust-api");
+        rb = rb.header("User-Agent", "kittycad/zendesk-rust-api");
 
         match query {
             None => (),
@@ -95,15 +93,16 @@ impl Client {
         Ok(rb.build()?)
     }
 
-    /// Create a service.
+    /// Create a contact.
     #[tracing::instrument(skip(self))]
-    pub async fn create_service(&self, service: &Service) -> Result<Service> {
+    pub async fn create_contact(&self, contact: &NewContact) -> Result<Contact> {
         // Build the request.
         let request = self.request(
             Method::POST,
-            "/services",
-            &ServiceObject {
-                service: service.clone(),
+            "/v2/contacts",
+            &NewContactData {
+                data: contact.clone(),
+                meta: Default::default(),
             },
             None,
         )?;
@@ -135,7 +134,7 @@ impl Client {
         let text = resp.text().await?;
 
         // Try to deserialize the response.
-        let data: ServiceObject = serde_json::from_str(&text).map_err(|err| {
+        let data: ContactData = serde_json::from_str(&text).map_err(|err| {
             // If deserialization failed, return the raw response.
             Error::Json {
                 body: text,
@@ -143,39 +142,21 @@ impl Client {
             }
         })?;
 
-        Ok(data.service)
+        Ok(data.data)
     }
 
-    /// List all services.
+    /// List all contacts.
     #[tracing::instrument(skip(self))]
-    pub async fn list_services(&self) -> Result<Vec<Service>> {
-        let mut services: Vec<Service> = Default::default();
-        let mut resp = self.list_services_internal(0).await?;
+    pub async fn list_contacts(&self, filter_by_email: Option<&str>) -> Result<Vec<Contact>> {
+        let mut query = vec![("per_page", "100")];
 
-        services.append(&mut resp.services);
-
-        while resp.more {
-            let offset = resp.offset + LIMIT;
-            resp = self.list_services_internal(offset).await?;
-
-            services.append(&mut resp.services);
-        }
-
-        Ok(services)
-    }
-
-    #[tracing::instrument(skip(self))]
-    async fn list_services_internal(&self, offset: i64) -> Result<ServiceListResponse> {
-        let limit_str = format!("{}", LIMIT);
-        let mut query: Vec<(&str, &str)> = vec![("limit", &limit_str)];
-
-        let offset_str = format!("{}", offset);
-        if offset > 0 {
-            query.push(("offset", &offset_str));
+        // Add the filter if it exists.
+        if let Some(email) = filter_by_email {
+            query.push(("email", email));
         }
 
         // Build the request.
-        let request = self.request(Method::GET, "/services", &(), Some(query))?;
+        let request = self.request(Method::GET, "/v2/contacts", &(), Some(query))?;
 
         let resp = self.client.execute(request).await?;
         match resp.status() {
@@ -203,7 +184,7 @@ impl Client {
         let text = resp.text().await?;
 
         // Try to deserialize the response.
-        let data: ServiceListResponse = serde_json::from_str(&text).map_err(|err| {
+        let data: ContactsListResponse = serde_json::from_str(&text).map_err(|err| {
             // If deserialization failed, return the raw response.
             Error::Json {
                 body: text,
@@ -211,39 +192,16 @@ impl Client {
             }
         })?;
 
-        Ok(data)
+        // TODO: pagination.
+
+        Ok(data.items.iter().map(|c| c.data.clone()).collect())
     }
 
-    /// List all escalation policies.
+    /// Get a contact.
     #[tracing::instrument(skip(self))]
-    pub async fn list_escalation_policies(&self) -> Result<Vec<EscalationPolicy>> {
-        let mut escalation_policies: Vec<EscalationPolicy> = Default::default();
-        let mut resp = self.list_escalation_policies_internal(0).await?;
-
-        escalation_policies.append(&mut resp.escalation_policies);
-
-        while resp.more {
-            let offset = resp.offset + LIMIT;
-            resp = self.list_escalation_policies_internal(offset).await?;
-
-            escalation_policies.append(&mut resp.escalation_policies);
-        }
-
-        Ok(escalation_policies)
-    }
-
-    #[tracing::instrument(skip(self))]
-    async fn list_escalation_policies_internal(&self, offset: i64) -> Result<EscalationPolicyListResponse> {
-        let limit_str = format!("{}", LIMIT);
-        let mut query: Vec<(&str, &str)> = vec![("limit", &limit_str)];
-
-        let offset_str = format!("{}", offset);
-        if offset > 0 {
-            query.push(("offset", &offset_str));
-        }
-
+    pub async fn get_contact(&self, id: &str) -> Result<Contact> {
         // Build the request.
-        let request = self.request(Method::GET, "/escalation_policies", &(), Some(query))?;
+        let request = self.request(Method::GET, &format!("/v2/contacts/{}", id), &(), None)?;
 
         let resp = self.client.execute(request).await?;
         match resp.status() {
@@ -271,7 +229,7 @@ impl Client {
         let text = resp.text().await?;
 
         // Try to deserialize the response.
-        let data: EscalationPolicyListResponse = serde_json::from_str(&text).map_err(|err| {
+        let data: ContactData = serde_json::from_str(&text).map_err(|err| {
             // If deserialization failed, return the raw response.
             Error::Json {
                 body: text,
@@ -279,61 +237,19 @@ impl Client {
             }
         })?;
 
-        Ok(data)
+        Ok(data.data)
     }
 
-    /// Get a service.
+    /// Update a contact.
     #[tracing::instrument(skip(self))]
-    pub async fn get_service(&self, id: &str) -> Result<Service> {
-        // Build the request.
-        let request = self.request(Method::GET, &format!("/services/{}", id), &(), None)?;
-
-        let resp = self.client.execute(request).await?;
-        match resp.status() {
-            StatusCode::OK => (),
-            s => {
-                // Try to deserialize the response.
-                let body = resp.text().await?;
-                let err: Error = match serde_json::from_str(&body) {
-                    Ok(j) => j,
-                    Err(_) => {
-                        // If deserialization failed, return the raw response.
-                        Error::Http {
-                            status: s.to_string(),
-                            code: s.as_u16(),
-                            message: body,
-                        }
-                    }
-                };
-
-                return Err(err.into());
-            }
-        };
-
-        // Try to deserialize the response.
-        let text = resp.text().await?;
-
-        // Try to deserialize the response.
-        let data: ServiceObject = serde_json::from_str(&text).map_err(|err| {
-            // If deserialization failed, return the raw response.
-            Error::Json {
-                body: text,
-                message: err.to_string(),
-            }
-        })?;
-
-        Ok(data.service)
-    }
-
-    /// Update a service.
-    #[tracing::instrument(skip(self))]
-    pub async fn update_service(&self, service: &Service) -> Result<Service> {
+    pub async fn update_contact(&self, id: &str, contact: &NewContact) -> Result<Contact> {
         // Build the request.
         let request = self.request(
             Method::PUT,
-            &format!("/services/{}", service.id),
-            &ServiceObject {
-                service: service.clone(),
+            &format!("/v2/contacts/{}", id),
+            &NewContactData {
+                data: contact.clone(),
+                meta: Default::default(),
             },
             None,
         )?;
@@ -366,7 +282,7 @@ impl Client {
         let text = resp.text().await?;
 
         // Try to deserialize the response.
-        let data: ServiceObject = serde_json::from_str(&text).map_err(|err| {
+        let data: ContactData = serde_json::from_str(&text).map_err(|err| {
             // If deserialization failed, return the raw response.
             Error::Json {
                 body: text,
@@ -374,14 +290,14 @@ impl Client {
             }
         })?;
 
-        Ok(data.service)
+        Ok(data.data)
     }
 
-    /// Delete a service.
+    /// Delete a contact.
     #[tracing::instrument(skip(self))]
-    pub async fn delete_service(&self, id: &str) -> Result<()> {
+    pub async fn delete_contact(&self, id: &str) -> Result<()> {
         // Build the request.
-        let request = self.request(Method::DELETE, &format!("/services/{}", id), &(), None)?;
+        let request = self.request(Method::DELETE, &format!("/v2/contacts/{}", id), &(), None)?;
 
         let resp = self.client.execute(request).await?;
         match resp.status() {
@@ -431,9 +347,9 @@ pub enum Error {
         /// A message string.
         message: String,
     },
-    /// An error from Pagerduty.
+    /// An error from Zendesk.
     #[error("{error}: {description} {error_uri}")]
-    Pagerduty {
+    Zendesk {
         /// An error string.
         error: String,
 

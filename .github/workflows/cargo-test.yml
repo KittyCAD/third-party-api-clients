@@ -78,7 +78,8 @@ jobs:
         run: |
           cargo test --all
         env:
-          VAULT_TOKEN: ${{secrets.VAULT_DEV_TOKEN}}
+          ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
+          PAGERDUTY_TOKEN: ${{secrets.PAGERDUTY_TOKEN}}
           RUST_BACKTRACE: 1
 
           # TODO: turn back on coverage.
@@ -88,7 +89,8 @@ jobs:
           #version: '0.15.0'
           #args: '--exclude-files schema.rs --timeout 2000 --all'
           #env:
-          #VAULT_TOKEN: ${{secrets.VAULT_DEV_TOKEN}}
+          #ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
+          #PAGERDUTY_TOKEN: ${{secrets.PAGERDUTY_TOKEN}}
           #RUST_BACKTRACE: 1
 
           #- name: Upload to codecov.io

@@ -1,6 +1,6 @@
 [package]
-name = "pagerduty-api"
-description = "An API client for the Pagerduty API"
+name = "zendesk"
+description = "An API client for the Zendesk API"
 version = "0.1.0"
 authors = ["Jess Frazelle <jess@kittycad.io>"]
 edition = "2018"
