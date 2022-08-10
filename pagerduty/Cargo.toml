@@ -4,6 +4,7 @@ description = "An API client for the Pagerduty API"
 version = "0.1.0"
 authors = ["Jess Frazelle <jess@kittycad.io>"]
 edition = "2018"
+license = "MIT"
 
 [dependencies]
 anyhow = "1"
