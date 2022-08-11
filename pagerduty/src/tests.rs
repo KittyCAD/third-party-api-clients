@@ -34,6 +34,7 @@ async fn pre_start_cleanup(client: &crate::Client) -> Result<()> {
 }
 
 #[tokio::test]
+#[ignore] // We ignore since we no longer have a pager duty account.
 async fn test_services() {
     let client = crate::Client::new_from_env();
 
@@ -87,7 +88,10 @@ async fn test_services() {
     assert_eq!(service.description, "Updated");
 
     // Delete the service.
-    client.delete_service(&service.id.to_string()).await.unwrap();
+    client
+        .delete_service(&service.id.to_string())
+        .await
+        .unwrap();
 
     let result = search_test_service(&client).await;
     assert!(result.is_err());
