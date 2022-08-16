@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Rules {
     pub client: Client,
@@ -11,7 +12,11 @@ impl Rules {
         Self { client }
     }
 
-    #[doc = "List rule\n\nList the rules of the company.\n\n```rust,no_run\nasync fn example_rules_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListRulesResponse = client.rules().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List rule\n\nList the rules of the company.\n\n```rust,no_run\nasync fn \
+             example_rules_list() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListRulesResponse = client.rules().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -30,7 +35,6 @@ impl Rules {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -48,7 +52,7 @@ impl Rules {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/rules".replace("{team_id}", &team_id)
+                "teams/{team_id}/rules".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -61,14 +65,19 @@ impl Rules {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List teammate rule\n\nList the rules of a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_rules_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateRulesResponse =\n        client.rules().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate rule\n\nList the rules of a teammate.\n\n**Parameters:**\n\n- \
+             `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn \
+             example_rules_list_teammate() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeammateRulesResponse =\n        \
+             client.rules().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate<'a>(
         &'a self,
@@ -79,7 +88,7 @@ impl Rules {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/rules".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/rules".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -92,7 +101,6 @@ impl Rules {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -110,7 +118,7 @@ impl Rules {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "rules/{rule_id}".replace("{rule_id}", &rule_id)
+                "rules/{rule_id}".replace("{rule_id}", rule_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -123,7 +131,6 @@ impl Rules {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

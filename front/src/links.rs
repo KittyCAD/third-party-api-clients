@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Links {
     pub client: Client,
@@ -25,7 +26,7 @@ impl Links {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "links/{link_id}/conversations".replace("{link_id}", &link_id)
+                "links/{link_id}/conversations".replace("{link_id}", link_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -52,7 +53,6 @@ impl Links {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -95,14 +95,21 @@ impl Links {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create link\n\nCreate a link. If the link is resolved to an installed links integration, any name retrieved from the integration will override the provided name.\n\n```rust,no_run\nasync fn example_links_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::LinkResponse = client\n        .links()\n        .create(&front_api::types::CreateLink {\n            name: Some(\"some-string\".to_string()),\n            external_url: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create link\n\nCreate a link. If the link is resolved to an installed links \
+             integration, any name retrieved from the integration will override the provided \
+             name.\n\n```rust,no_run\nasync fn example_links_create() -> anyhow::Result<()> {\n    \
+             let client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::LinkResponse = client\n        .links()\n        \
+             .create(&front_api::types::CreateLink {\n            name: \
+             Some(\"some-string\".to_string()),\n            external_url: \
+             \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
@@ -123,7 +130,6 @@ impl Links {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -141,7 +147,7 @@ impl Links {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "links/{link_id}".replace("{link_id}", &link_id)
+                "links/{link_id}".replace("{link_id}", link_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -154,14 +160,18 @@ impl Links {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Update a link\n\nUpdate a link.\n\n**Parameters:**\n\n- `link_id: &'astr`: The link ID (required)\n\n```rust,no_run\nasync fn example_links_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .links()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update a link\n\nUpdate a link.\n\n**Parameters:**\n\n- `link_id: &'astr`: The link \
+             ID (required)\n\n```rust,no_run\nasync fn example_links_update() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .links()\n        .update(\n            \"some-string\",\n            \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -173,7 +183,7 @@ impl Links {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "links/{link_id}".replace("{link_id}", &link_id)
+                "links/{link_id}".replace("{link_id}", link_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Conversations {
     pub client: Client,
@@ -47,7 +48,6 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -75,14 +75,21 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Get conversation\n\nFetch a conversation.\n> ⚠\u{fe0f} Deprecated field included\n>\n> This endpoint returns a deprecated `last_message` field in the main body. Please use the\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_get_by_id() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse =\n        client.conversations().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get conversation\n\nFetch a conversation.\n> ⚠\u{fe0f} Deprecated field \
+             included\n>\n> This endpoint returns a deprecated `last_message` field in the main \
+             body. Please use the\n> `_links.related.last_message` field \
+             instead.\n\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_get_by_id() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ConversationResponse =\n        \
+             client.conversations().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_by_id<'a>(
         &'a self,
@@ -93,7 +100,7 @@ impl Conversations {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "conversations/{conversation_id}".replace("{conversation_id}", &conversation_id)
+                "conversations/{conversation_id}".replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -106,14 +113,19 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Update conversation\n\nUpdate a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update conversation\n\nUpdate a conversation.\n\n**Parameters:**\n\n- \
+             `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn \
+             example_conversations_update() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .conversations()\n        \
+             .update(\n            \"some-string\",\n            \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -125,7 +137,7 @@ impl Conversations {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "conversations/{conversation_id}".replace("{conversation_id}", &conversation_id)
+                "conversations/{conversation_id}".replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -139,7 +151,14 @@ impl Conversations {
         }
     }
 
-    #[doc = "Update conversation assignee\n\nAssign or unassign a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_update_assignee() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update_assignee(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update conversation assignee\n\nAssign or unassign a \
+             conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_update_assignee() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .conversations()\n        .update_assignee(\n            \
+             \"some-string\",\n            \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_assignee<'a>(
         &'a self,
@@ -152,7 +171,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/assignee"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -179,7 +198,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/tags"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -193,7 +212,14 @@ impl Conversations {
         }
     }
 
-    #[doc = "Remove conversation tag\n\nRemoves one or more tags to a conversation\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_remove_tag() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .remove_tag(\n            \"some-string\",\n            &front_api::types::TagIds {\n                tag_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Remove conversation tag\n\nRemoves one or more tags to a \
+             conversation\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_remove_tag() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .conversations()\n        .remove_tag(\n            \
+             \"some-string\",\n            &front_api::types::TagIds {\n                tag_ids: \
+             vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn remove_tag<'a>(
         &'a self,
@@ -206,7 +232,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/tags"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -233,7 +259,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/links"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -260,7 +286,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/links"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -274,7 +300,13 @@ impl Conversations {
         }
     }
 
-    #[doc = "List conversation inboxes\n\nList the inboxes in which a conversation is listed.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_list_inboxes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationInboxesResponse =\n        client.conversations().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List conversation inboxes\n\nList the inboxes in which a conversation is \
+             listed.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_list_inboxes() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListConversationInboxesResponse =\n        \
+             client.conversations().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_inboxes<'a>(
         &'a self,
@@ -286,7 +318,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/inboxes"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -299,14 +331,19 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List conversation followers\n\nList the teammates following a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_list_followers() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationFollowersResponse =\n        client.conversations().list_followers(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List conversation followers\n\nList the teammates following a \
+             conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_list_followers() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListConversationFollowersResponse =\n        \
+             client.conversations().list_followers(\"some-string\").await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_followers<'a>(
         &'a self,
@@ -318,7 +355,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -331,7 +368,6 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -351,7 +387,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -365,7 +401,15 @@ impl Conversations {
         }
     }
 
-    #[doc = "Delete conversation followers\n\nRemoves teammates from the list of followers of a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_delete_followers() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .delete_followers(\n            \"some-string\",\n            &front_api::types::DeleteConversationFollowersRequestBody {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete conversation followers\n\nRemoves teammates from the list of followers of a \
+             conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_delete_followers() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .conversations()\n        .delete_followers(\n            \
+             \"some-string\",\n            \
+             &front_api::types::DeleteConversationFollowersRequestBody {\n                \
+             teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete_followers<'a>(
         &'a self,
@@ -378,7 +422,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -392,7 +436,16 @@ impl Conversations {
         }
     }
 
-    #[doc = "List conversation messages\n\nList the messages in a conversation in reverse chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n\n```rust,no_run\nasync fn example_conversations_list_messages() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationMessagesResponse = client\n        .conversations()\n        .list_messages(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List conversation messages\n\nList the messages in a conversation in reverse \
+             chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: \
+             &'astr`: The conversation ID (required)\n- `limit: Option<i64>`: Max number of \
+             results per page\n- `page_token: Option<String>`: Token to use to request the next \
+             page\n\n```rust,no_run\nasync fn example_conversations_list_messages() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListConversationMessagesResponse = client\n        \
+             .conversations()\n        .list_messages(\n            \"some-string\",\n            \
+             Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_messages<'a>(
         &'a self,
@@ -406,7 +459,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/messages"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -429,14 +482,22 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List conversation events\n\nList the events that occured for a conversation in reverse chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n- `limit: Option<i64>`: Max number of results per page\n- `page_token: Option<String>`: Token to use to request the next page\n\n```rust,no_run\nasync fn example_conversations_list_events() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationEventsResponse = client\n        .conversations()\n        .list_events(\n            \"some-string\",\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List conversation events\n\nList the events that occured for a conversation in \
+             reverse chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: \
+             &'astr`: The conversation ID (required)\n- `limit: Option<i64>`: Max number of \
+             results per page\n- `page_token: Option<String>`: Token to use to request the next \
+             page\n\n```rust,no_run\nasync fn example_conversations_list_events() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListConversationEventsResponse = client\n        \
+             .conversations()\n        .list_events(\n            \"some-string\",\n            \
+             Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_events<'a>(
         &'a self,
@@ -450,7 +511,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/events"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -473,14 +534,23 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Update conversation reminders\n\nSnooze or unsnooze a conversation for the provided user.\nFor private conversations, reminders can only be created and edited through the API for teammates that own the conversation.\nFor shared conversations, reminders created and edited through the API are shared for all teammates within the shared inbox(es) that the conversation belongs to.\n\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_update_reminders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update_reminders(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update conversation reminders\n\nSnooze or unsnooze a conversation for the provided \
+             user.\nFor private conversations, reminders can only be created and edited through \
+             the API for teammates that own the conversation.\nFor shared conversations, reminders \
+             created and edited through the API are shared for all teammates within the shared \
+             inbox(es) that the conversation belongs to.\n\n\n**Parameters:**\n\n- \
+             `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn \
+             example_conversations_update_reminders() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .conversations()\n        \
+             .update_reminders(\n            \"some-string\",\n            \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_reminders<'a>(
         &'a self,
@@ -493,7 +563,7 @@ impl Conversations {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/reminders"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -520,7 +590,7 @@ impl Conversations {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "conversations/search/{query}".replace("{query}", &query)
+                "conversations/search/{query}".replace("{query}", query)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -543,7 +613,6 @@ impl Conversations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

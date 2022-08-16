@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Inboxes {
     pub client: Client,
@@ -11,7 +12,13 @@ impl Inboxes {
         Self { client }
     }
 
-    #[doc = "List inbox channels\n\nList the channels in an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_list_inbox_channels() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxChannelsResponse =\n        client.inboxes().list_inbox_channels(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List inbox channels\n\nList the channels in an inbox.\n\n**Parameters:**\n\n- \
+             `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn \
+             example_inboxes_list_inbox_channels() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListInboxChannelsResponse =\n        \
+             client.inboxes().list_inbox_channels(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_inbox_channels<'a>(
         &'a self,
@@ -22,7 +29,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}/channels".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}/channels".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -35,14 +42,17 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List inboxes\n\nList the inboxes of the company.\n\n```rust,no_run\nasync fn example_inboxes_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxesResponse = client.inboxes().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List inboxes\n\nList the inboxes of the company.\n\n```rust,no_run\nasync fn \
+             example_inboxes_list() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListInboxesResponse = client.inboxes().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -61,14 +71,19 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create inbox\n\nCreate an inbox in the default team.\n\n```rust,no_run\nasync fn example_inboxes_create_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .create_inbox(&front_api::types::CreateInbox {\n            name: \"some-string\".to_string(),\n            teammate_ids: Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Create inbox\n\nCreate an inbox in the default team.\n\n```rust,no_run\nasync fn \
+             example_inboxes_create_inbox() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .inboxes()\n        \
+             .create_inbox(&front_api::types::CreateInbox {\n            name: \
+             \"some-string\".to_string(),\n            teammate_ids: \
+             Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_inbox<'a>(
         &'a self,
@@ -89,7 +104,13 @@ impl Inboxes {
         }
     }
 
-    #[doc = "List team inboxes\n\nList the inboxes belonging to a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_inboxes_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamInboxesResponse =\n        client.inboxes().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List team inboxes\n\nList the inboxes belonging to a team.\n\n**Parameters:**\n\n- \
+             `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn \
+             example_inboxes_list_team() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeamInboxesResponse =\n        \
+             client.inboxes().list_team(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_team<'a>(
         &'a self,
@@ -100,7 +121,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/inboxes".replace("{team_id}", &team_id)
+                "teams/{team_id}/inboxes".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -113,14 +134,21 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create team inbox\n\nCreate an inbox for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_inboxes_create_team_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .create_team_inbox(\n            \"some-string\",\n            &front_api::types::CreateInbox {\n                name: \"some-string\".to_string(),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Create team inbox\n\nCreate an inbox for a team.\n\n**Parameters:**\n\n- `team_id: \
+             &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn \
+             example_inboxes_create_team_inbox() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .inboxes()\n        \
+             .create_team_inbox(\n            \"some-string\",\n            \
+             &front_api::types::CreateInbox {\n                name: \
+             \"some-string\".to_string(),\n                teammate_ids: \
+             Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team_inbox<'a>(
         &'a self,
@@ -132,7 +160,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/inboxes".replace("{team_id}", &team_id)
+                "teams/{team_id}/inboxes".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -146,7 +174,12 @@ impl Inboxes {
         }
     }
 
-    #[doc = "Get inbox\n\nFetch an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_get_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::InboxResponse = client.inboxes().get_inbox(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get inbox\n\nFetch an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID \
+             (required)\n\n```rust,no_run\nasync fn example_inboxes_get_inbox() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::InboxResponse = \
+             client.inboxes().get_inbox(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_inbox<'a>(
         &'a self,
@@ -157,7 +190,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -170,7 +203,6 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -191,7 +223,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}/conversations".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}/conversations".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -218,14 +250,19 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List inbox access\n\nList the teammates with access to an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_list_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListInboxTeammatesResponse =\n        client.inboxes().list_inbox_teammates(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List inbox access\n\nList the teammates with access to an \
+             inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID \
+             (required)\n\n```rust,no_run\nasync fn example_inboxes_list_inbox_teammates() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListInboxTeammatesResponse =\n        \
+             client.inboxes().list_inbox_teammates(\"some-string\").await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_inbox_teammates<'a>(
         &'a self,
@@ -236,7 +273,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -249,14 +286,20 @@ impl Inboxes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Add inbox access\n\nGive access to one or more teammates to an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_add_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .add_inbox_teammates(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add inbox access\n\nGive access to one or more teammates to an \
+             inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID \
+             (required)\n\n```rust,no_run\nasync fn example_inboxes_add_inbox_teammates() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .inboxes()\n        .add_inbox_teammates(\n            \
+             \"some-string\",\n            &front_api::types::TeammateIds {\n                \
+             teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_inbox_teammates<'a>(
         &'a self,
@@ -268,7 +311,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -282,7 +325,14 @@ impl Inboxes {
         }
     }
 
-    #[doc = "Removes inbox access\n\nRemove access of one or more teammates from an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_inboxes_remove_inbox_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .inboxes()\n        .remove_inbox_teammates(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Removes inbox access\n\nRemove access of one or more teammates from an \
+             inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID \
+             (required)\n\n```rust,no_run\nasync fn example_inboxes_remove_inbox_teammates() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .inboxes()\n        .remove_inbox_teammates(\n            \
+             \"some-string\",\n            &front_api::types::TeammateIds {\n                \
+             teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn remove_inbox_teammates<'a>(
         &'a self,
@@ -294,7 +344,7 @@ impl Inboxes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", &inbox_id)
+                "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Teammates {
     pub client: Client,
@@ -11,7 +12,11 @@ impl Teammates {
         Self { client }
     }
 
-    #[doc = "List teammates\n\nList the teammates in the company.\n\n```rust,no_run\nasync fn example_teammates_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammatesResponse = client.teammates().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammates\n\nList the teammates in the company.\n\n```rust,no_run\nasync fn \
+             example_teammates_list() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeammatesResponse = client.teammates().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -30,14 +35,18 @@ impl Teammates {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Get teammate\n\nFetch a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_teammates_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TeammateResponse = client.teammates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get teammate\n\nFetch a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The \
+             teammate ID (required)\n\n```rust,no_run\nasync fn example_teammates_get() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::TeammateResponse = \
+             client.teammates().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
@@ -48,7 +57,7 @@ impl Teammates {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -61,7 +70,6 @@ impl Teammates {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -80,7 +88,7 @@ impl Teammates {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -108,7 +116,7 @@ impl Teammates {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/conversations".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/conversations".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -135,14 +143,20 @@ impl Teammates {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List teammate inboxes\n\nReturns list of inboxes the teammate has access to.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n**NOTE:** This operation is marked as deprecated.\n\n```rust,no_run\nasync fn example_teammates_list_inboxes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateInboxesResponse =\n        client.teammates().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate inboxes\n\nReturns list of inboxes the teammate has access \
+             to.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID \
+             (required)\n\n**NOTE:** This operation is marked as \
+             deprecated.\n\n```rust,no_run\nasync fn example_teammates_list_inboxes() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListTeammateInboxesResponse =\n        \
+             client.teammates().list_inboxes(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_inboxes<'a>(
         &'a self,
@@ -153,7 +167,7 @@ impl Teammates {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/inboxes".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/inboxes".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -166,7 +180,6 @@ impl Teammates {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

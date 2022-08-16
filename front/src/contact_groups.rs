@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct ContactGroups {
     pub client: Client,
@@ -11,7 +12,12 @@ impl ContactGroups {
         Self { client }
     }
 
-    #[doc = "List groups\n\nList the contact groups.\n\n```rust,no_run\nasync fn example_contact_groups_list_groups() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListGroupsResponse = client.contact_groups().list_groups().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List groups\n\nList the contact groups.\n\n```rust,no_run\nasync fn \
+             example_contact_groups_list_groups() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListGroupsResponse = \
+             client.contact_groups().list_groups().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_groups<'a>(
         &'a self,
@@ -30,14 +36,18 @@ impl ContactGroups {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create group\n\nCreate a new contact group in the default team.\n\n```rust,no_run\nasync fn example_contact_groups_create_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .create_group(&front_api::types::CreateContactGroup {\n            name: \"some-string\".to_string(),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Create group\n\nCreate a new contact group in the default \
+             team.\n\n```rust,no_run\nasync fn example_contact_groups_create_group() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .contact_groups()\n        \
+             .create_group(&front_api::types::CreateContactGroup {\n            name: \
+             \"some-string\".to_string(),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_group<'a>(
         &'a self,
@@ -58,7 +68,13 @@ impl ContactGroups {
         }
     }
 
-    #[doc = "List team groups\n\nList contact groups belonging to the requested team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_contact_groups_list_team_groups() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamGroupsResponse = client\n        .contact_groups()\n        .list_team_groups(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List team groups\n\nList contact groups belonging to the requested \
+             team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID \
+             (required)\n\n```rust,no_run\nasync fn example_contact_groups_list_team_groups() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListTeamGroupsResponse = client\n        \
+             .contact_groups()\n        .list_team_groups(\"some-string\")\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_team_groups<'a>(
         &'a self,
@@ -69,7 +85,7 @@ impl ContactGroups {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/contact_groups".replace("{team_id}", &team_id)
+                "teams/{team_id}/contact_groups".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -82,7 +98,6 @@ impl ContactGroups {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -101,7 +116,7 @@ impl ContactGroups {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/contact_groups".replace("{team_id}", &team_id)
+                "teams/{team_id}/contact_groups".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -126,7 +141,7 @@ impl ContactGroups {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -139,7 +154,6 @@ impl ContactGroups {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -158,7 +172,7 @@ impl ContactGroups {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -172,7 +186,11 @@ impl ContactGroups {
         }
     }
 
-    #[doc = "Delete group\n\nDelete a contact group.\n\n**Parameters:**\n\n- `contact_group_id: &'astr`: The contact group ID (required)\n\n```rust,no_run\nasync fn example_contact_groups_delete_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.contact_groups().delete_group(\"some-string\").await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete group\n\nDelete a contact group.\n\n**Parameters:**\n\n- `contact_group_id: \
+             &'astr`: The contact group ID (required)\n\n```rust,no_run\nasync fn \
+             example_contact_groups_delete_group() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    \
+             client.contact_groups().delete_group(\"some-string\").await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete_group<'a>(
         &'a self,
@@ -184,7 +202,7 @@ impl ContactGroups {
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}"
-                    .replace("{contact_group_id}", &contact_group_id)
+                    .replace("{contact_group_id}", contact_group_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -211,7 +229,7 @@ impl ContactGroups {
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}/contacts"
-                    .replace("{contact_group_id}", &contact_group_id)
+                    .replace("{contact_group_id}", contact_group_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -234,7 +252,6 @@ impl ContactGroups {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -254,7 +271,7 @@ impl ContactGroups {
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}/contacts"
-                    .replace("{contact_group_id}", &contact_group_id)
+                    .replace("{contact_group_id}", contact_group_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

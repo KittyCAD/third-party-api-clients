@@ -31,7 +31,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-front-api = "0.0.1"
+front-api = "0.0.2"
 ```
 
 ## Basic example

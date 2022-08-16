@@ -29,7 +29,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! front-api = "0.0.1"
+//! front-api = "0.0.2"
 //! ```
 //!
 //! ## Basic example
@@ -59,10 +59,36 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[doc(hidden)]
+pub mod accounts;
+pub mod analytics;
+pub mod attachments;
+pub mod channels;
+pub mod comments;
+pub mod contact_groups;
+pub mod contact_handles;
+pub mod contact_notes;
+pub mod contacts;
+pub mod conversations;
+pub mod custom_fields;
+pub mod drafts;
+pub mod events;
+pub mod inboxes;
+pub mod links;
+pub mod message_template_folders;
+pub mod message_templates;
+pub mod messages;
+pub mod rules;
+pub mod shifts;
+pub mod signatures;
+pub mod tags;
+pub mod teammates;
+pub mod teams;
 #[cfg(test)]
 mod tests;
+pub mod token_identity;
 pub mod types;
-#[doc(hidden)]
+
 use std::env;
 
 static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
@@ -165,5 +191,130 @@ impl Client {
         }
 
         Ok(req)
+    }
+
+    /// Return a reference to an interface that provides access to Accounts operations.
+    pub fn accounts(&self) -> accounts::Accounts {
+        accounts::Accounts::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Events operations.
+    pub fn events(&self) -> events::Events {
+        events::Events::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Analytics operations.
+    pub fn analytics(&self) -> analytics::Analytics {
+        analytics::Analytics::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Attachments operations.
+    pub fn attachments(&self) -> attachments::Attachments {
+        attachments::Attachments::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Token Identity operations.
+    pub fn token_identity(&self) -> token_identity::TokenIdentity {
+        token_identity::TokenIdentity::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Message Template Folders operations.
+    pub fn message_template_folders(&self) -> message_template_folders::MessageTemplateFolders {
+        message_template_folders::MessageTemplateFolders::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Message Templates operations.
+    pub fn message_templates(&self) -> message_templates::MessageTemplates {
+        message_templates::MessageTemplates::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Contact Groups operations.
+    pub fn contact_groups(&self) -> contact_groups::ContactGroups {
+        contact_groups::ContactGroups::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Contacts operations.
+    pub fn contacts(&self) -> contacts::Contacts {
+        contacts::Contacts::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Contact Handles operations.
+    pub fn contact_handles(&self) -> contact_handles::ContactHandles {
+        contact_handles::ContactHandles::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Contact Notes operations.
+    pub fn contact_notes(&self) -> contact_notes::ContactNotes {
+        contact_notes::ContactNotes::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Channels operations.
+    pub fn channels(&self) -> channels::Channels {
+        channels::Channels::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Inboxes operations.
+    pub fn inboxes(&self) -> inboxes::Inboxes {
+        inboxes::Inboxes::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Comments operations.
+    pub fn comments(&self) -> comments::Comments {
+        comments::Comments::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Conversations operations.
+    pub fn conversations(&self) -> conversations::Conversations {
+        conversations::Conversations::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Messages operations.
+    pub fn messages(&self) -> messages::Messages {
+        messages::Messages::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Custom Fields operations.
+    pub fn custom_fields(&self) -> custom_fields::CustomFields {
+        custom_fields::CustomFields::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Drafts operations.
+    pub fn drafts(&self) -> drafts::Drafts {
+        drafts::Drafts::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Rules operations.
+    pub fn rules(&self) -> rules::Rules {
+        rules::Rules::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Shifts operations.
+    pub fn shifts(&self) -> shifts::Shifts {
+        shifts::Shifts::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Signatures operations.
+    pub fn signatures(&self) -> signatures::Signatures {
+        signatures::Signatures::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Tags operations.
+    pub fn tags(&self) -> tags::Tags {
+        tags::Tags::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Teams operations.
+    pub fn teams(&self) -> teams::Teams {
+        teams::Teams::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Teammates operations.
+    pub fn teammates(&self) -> teammates::Teammates {
+        teammates::Teammates::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Links operations.
+    pub fn links(&self) -> links::Links {
+        links::Links::new(self.clone())
     }
 }

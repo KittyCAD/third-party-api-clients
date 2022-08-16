@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Signatures {
     pub client: Client,
@@ -11,7 +12,13 @@ impl Signatures {
         Self { client }
     }
 
-    #[doc = "List teammate signatures\n\nList the signatures belonging to the given teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateSignaturesResponse =\n        client.signatures().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate signatures\n\nList the signatures belonging to the given \
+             teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID \
+             (required)\n\n```rust,no_run\nasync fn example_signatures_list_teammate() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListTeammateSignaturesResponse =\n        \
+             client.signatures().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate<'a>(
         &'a self,
@@ -22,7 +29,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/signatures".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -35,7 +42,6 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -54,7 +60,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/signatures".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -68,14 +74,19 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List team signatures\n\nList the signatures belonging to the given team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_signatures_list_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamSignaturesResponse =\n        client.signatures().list_team(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List team signatures\n\nList the signatures belonging to the given \
+             team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID \
+             (required)\n\n```rust,no_run\nasync fn example_signatures_list_team() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListTeamSignaturesResponse =\n        \
+             client.signatures().list_team(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_team<'a>(
         &'a self,
@@ -86,7 +97,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/signatures".replace("{team_id}", &team_id)
+                "teams/{team_id}/signatures".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -99,14 +110,25 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create team signature\n\nCreate a new signature for the given team\n\n**Parameters:**\n\n- `team_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateSharedSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team signature\n\nCreate a new signature for the given \
+             team\n\n**Parameters:**\n\n- `team_id: &'astr`: The teammate ID \
+             (required)\n\n```rust,no_run\nasync fn example_signatures_create_team() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::SignatureResponse = client\n        .signatures()\n        \
+             .create_team(\n            \"some-string\",\n            \
+             &front_api::types::CreateSharedSignature {\n                name: \
+             \"some-string\".to_string(),\n                sender_info: \
+             Some(\"some-string\".to_string()),\n                body: \
+             \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: \
+             Some(true),\n                is_default: Some(true),\n                channel_ids: \
+             Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
@@ -118,7 +140,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/signatures".replace("{team_id}", &team_id)
+                "teams/{team_id}/signatures".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -132,7 +154,6 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -150,7 +171,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "signatures/{signature_id}".replace("{signature_id}", &signature_id)
+                "signatures/{signature_id}".replace("{signature_id}", signature_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -163,14 +184,16 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Delete signature\n\nDelete signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.signatures().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete signature\n\nDelete signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: \
+             The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_delete() \
+             -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client.signatures().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(
         &'a self,
@@ -181,7 +204,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "signatures/{signature_id}".replace("{signature_id}", &signature_id)
+                "signatures/{signature_id}".replace("{signature_id}", signature_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -194,7 +217,7 @@ impl Signatures {
         }
     }
 
-    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(true),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: Some(true),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -206,7 +229,7 @@ impl Signatures {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "signatures/{signature_id}".replace("{signature_id}", &signature_id)
+                "signatures/{signature_id}".replace("{signature_id}", signature_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -220,7 +243,6 @@ impl Signatures {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

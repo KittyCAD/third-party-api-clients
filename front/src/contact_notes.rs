@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct ContactNotes {
     pub client: Client,
@@ -11,7 +12,13 @@ impl ContactNotes {
         Self { client }
     }
 
-    #[doc = "List notes\n\nList the notes added to a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contact_notes_list_notes() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListNotesResponse =\n        client.contact_notes().list_notes(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List notes\n\nList the notes added to a contact.\n\n**Parameters:**\n\n- `contact_id: \
+             &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn \
+             example_contact_notes_list_notes() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListNotesResponse =\n        \
+             client.contact_notes().list_notes(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_notes<'a>(
         &'a self,
@@ -22,7 +29,7 @@ impl ContactNotes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "contacts/{contact_id}/notes".replace("{contact_id}", &contact_id)
+                "contacts/{contact_id}/notes".replace("{contact_id}", contact_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -35,7 +42,6 @@ impl ContactNotes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -54,7 +60,7 @@ impl ContactNotes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "contacts/{contact_id}/notes".replace("{contact_id}", &contact_id)
+                "contacts/{contact_id}/notes".replace("{contact_id}", contact_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -68,7 +74,6 @@ impl ContactNotes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

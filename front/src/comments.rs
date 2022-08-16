@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Comments {
     pub client: Client,
@@ -11,7 +12,14 @@ impl Comments {
         Self { client }
     }
 
-    #[doc = "List conversation comments\n\nList the comments in a conversation in reverse chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_comments_list_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListConversationCommentsResponse =\n        client.comments().list_conversation(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List conversation comments\n\nList the comments in a conversation in reverse \
+             chronological order (newest first).\n\n**Parameters:**\n\n- `conversation_id: \
+             &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn \
+             example_comments_list_conversation() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListConversationCommentsResponse =\n        \
+             client.comments().list_conversation(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_conversation<'a>(
         &'a self,
@@ -23,7 +31,7 @@ impl Comments {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/comments"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -36,7 +44,6 @@ impl Comments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -56,7 +63,7 @@ impl Comments {
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/comments"
-                    .replace("{conversation_id}", &conversation_id)
+                    .replace("{conversation_id}", conversation_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -70,14 +77,18 @@ impl Comments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Get comment\n\nFetches a comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The Comment ID (required)\n\n```rust,no_run\nasync fn example_comments_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client.comments().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get comment\n\nFetches a comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The \
+             Comment ID (required)\n\n```rust,no_run\nasync fn example_comments_get() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::CommentResponse = \
+             client.comments().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
@@ -88,7 +99,7 @@ impl Comments {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "comments/{comment_id}".replace("{comment_id}", &comment_id)
+                "comments/{comment_id}".replace("{comment_id}", comment_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -101,14 +112,19 @@ impl Comments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List comment mentions\n\nList the teammates mentioned in a comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The Comment ID (required)\n\n```rust,no_run\nasync fn example_comments_list_mentions() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListCommentMentionsResponse =\n        client.comments().list_mentions(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List comment mentions\n\nList the teammates mentioned in a \
+             comment.\n\n**Parameters:**\n\n- `comment_id: &'astr`: The Comment ID \
+             (required)\n\n```rust,no_run\nasync fn example_comments_list_mentions() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListCommentMentionsResponse =\n        \
+             client.comments().list_mentions(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_mentions<'a>(
         &'a self,
@@ -119,7 +135,7 @@ impl Comments {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "comments/{comment_id}/mentions".replace("{comment_id}", &comment_id)
+                "comments/{comment_id}/mentions".replace("{comment_id}", comment_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -132,7 +148,6 @@ impl Comments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

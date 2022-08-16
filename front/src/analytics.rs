@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Analytics {
     pub client: Client,
@@ -32,14 +33,18 @@ impl Analytics {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Fetch an analytics report.\n\n**Parameters:**\n\n- `report_uid: &'astr`: The report UID. (required)\n\n```rust,no_run\nasync fn example_analytics_get_report() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsReportResponse2 =\n        client.analytics().get_report(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Fetch an analytics report.\n\n**Parameters:**\n\n- `report_uid: &'astr`: The report \
+             UID. (required)\n\n```rust,no_run\nasync fn example_analytics_get_report() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::AnalyticsReportResponse2 =\n        \
+             client.analytics().get_report(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_report<'a>(
         &'a self,
@@ -50,7 +55,7 @@ impl Analytics {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "analytics/reports/{report_uid}".replace("{report_uid}", &report_uid)
+                "analytics/reports/{report_uid}".replace("{report_uid}", report_uid)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -63,7 +68,6 @@ impl Analytics {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -91,14 +95,18 @@ impl Analytics {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Fetch an analytics export.\n\n**Parameters:**\n\n- `export_id: &'astr`: The export ID. (required)\n\n```rust,no_run\nasync fn example_analytics_get_export() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::AnalyticsExportResponse2 =\n        client.analytics().get_export(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Fetch an analytics export.\n\n**Parameters:**\n\n- `export_id: &'astr`: The export \
+             ID. (required)\n\n```rust,no_run\nasync fn example_analytics_get_export() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::AnalyticsExportResponse2 =\n        \
+             client.analytics().get_export(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_export<'a>(
         &'a self,
@@ -109,7 +117,7 @@ impl Analytics {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "analytics/exports/{export_id}".replace("{export_id}", &export_id)
+                "analytics/exports/{export_id}".replace("{export_id}", export_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -122,7 +130,6 @@ impl Analytics {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

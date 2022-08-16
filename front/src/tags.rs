@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Tags {
     pub client: Client,
@@ -11,7 +12,11 @@ impl Tags {
         Self { client }
     }
 
-    #[doc = "List tags\n\nList the tags of the company.\n\n```rust,no_run\nasync fn example_tags_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTagsResponse = client.tags().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List tags\n\nList the tags of the company.\n\n```rust,no_run\nasync fn \
+             example_tags_list() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTagsResponse = client.tags().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -30,14 +35,20 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create tag\n\nCreate a tag.\n\n```rust,no_run\nasync fn example_tags_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create(&front_api::types::CreateTag {\n            name: \"some-string\".to_string(),\n            highlight: Some(front_api::types::Highlight::Blue),\n            is_visible_in_conversation_lists: Some(false),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create tag\n\nCreate a tag.\n\n```rust,no_run\nasync fn example_tags_create() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::TagResponse = client\n        .tags()\n        \
+             .create(&front_api::types::CreateTag {\n            name: \
+             \"some-string\".to_string(),\n            highlight: \
+             Some(front_api::types::Highlight::Orange),\n            \
+             is_visible_in_conversation_lists: Some(false),\n        })\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
@@ -58,7 +69,6 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -76,7 +86,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/tags".replace("{team_id}", &team_id)
+                "teams/{team_id}/tags".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -89,14 +99,13 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Red),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::LightBlue),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
@@ -108,7 +117,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/tags".replace("{team_id}", &team_id)
+                "teams/{team_id}/tags".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -122,14 +131,19 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List teammate tags\n\nList the tags for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateTagsResponse =\n        client.tags().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate tags\n\nList the tags for a teammate.\n\n**Parameters:**\n\n- \
+             `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn \
+             example_tags_list_teammate() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeammateTagsResponse =\n        \
+             client.tags().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate<'a>(
         &'a self,
@@ -140,7 +154,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/tags".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -153,14 +167,13 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Orange),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Orange),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -172,7 +185,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/tags".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -186,14 +199,19 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List tag children\n\nList the children of a specific tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_list_children() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTagChildrenResponse =\n        client.tags().list_children(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List tag children\n\nList the children of a specific tag.\n\n**Parameters:**\n\n- \
+             `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn \
+             example_tags_list_children() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTagChildrenResponse =\n        \
+             client.tags().list_children(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_children<'a>(
         &'a self,
@@ -204,7 +222,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}/children".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}/children".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -217,14 +235,13 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Pink),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Grey),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_child<'a>(
         &'a self,
@@ -236,7 +253,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}/children".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}/children".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -250,7 +267,6 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -268,7 +284,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -281,14 +297,16 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Delete tag\n\nDelete a tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The ID of the tag to delete (required)\n\n```rust,no_run\nasync fn example_tags_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.tags().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete tag\n\nDelete a tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The ID of the \
+             tag to delete (required)\n\n```rust,no_run\nasync fn example_tags_delete() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client.tags().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(&'a self, tag_id: &'a str) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
@@ -296,7 +314,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -321,7 +339,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -349,7 +367,7 @@ impl Tags {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "tags/{tag_id}/conversations".replace("{tag_id}", &tag_id)
+                "tags/{tag_id}/conversations".replace("{tag_id}", tag_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -376,7 +394,6 @@ impl Tags {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

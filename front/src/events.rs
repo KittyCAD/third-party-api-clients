@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Events {
     pub client: Client,
@@ -47,14 +48,21 @@ impl Events {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Get event\n\nFetch an event.\n> ⚠\u{fe0f} Deprecated field may be included\n>\n> This route return the deprecated `last_message` conversation field for conversations\n> associated with individual events. Please use the conversation's\n> `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `event_id: &'astr`: The event ID (required)\n\n```rust,no_run\nasync fn example_events_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::EventResponse = client.events().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get event\n\nFetch an event.\n> ⚠\u{fe0f} Deprecated field may be included\n>\n> This \
+             route return the deprecated `last_message` conversation field for conversations\n> \
+             associated with individual events. Please use the conversation's\n> \
+             `_links.related.last_message` field instead.\n\n\n**Parameters:**\n\n- `event_id: \
+             &'astr`: The event ID (required)\n\n```rust,no_run\nasync fn example_events_get() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::EventResponse = \
+             client.events().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
@@ -65,7 +73,7 @@ impl Events {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "events/{event_id}".replace("{event_id}", &event_id)
+                "events/{event_id}".replace("{event_id}", event_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -78,7 +86,6 @@ impl Events {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

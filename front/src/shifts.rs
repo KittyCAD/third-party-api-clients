@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Shifts {
     pub client: Client,
@@ -11,7 +12,10 @@ impl Shifts {
         Self { client }
     }
 
-    #[doc = "List Shifts\n\nList the shifts.\n\n```rust,no_run\nasync fn example_shifts_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListShiftsResponse = client.shifts().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Shifts\n\nList the shifts.\n\n```rust,no_run\nasync fn example_shifts_list() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListShiftsResponse = client.shifts().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -30,7 +34,6 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -58,7 +61,6 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -76,7 +78,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/shifts".replace("{team_id}", &team_id)
+                "teams/{team_id}/shifts".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -89,7 +91,6 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -108,7 +109,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/shifts".replace("{team_id}", &team_id)
+                "teams/{team_id}/shifts".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -122,14 +123,19 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List Teammate Shifts\n\nLists all the shifts for the teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_shifts_list_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateShiftsResponse =\n        client.shifts().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Teammate Shifts\n\nLists all the shifts for the \
+             teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID \
+             (required)\n\n```rust,no_run\nasync fn example_shifts_list_teammate() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListTeammateShiftsResponse =\n        \
+             client.shifts().list_teammate(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate<'a>(
         &'a self,
@@ -140,7 +146,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teammates/{teammate_id}/shifts".replace("{teammate_id}", &teammate_id)
+                "teammates/{teammate_id}/shifts".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -153,7 +159,6 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -171,7 +176,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "shift/{shift_id}".replace("{shift_id}", &shift_id)
+                "shift/{shift_id}".replace("{shift_id}", shift_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -184,14 +189,19 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List shift's teammates\n\nList the teammates assigned to a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_list_teammates() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListShiftTeammatesResponse =\n        client.shifts().list_teammates(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List shift's teammates\n\nList the teammates assigned to a \
+             shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID \
+             (required)\n\n```rust,no_run\nasync fn example_shifts_list_teammates() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListShiftTeammatesResponse =\n        \
+             client.shifts().list_teammates(\"some-string\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammates<'a>(
         &'a self,
@@ -202,7 +212,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "shift/{shift_id}/teammates".replace("{shift_id}", &shift_id)
+                "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -215,7 +225,6 @@ impl Shifts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -234,7 +243,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "shift/{shift_id}/teammates".replace("{shift_id}", &shift_id)
+                "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -248,7 +257,14 @@ impl Shifts {
         }
     }
 
-    #[doc = "Remove teammates from shift\n\nRemove teammates from a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_remove_teammates_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .remove_teammates_from(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Remove teammates from shift\n\nRemove teammates from a shift.\n\n**Parameters:**\n\n- \
+             `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn \
+             example_shifts_remove_teammates_from() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .shifts()\n        \
+             .remove_teammates_from(\n            \"some-string\",\n            \
+             &front_api::types::TeammateIds {\n                teammate_ids: \
+             vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn remove_teammates_from<'a>(
         &'a self,
@@ -260,7 +276,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "shift/{shift_id}/teammates".replace("{shift_id}", &shift_id)
+                "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -274,7 +290,7 @@ impl Shifts {
         }
     }
 
-    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Green),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Red),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -286,7 +302,7 @@ impl Shifts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "shifts/{shift_id}".replace("{shift_id}", &shift_id)
+                "shifts/{shift_id}".replace("{shift_id}", shift_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

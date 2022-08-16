@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct MessageTemplateFolders {
     pub client: Client,
@@ -11,7 +12,12 @@ impl MessageTemplateFolders {
         Self { client }
     }
 
-    #[doc = "List folders\n\nList the message template folders.\n\n```rust,no_run\nasync fn example_message_template_folders_list_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListFoldersResponse =\n        client.message_template_folders().list_folders().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List folders\n\nList the message template folders.\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_list_folders() -> anyhow::Result<()> {\n    let \
+             client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListFoldersResponse =\n        \
+             client.message_template_folders().list_folders().await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_folders<'a>(
         &'a self,
@@ -30,14 +36,21 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create folder\n\nCreate a new message template folder.\n\n```rust,no_run\nasync fn example_message_template_folders_create_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageTemplateFolderResponse = client\n        .message_template_folders()\n        .create_folder(&front_api::types::CreateMessageTemplateFolder {\n            name: \"some-string\".to_string(),\n            parent_folder_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create folder\n\nCreate a new message template folder.\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_create_folder() -> anyhow::Result<()> {\n    let \
+             client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::MessageTemplateFolderResponse = client\n        \
+             .message_template_folders()\n        \
+             .create_folder(&front_api::types::CreateMessageTemplateFolder {\n            name: \
+             \"some-string\".to_string(),\n            parent_folder_id: \
+             Some(\"some-string\".to_string()),\n        })\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_folder<'a>(
         &'a self,
@@ -58,14 +71,20 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List team folders\n\nList the message template folders belonging to the requested team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_list_team_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamFoldersResponse = client\n        .message_template_folders()\n        .list_team_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List team folders\n\nList the message template folders belonging to the requested \
+             team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID \
+             (required)\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_list_team_folders() -> anyhow::Result<()> {\n    let \
+             client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeamFoldersResponse = client\n        \
+             .message_template_folders()\n        .list_team_folders(\"some-string\")\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_team_folders<'a>(
         &'a self,
@@ -76,7 +95,7 @@ impl MessageTemplateFolders {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/message_template_folders".replace("{team_id}", &team_id)
+                "teams/{team_id}/message_template_folders".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -89,7 +108,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -108,7 +126,7 @@ impl MessageTemplateFolders {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/message_template_folders".replace("{team_id}", &team_id)
+                "teams/{team_id}/message_template_folders".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -122,14 +140,20 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List teammate folders\n\nList the message template folders belonging to the requested teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_list_teammate_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeammateFoldersResponse = client\n        .message_template_folders()\n        .list_teammate_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teammate folders\n\nList the message template folders belonging to the requested \
+             teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID \
+             (required)\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_list_teammate_folders() -> anyhow::Result<()> {\n    \
+             let client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeammateFoldersResponse = client\n        \
+             .message_template_folders()\n        .list_teammate_folders(\"some-string\")\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_teammate_folders<'a>(
         &'a self,
@@ -141,7 +165,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_template_folders"
-                    .replace("{teammate_id}", &teammate_id)
+                    .replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -154,7 +178,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -174,7 +197,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_template_folders"
-                    .replace("{teammate_id}", &teammate_id)
+                    .replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -188,14 +211,20 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Get child folders\n\nFetch the child message templates folders of a message template folder.\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder ID (required)\n\n```rust,no_run\nasync fn example_message_template_folders_get_child_folders() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::GetChildFoldersResponse = client\n        .message_template_folders()\n        .get_child_folders(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get child folders\n\nFetch the child message templates folders of a message template \
+             folder.\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message \
+             template folder ID (required)\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_get_child_folders() -> anyhow::Result<()> {\n    let \
+             client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::GetChildFoldersResponse = client\n        \
+             .message_template_folders()\n        .get_child_folders(\"some-string\")\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_child_folders<'a>(
         &'a self,
@@ -207,7 +236,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_template_folders"
-                    .replace("{message_template_folder_id}", &message_template_folder_id)
+                    .replace("{message_template_folder_id}", message_template_folder_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -220,7 +249,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -240,7 +268,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_template_folders"
-                    .replace("{message_template_folder_id}", &message_template_folder_id)
+                    .replace("{message_template_folder_id}", message_template_folder_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -254,7 +282,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -273,7 +300,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
-                    .replace("{message_template_folder_id}", &message_template_folder_id)
+                    .replace("{message_template_folder_id}", message_template_folder_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -286,14 +313,20 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Delete folder\n\nDelete a message template folder and child folders/templates\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The message template folder id (required)\n\n```rust,no_run\nasync fn example_message_template_folders_delete_folder() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::DeleteFolderResponse = client\n        .message_template_folders()\n        .delete_folder(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Delete folder\n\nDelete a message template folder and child \
+             folders/templates\n\n**Parameters:**\n\n- `message_template_folder_id: &'astr`: The \
+             message template folder id (required)\n\n```rust,no_run\nasync fn \
+             example_message_template_folders_delete_folder() -> anyhow::Result<()> {\n    let \
+             client = front_api::Client::new_from_env();\n    let result: \
+             front_api::types::DeleteFolderResponse = client\n        \
+             .message_template_folders()\n        .delete_folder(\"some-string\")\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete_folder<'a>(
         &'a self,
@@ -305,7 +338,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
-                    .replace("{message_template_folder_id}", &message_template_folder_id)
+                    .replace("{message_template_folder_id}", message_template_folder_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -318,7 +351,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -338,7 +370,7 @@ impl MessageTemplateFolders {
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
-                    .replace("{message_template_folder_id}", &message_template_folder_id)
+                    .replace("{message_template_folder_id}", message_template_folder_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -352,7 +384,6 @@ impl MessageTemplateFolders {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

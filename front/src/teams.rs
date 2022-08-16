@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Teams {
     pub client: Client,
@@ -11,7 +12,11 @@ impl Teams {
         Self { client }
     }
 
-    #[doc = "List teams\n\nList the teams in the company.\n\n```rust,no_run\nasync fn example_teams_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListTeamsResponse = client.teams().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List teams\n\nList the teams in the company.\n\n```rust,no_run\nasync fn \
+             example_teams_list() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListTeamsResponse = client.teams().list().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -30,7 +35,6 @@ impl Teams {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -48,7 +52,7 @@ impl Teams {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}".replace("{team_id}", &team_id)
+                "teams/{team_id}".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -61,14 +65,20 @@ impl Teams {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Add teammates to team\n\nAdd one or more teammates to a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The Team ID (required)\n\n```rust,no_run\nasync fn example_teams_add_teammates_to() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teams()\n        .add_teammates_to(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add teammates to team\n\nAdd one or more teammates to a team.\n\n**Parameters:**\n\n- \
+             `team_id: &'astr`: The Team ID (required)\n\n```rust,no_run\nasync fn \
+             example_teams_add_teammates_to() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    client\n        .teams()\n        \
+             .add_teammates_to(\n            \"some-string\",\n            \
+             &front_api::types::TeammateIds {\n                teammate_ids: \
+             vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_teammates_to<'a>(
         &'a self,
@@ -80,7 +90,7 @@ impl Teams {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/teammates".replace("{team_id}", &team_id)
+                "teams/{team_id}/teammates".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -94,7 +104,14 @@ impl Teams {
         }
     }
 
-    #[doc = "Remove teammates from team\n\nRemove one or more teammates from a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The Team ID (required)\n\n```rust,no_run\nasync fn example_teams_remove_teammates_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teams()\n        .remove_teammates_from(\n            \"some-string\",\n            &front_api::types::TeammateIds {\n                teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Remove teammates from team\n\nRemove one or more teammates from a \
+             team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The Team ID \
+             (required)\n\n```rust,no_run\nasync fn example_teams_remove_teammates_from() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .teams()\n        .remove_teammates_from(\n            \
+             \"some-string\",\n            &front_api::types::TeammateIds {\n                \
+             teammate_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn remove_teammates_from<'a>(
         &'a self,
@@ -106,7 +123,7 @@ impl Teams {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{team_id}/teammates".replace("{team_id}", &team_id)
+                "teams/{team_id}/teammates".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Accounts {
     pub client: Client,
@@ -52,7 +53,6 @@ impl Accounts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -80,7 +80,6 @@ impl Accounts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -98,7 +97,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}".replace("{account_id}", &account_id)
+                "accounts/{account_id}".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -111,14 +110,16 @@ impl Accounts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Delete an account\n\nDeletes an account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_delete() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client.accounts().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
+    #[doc = "Delete an account\n\nDeletes an account\n\n**Parameters:**\n\n- `account_id: &'astr`: \
+             The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_delete() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client.accounts().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(
         &'a self,
@@ -129,7 +130,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}".replace("{account_id}", &account_id)
+                "accounts/{account_id}".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -154,7 +155,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}".replace("{account_id}", &account_id)
+                "accounts/{account_id}".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -168,7 +169,6 @@ impl Accounts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -188,7 +188,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}/contacts".replace("{account_id}", &account_id)
+                "accounts/{account_id}/contacts".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -211,14 +211,20 @@ impl Accounts {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Add contact to Account\n\nAdds a list of contacts to an Account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_add_contacts_to() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .accounts()\n        .add_contacts_to(\n            \"some-string\",\n            &front_api::types::ContactIds {\n                contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add contact to Account\n\nAdds a list of contacts to an \
+             Account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID \
+             (required)\n\n```rust,no_run\nasync fn example_accounts_add_contacts_to() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .accounts()\n        .add_contacts_to(\n            \
+             \"some-string\",\n            &front_api::types::ContactIds {\n                \
+             contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_contacts_to<'a>(
         &'a self,
@@ -230,7 +236,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}/contacts".replace("{account_id}", &account_id)
+                "accounts/{account_id}/contacts".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -244,7 +250,14 @@ impl Accounts {
         }
     }
 
-    #[doc = "Remove contact from Account\n\nRemoves a list of contacts from an Account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID (required)\n\n```rust,no_run\nasync fn example_accounts_remove_contacts_from() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .accounts()\n        .remove_contacts_from(\n            \"some-string\",\n            &front_api::types::ContactIds {\n                contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Remove contact from Account\n\nRemoves a list of contacts from an \
+             Account\n\n**Parameters:**\n\n- `account_id: &'astr`: The Account ID \
+             (required)\n\n```rust,no_run\nasync fn example_accounts_remove_contacts_from() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .accounts()\n        .remove_contacts_from(\n            \
+             \"some-string\",\n            &front_api::types::ContactIds {\n                \
+             contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn remove_contacts_from<'a>(
         &'a self,
@@ -256,7 +269,7 @@ impl Accounts {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "accounts/{account_id}/contacts".replace("{account_id}", &account_id)
+                "accounts/{account_id}/contacts".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

@@ -415,7 +415,7 @@ pub mod error {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftInterval {
     #[doc = "Start of shift"]
@@ -446,7 +446,7 @@ impl tabled::Tabled for ShiftInterval {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftIntervals {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -531,7 +531,7 @@ impl tabled::Tabled for ShiftIntervals {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagIds {
     pub tag_ids: Vec<String>,
@@ -559,7 +559,7 @@ impl tabled::Tabled for TagIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateIds {
     pub teammate_ids: Vec<String>,
@@ -587,7 +587,7 @@ impl tabled::Tabled for TeammateIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelIds {
     pub channel_ids: Vec<String>,
@@ -615,7 +615,7 @@ impl tabled::Tabled for ChannelIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxIds {
     pub inbox_ids: Vec<String>,
@@ -643,7 +643,7 @@ impl tabled::Tabled for InboxIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeamIds {
     pub team_ids: Vec<String>,
@@ -671,7 +671,7 @@ impl tabled::Tabled for TeamIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactIds {
     pub contact_ids: Vec<String>,
@@ -699,7 +699,7 @@ impl tabled::Tabled for ContactIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AccountIds {
     pub account_ids: Vec<String>,
@@ -727,7 +727,7 @@ impl tabled::Tabled for AccountIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Account {
     #[doc = "Name of the Account"]
@@ -801,7 +801,7 @@ impl tabled::Tabled for Account {
 
 #[doc = "Resources to compute the analytics for. Defaults to all."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsFilters {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1103,7 +1103,7 @@ pub enum AnalyticsMetricId {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateFolderAsChild {
     #[doc = "Name of the message template folder"]
@@ -1133,7 +1133,7 @@ impl tabled::Tabled for CreateMessageTemplateFolderAsChild {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateFolder {
     #[doc = "Name of the message template folder"]
@@ -1174,7 +1174,7 @@ impl tabled::Tabled for CreateMessageTemplateFolder {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateMessageTemplateFolder {
     #[doc = "Name of the message template folder"]
@@ -1219,7 +1219,7 @@ impl tabled::Tabled for UpdateMessageTemplateFolder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1294,7 +1294,7 @@ impl tabled::Tabled for UpdateMessageTemplate {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateAsChild {
     #[doc = "Name of the message template"]
@@ -1350,7 +1350,7 @@ impl tabled::Tabled for CreateMessageTemplateAsChild {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreatePrivateMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1407,7 +1407,7 @@ impl tabled::Tabled for CreatePrivateMessageTemplate {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateSharedMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1471,7 +1471,7 @@ impl tabled::Tabled for CreateSharedMessageTemplate {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContactGroup {
     #[doc = "Name of the group"]
@@ -1500,7 +1500,7 @@ impl tabled::Tabled for CreateContactGroup {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddContactsToGroup {
     #[doc = "List of IDs of the contacts to add in the requested group"]
@@ -1569,7 +1569,7 @@ pub enum Source {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactHandle {
     #[doc = "Handle used to reach the contact."]
@@ -1601,7 +1601,7 @@ impl tabled::Tabled for ContactHandle {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContact {
     #[doc = "Contact name"]
@@ -1705,7 +1705,7 @@ impl tabled::Tabled for CreateContact {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Contact {
     #[doc = "Contact name"]
@@ -1799,7 +1799,7 @@ impl tabled::Tabled for Contact {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MergeContacts {
     #[doc = "Optional contact ID to merge the other contacts into."]
@@ -1841,7 +1841,7 @@ impl tabled::Tabled for MergeContacts {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteContactHandle {
     #[doc = "Handle used to reach the contact."]
@@ -1888,7 +1888,7 @@ impl tabled::Tabled for DeleteContactHandle {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContactNote {
     #[doc = "ID of teammate creating the note"]
@@ -1921,7 +1921,7 @@ impl tabled::Tabled for CreateContactNote {
 #[doc = "Settings to replace.\nFor custom channels, all settings may be replaced.\nFor all other \
          channels, only `undo_send_time` and `all_teammates_can_reply` may be replaced.\n"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Settings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -1970,7 +1970,7 @@ impl tabled::Tabled for Settings {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateChannel {
     #[doc = "Name of the channel"]
@@ -2017,7 +2017,7 @@ impl tabled::Tabled for UpdateChannel {
 
 #[doc = "Settings of the channel"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateChannelSettings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -2093,7 +2093,7 @@ pub enum CreateChannelType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateChannel {
     #[doc = "Name of the channel"]
@@ -2154,7 +2154,7 @@ impl tabled::Tabled for CreateChannel {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateComment {
     #[doc = "ID of the teammate creating the comment. If omitted, will post as the API Token or \
@@ -2234,7 +2234,7 @@ impl std::default::Default for CreateConversationType {
 
 #[doc = "Details for the starter comment"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Comment {
     #[doc = "ID of the teammate creating the comment. If omitted, will post as the API Token or \
@@ -2286,7 +2286,7 @@ impl tabled::Tabled for Comment {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateConversation {
     #[doc = "Conversation type"]
@@ -2378,7 +2378,7 @@ pub enum Status {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversation {
     #[doc = "ID of the teammate to assign the conversation to. Set it to null to unassign."]
@@ -2443,7 +2443,7 @@ impl tabled::Tabled for UpdateConversation {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversationAssignee {
     #[doc = "ID of the teammate to assign the conversation to. Set it to null to unassign."]
@@ -2472,7 +2472,7 @@ impl tabled::Tabled for UpdateConversationAssignee {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversationReminders {
     #[doc = "ID of the teammate to create a reminder for. For a private conversation, specify the \
@@ -2505,7 +2505,7 @@ impl tabled::Tabled for UpdateConversationReminders {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateCustomField {
     #[doc = "Name of the custom field"]
@@ -2580,7 +2580,7 @@ impl std::default::Default for Mode {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2688,7 +2688,7 @@ impl tabled::Tabled for CreateDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReplyDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2833,7 +2833,7 @@ impl std::default::Default for EditDraftMode {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EditDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2959,7 +2959,7 @@ impl tabled::Tabled for EditDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteDraft {
     #[doc = "Version of the draft"]
@@ -2988,7 +2988,7 @@ impl tabled::Tabled for DeleteDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateInbox {
     pub name: String,
@@ -3025,7 +3025,7 @@ impl tabled::Tabled for CreateInbox {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Options {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3068,7 +3068,7 @@ impl tabled::Tabled for Options {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundMessage {
     pub to: Vec<String>,
@@ -3192,7 +3192,7 @@ impl tabled::Tabled for OutboundMessage {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundReplyMessageOptions {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3235,7 +3235,7 @@ impl tabled::Tabled for OutboundReplyMessageOptions {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundReplyMessage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3374,7 +3374,7 @@ impl tabled::Tabled for OutboundReplyMessage {
 
 #[doc = "Data of the sender"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Sender {
     #[doc = "ID of the contact in Front corresponding to the sender"]
@@ -3455,7 +3455,7 @@ impl std::default::Default for BodyFormat {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Metadata {
     #[doc = "Reference which will be used to thread messages. If  omitted, Front threads by \
@@ -3500,7 +3500,7 @@ impl tabled::Tabled for Metadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomMessage {
     #[doc = "Data of the sender"]
@@ -3573,7 +3573,7 @@ impl tabled::Tabled for CustomMessage {
 
 #[doc = "Data of the sender"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessageSender {
     #[doc = "ID of the teammate who is the author of the message. Ignored if the message is \
@@ -3692,7 +3692,7 @@ impl std::default::Default for ImportMessageType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessageMetadata {
     #[doc = "Reference which will be used to thread messages. If  omitted, Front threads by \
@@ -3753,7 +3753,7 @@ impl tabled::Tabled for ImportMessageMetadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessage {
     #[doc = "Data of the sender"]
@@ -4045,7 +4045,7 @@ impl tabled::Tabled for UpdateShift {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreatePrivateSignature {
     #[doc = "Name of the signature"]
@@ -4109,7 +4109,7 @@ impl tabled::Tabled for CreatePrivateSignature {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateSharedSignature {
     #[doc = "Name of the signature"]
@@ -4185,7 +4185,7 @@ impl tabled::Tabled for CreateSharedSignature {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateSignature {
     #[doc = "Name of the signature"]
@@ -4316,7 +4316,7 @@ pub enum Highlight {
 
 #[doc = "A tag is a label that can be used to classify conversations."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateTag {
     #[doc = "Name of the tag"]
@@ -4367,7 +4367,7 @@ impl tabled::Tabled for CreateTag {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateTag {
     #[doc = "Name of the tag"]
@@ -4432,7 +4432,7 @@ impl tabled::Tabled for UpdateTag {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateTeammate {
     #[doc = "New username. It must be unique and can only contains lowercase letters, numbers and \
@@ -4499,7 +4499,7 @@ impl tabled::Tabled for UpdateTeammate {
 
 #[doc = "A link is used to connect a Front conversation to an external resource."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateLink {
     #[doc = "Name of the link. If none is specified, the external_url is used as a default"]
@@ -4538,7 +4538,7 @@ impl tabled::Tabled for CreateLink {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateLink {
     #[doc = "Name of the link"]
@@ -4572,7 +4572,7 @@ impl tabled::Tabled for UpdateLink {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Related {
     #[doc = "Link to contacts associated to the account"]
@@ -4606,7 +4606,7 @@ impl tabled::Tabled for Related {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UnderscoreLinks {
     #[doc = "Link to resource"]
@@ -4766,7 +4766,7 @@ impl tabled::Tabled for AccountResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EventResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -4894,7 +4894,7 @@ pub enum MetaType {
 
 #[doc = "Metadata about the resource"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Meta {
     #[doc = "Type of resource"]
@@ -5215,7 +5215,7 @@ impl tabled::Tabled for EventResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct IdentityResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -5249,7 +5249,7 @@ impl tabled::Tabled for IdentityResponseUnderscoreLinks {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct IdentityResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -5304,7 +5304,7 @@ impl tabled::Tabled for IdentityResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsExportResponse2UnderscoreLinks {
     #[doc = "Link to analytics export"]
@@ -5457,7 +5457,7 @@ impl tabled::Tabled for AnalyticsExportResponse2 {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsReportResponse2UnderscoreLinks {
     #[doc = "Link to analytics job."]
@@ -5661,7 +5661,7 @@ pub enum AnalyticsScalarType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ResourceUnderscoreLinks {
     #[doc = "Link to a resource."]
@@ -5846,7 +5846,7 @@ impl tabled::Tabled for AnalyticsScalarValue {
 
 #[doc = "Attachment metadata"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AttachmentMetadata {
     #[doc = "Whether or not the attachment is part of the message body"]
@@ -5890,7 +5890,7 @@ impl tabled::Tabled for AttachmentMetadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Attachment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5972,7 +5972,7 @@ impl tabled::Tabled for Attachment {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateFolderResponseUnderscoreLinksRelated {
     #[doc = "Link to resource's owner"]
@@ -6006,7 +6006,7 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateFolderResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6104,7 +6104,7 @@ impl tabled::Tabled for MessageTemplateFolderResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateResponseUnderscoreLinksRelated {
     #[doc = "Link to resource's owner"]
@@ -6138,7 +6138,7 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6280,7 +6280,7 @@ impl tabled::Tabled for MessageTemplateResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactGroupResponsesUnderscoreLinksRelated {
     #[doc = "Link to group contacts"]
@@ -6324,7 +6324,7 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactGroupResponsesUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6487,7 +6487,7 @@ impl tabled::Tabled for ContactNoteResponses {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseUnderscoreLinksRelated {
     #[doc = "Link to channel inbox"]
@@ -6531,7 +6531,7 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6620,7 +6620,7 @@ pub enum Types {
 
 #[doc = "Channel settings"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseSettings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -6769,7 +6769,7 @@ impl tabled::Tabled for ChannelResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommentResponseUnderscoreLinksRelated {
     #[doc = "Link to comment's conversation"]
@@ -6813,7 +6813,7 @@ impl tabled::Tabled for CommentResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommentResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6938,7 +6938,7 @@ impl tabled::Tabled for CommentResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactResponseUnderscoreLinksRelated {
     #[doc = "Link to contact notes"]
@@ -6994,7 +6994,7 @@ impl tabled::Tabled for ContactResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7164,7 +7164,7 @@ impl tabled::Tabled for ContactResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseUnderscoreLinksRelated {
     #[doc = "Link to conversation events"]
@@ -7247,7 +7247,7 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7321,7 +7321,7 @@ pub enum ConversationResponseStatus {
 
 #[doc = "Optional metadata about the conversation"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseMetadata {
     #[doc = "List of external_ids for partner channel associated with the conversation. Only \
@@ -7493,7 +7493,7 @@ impl tabled::Tabled for ConversationResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7557,7 +7557,7 @@ pub enum CustomFieldResponseType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -7630,7 +7630,7 @@ impl tabled::Tabled for CustomFieldResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxResponseUnderscoreLinksRelated {
     #[doc = "Link to inbox teammates"]
@@ -7695,7 +7695,7 @@ impl tabled::Tabled for InboxResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7802,7 +7802,7 @@ impl tabled::Tabled for InboxResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseUnderscoreLinksRelated {
     #[doc = "Link to message converation"]
@@ -7858,7 +7858,7 @@ impl tabled::Tabled for MessageResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7970,7 +7970,7 @@ pub enum DraftMode {
 
 #[doc = "Optional metadata about the message"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseMetadata {
     #[doc = "For `intercom` messages only. URL of the Intercom conversation the message is \
@@ -8273,7 +8273,7 @@ impl tabled::Tabled for MessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RecipientResponseUnderscoreLinksRelated {
     #[doc = "Link to recipient contact"]
@@ -8307,7 +8307,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RecipientResponseUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8434,7 +8434,7 @@ impl tabled::Tabled for RecipientResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReminderUnderscoreLinksRelated {
     #[doc = "Link to conversation owner"]
@@ -8468,7 +8468,7 @@ impl tabled::Tabled for ReminderUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReminderUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8565,7 +8565,7 @@ impl tabled::Tabled for Reminder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RoleResponseUnderscoreLinksRelated {
     #[doc = "Link to role owner"]
@@ -8599,7 +8599,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RoleResponseUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8687,7 +8687,7 @@ impl tabled::Tabled for RoleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RuleResponseUnderscoreLinksRelated {
     #[doc = "Link to rule owner"]
@@ -8721,7 +8721,7 @@ impl tabled::Tabled for RuleResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RuleResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -8837,7 +8837,7 @@ impl tabled::Tabled for RuleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SeenReceiptResponseUnderscoreLinksRelated {
     #[doc = "Link to message associated with the seen record"]
@@ -8871,7 +8871,7 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SeenReceiptResponseUnderscoreLinks {
     #[doc = "Link to self"]
@@ -8968,7 +8968,7 @@ impl tabled::Tabled for SeenReceiptResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftResponseUnderscoreLinksRelated {
     #[doc = "Link to shift teammates"]
@@ -9012,7 +9012,7 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9179,7 +9179,7 @@ impl tabled::Tabled for ShiftResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SignatureResponseUnderscoreLinksRelated {
     #[doc = "Link to signature's owner (either a team or teammate)"]
@@ -9213,7 +9213,7 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SignatureResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9357,7 +9357,7 @@ impl tabled::Tabled for SignatureResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagResponseUnderscoreLinksRelated {
     #[doc = "Link to tag conversations"]
@@ -9413,7 +9413,7 @@ impl tabled::Tabled for TagResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9557,7 +9557,7 @@ impl tabled::Tabled for TagResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeamResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9664,7 +9664,7 @@ impl tabled::Tabled for TeamResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateResponseUnderscoreLinksRelated {
     #[doc = "Link to teammate's inboxes"]
@@ -9708,7 +9708,7 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9861,7 +9861,7 @@ impl tabled::Tabled for TeammateResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct LinkResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9896,7 +9896,7 @@ impl tabled::Tabled for LinkResponseUnderscoreLinks {
 
 #[doc = "A link used to connect a Front conversation to an external resource."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct LinkResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -9992,7 +9992,7 @@ pub enum SortOrder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Pagination {
     #[doc = "Link to next page of results"]
@@ -10026,7 +10026,7 @@ impl tabled::Tabled for Pagination {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10117,7 +10117,7 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10208,7 +10208,7 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfSignaturesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10299,7 +10299,7 @@ impl tabled::Tabled for ListOfSignaturesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfInboxesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10375,7 +10375,7 @@ impl tabled::Tabled for ListOfInboxesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCommentsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10451,7 +10451,7 @@ impl tabled::Tabled for ListOfCommentsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTeamsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10527,7 +10527,7 @@ impl tabled::Tabled for ListOfTeamsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTeammatesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10603,7 +10603,7 @@ impl tabled::Tabled for ListOfTeammatesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfShiftsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10679,7 +10679,7 @@ impl tabled::Tabled for ListOfShiftsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10770,7 +10770,7 @@ impl tabled::Tabled for ListOfContactsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfAccountsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10861,7 +10861,7 @@ impl tabled::Tabled for ListOfAccountsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactGroupsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10937,7 +10937,7 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactNotesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11013,7 +11013,7 @@ impl tabled::Tabled for ListOfContactNotesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfMessagesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11104,7 +11104,7 @@ impl tabled::Tabled for ListOfMessagesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11195,7 +11195,7 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfConversationsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11344,7 +11344,7 @@ impl tabled::Tabled for ListOfConversationSearchResultsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfEventsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11435,7 +11435,7 @@ impl tabled::Tabled for ListOfEventsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfRolesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11511,7 +11511,7 @@ impl tabled::Tabled for ListOfRolesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfRulesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11587,7 +11587,7 @@ impl tabled::Tabled for ListOfRulesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTagsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11663,7 +11663,7 @@ impl tabled::Tabled for ListOfTagsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfLinksApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11739,7 +11739,7 @@ impl tabled::Tabled for ListOfLinksApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfChannelsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11815,7 +11815,7 @@ impl tabled::Tabled for ListOfChannelsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11891,7 +11891,7 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedMessageApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11934,7 +11934,7 @@ impl tabled::Tabled for AcceptedMessageApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedCannedAnswerFolderDeletionApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11980,7 +11980,7 @@ impl tabled::Tabled for AcceptedCannedAnswerFolderDeletionApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12013,7 +12013,7 @@ impl tabled::Tabled for AcceptedApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAccountsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12104,7 +12104,7 @@ impl tabled::Tabled for ListAccountsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAccountContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12195,7 +12195,7 @@ impl tabled::Tabled for ListAccountContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListEventsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12286,7 +12286,7 @@ impl tabled::Tabled for ListEventsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12377,7 +12377,7 @@ impl tabled::Tabled for ListFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12468,7 +12468,7 @@ impl tabled::Tabled for ListTeamFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12559,7 +12559,7 @@ impl tabled::Tabled for ListTeammateFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetChildFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12650,7 +12650,7 @@ impl tabled::Tabled for GetChildFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetChildTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12741,7 +12741,7 @@ impl tabled::Tabled for GetChildTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteFolderResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12787,7 +12787,7 @@ impl tabled::Tabled for DeleteFolderResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12878,7 +12878,7 @@ impl tabled::Tabled for ListMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12969,7 +12969,7 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13060,7 +13060,7 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13136,7 +13136,7 @@ impl tabled::Tabled for ListGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13212,7 +13212,7 @@ impl tabled::Tabled for ListTeamGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13288,7 +13288,7 @@ impl tabled::Tabled for ListTeammateGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListGroupContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13379,7 +13379,7 @@ impl tabled::Tabled for ListGroupContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13470,7 +13470,7 @@ impl tabled::Tabled for ListContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13561,7 +13561,7 @@ impl tabled::Tabled for ListTeamContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13652,7 +13652,7 @@ impl tabled::Tabled for ListTeammateContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13743,7 +13743,7 @@ impl tabled::Tabled for ListContactConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListNotesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13819,7 +13819,7 @@ impl tabled::Tabled for ListNotesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13895,7 +13895,7 @@ impl tabled::Tabled for ListChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13971,7 +13971,7 @@ impl tabled::Tabled for ListTeamChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14047,7 +14047,7 @@ impl tabled::Tabled for ListTeammateChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ValidateChannelResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14080,7 +14080,7 @@ impl tabled::Tabled for ValidateChannelResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14156,7 +14156,7 @@ impl tabled::Tabled for ListInboxChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationCommentsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14232,7 +14232,7 @@ impl tabled::Tabled for ListConversationCommentsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListCommentMentionsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14308,7 +14308,7 @@ impl tabled::Tabled for ListCommentMentionsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14399,7 +14399,7 @@ impl tabled::Tabled for ListConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddConversationLinkRequestBody {
     #[doc = "Link IDs to add. Either link_ids or link_external_urls must be specified but not both"]
@@ -14444,7 +14444,7 @@ impl tabled::Tabled for AddConversationLinkRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RemoveConversationLinkRequestBody {
     #[doc = "Link IDs to remove."]
@@ -14473,7 +14473,7 @@ impl tabled::Tabled for RemoveConversationLinkRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14549,7 +14549,7 @@ impl tabled::Tabled for ListConversationInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationFollowersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14625,7 +14625,7 @@ impl tabled::Tabled for ListConversationFollowersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddConversationFollowersRequestBody {
     #[doc = "IDs of the teammate to add to the followers list."]
@@ -14654,7 +14654,7 @@ impl tabled::Tabled for AddConversationFollowersRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteConversationFollowersRequestBody {
     #[doc = "IDs of the teammate to remove from the followers list."]
@@ -14683,7 +14683,7 @@ impl tabled::Tabled for DeleteConversationFollowersRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationMessagesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14774,7 +14774,7 @@ impl tabled::Tabled for ListConversationMessagesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationEventsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14865,7 +14865,7 @@ impl tabled::Tabled for ListConversationEventsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactCustomFieldsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14941,7 +14941,7 @@ impl tabled::Tabled for ListContactCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListCustomFieldsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15017,7 +15017,7 @@ impl tabled::Tabled for ListCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationDraftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15108,7 +15108,7 @@ impl tabled::Tabled for ListConversationDraftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15184,7 +15184,7 @@ impl tabled::Tabled for ListInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15260,7 +15260,7 @@ impl tabled::Tabled for ListTeamInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15351,7 +15351,7 @@ impl tabled::Tabled for ListInboxConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15427,7 +15427,7 @@ impl tabled::Tabled for ListInboxTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetMessageSeenStatusResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15518,7 +15518,7 @@ impl tabled::Tabled for GetMessageSeenStatusResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MarkMessageSeenRequestBody {}
 
@@ -15544,7 +15544,7 @@ impl tabled::Tabled for MarkMessageSeenRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReceiveCustomMessageResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15587,7 +15587,7 @@ impl tabled::Tabled for ReceiveCustomMessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportInboxMessageResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15630,7 +15630,7 @@ impl tabled::Tabled for ImportInboxMessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15706,7 +15706,7 @@ impl tabled::Tabled for ListRulesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15782,7 +15782,7 @@ impl tabled::Tabled for ListTeamRulesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15916,7 +15916,7 @@ impl tabled::Tabled for SearchConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15992,7 +15992,7 @@ impl tabled::Tabled for ListShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16068,7 +16068,7 @@ impl tabled::Tabled for ListTeamShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16144,7 +16144,7 @@ impl tabled::Tabled for ListTeammateShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListShiftTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16220,7 +16220,7 @@ impl tabled::Tabled for ListShiftTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateSignaturesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16311,7 +16311,7 @@ impl tabled::Tabled for ListTeammateSignaturesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamSignaturesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16402,7 +16402,7 @@ impl tabled::Tabled for ListTeamSignaturesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16478,7 +16478,7 @@ impl tabled::Tabled for ListTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16554,7 +16554,7 @@ impl tabled::Tabled for ListTeamTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16630,7 +16630,7 @@ impl tabled::Tabled for ListTeammateTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTagChildrenResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16706,7 +16706,7 @@ impl tabled::Tabled for ListTagChildrenResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTaggedConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16797,7 +16797,7 @@ impl tabled::Tabled for ListTaggedConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16873,7 +16873,7 @@ impl tabled::Tabled for ListTeamsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16949,7 +16949,7 @@ impl tabled::Tabled for ListTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAssignedConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17040,7 +17040,7 @@ impl tabled::Tabled for ListAssignedConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17116,7 +17116,7 @@ impl tabled::Tabled for ListTeammateInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListLinkConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17207,7 +17207,7 @@ impl tabled::Tabled for ListLinkConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListLinksResponseUnderscoreLinks {
     #[doc = "Link to resource"]

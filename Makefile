@@ -15,7 +15,7 @@ gusto:
 front:
 	../kittycad.rs/target/debug/openapitor \
 		--input specs/front.json \
-		--version 0.0.1 \
+		--version 0.0.2 \
 		--output ./front \
 		--name front-api \
 		--base-url https://api2.frontapp.com \

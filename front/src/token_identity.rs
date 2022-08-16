@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct TokenIdentity {
     pub client: Client,
@@ -11,7 +12,11 @@ impl TokenIdentity {
         Self { client }
     }
 
-    #[doc = "API Token details\n\nFetch the details of the API token.\n\n```rust,no_run\nasync fn example_token_identity_get() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::IdentityResponse = client.token_identity().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "API Token details\n\nFetch the details of the API token.\n\n```rust,no_run\nasync fn \
+             example_token_identity_get() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::IdentityResponse = client.token_identity().get().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
@@ -30,7 +35,6 @@ impl TokenIdentity {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

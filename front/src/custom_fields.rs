@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct CustomFields {
     pub client: Client,
@@ -11,7 +12,13 @@ impl CustomFields {
         Self { client }
     }
 
-    #[doc = "List Contact's custom fields\n\nLists the custom fields in your company that are application to a Contact.\n\n```rust,no_run\nasync fn example_custom_fields_list_contact() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListContactCustomFieldsResponse =\n        client.custom_fields().list_contact().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Contact's custom fields\n\nLists the custom fields in your company that are \
+             application to a Contact.\n\n```rust,no_run\nasync fn \
+             example_custom_fields_list_contact() -> anyhow::Result<()> {\n    let client = \
+             front_api::Client::new_from_env();\n    let result: \
+             front_api::types::ListContactCustomFieldsResponse =\n        \
+             client.custom_fields().list_contact().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_contact<'a>(
         &'a self,
@@ -30,14 +37,21 @@ impl CustomFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "List Contact's custom fields\n\nLists the custom fields in your company that are application to a Contact.\n> ⚠\u{fe0f} Deprecated endpoint\n>\n> This endpoint has been deprecated. Please use the fully compatible `GET /contacts/custom_fields` endpoint instead.\n\n\n**NOTE:** This operation is marked as deprecated.\n\n```rust,no_run\nasync fn example_custom_fields_list() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ListCustomFieldsResponse = client.custom_fields().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Contact's custom fields\n\nLists the custom fields in your company that are \
+             application to a Contact.\n> ⚠\u{fe0f} Deprecated endpoint\n>\n> This endpoint has \
+             been deprecated. Please use the fully compatible `GET /contacts/custom_fields` \
+             endpoint instead.\n\n\n**NOTE:** This operation is marked as \
+             deprecated.\n\n```rust,no_run\nasync fn example_custom_fields_list() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::ListCustomFieldsResponse = \
+             client.custom_fields().list().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -56,7 +70,6 @@ impl CustomFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -75,7 +88,7 @@ impl CustomFields {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "custom_fields/{custom_field_id}".replace("{custom_field_id}", &custom_field_id)
+                "custom_fields/{custom_field_id}".replace("{custom_field_id}", custom_field_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
