@@ -13,11 +13,25 @@ gusto:
 # Spec is from: https://github.com/frontapp/front-api-specs/blob/main/core-api/core-api.json
 .PHONY: front
 front:
-	../kittycad.rs/target/debug/openapitor \
+	openapitor \
 		--input specs/front.json \
 		--version 0.0.2 \
 		--output ./front \
 		--name front-api \
 		--base-url https://api2.frontapp.com \
 		--description "A fully generated & opinionated API client for the Front API."
+
+# Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
+.PHONY: mailchimp
+mailchimp:
+	../kittycad.rs/target/debug/openapitor \
+		--input specs/mailchimp.json \
+		--version 0.0.2 \
+		--output ./mailchimp \
+		--name mailchimp-api \
+		--base-url https://us1.api.mailchimp.com \
+		--description "A fully generated & opinionated API client for the MailChimp API." \
+		--token-endpoint "https://login.mailchimp.com/oauth2/token" \
+		--user-consent-endpoint "https://login.mailchimp.com/oauth2/authorize"
+
 
