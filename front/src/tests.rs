@@ -27,7 +27,6 @@ async fn test_front_contacts() {
         assert_eq!(name, "test_name".to_string());
     }
     
-    // new_contact.name = Some("update_name".to_string());
     let contact_id = contact.id.unwrap();
     let updated_contact_body = crate::types::Contact {
         name: Some("update_name".to_string()),
