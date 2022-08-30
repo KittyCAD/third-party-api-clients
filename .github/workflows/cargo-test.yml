@@ -80,6 +80,7 @@ jobs:
         env:
           ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
           RUST_BACKTRACE: 1
+          FRONT_API_TOKEN: ${{secrets.FRONT_API_TOKEN}}
 
           # TODO: turn back on coverage.
           #- name: Run cargo-tarpaulin
