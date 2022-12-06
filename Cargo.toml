@@ -3,5 +3,6 @@ members = [
 	"front",
 	"gusto",
 	"pagerduty",
+	"remote",
 	"zendesk"
 ]

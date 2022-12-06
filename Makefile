@@ -21,3 +21,14 @@ front:
 		--base-url https://api2.frontapp.com \
 		--description "A fully generated & opinionated API client for the Front API."
 
+.PHONY: remote
+remote:
+	openapitor \
+		--input specs/remote.json \
+		--version 0.1.0 \
+		--output ./remote \
+		--name remote-api \
+		--description "A fully generated & opinionated API client for the Remote API." \
+		--base-url "https://gateway.remote.com" \
+		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
+
