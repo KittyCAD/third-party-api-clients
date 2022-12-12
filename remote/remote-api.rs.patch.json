@@ -1,0 +1,154 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = remote-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `REMOTE_API_TOKEN`.\nlet client = remote_api::Client::new_from_env();",
+      "install": "[dependencies]\nremote-api = \"0.1.0\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1company-managers/get/x-rust",
+    "value": {
+      "example": "/// List Company Managers\n/// \n/// List all company managers of an integration. If filtered by the company_id param,\n/// it lists only company managers belonging to the specified company.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `company_id: Option<String>`: A Company ID to filter the results (only applicable for Integration Partners).\n/// - `page: Option<i64>`: Starts fetching records after the given page\n/// - `page_size: Option<i64>`: Change the amount of records returned per page, defaults to 20, limited to 100\nasync fn example_company_managers_get_index() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::CompanyManagersResponse = client\n        .company_managers()\n        .get_index(\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/company_managers/struct.CompanyManagers.html#method.get_index"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1company-managers/post/x-rust",
+    "value": {
+      "example": "/// Create and invite a Company Manager\n/// \n/// Create a Company Manager and sends the invitation email for signing in to the Remote Platform.\nasync fn example_company_managers_post_create() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::CompanyManagerCreatedResponse = client\n        .company_managers()\n        .post_create(&remote_api::types::CompanyManagerParams {\n            company_id: Some(\"some-string\".to_string()),\n            email: \"email@example.com\".to_string(),\n            name: \"some-string\".to_string(),\n            role: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/company_managers/struct.CompanyManagers.html#method.post_create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1countries/get/x-rust",
+    "value": {
+      "example": "/// List countries\n/// \n/// Returns a list of all countries that are supported by Remote API alphabetically ordered.\nasync fn example_countries_get_supported_country() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::CountriesResponse =\n        client.countries().get_supported_country().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/countries/struct.Countries.html#method.get_supported_country"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1countries~1{country_code}~1holidays~1{year}/get/x-rust",
+    "value": {
+      "example": "/// List all holidays of a country\n/// \n/// List all holidays of a country for a specific year. Optionally, it can be filtered by country subdivision.\n/// \n/// **Parameters:**\n/// \n/// - `country_code: &'astr`: Country code according to ISO 3166-1 3-digit alphabetic codes (required)\n/// - `country_subdivision_code: Option<String>`: Country subdivision code according to ISO 3166-2 codes\n/// - `year: &'astr`: Year for the holidays (required)\nasync fn example_countries_get_index_holiday() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::HolidaysResponse = client\n        .countries()\n        .get_index_holiday(\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/countries/struct.Countries.html#method.get_index_holiday"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1countries~1{country_code}~1{form}/get/x-rust",
+    "value": {
+      "example": "/// Show form schema\n/// \n/// Returns the json schema of a supported form. Possible form names are:\n/// \n///     - address_details\n///     - administrative_details\n///     - bank_account_details\n///     - billing_address_details\n///     - contract_details\n///     - emergency_contact_details\n///     - employment_document_details\n///     - personal_details\n///     - pricing_plan_details\n/// \n///     \n/// \n/// **Parameters:**\n/// \n/// - `country_code: &'astr`: Country code according to ISO 3-digit alphabetic codes (required)\n/// - `form: &'astr`: Name of the desired form (required)\nasync fn example_countries_get_show_form_country() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::CountryFormResponse = client\n        .countries()\n        .get_show_form_country(\"some-string\", \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/countries/struct.Countries.html#method.get_show_form_country"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1employments/get/x-rust",
+    "value": {
+      "example": "/// List employments\n/// \n/// Lists all employments, except for the deleted ones.\n/// \n/// This endpoint requires and returns country-specific data. The exact required and returned fields will\n/// vary depending on which country the employment is in. To see the list of parameters for each country,\n/// see the **Show form schema** endpoint under the [Countries](#tag/Countries) category.\n/// \n/// Please note that the compliance requirements for each country are subject to change, which will result\n/// in required and optional parameters being added and deleted without notice.\n/// \n/// If you are using this endpoint to build an integration, make sure you are dynamically collecting or\n/// displaying the latest parameters for each country by querying the _\"Show form schema\"_ endpoint.\n/// \n/// For more information on JSON Schemas, see the **How JSON Schemas work** documentation.\n/// \n/// To learn how you can dynamically generate forms to display in your UI, see the documentation for\n/// the [json-schema-form](https://www.notion.so/remotecom/json-schema-form-Documentation-4f390236948b4b2e8b7350ebcd488ca6) tool.\n/// \n/// \n/// \n/// **Parameters:**\n/// \n/// - `company_id: Option<String>`: Company ID\n/// - `page: Option<i64>`: Starts fetching records after the given page\n/// - `page_size: Option<i64>`: Change the amount of records returned per page, defaults to 20, limited to 100\nasync fn example_employments_get_index() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::ListEmploymentsResponse = client\n        .employments()\n        .get_index(\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/employments/struct.Employments.html#method.get_index"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1employments/post/x-rust",
+    "value": {
+      "example": "/// Create employment\n/// \n/// Creates an employment. We support creating employees and contractors.\n/// \n/// This endpoint requires and returns country-specific data. The exact required and returned fields will\n/// vary depending on which country the employment is in. To see the list of parameters for each country,\n/// see the **Show form schema** endpoint under the [Countries](#tag/Countries) category.\n/// \n/// Please note that the compliance requirements for each country are subject to change, which will result\n/// in required and optional parameters being added and deleted without notice.\n/// \n/// If you are using this endpoint to build an integration, make sure you are dynamically collecting or\n/// displaying the latest parameters for each country by querying the _\"Show form schema\"_ endpoint.\n/// \n/// For more information on JSON Schemas, see the **How JSON Schemas work** documentation.\n/// \n/// To learn how you can dynamically generate forms to display in your UI, see the documentation for\n/// the [json-schema-form](https://www.notion.so/remotecom/json-schema-form-Documentation-4f390236948b4b2e8b7350ebcd488ca6) tool.\n/// \n/// \nasync fn example_employments_post_create() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse = client\n        .employments()\n        .post_create(&remote_api::types::EmploymentBasicParams {\n            company_id: \"some-string\".to_string(),\n            country_code: \"some-string\".to_string(),\n            full_name: \"some-string\".to_string(),\n            job_title: \"some-string\".to_string(),\n            personal_email: \"email@example.com\".to_string(),\n            provisional_start_date: Some(chrono::Utc::now().date().naive_utc()),\n            type_: remote_api::types::EmploymentBasicParamsType::Contractor,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/employments/struct.Employments.html#method.post_create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1employments~1{employment_id}/get/x-rust",
+    "value": {
+      "example": "/// Show employment\n/// \n/// Shows all the information of an employment.\n/// \n/// This endpoint requires and returns country-specific data. The exact required and returned fields will\n/// vary depending on which country the employment is in. To see the list of parameters for each country,\n/// see the **Show form schema** endpoint under the [Countries](#tag/Countries) category.\n/// \n/// Please note that the compliance requirements for each country are subject to change, which will result\n/// in required and optional parameters being added and deleted without notice.\n/// \n/// If you are using this endpoint to build an integration, make sure you are dynamically collecting or\n/// displaying the latest parameters for each country by querying the _\"Show form schema\"_ endpoint.\n/// \n/// For more information on JSON Schemas, see the **How JSON Schemas work** documentation.\n/// \n/// To learn how you can dynamically generate forms to display in your UI, see the documentation for\n/// the [json-schema-form](https://www.notion.so/remotecom/json-schema-form-Documentation-4f390236948b4b2e8b7350ebcd488ca6) tool.\n/// \n/// \n/// \n/// **Parameters:**\n/// \n/// - `employment_id: &'astr`: Employment ID (required)\nasync fn example_employments_get_show() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse =\n        client.employments().get_show(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/employments/struct.Employments.html#method.get_show"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1employments~1{employment_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update employment\n/// \n/// Updates an employment.\n/// \n/// **For `created` employments:** You can change all basic params and onboarding tasks or perform a per onboarding task update.\n/// \n/// **For `active` employments:** At this stage, it is only allowed to update the manager (`manager_id` field).\n/// \n/// This endpoint requires and returns country-specific data. The exact required and returned fields will\n/// vary depending on which country the employment is in. To see the list of parameters for each country,\n/// see the **Show form schema** endpoint under the [Countries](#tag/Countries) category.\n/// \n/// Please note that the compliance requirements for each country are subject to change, which will result\n/// in required and optional parameters being added and deleted without notice.\n/// \n/// If you are using this endpoint to build an integration, make sure you are dynamically collecting or\n/// displaying the latest parameters for each country by querying the _\"Show form schema\"_ endpoint.\n/// \n/// For more information on JSON Schemas, see the **How JSON Schemas work** documentation.\n/// \n/// To learn how you can dynamically generate forms to display in your UI, see the documentation for\n/// the [json-schema-form](https://www.notion.so/remotecom/json-schema-form-Documentation-4f390236948b4b2e8b7350ebcd488ca6) tool.\n/// \n/// \n/// Please contact Remote if you need to update contractors via API since it's currently not supported.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `employment_id: &'astr`: Employment ID (required)\nasync fn example_employments_patch_update() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse = client\n        .employments()\n        .patch_update(\n            \"some-string\",\n            &remote_api::types::EmploymentFullParams {\n                address_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                administrative_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                bank_account_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                billing_address_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                company_id: \"some-string\".to_string(),\n                contract_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                country: Some(remote_api::types::Country {\n                    code: \"some-string\".to_string(),\n                    country_subdivisions: Some(vec![remote_api::types::CountrySubdivision {\n                        code: Some(\"some-string\".to_string()),\n                        name: \"some-string\".to_string(),\n                        subdivision_type: Some(\"some-string\".to_string()),\n                    }]),\n                    name: \"some-string\".to_string(),\n                }),\n                emergency_contact_details: Some(serde_json::Value::String(\n                    \"some-string\".to_string(),\n                )),\n                full_name: \"some-string\".to_string(),\n                job_title: \"some-string\".to_string(),\n                manager_id: Some(\"some-string\".to_string()),\n                personal_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                personal_email: \"some-string\".to_string(),\n                pricing_plan_details: Some(remote_api::types::PricingPlanDetails {\n                    frequency: \"some-string\".to_string(),\n                }),\n                provisional_start_date: Some(chrono::Utc::now().date().naive_utc()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/employments/struct.Employments.html#method.patch_update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1employments~1{employment_id}/put/x-rust",
+    "value": {
+      "example": "/// Update employment\n/// \n/// Updates an employment.\n/// \n/// **For `created` employments:** You can change all basic params and onboarding tasks or perform a per onboarding task update.\n/// \n/// **For `active` employments:** At this stage, it is only allowed to update the manager (`manager_id` field).\n/// \n/// This endpoint requires and returns country-specific data. The exact required and returned fields will\n/// vary depending on which country the employment is in. To see the list of parameters for each country,\n/// see the **Show form schema** endpoint under the [Countries](#tag/Countries) category.\n/// \n/// Please note that the compliance requirements for each country are subject to change, which will result\n/// in required and optional parameters being added and deleted without notice.\n/// \n/// If you are using this endpoint to build an integration, make sure you are dynamically collecting or\n/// displaying the latest parameters for each country by querying the _\"Show form schema\"_ endpoint.\n/// \n/// For more information on JSON Schemas, see the **How JSON Schemas work** documentation.\n/// \n/// To learn how you can dynamically generate forms to display in your UI, see the documentation for\n/// the [json-schema-form](https://www.notion.so/remotecom/json-schema-form-Documentation-4f390236948b4b2e8b7350ebcd488ca6) tool.\n/// \n/// \n/// Please contact Remote if you need to update contractors via API since it's currently not supported.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `employment_id: &'astr`: Employment ID (required)\nasync fn example_employments_patch_update_2() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse = client\n        .employments()\n        .patch_update_2(\n            \"some-string\",\n            &remote_api::types::EmploymentFullParams {\n                address_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                administrative_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                bank_account_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                billing_address_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                company_id: \"some-string\".to_string(),\n                contract_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                country: Some(remote_api::types::Country {\n                    code: \"some-string\".to_string(),\n                    country_subdivisions: Some(vec![remote_api::types::CountrySubdivision {\n                        code: Some(\"some-string\".to_string()),\n                        name: \"some-string\".to_string(),\n                        subdivision_type: Some(\"some-string\".to_string()),\n                    }]),\n                    name: \"some-string\".to_string(),\n                }),\n                emergency_contact_details: Some(serde_json::Value::String(\n                    \"some-string\".to_string(),\n                )),\n                full_name: \"some-string\".to_string(),\n                job_title: \"some-string\".to_string(),\n                manager_id: Some(\"some-string\".to_string()),\n                personal_details: Some(serde_json::Value::String(\"some-string\".to_string())),\n                personal_email: \"some-string\".to_string(),\n                pricing_plan_details: Some(remote_api::types::PricingPlanDetails {\n                    frequency: \"some-string\".to_string(),\n                }),\n                provisional_start_date: Some(chrono::Utc::now().date().naive_utc()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/employments/struct.Employments.html#method.patch_update_2"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1sandbox~1employments~1{employment_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update employment in the Sandbox Environment\n/// \n/// Updates an employment. Use this endpoint to modify employment states for testing\n/// in the Sandbox environment. This endpoint will respond with a 404 outside of the\n/// Sandbox environment.\n/// \n/// For updating an employment's parameters outside of testing purposes, use [this\n/// Employment update endpoint](#operation/patch_update_employment).\n/// \n/// \n/// **Parameters:**\n/// \n/// - `employment_id: &'astr`: Employment ID (required)\nasync fn example_sandbox_patch_update_employment_3() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse = client\n        .sandbox()\n        .patch_update_employment_3(\n            \"some-string\",\n            &remote_api::types::EmploymentUpdateParams {\n                status: Some(remote_api::types::EmploymentStatus::Invited),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/sandbox/struct.Sandbox.html#method.patch_update_employment_3"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1sandbox~1employments~1{employment_id}/put/x-rust",
+    "value": {
+      "example": "/// Update employment in the Sandbox Environment\n/// \n/// Updates an employment. Use this endpoint to modify employment states for testing\n/// in the Sandbox environment. This endpoint will respond with a 404 outside of the\n/// Sandbox environment.\n/// \n/// For updating an employment's parameters outside of testing purposes, use [this\n/// Employment update endpoint](#operation/patch_update_employment).\n/// \n/// \n/// **Parameters:**\n/// \n/// - `employment_id: &'astr`: Employment ID (required)\nasync fn example_sandbox_patch_update_employment_4() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::EmploymentResponse = client\n        .sandbox()\n        .patch_update_employment_4(\n            \"some-string\",\n            &remote_api::types::EmploymentUpdateParams {\n                status: Some(remote_api::types::EmploymentStatus::Deleted),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/sandbox/struct.Sandbox.html#method.patch_update_employment_4"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff/get/x-rust",
+    "value": {
+      "example": "/// List Time Off\n/// \n/// Lists all Time Off records.\n/// \n/// **Parameters:**\n/// \n/// - `employment_id: Option<String>`: Only show time off for a specific employment\n/// - `order_by: Option<crate::types::OrderBy>`: Sort order\n/// - `page: Option<i64>`: Starts fetching records after the given page\n/// - `page_size: Option<i64>`: Change the amount of records returned per page, defaults to 20, limited to 100\n/// - `sort_by: Option<crate::types::SortBy>`: Field to sort by\n/// - `status: Option<crate::types::GetIndexTimeoffStatus>`: Filter time off by its status\n/// - `timeoff_type: Option<crate::types::TimeoffType>`: Filter time off by its type\nasync fn example_time_off_get_index_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::ListTimeoffResponse = client\n        .time_off()\n        .get_index_timeoff(\n            Some(\"some-string\".to_string()),\n            Some(remote_api::types::OrderBy::Asc),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(remote_api::types::SortBy::Status),\n            Some(remote_api::types::GetIndexTimeoffStatus::CancelRequested),\n            Some(remote_api::types::TimeoffType::SickLeave),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.get_index_timeoff"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff/post/x-rust",
+    "value": {
+      "example": "/// Create Time Off\n/// \n/// Creates a Time Off record\nasync fn example_time_off_post_create_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .post_create_timeoff(&remote_api::types::CreateApprovedTimeoffParams {})\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.post_create_timeoff"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff~1types/get/x-rust",
+    "value": {
+      "example": "/// List Time Off Types\n/// \n/// Lists all time off types that can be used for the `timeoff_type` parameter\nasync fn example_time_off_get_timeoff_types_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::ListTimeoffTypesResponse =\n        client.time_off().get_timeoff_types_timeoff().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.get_timeoff_types_timeoff"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Show Time Off\n/// \n/// Shows a single Time Off record\n/// \n/// **Parameters:**\n/// \n/// - `timeoff_id: &'astr`: Timeoff ID (required)\nasync fn example_time_off_get_show_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse =\n        client.time_off().get_show_timeoff(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.get_show_timeoff"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff~1{id}/patch/x-rust",
+    "value": {
+      "example": "/// Update Time Off\n/// \n/// Updates a Time Off record. This endpoint can also be used for cancelling a time off.\nasync fn example_time_off_patch_update_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(serde_json::Value::String(\"some-string\".to_string())),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date().naive_utc()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date().naive_utc()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date().naive_utc()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::MilitaryLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.patch_update_timeoff"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1v1~1timeoff~1{id}/put/x-rust",
+    "value": {
+      "example": "/// Update Time Off\n/// \n/// Updates a Time Off record. This endpoint can also be used for cancelling a time off.\nasync fn example_time_off_patch_update_timeoff_2() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff_2(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(serde_json::Value::String(\"some-string\".to_string())),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date().naive_utc()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date().naive_utc()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date().naive_utc()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::SickLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/remote-api/latest/remote-api/time_off/struct.TimeOff.html#method.patch_update_timeoff_2"
+    }
+  }
+]
