@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct FederalTaxDetailsBeta {
     pub client: Client,
@@ -26,7 +27,7 @@ impl FederalTaxDetailsBeta {
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"
-                    .replace("{company_id_or_uuid}", &company_id_or_uuid)
+                    .replace("{company_id_or_uuid}", company_id_or_uuid)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -39,7 +40,6 @@ impl FederalTaxDetailsBeta {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -62,7 +62,7 @@ impl FederalTaxDetailsBeta {
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"
-                    .replace("{company_id_or_uuid}", &company_id_or_uuid)
+                    .replace("{company_id_or_uuid}", company_id_or_uuid)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -76,7 +76,6 @@ impl FederalTaxDetailsBeta {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

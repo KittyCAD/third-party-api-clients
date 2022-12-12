@@ -2,7 +2,7 @@
 gusto:
 	openapitor \
 		--input specs/gusto.v1.yaml \
-		--version 2.1.16 \
+		--version 2.1.17 \
 		--output ./gusto \
 		--name gusto-api \
 		--base-url https://api.gusto.com \

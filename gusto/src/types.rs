@@ -678,7 +678,7 @@ impl tabled::Tabled for Employee {
 
 #[doc = "The representation of an address in Gusto."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Location {
     #[doc = "The unique identifier of the location in Gusto."]
@@ -1074,7 +1074,7 @@ impl tabled::Tabled for Garnishment {
 
 #[doc = "The representation of a termination in Gusto."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Termination {
     #[doc = "The unique identifier of the termination in Gusto."]
@@ -1213,7 +1213,7 @@ pub enum FlsaStatus {
 
 #[doc = "The representation of compensation in Gusto."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Compensation {
     #[doc = "The unique identifier of the compensation in Gusto."]
@@ -1546,7 +1546,7 @@ impl tabled::Tabled for Job {
 
 #[doc = "The representation of an admin user in Gusto."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Admin {
     #[doc = "The email of the admin. This is used by the admin to log in to their account."]
@@ -1756,7 +1756,7 @@ impl tabled::Tabled for Hourly {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Fixed {
     #[doc = "The name of the fixed compensation."]
@@ -1790,7 +1790,7 @@ impl tabled::Tabled for Fixed {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CompensationsPaidTimeOff {
     #[doc = "The name of the paid time off type."]
@@ -1881,7 +1881,7 @@ impl tabled::Tabled for Compensations {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct HomeAddress {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1959,7 +1959,7 @@ impl tabled::Tabled for HomeAddress {
 
 #[doc = "The primary signatory of the company."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PrimarySignatory {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2037,7 +2037,7 @@ impl tabled::Tabled for PrimarySignatory {
 
 #[doc = "The primary payroll admin of the company."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PrimaryPayrollAdmin {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2291,7 +2291,7 @@ pub enum Type {
 
 #[doc = "The contractor’s home address."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Address {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2711,7 +2711,7 @@ impl tabled::Tabled for ContractorPayment {
 
 #[doc = "The wage and reimbursement totals for all contractor payments within a given time period."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Total {
     #[doc = "The total reimbursements for contractor payments within a given time period."]
@@ -2896,6 +2896,9 @@ pub enum Status {
     #[serde(rename = "consumed")]
     #[display("consumed")]
     Consumed,
+    #[serde(rename = "deleted")]
+    #[display("deleted")]
+    Deleted,
 }
 
 #[doc = "The type of time off request."]
@@ -3387,7 +3390,7 @@ pub enum Frequency {
 
 #[doc = "The representation of a pay schedule."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PaySchedule {
     #[doc = "The identifier of the pay schedule."]
@@ -3545,7 +3548,7 @@ pub enum VerificationStatus {
 
 #[doc = "The company bank account"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CompanyBankAccount {
     #[doc = "UUID of the bank account"]
@@ -3867,7 +3870,7 @@ impl tabled::Tabled for CompanyBenefit {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EarningType {
     #[doc = "The name of the earning type."]
@@ -4179,7 +4182,7 @@ impl tabled::Tabled for EligibleEmployees {
 
 #[doc = "Information about the payroll for the pay period."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PayPeriodPayroll {
     #[doc = "Whether or not the payroll has been successfully processed. Note that processed \
@@ -4377,7 +4380,7 @@ impl tabled::Tabled for PayrollPayPeriod {
 
 #[doc = "The subtotals for the payroll."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Totals {
     #[doc = "The total company debit for the payroll."]
@@ -4734,7 +4737,7 @@ impl tabled::Tabled for HourlyCompensations {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EmployeeCompensationsPaidTimeOff {
     #[doc = "The name of the PTO. This also serves as the unique, immutable identifier for the \
@@ -4779,7 +4782,7 @@ impl tabled::Tabled for EmployeeCompensationsPaidTimeOff {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Benefits {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4840,7 +4843,7 @@ impl tabled::Tabled for Benefits {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Deductions {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4882,7 +4885,7 @@ impl tabled::Tabled for Deductions {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Taxes {
     pub name: String,
@@ -5232,7 +5235,7 @@ pub enum CustomFieldType {
 
 #[doc = "A custom field of an employee"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EmployeeCustomField {
     pub id: String,
@@ -5296,7 +5299,7 @@ impl tabled::Tabled for EmployeeCustomField {
 
 #[doc = "A custom field on a company"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CompanyCustomField {
     pub id: String,
@@ -5506,7 +5509,7 @@ impl tabled::Tabled for JobApplicant {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct FederalTaxDetails {
     #[doc = "The current version of the object. See the versioning guide for details using this \
@@ -5603,7 +5606,7 @@ impl tabled::Tabled for FederalTaxDetails {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CompensationObjectApplicationXml {}
 
@@ -5629,7 +5632,7 @@ impl tabled::Tabled for CompensationObjectApplicationXml {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EarningTypeListApplicationJson {
     #[doc = "The default earning types for the company."]
@@ -5771,7 +5774,7 @@ impl std::default::Default for GetInclude {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutEmployeesRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -5887,7 +5890,7 @@ impl std::default::Default for GetCompaniesCompanyIdInclude {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdEmployeesRequestBody {}
 
@@ -5914,7 +5917,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdEmployeesRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostEmployeesRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6105,7 +6108,7 @@ impl tabled::Tabled for PostJobsJobIdRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdLocationsRequestBody {
     pub phone_number: String,
@@ -6184,7 +6187,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdLocationsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutLocationsLocationIdRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6308,7 +6311,7 @@ pub enum PutContractorsContractorIdRequestBodyWageType {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutContractorsContractorIdRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -6466,7 +6469,7 @@ pub enum PostCompaniesCompanyIdContractorsRequestBodyWageType {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdContractorsRequestBody {
     #[doc = "The contractor type, either an “Individual” or a “Business”.\n"]
@@ -6580,7 +6583,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdContractorsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompensationsCompensationIdRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -6648,7 +6651,7 @@ impl tabled::Tabled for PutCompensationsCompensationIdRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostJobsJobIdCompensationsRequestBody {
     #[doc = "The dollar amount paid per payment unit."]
@@ -6923,7 +6926,7 @@ impl tabled::Tabled for PutGarnishmentsGarnishmentIdRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostEmployeesEmployeeIdTerminationsRequestBody {
     #[doc = "The employee's last day of work."]
@@ -6972,7 +6975,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdTerminationsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutEmployeesEmployeeIdHomeAddressRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -7047,7 +7050,7 @@ impl tabled::Tabled for PutEmployeesEmployeeIdHomeAddressRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPaySchedulesPayScheduleIdRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -7109,7 +7112,7 @@ pub enum PostCompaniesCompanyIdBankAccountsRequestBodyAccountType {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdBankAccountsRequestBody {
     #[doc = "The bank routing number"]
@@ -7284,7 +7287,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdCompanyBenefitsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompanyBenefitsCompanyBenefitIdRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -7339,7 +7342,7 @@ impl tabled::Tabled for PutCompanyBenefitsCompanyBenefitIdRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdEarningTypesResponse {
     #[doc = "The default earning types for the company."]
@@ -7383,7 +7386,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdEarningTypesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdEarningTypesRequestBody {
     #[doc = "The name of the custom earning type."]
@@ -7412,7 +7415,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdEarningTypesRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdEarningTypesEarningTypeUuidRequestBody {
     #[doc = "The name of the custom earning type."]
@@ -7676,7 +7679,7 @@ impl tabled::Tabled for PostEmployeeYtdBenefitAmountsFromDifferentCompanyRequest
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
     #[doc = "The current version of the object. See the versioning guide for information on how \
@@ -7876,7 +7879,7 @@ pub enum OffCycleReason {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdPayrollsRequestBody {
     pub off_cycle: String,
@@ -7976,7 +7979,7 @@ pub enum GetCompaniesCompanyIdPayrollsIdInclude {
 #[doc = "An array of fixed compensations for the employee. Fixed compensations include tips, \
          bonuses, and one time reimbursements."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensationsFixedCompensations {
     #[doc = "The name of the compensation. This also serves as the unique, immutable identifier \
@@ -8039,7 +8042,7 @@ impl tabled::Tabled
 #[doc = "An array of hourly compensations for the employee. Hourly compensations include regular, \
          overtime, and double overtime hours."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensationsHourlyCompensations {
     #[doc = "The name of the compensation. This also serves as the unique, immutable identifier \
@@ -8100,7 +8103,7 @@ impl tabled::Tabled
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensationsPaidTimeOff {
     #[doc = "The name of the PTO. This also serves as the unique, immutable identifier for the \
@@ -8148,7 +8151,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensa
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensations {
     #[doc = "The ID of the employee."]
@@ -8247,7 +8250,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdPayrollsRequestBody {
 #[doc = "An array of fixed compensations for the employee. Fixed compensations include tips, \
          bonuses, and one time reimbursements."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsFixedCompensations
 {
@@ -8270,7 +8273,7 @@ impl tabled :: Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeri
 #[doc = "An array of hourly compensations for the employee. Hourly compensations include regular, \
          overtime, and double overtime hours."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsHourlyCompensations
 {
@@ -8291,7 +8294,7 @@ impl std :: fmt :: Display for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePa
 impl tabled :: Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsHourlyCompensations { const LENGTH : usize = 3 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (name) = & self . name { format ! ("{:?}" , name) } else { String :: new () } , if let Some (hours) = & self . hours { format ! ("{:?}" , hours) } else { String :: new () } , if let Some (job_id) = & self . job_id { format ! ("{:?}" , job_id) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["name" . to_string () , "hours" . to_string () , "job_id" . to_string ()] } }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsPaidTimeOff
 {
@@ -8310,7 +8313,7 @@ impl tabled :: Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeri
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensations { # [doc = "The ID of the employee."] pub employee_id : i64 , # [serde (default , skip_serializing_if = "Option::is_none")] pub fixed_compensations : Option < Vec < PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsFixedCompensations > > , # [serde (default , skip_serializing_if = "Option::is_none")] pub hourly_compensations : Option < Vec < PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsHourlyCompensations > > , # [doc = "An array of all paid time off the employee is eligible for this pay period."] # [serde (default , skip_serializing_if = "Option::is_none")] pub paid_time_off : Option < Vec < PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsPaidTimeOff > > , }
 
@@ -8351,7 +8354,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriod
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostPartnerManagedCompaniesResponse {
     #[doc = "Access token that can be used for OAuth access to the account. Access tokens expire \
@@ -8410,7 +8413,7 @@ impl tabled::Tabled for PostPartnerManagedCompaniesResponse {
 #[doc = "Information for the user who will be the primary payroll administrator for the new \
          company."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct User {
     #[doc = "The first name of the user who will be the primary payroll admin."]
@@ -8460,7 +8463,7 @@ impl tabled::Tabled for User {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostPartnerManagedCompaniesRequestBodyCompany {
     #[doc = "The legal name of the company."]
@@ -8512,7 +8515,7 @@ impl tabled::Tabled for PostPartnerManagedCompaniesRequestBodyCompany {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostPartnerManagedCompaniesRequestBody {
     #[doc = "Information for the user who will be the primary payroll administrator for the new \
@@ -8544,7 +8547,7 @@ impl tabled::Tabled for PostPartnerManagedCompaniesRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostProvisionResponse {
     #[doc = "A URL where the user should be redirected to complete their account setup inside of \
@@ -8579,7 +8582,7 @@ impl tabled::Tabled for PostProvisionResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Addresses {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8780,7 +8783,7 @@ impl tabled::Tabled for PostProvisionRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetEmployeesEmployeeIdCustomFieldsResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8813,7 +8816,7 @@ impl tabled::Tabled for GetEmployeesEmployeeIdCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdCustomFieldsResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8867,7 +8870,7 @@ pub enum OnboardingPersonType {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdJobApplicantsRequestBody {
     pub first_name: String,
@@ -8956,7 +8959,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdJobApplicantsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdJobApplicantsJobApplicantUuidRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9059,7 +9062,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdJobApplicantsJobApplicantUuidReques
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdOrUuidPayrollReversalsResponse {
     #[doc = "The payroll run being reversed."]
@@ -9143,7 +9146,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdOrUuidPayrollReversalsResponse {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostCompaniesCompanyIdAdminsRequestBody {
     #[doc = "The email of the admin. This will be used for the admin to log in to their account. \
@@ -9185,7 +9188,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdAdminsRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
     #[doc = "The current version of the object. See the versioning guide for details using this \
@@ -9282,7 +9285,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
     #[doc = "The current version of the object. See the versioning guide for details using this \
@@ -9379,7 +9382,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
     #[doc = "The legal name of the company"]

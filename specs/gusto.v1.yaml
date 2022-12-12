@@ -4631,6 +4631,7 @@ components:
             - approved
             - denied
             - consumed
+            - deleted
           readOnly: true
         employee_note:
           type: string
