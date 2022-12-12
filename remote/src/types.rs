@@ -418,7 +418,8 @@ pub mod error {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -569,7 +570,8 @@ impl tabled::Tabled for ConflictResponse {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -688,7 +690,8 @@ impl tabled::Tabled for LastEditor {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -711,7 +714,8 @@ pub enum ProductType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -746,7 +750,8 @@ pub enum PayrollRunStatus {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1006,7 +1011,8 @@ impl tabled::Tabled for Address {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1403,7 +1409,8 @@ impl tabled::Tabled for CreateApprovedTimeoffParams {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1577,7 +1584,8 @@ impl tabled::Tabled for EmploymentData {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1764,7 +1772,8 @@ impl tabled::Tabled for AddressCountry {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1878,7 +1887,8 @@ impl tabled::Tabled for TimeoffDay {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -1963,7 +1973,8 @@ impl tabled::Tabled for PricingPlanDetails {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -3376,7 +3387,8 @@ impl tabled::Tabled for MinimalEmployment {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -3398,7 +3410,8 @@ pub enum OrderBy {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,
@@ -3420,7 +3433,8 @@ pub enum SortBy {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
+    Eq,
     Hash,
     Debug,
     Clone,

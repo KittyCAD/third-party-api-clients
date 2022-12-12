@@ -5,7 +5,7 @@ async fn test_remote_employments() {
     let mut client = crate::Client::new_from_env();
     client.set_base_url("https://gateway.remote-sandbox.com");
 
-    let test_email = "bob2@bobson.com";
+    let test_email = "bob4@bobson.com";
 
     let managers = client
         .company_managers()
@@ -63,4 +63,20 @@ async fn test_remote_employments() {
         .expect("Employment key was empty on response");
 
     assert_eq!(employment.id, new_employment.id);
+
+    let timeoffs = client
+        .time_off()
+        .get_index_timeoff(None, None, None, None, None, None, None)
+        .await
+        .expect("Timeoffs failed to fetch")
+        .data.expect("Data should exist")
+        .timeoffs.expect("And timeoffs should not be none");
+
+    println!("timeoffs: {:?}", timeoffs);
+
+    // Type gen for create still broken, need to work on generator
+    // let timeoff_created = client.time_off().post_create_timeoff(
+    //     &crate::types::CreateApprovedTimeoffParams {
+    //     }
+    // ).await.expect("Create should succeed");
 }
