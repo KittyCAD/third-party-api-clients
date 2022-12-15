@@ -69,8 +69,10 @@ async fn test_remote_employments() {
         .get_index_timeoff(None, None, None, None, None, None, None)
         .await
         .expect("Timeoffs failed to fetch")
-        .data.expect("Data should exist")
-        .timeoffs.expect("And timeoffs should not be none");
+        .data
+        .expect("Data should exist")
+        .timeoffs
+        .expect("And timeoffs should not be none");
 
     println!("timeoffs: {:?}", timeoffs);
 
