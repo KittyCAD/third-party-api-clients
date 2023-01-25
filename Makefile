@@ -34,4 +34,16 @@ mailchimp:
 		--token-endpoint "https://login.mailchimp.com/oauth2/token" \
 		--user-consent-endpoint "https://login.mailchimp.com/oauth2/authorize"
 
+.PHONY: ramp
+ramp:
+	../kittycad.rs/target/debug/openapitor \
+		--input specs/ramp.json \
+		--version 0.0.2 \
+		--output ./ramp \
+		--name ramp-api \
+		--base-url https://api.ramp.com/developer/v1 \
+		--description "A fully generated & opinionated API client for the ramp API." \
+		--token-endpoint "https://api.ramp.com/v1/public/customer/token" \
+		--user-consent-endpoint "https://app.ramp.com/v1/authorize"
+
 
