@@ -25,7 +25,7 @@ impl ReceiptIntegrations {
                 self.client.base_url,
                 "developer/v1/receipt-integrations/opt-out/{mailbox_opted_out_email_uuid}".replace(
                     "{mailbox_opted_out_email_uuid}",
-                    mailbox_opted_out_email_uuid
+                    &mailbox_opted_out_email_uuid
                 )
             ),
         );
@@ -76,6 +76,7 @@ impl ReceiptIntegrations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -107,6 +108,7 @@ impl ReceiptIntegrations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

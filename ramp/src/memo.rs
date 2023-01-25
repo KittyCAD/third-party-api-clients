@@ -29,7 +29,7 @@ impl Memo {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "developer/v1/memos/{transaction_id}".replace("{transaction_id}", transaction_id)
+                "developer/v1/memos/{transaction_id}".replace("{transaction_id}", &transaction_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -42,13 +42,14 @@ impl Memo {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Returns a list of memos that meets the criteria\n\n**Parameters:**\n\n- `card_id: Option<String>`\n- `department_id: Option<String>`\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `location_id: Option<String>`\n- `manager_id: Option<String>`\n- `merchant_id: Option<String>`\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`\n- `user_id: Option<String>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMemoResourceSchema = client\n        .memo()\n        .get_list_with_pagination(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Returns a list of memos that meets the criteria\n\n**Parameters:**\n\n- `card_id: Option<String>`\n- `department_id: Option<String>`\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `location_id: Option<String>`\n- `manager_id: Option<String>`\n- `merchant_id: Option<String>`\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`\n- `user_id: Option<String>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMemoResourceSchema = client\n        .memo()\n        .get_list_with_pagination(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_memo_get_list_with_pagination_stream() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let mut memo = client.memo();\n    let mut stream = memo.get_list_with_pagination_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(chrono::Utc::now()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(4 as i64),\n        Some(chrono::Utc::now()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
         &'a self,
@@ -120,9 +121,87 @@ impl Memo {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
+    }
+
+    #[doc = "Returns a list of memos that meets the criteria\n\n**Parameters:**\n\n- `card_id: Option<String>`\n- `department_id: Option<String>`\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `location_id: Option<String>`\n- `manager_id: Option<String>`\n- `merchant_id: Option<String>`\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`\n- `user_id: Option<String>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMemoResourceSchema = client\n        .memo()\n        .get_list_with_pagination(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_memo_get_list_with_pagination_stream() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let mut memo = client.memo();\n    let mut stream = memo.get_list_with_pagination_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(chrono::Utc::now()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(4 as i64),\n        Some(chrono::Utc::now()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
+    #[tracing::instrument]
+    pub fn get_list_with_pagination_stream<'a>(
+        &'a self,
+        card_id: Option<String>,
+        department_id: Option<String>,
+        from_date: Option<chrono::DateTime<chrono::Utc>>,
+        location_id: Option<String>,
+        manager_id: Option<String>,
+        merchant_id: Option<String>,
+        page_size: Option<i64>,
+        to_date: Option<chrono::DateTime<chrono::Utc>>,
+        user_id: Option<String>,
+    ) -> impl futures::Stream<Item = Result<crate::types::Memo, crate::types::error::Error>> + Unpin + '_
+    {
+        use futures::{StreamExt, TryFutureExt, TryStreamExt};
+
+        use crate::types::paginate::Pagination;
+        self.get_list_with_pagination(
+            card_id,
+            department_id,
+            from_date,
+            location_id,
+            manager_id,
+            merchant_id,
+            page_size,
+            None,
+            to_date,
+            user_id,
+        )
+        .map_ok(move |result| {
+            let items = futures::stream::iter(result.items().into_iter().map(Ok));
+            let next_pages = futures::stream::try_unfold(result, move |new_result| async move {
+                if new_result.has_more_pages() {
+                    async {
+                        let mut req = self.client.client.request(
+                            http::Method::GET,
+                            &format!("{}/{}", self.client.base_url, "developer/v1/memos/"),
+                        );
+                        req = req.bearer_auth(&self.client.token.read().await.access_token);
+                        let mut request = req.build()?;
+                        request = new_result.next_page(request)?;
+                        let resp = self.client.client.execute(request).await?;
+                        let status = resp.status();
+                        if status.is_success() {
+                            let text = resp.text().await.unwrap_or_default();
+                            serde_json::from_str(&text).map_err(|err| {
+                                crate::types::error::Error::from_serde_error(
+                                    format_serde_error::SerdeError::new(text.to_string(), err),
+                                    status,
+                                )
+                                .into()
+                            })
+                        } else {
+                            Err(crate::types::error::Error::UnexpectedResponse(resp))
+                        }
+                    }
+                    .map_ok(
+                        |result: crate::types::PaginatedResponseApiMemoResourceSchema| {
+                            Some((
+                                futures::stream::iter(result.items().into_iter().map(Ok)),
+                                result,
+                            ))
+                        },
+                    )
+                    .await
+                } else {
+                    Ok(None)
+                }
+            })
+            .try_flatten();
+            items.chain(next_pages)
+        })
+        .try_flatten_stream()
+        .boxed()
     }
 }

@@ -34,6 +34,7 @@ impl CustomIdProvider {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -67,6 +68,7 @@ impl CustomIdProvider {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -118,8 +120,8 @@ impl CustomIdProvider {
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/custom-id-provider/{entity_type}/{custom_id}/ramp-id"
-                    .replace("{custom_id}", custom_id)
-                    .replace("{entity_type}", entity_type)
+                    .replace("{custom_id}", &custom_id)
+                    .replace("{entity_type}", &entity_type)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -132,6 +134,7 @@ impl CustomIdProvider {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -158,8 +161,8 @@ impl CustomIdProvider {
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/custom-id-provider/{entity_type}/{ramp_id}/custom-id"
-                    .replace("{entity_type}", entity_type)
-                    .replace("{ramp_id}", ramp_id)
+                    .replace("{entity_type}", &entity_type)
+                    .replace("{ramp_id}", &ramp_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -172,13 +175,14 @@ impl CustomIdProvider {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
+                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Add custom id <-> ramp id mapping\n\n**Parameters:**\n\n- `entity_type: &'astr` (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_custom_id_provider_post_create_custom_id_mapping() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    client\n        .custom_id_provider()\n        .post_create_custom_id_mapping(\n            \"some-string\",\n            &ramp_api::types::ApiCustomIdMapping {\n                custom_id: ramp_api::types::ApiCustomIdMappingCustomId::T,\n                ramp_id: uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add custom id <-> ramp id mapping\n\n**Parameters:**\n\n- `entity_type: &'astr` (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_custom_id_provider_post_create_custom_id_mapping() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    client\n        .custom_id_provider()\n        .post_create_custom_id_mapping(\n            \"some-string\",\n            &ramp_api::types::ApiCustomIdMapping {\n                custom_id: ramp_api::types::ApiCustomIdMappingCustomId::H,\n                ramp_id: uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_create_custom_id_mapping<'a>(
         &'a self,
@@ -191,7 +195,7 @@ impl CustomIdProvider {
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/custom-id-provider/{entity_type}/custom-id-link"
-                    .replace("{entity_type}", entity_type)
+                    .replace("{entity_type}", &entity_type)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
