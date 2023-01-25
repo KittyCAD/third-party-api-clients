@@ -4,20 +4,20 @@
 //!
 //! ## API Details
 //!
-//! 
 //!
-//! 
 //!
-//! 
-//! 
+//!
+//!
+//!
+//!
 //!
 //! ## Client Details
 //!
-//! 
+//!
 //!
 //! The documentation for the crate is generated
 //! along with the code to make this library easy to use.
-//! 
+//!
 //!
 //! To install the library, add the following to your `Cargo.toml` file.
 //!
@@ -57,14 +57,10 @@
 //!
 //! let client = Client::new_from_env(String::from("token"), String::from("refresh-token"));
 //! ```
-//!
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[cfg(test)]
-mod tests;
-pub mod types;
 #[doc(hidden)]
 pub mod business;
 pub mod card;
@@ -72,27 +68,31 @@ pub mod card_program;
 pub mod custom_id_provider;
 pub mod department;
 pub mod location;
-pub mod receipt;
-pub mod reimbursement;
-pub mod token;
-pub mod transaction;
-pub mod user;
 pub mod memo;
 pub mod merchant;
-pub mod sales_lead;
+pub mod receipt;
 pub mod receipt_integrations;
+pub mod reimbursement;
+pub mod sales_lead;
+#[cfg(test)]
+mod tests;
+pub mod token;
+pub mod transaction;
+pub mod types;
+pub mod user;
 
-
-use std::{env, sync::Arc, convert::TryInto, ops::Add, time::{Duration, Instant}};
+use std::{
+    convert::TryInto,
+    env,
+    ops::Add,
+    sync::Arc,
+    time::{Duration, Instant},
+};
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-static APP_USER_AGENT: &str = concat!(
-    env!("CARGO_PKG_NAME"),
-    ".rs/",
-    env!("CARGO_PKG_VERSION"),
-);
+static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
@@ -111,32 +111,20 @@ pub struct Client {
 /// An access token.
 #[derive(Debug, JsonSchema, Clone, Default, Serialize, Deserialize)]
 pub struct AccessToken {
-    #[serde(
-        default,
-        skip_serializing_if = "String::is_empty",
-    )]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub token_type: String,
 
-    #[serde(
-        default,
-        skip_serializing_if = "String::is_empty",
-    )]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub access_token: String,
     #[serde(default)]
     pub expires_in: i64,
 
-    #[serde(
-        default,
-        skip_serializing_if = "String::is_empty",
-    )]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub refresh_token: String,
     #[serde(default, alias = "x_refresh_token_expires_in")]
     pub refresh_token_expires_in: i64,
 
-    #[serde(
-        default,
-        skip_serializing_if = "String::is_empty",
-    )]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub scope: String,
 }
 
@@ -368,7 +356,11 @@ impl Client {
 
     /// Get an access token from the code returned by the URL paramter sent to the
     /// redirect URL.
-    pub async fn get_access_token(&mut self, code: &str, state: &str) -> anyhow::Result<AccessToken> {
+    pub async fn get_access_token(
+        &mut self,
+        code: &str,
+        state: &str,
+    ) -> anyhow::Result<AccessToken> {
         let mut headers = reqwest::header::HeaderMap::new();
         headers.append(
             reqwest::header::ACCEPT,
@@ -411,8 +403,7 @@ impl Client {
         method: reqwest::Method,
         uri: &str,
         body: Option<reqwest::Body>,
-    ) -> anyhow::Result<reqwest_middleware::RequestBuilder>
-    {
+    ) -> anyhow::Result<reqwest_middleware::RequestBuilder> {
         if self.auto_refresh {
             let expired = self.is_expired().await;
 
@@ -446,10 +437,7 @@ impl Client {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(
-            method,
-            &u,
-        );
+        let mut req = self.client.request(method, &u);
 
         // Add in our authentication.
         req = req.bearer_auth(&self.token.read().await.access_token);
@@ -471,80 +459,78 @@ impl Client {
         Ok(req)
     }
 
+    /// Return a reference to an interface that provides access to Business operations.
+    pub fn business(&self) -> business::Business {
+        business::Business::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Business operations.
-               pub fn business(&self) -> business::Business {
-                    business::Business::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Card operations.
+    pub fn card(&self) -> card::Card {
+        card::Card::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Card operations.
-               pub fn card(&self) -> card::Card {
-                    card::Card::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Card Program operations.
+    pub fn card_program(&self) -> card_program::CardProgram {
+        card_program::CardProgram::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Card Program operations.
-               pub fn card_program(&self) -> card_program::CardProgram {
-                    card_program::CardProgram::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Custom Id Provider operations.
+    pub fn custom_id_provider(&self) -> custom_id_provider::CustomIdProvider {
+        custom_id_provider::CustomIdProvider::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Custom Id Provider operations.
-               pub fn custom_id_provider(&self) -> custom_id_provider::CustomIdProvider {
-                    custom_id_provider::CustomIdProvider::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Department operations.
+    pub fn department(&self) -> department::Department {
+        department::Department::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Department operations.
-               pub fn department(&self) -> department::Department {
-                    department::Department::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Location operations.
+    pub fn location(&self) -> location::Location {
+        location::Location::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Location operations.
-               pub fn location(&self) -> location::Location {
-                    location::Location::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Receipt operations.
+    pub fn receipt(&self) -> receipt::Receipt {
+        receipt::Receipt::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Receipt operations.
-               pub fn receipt(&self) -> receipt::Receipt {
-                    receipt::Receipt::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Reimbursement operations.
+    pub fn reimbursement(&self) -> reimbursement::Reimbursement {
+        reimbursement::Reimbursement::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Reimbursement operations.
-               pub fn reimbursement(&self) -> reimbursement::Reimbursement {
-                    reimbursement::Reimbursement::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Token operations.
+    pub fn token(&self) -> token::Token {
+        token::Token::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Token operations.
-               pub fn token(&self) -> token::Token {
-                    token::Token::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Transaction operations.
+    pub fn transaction(&self) -> transaction::Transaction {
+        transaction::Transaction::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Transaction operations.
-               pub fn transaction(&self) -> transaction::Transaction {
-                    transaction::Transaction::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to User operations.
+    pub fn user(&self) -> user::User {
+        user::User::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to User operations.
-               pub fn user(&self) -> user::User {
-                    user::User::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Memo operations.
+    pub fn memo(&self) -> memo::Memo {
+        memo::Memo::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Memo operations.
-               pub fn memo(&self) -> memo::Memo {
-                    memo::Memo::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Merchant operations.
+    pub fn merchant(&self) -> merchant::Merchant {
+        merchant::Merchant::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Merchant operations.
-               pub fn merchant(&self) -> merchant::Merchant {
-                    merchant::Merchant::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to SalesLead operations.
+    pub fn sales_lead(&self) -> sales_lead::SalesLead {
+        sales_lead::SalesLead::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to SalesLead operations.
-               pub fn sales_lead(&self) -> sales_lead::SalesLead {
-                    sales_lead::SalesLead::new(self.clone())
-               }
-
-/// Return a reference to an interface that provides access to Receipt Integrations operations.
-               pub fn receipt_integrations(&self) -> receipt_integrations::ReceiptIntegrations {
-                    receipt_integrations::ReceiptIntegrations::new(self.clone())
-               }
-
+    /// Return a reference to an interface that provides access to Receipt Integrations operations.
+    pub fn receipt_integrations(&self) -> receipt_integrations::ReceiptIntegrations {
+        receipt_integrations::ReceiptIntegrations::new(self.clone())
+    }
 }
