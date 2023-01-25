@@ -1747,17 +1747,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiCardResourceSche
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -2347,17 +2352,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiCardProgramResou
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -2812,17 +2822,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiDepartmentResour
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -2953,17 +2968,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiLocationResource
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -3110,17 +3130,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiReceiptResourceS
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -3521,17 +3546,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiReimbursementRes
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -4432,17 +4462,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiTransactionCanon
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -4755,17 +4790,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiUserResourceSche
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -5064,17 +5104,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiMemoResourceSche
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -5172,17 +5217,22 @@ impl crate::types::paginate::Pagination for PaginatedResponseApiMerchantResource
 
     fn next_page(
         &self,
-        _req: reqwest::Request,
+        req: reqwest::Request,
     ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        Ok(reqwest::Request::new(
-            reqwest::Method::GET,
-            url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-                crate::types::error::Error::InvalidRequest(format!(
-                    "failed to parse url: {:?}",
-                    self.page.next
-                ))
-            })?,
-        ))
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to parse url: {:?}",
+                self.page.next
+            ))
+        })?;
+        req.url_mut().set_query(new_url.query());
+        Ok(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
