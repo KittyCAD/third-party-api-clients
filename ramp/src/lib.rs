@@ -178,7 +178,7 @@ impl Client {
                     .build();
 
                 Client {
-                    base_url: "https://api.ramp.com/developer/v1".to_string(),
+                    base_url: "https://api.ramp.com".to_string(),
                     client_id: client_id.to_string(),
                     client_secret: client_secret.to_string(),
                     redirect_uri: redirect_uri.to_string(),
@@ -196,7 +196,7 @@ impl Client {
         }
     }
 
-    /// Set the base URL for the client to something other than the default: <https://api.ramp.com/developer/v1>.
+    /// Set the base URL for the client to something other than the default: <https://api.ramp.com>.
     #[tracing::instrument]
     pub fn set_base_url<H>(&mut self, base_url: H)
     where

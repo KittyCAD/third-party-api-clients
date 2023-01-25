@@ -41,7 +41,7 @@ ramp:
 		--version 0.0.2 \
 		--output ./ramp \
 		--name ramp-api \
-		--base-url https://api.ramp.com/developer/v1 \
+		--base-url https://api.ramp.com \
 		--description "A fully generated & opinionated API client for the ramp API." \
 		--token-endpoint "https://api.ramp.com/v1/public/customer/token" \
 		--user-consent-endpoint "https://app.ramp.com/v1/authorize"
