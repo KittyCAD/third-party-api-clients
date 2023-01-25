@@ -2860,7 +2860,6 @@ impl tabled::Tabled for PaginatedResponseApiDepartmentResourceSchema {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ApiDepartmentCreate {
-    pub business_id: i64,
     pub name: String,
 }
 
@@ -2875,13 +2874,13 @@ impl std::fmt::Display for ApiDepartmentCreate {
 }
 
 impl tabled::Tabled for ApiDepartmentCreate {
-    const LENGTH: usize = 2;
+    const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.business_id), self.name.clone()]
+        vec![self.name.clone()]
     }
 
     fn headers() -> Vec<String> {
-        vec!["business_id".to_string(), "name".to_string()]
+        vec!["name".to_string()]
     }
 }
 
