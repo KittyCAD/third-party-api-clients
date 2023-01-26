@@ -3147,7 +3147,7 @@ pub struct OnboardingTasks {
     #[doc = "Description and status of an onboarding task."]
     pub administrative_details: TaskDescription,
     #[doc = "Description and status of an onboarding task."]
-    pub bank_account_details: TaskDescription,
+    pub bank_account_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
     pub billing_address_details: TaskDescription,
     #[doc = "Description and status of an onboarding task."]
