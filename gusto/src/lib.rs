@@ -29,7 +29,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! gusto-api = "2.1.16"
+//! gusto-api = "2.1.17"
 //! ```
 //!
 //! ## Basic example
@@ -79,6 +79,7 @@ pub mod current_user;
 pub mod custom_fields;
 pub mod earning_type;
 pub mod employees;
+pub mod federal_tax_details_beta;
 pub mod garnishments;
 pub mod job_applicants_beta;
 pub mod jobs;
@@ -564,5 +565,10 @@ impl Client {
     /// Return a reference to an interface that provides access to Admins (Beta) operations.
     pub fn admins_beta(&self) -> admins_beta::AdminsBeta {
         admins_beta::AdminsBeta::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Federal Tax Details (Beta) operations.
+    pub fn federal_tax_details_beta(&self) -> federal_tax_details_beta::FederalTaxDetailsBeta {
+        federal_tax_details_beta::FederalTaxDetailsBeta::new(self.clone())
     }
 }

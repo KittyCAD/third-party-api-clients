@@ -562,7 +562,7 @@ dependencies = [
 
 [[package]]
 name = "gusto-api"
-version = "2.1.16"
+version = "2.1.17"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1254,6 +1254,49 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbe448f377a7d6961e30f5955f9b8d106c3f5e449d493ee1b125c1d43c2b5179"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "ramp-api"
+version = "0.0.2"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "bytes 1.2.1",
+ "chrono",
+ "chrono-humanize",
+ "clap",
+ "data-encoding",
+ "dirs",
+ "expectorate",
+ "format_serde_error",
+ "futures",
+ "futures-util",
+ "http",
+ "hyperx",
+ "itertools 0.10.3",
+ "log",
+ "mime",
+ "parse-display",
+ "percent-encoding",
+ "phonenumber",
+ "pretty_assertions",
+ "reqwest",
+ "reqwest-conditional-middleware",
+ "reqwest-middleware",
+ "reqwest-retry",
+ "reqwest-tracing",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "serde_with",
+ "tabled",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid",
 ]
 
 [[package]]

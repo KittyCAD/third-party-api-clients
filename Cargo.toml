@@ -4,5 +4,6 @@ members = [
 	"gusto",
 	"pagerduty",
 	"remote",
+	"ramp",
 	"zendesk"
 ]
