@@ -1042,7 +1042,7 @@ pub struct Employment {
     #[doc = "Administrative information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `administrative_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_details: Option<serde_json::Value>,
-    pub bank_account_details: Vec<serde_json::Value>,
+    pub bank_account_details: Option<Vec<serde_json::Value>>,
     #[doc = "Billing address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `billing_address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub billing_address_details: Option<serde_json::Value>,
