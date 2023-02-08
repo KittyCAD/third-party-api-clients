@@ -1038,14 +1038,12 @@ paths:
                   default: false
                   description: Whether the garnishment should recur indefinitely.
                 annual_maximum:
-                  type: number
-                  format: float
+                  type: string
                   readOnly: false
                   default: null
                   description: 'The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".'
                 pay_period_maximum:
-                  type: number
-                  format: float
+                  type: string
                   default: null
                   description: 'The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".'
                 deduct_as_percentage:
@@ -1125,14 +1123,12 @@ paths:
                   default: false
                   description: Whether the garnishment should recur indefinitely.
                 annual_maximum:
-                  format: float
+                  type: string
                   readOnly: false
                   default: null
                   description: 'The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".'
-                  type: number
                 pay_period_maximum:
-                  type: number
-                  format: float
+                  type: string
                   default: null
                   description: 'The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".'
                 deduct_as_percentage:
@@ -3805,16 +3801,14 @@ components:
           default: false
           description: Whether the garnishment should recur indefinitely.
         annual_maximum:
-          format: float
+          type: string
           readOnly: false
           default: null
           description: 'The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".'
-          type: number
           nullable: true
         pay_period_maximum:
-          type: number
+          type: string
           nullable: true
-          format: float
           default: null
           description: 'The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".'
         deduct_as_percentage:

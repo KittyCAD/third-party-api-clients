@@ -967,11 +967,11 @@ pub struct Garnishment {
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub annual_maximum: Option<f64>,
+    pub annual_maximum: Option<String>,
     #[doc = "The maximum deduction per pay period. A null value indicates no maximum. Represented \
              as a float, e.g. \"16.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pay_period_maximum: Option<f64>,
+    pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub deduct_as_percentage: Option<bool>,
@@ -6731,11 +6731,11 @@ pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub annual_maximum: Option<f64>,
+    pub annual_maximum: Option<String>,
     #[doc = "The maximum deduction per pay period. A null value indicates no maximum. Represented \
              as a float, e.g. \"16.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pay_period_maximum: Option<f64>,
+    pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub deduct_as_percentage: Option<bool>,
@@ -6832,11 +6832,11 @@ pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub annual_maximum: Option<f64>,
+    pub annual_maximum: Option<String>,
     #[doc = "The maximum deduction per pay period. A null value indicates no maximum. Represented \
              as a float, e.g. \"16.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pay_period_maximum: Option<f64>,
+    pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub deduct_as_percentage: Option<bool>,
