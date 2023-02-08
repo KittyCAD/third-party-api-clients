@@ -30,7 +30,7 @@ impl ContractorPayments {
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = end_date {
             query_params.push(("end_date", format!("{}", p)));
         }
@@ -77,13 +77,14 @@ impl ContractorPayments {
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![
+            ("contractor_id", format!("{}", contractor_id)),
+            ("date", date.to_string()),
+        ];
         if let Some(p) = bonus {
             query_params.push(("bonus", format!("{}", p)));
         }
 
-        query_params.push(("contractor_id", format!("{}", contractor_id)));
-        query_params.push(("date", date.to_string()));
         if let Some(p) = hours {
             query_params.push(("hours", format!("{}", p)));
         }

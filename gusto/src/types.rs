@@ -932,7 +932,7 @@ impl tabled::Tabled for PaidTimeOff {
          uses for garnishments are court-ordered payments for child support or back taxes. Some \
          companies provide loans to their employees that are repaid via garnishments."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Garnishment {
     #[doc = "The unique identifier of the garnishment in Gusto."]
@@ -951,7 +951,7 @@ pub struct Garnishment {
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub amount: Option<f64>,
+    pub amount: Option<String>,
     #[doc = "The description of the garnishment."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1163,8 +1163,7 @@ impl tabled::Tabled for Termination {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1191,8 +1190,7 @@ pub enum PaymentUnit {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1605,8 +1603,7 @@ impl tabled::Tabled for Admin {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1655,8 +1652,7 @@ pub enum EntityType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1692,8 +1688,7 @@ pub enum Tier {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2253,8 +2248,7 @@ impl tabled::Tabled for Company {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2273,8 +2267,7 @@ pub enum WageType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2536,8 +2529,7 @@ impl tabled::Tabled for Contractor {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2564,8 +2556,7 @@ pub enum PaymentMethod {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2872,8 +2863,7 @@ impl tabled::Tabled for ContractorPaymentSummary {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -2905,8 +2895,7 @@ pub enum Status {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3364,8 +3353,7 @@ impl tabled::Tabled for CurrentUser {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3500,8 +3488,7 @@ impl tabled::Tabled for PaySchedule {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3523,8 +3510,7 @@ pub enum AccountType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3919,8 +3905,7 @@ impl tabled::Tabled for EarningType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -4594,8 +4579,7 @@ impl tabled::Tabled for Totals {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -5204,8 +5188,7 @@ impl tabled::Tabled for Payroll {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -5357,8 +5340,7 @@ impl tabled::Tabled for CompanyCustomField {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -5723,8 +5705,7 @@ impl tabled::Tabled for PostEmployeeYtdBenefitAmountsFromDifferentCompanyApplica
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -5749,8 +5730,7 @@ impl std::default::Default for Include {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -5866,8 +5846,7 @@ impl tabled::Tabled for PutEmployeesRequestBody {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -6293,8 +6272,7 @@ impl tabled::Tabled for PutLocationsLocationIdRequestBody {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -6431,8 +6409,7 @@ impl tabled::Tabled for PutContractorsContractorIdRequestBody {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -6451,8 +6428,7 @@ pub enum PostCompaniesCompanyIdContractorsRequestBodyType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -6709,7 +6685,7 @@ impl tabled::Tabled for PostJobsJobIdCompensationsRequestBody {
 
 #[doc = ""]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     #[doc = "Whether or not this garnishment is currently active."]
@@ -6717,7 +6693,7 @@ pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     pub active: Option<bool>,
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
-    pub amount: f64,
+    pub amount: String,
     #[doc = "The description of the garnishment."]
     pub description: String,
     #[doc = "Whether the garnishment is court ordered."]
@@ -6760,7 +6736,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
             } else {
                 String::new()
             },
-            format!("{:?}", self.amount),
+            self.amount.clone(),
             self.description.clone(),
             format!("{:?}", self.court_ordered),
             if let Some(times) = &self.times {
@@ -6807,7 +6783,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[doc = "Whether or not this garnishment is currently active."]
@@ -6816,7 +6792,7 @@ pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub amount: Option<f64>,
+    pub amount: Option<String>,
     #[doc = "The description of the garnishment."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -7094,8 +7070,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdPaySchedulesPayScheduleIdRequestBod
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -7454,8 +7429,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdEarningTypesEarningTypeUuidRequestB
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -7836,8 +7810,7 @@ impl tabled::Tabled for PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -7862,8 +7835,7 @@ pub enum GetCompaniesCompanyIdPayrollsInclude {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -7953,8 +7925,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdPayrollsRequestBody {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -8783,7 +8754,7 @@ impl tabled::Tabled for PostProvisionRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetEmployeesEmployeeIdCustomFieldsResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8816,7 +8787,7 @@ impl tabled::Tabled for GetEmployeesEmployeeIdCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetCompaniesCompanyIdCustomFieldsResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8852,8 +8823,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdCustomFieldsResponse {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,

@@ -53,7 +53,7 @@ impl TimeOffRequests {
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = end_date {
             query_params.push(("end_date", format!("{}", p)));
         }

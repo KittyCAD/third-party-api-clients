@@ -1015,8 +1015,7 @@ paths:
                   default: true
                   description: Whether or not this garnishment is currently active.
                 amount:
-                  type: number
-                  format: float
+                  type: string
                   readOnly: false
                   description: 'The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. "8.00".'
                 description:
@@ -1100,8 +1099,7 @@ paths:
                   default: true
                   description: Whether or not this garnishment is currently active.
                 amount:
-                  type: number
-                  format: float
+                  type: string
                   readOnly: false
                   description: 'The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. "8.00".'
                 description:
@@ -3777,8 +3775,7 @@ components:
           default: true
           description: Whether or not this garnishment is currently active.
         amount:
-          type: number
-          format: float
+          type: string
           readOnly: false
           description: 'The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. "8.00".'
         description:
