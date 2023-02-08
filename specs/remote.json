@@ -34,7 +34,8 @@
       },
       "BankAccountDetails": {
         "title": "BankAccountDetails",
-        "description": "Bank account information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `bank_account_details` as path parameters."
+        "description": "Bank account information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `bank_account_details` as path parameters.",
+        "nullable": true
       },
       "LocalDetails": {
         "title": "LocalDetails"
@@ -68,6 +69,7 @@
           }
         },
         "title": "TaskDescription",
+        "nullable": true,
         "type": "object",
         "x-struct": null,
         "x-validate": null
@@ -547,6 +549,7 @@
               "x-struct": null,
               "x-validate": null
             },
+            "nullable": true,
             "type": "array",
             "x-struct": null,
             "x-validate": null

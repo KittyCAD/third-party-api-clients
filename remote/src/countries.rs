@@ -66,7 +66,7 @@ impl Countries {
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = country_subdivision_code {
             query_params.push(("country_subdivision_code", p));
         }

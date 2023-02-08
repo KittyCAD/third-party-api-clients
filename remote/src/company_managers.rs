@@ -37,7 +37,7 @@ impl CompanyManagers {
             &format!("{}/{}", self.client.base_url, "v1/company-managers"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = company_id {
             query_params.push(("company_id", p));
         }

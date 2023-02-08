@@ -418,8 +418,7 @@ pub mod error {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -570,8 +569,7 @@ impl tabled::Tabled for ConflictResponse {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -690,8 +688,7 @@ impl tabled::Tabled for LastEditor {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -714,8 +711,7 @@ pub enum ProductType {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -750,8 +746,7 @@ pub enum PayrollRunStatus {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1011,8 +1006,7 @@ impl tabled::Tabled for Address {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1042,6 +1036,7 @@ pub struct Employment {
     #[doc = "Administrative information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `administrative_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_details: Option<serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bank_account_details: Option<Vec<serde_json::Value>>,
     #[doc = "Billing address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `billing_address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1409,8 +1404,7 @@ impl tabled::Tabled for CreateApprovedTimeoffParams {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1584,8 +1578,7 @@ impl tabled::Tabled for EmploymentData {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1772,8 +1765,7 @@ impl tabled::Tabled for AddressCountry {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1887,8 +1879,7 @@ impl tabled::Tabled for TimeoffDay {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1973,8 +1964,7 @@ impl tabled::Tabled for PricingPlanDetails {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3143,23 +3133,32 @@ impl tabled::Tabled for TimeoffDaysParams {
 )]
 pub struct OnboardingTasks {
     #[doc = "Description and status of an onboarding task."]
-    pub address_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub address_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub administrative_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub administrative_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bank_account_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub billing_address_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub billing_address_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub contract_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub contract_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub emergency_contact_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub emergency_contact_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub employment_document_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub employment_document_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub personal_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub personal_details: Option<TaskDescription>,
     #[doc = "Description and status of an onboarding task."]
-    pub pricing_plan_details: TaskDescription,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pricing_plan_details: Option<TaskDescription>,
 }
 
 impl std::fmt::Display for OnboardingTasks {
@@ -3387,8 +3386,7 @@ impl tabled::Tabled for MinimalEmployment {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3410,8 +3408,7 @@ pub enum OrderBy {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -3433,8 +3430,7 @@ pub enum SortBy {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
-    Eq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
