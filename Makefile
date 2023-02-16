@@ -1,3 +1,13 @@
+.PHONY: commonroom
+commonroom:
+	openapitor \
+		--input specs/commonroom.json \
+		--version 0.1.0 \
+		--output ./commonroom \
+		--name commonroom-api \
+		--description "A fully generated & opinionated API client for the Common Room API." \
+		--base-url "https://api.commonroom.io/community/v1" $(EXTRA_ARGS)
+
 .PHONY: gusto
 gusto:
 	openapitor \
