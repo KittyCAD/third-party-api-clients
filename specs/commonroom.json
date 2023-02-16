@@ -1144,7 +1144,7 @@
                     "description": "Value corresponding to socialType"
                   },
                   "activityType": {
-                    "type": "object",
+                    "type": "string",
                     "example": "link",
                     "description": "ActivityType. Use the GetActivityType API to get a list of types"
                   },

@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Activities {
     pub client: Client,
@@ -11,7 +12,7 @@ impl Activities {
         Self { client }
     }
 
-    #[doc = "Add an activity to existing community member(s)\n\nAdd an activity to existing community member(s) with matching socials\n\n\n```rust,no_run\nasync fn example_activities_create_user_input_activity() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .activities()\n        .create_user_input_activity(&commonroom_api::types::CreateUserInputActivityRequestBody {\n            source: \"some-string\".to_string(),\n            social_type: \"some-string\".to_string(),\n            value: \"some-string\".to_string(),\n            activity_type: commonroom_api::types::ActivityType {},\n            activity_body: \"some-string\".to_string(),\n            occurred_at: Some(\"some-string\".to_string()),\n            tags: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add an activity to existing community member(s)\n\nAdd an activity to existing community member(s) with matching socials\n\n\n```rust,no_run\nasync fn example_activities_create_user_input_activity() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .activities()\n        .create_user_input_activity(&commonroom_api::types::CreateUserInputActivityRequestBody {\n            source: \"some-string\".to_string(),\n            social_type: \"some-string\".to_string(),\n            value: \"some-string\".to_string(),\n            activity_type: \"some-string\".to_string(),\n            activity_body: \"some-string\".to_string(),\n            occurred_at: Some(\"some-string\".to_string()),\n            tags: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_user_input_activity<'a>(
         &'a self,
@@ -51,7 +52,6 @@ impl Activities {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

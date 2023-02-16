@@ -13,23 +13,23 @@
 //!   <li>Click on “Request Access to API”. Our API is currently in beta, so you need to first apply for access.
 //!   <li>Once access is granted, return to the Settings | API tokens screen, and you will see a button to create a “New Token”.
 //! </ol>
-//! 
+//!
 //! # Authentication
-//! 
+//!
 //! <!-- ReDoc-Inject: <security-definitions> -->
 //!
-//! 
 //!
-//! 
-//! 
+//!
+//!
+//!
 //!
 //! ## Client Details
 //!
-//! 
+//!
 //!
 //! The documentation for the crate is generated
 //! along with the code to make this library easy to use.
-//! 
+//!
 //!
 //! To install the library, add the following to your `Cargo.toml` file.
 //!
@@ -46,9 +46,7 @@
 //! ```rust,no_run
 //! use commonroom_api::Client;
 //!
-//! let client = Client::new(
-//!     String::from("api-key"),
-//! );
+//! let client = Client::new(String::from("api-key"));
 //! ```
 //!
 //! Alternatively, the library can search for most of the variables required for
@@ -63,31 +61,25 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
-//!
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[cfg(test)]
-mod tests;
-pub mod types;
-#[doc(hidden)]
-pub mod members;
 pub mod activities;
-pub mod segments;
-pub mod scim;
 /// **BETA** APIs. These APIs are still under development.
 /// .
 pub mod beta;
-
+#[doc(hidden)]
+pub mod members;
+pub mod scim;
+pub mod segments;
+#[cfg(test)]
+mod tests;
+pub mod types;
 
 use std::env;
 
-static APP_USER_AGENT: &str = concat!(
-    env!("CARGO_PKG_NAME"),
-    ".rs/",
-    env!("CARGO_PKG_VERSION"),
-);
+static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
@@ -103,9 +95,7 @@ impl Client {
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
     #[tracing::instrument]
-    pub fn new<T>(
-        token: T,
-    ) -> Self
+    pub fn new<T>(token: T) -> Self
     where
         T: ToString + std::fmt::Debug,
     {
@@ -151,13 +141,10 @@ impl Client {
 
     /// Create a new Client struct from the environment variable: `COMMONROOM_API_TOKEN`.
     #[tracing::instrument]
-    pub fn new_from_env() -> Self
-    {
+    pub fn new_from_env() -> Self {
         let token = env::var("COMMONROOM_API_TOKEN").expect("must set COMMONROOM_API_TOKEN");
 
-        Client::new(
-            token,
-        )
+        Client::new(token)
     }
 
     /// Create a raw request to our API.
@@ -167,18 +154,14 @@ impl Client {
         method: reqwest::Method,
         uri: &str,
         body: Option<reqwest::Body>,
-    ) -> anyhow::Result<reqwest_middleware::RequestBuilder>
-    {
+    ) -> anyhow::Result<reqwest_middleware::RequestBuilder> {
         let u = if uri.starts_with("https://") || uri.starts_with("http://") {
             uri.to_string()
         } else {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(
-            method,
-            &u,
-        );
+        let mut req = self.client.request(method, &u);
 
         // Add in our authentication.
         req = req.bearer_auth(&self.token);
@@ -200,31 +183,29 @@ impl Client {
         Ok(req)
     }
 
+    /// Return a reference to an interface that provides access to Members operations.
+    pub fn members(&self) -> members::Members {
+        members::Members::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Members operations.
-               pub fn members(&self) -> members::Members {
-                    members::Members::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Activities operations.
+    pub fn activities(&self) -> activities::Activities {
+        activities::Activities::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Activities operations.
-               pub fn activities(&self) -> activities::Activities {
-                    activities::Activities::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to Segments operations.
+    pub fn segments(&self) -> segments::Segments {
+        segments::Segments::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to Segments operations.
-               pub fn segments(&self) -> segments::Segments {
-                    segments::Segments::new(self.clone())
-               }
+    /// Return a reference to an interface that provides access to SCIM operations.
+    pub fn scim(&self) -> scim::Scim {
+        scim::Scim::new(self.clone())
+    }
 
-/// Return a reference to an interface that provides access to SCIM operations.
-               pub fn scim(&self) -> scim::Scim {
-                    scim::Scim::new(self.clone())
-               }
-
-/// **BETA** APIs. These APIs are still under development.
-/// .
-               pub fn beta(&self) -> beta::Beta {
-                    beta::Beta::new(self.clone())
-               }
-
+    /// **BETA** APIs. These APIs are still under development.
+    /// .
+    pub fn beta(&self) -> beta::Beta {
+        beta::Beta::new(self.clone())
+    }
 }

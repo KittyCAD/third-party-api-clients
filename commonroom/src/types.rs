@@ -4,10 +4,12 @@ pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
     #![doc = " with serde and JsonSchema."]
-    use serde::de::{Error, Unexpected, Visitor};
-    use serde::{Deserialize, Deserializer, Serialize, Serializer};
-    use std::convert::TryFrom;
-    use std::fmt;
+    use std::{convert::TryFrom, fmt};
+
+    use serde::{
+        de::{Error, Unexpected, Visitor},
+        Deserialize, Deserializer, Serialize, Serializer,
+    };
     static ALLOWED_DECODING_FORMATS: &[data_encoding::Encoding] = &[
         data_encoding::BASE64,
         data_encoding::BASE64URL,
@@ -119,8 +121,9 @@ pub mod base64 {
 
     #[cfg(test)]
     mod tests {
-        use super::Base64Data;
         use std::convert::TryFrom;
+
+        use super::Base64Data;
         #[test]
         fn test_base64_try_from() {
             assert!(Base64Data::try_from("aGVsbG8=").is_ok());
@@ -149,9 +152,11 @@ pub mod paginate {
 }
 
 pub mod phone_number {
-    #![doc = " A library to implement phone numbers for our database and JSON serialization and deserialization."]
-    use schemars::JsonSchema;
+    #![doc = " A library to implement phone numbers for our database and JSON serialization and \
+              deserialization."]
     use std::str::FromStr;
+
+    use schemars::JsonSchema;
     #[doc = " A phone number."]
     #[derive(Debug, Default, Clone, PartialEq, Hash, Eq)]
     pub struct PhoneNumber(pub Option<phonenumber::PhoneNumber>);
@@ -249,8 +254,9 @@ pub mod phone_number {
 
     #[cfg(test)]
     mod test {
-        use super::PhoneNumber;
         use pretty_assertions::assert_eq;
+
+        use super::PhoneNumber;
         #[test]
         fn test_parse_phone_number() {
             let mut phone = "+1-555-555-5555";
@@ -409,7 +415,7 @@ pub mod error {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ApiToken {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -470,7 +476,7 @@ impl tabled::Tabled for ApiToken {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommunityMember {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -505,7 +511,7 @@ impl tabled::Tabled for CommunityMember {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -528,7 +534,7 @@ pub enum StatusStatus {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Status {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -581,7 +587,7 @@ impl tabled::Tabled for Status {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Name {
     #[serde(rename = "givenName", default, skip_serializing_if = "Option::is_none")]
@@ -627,7 +633,7 @@ impl tabled::Tabled for Name {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Emails {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -681,7 +687,7 @@ impl tabled::Tabled for Emails {
 
 #[doc = "Represents the user account in the Common Room community\nThis account is used for identity mangement via SCIM\nSpecification can be found at https://datatracker.ietf.org/doc/html/rfc7643#section-4.1\n"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct User {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -761,7 +767,7 @@ impl tabled::Tabled for User {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -790,7 +796,7 @@ pub enum Type {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Value {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -824,7 +830,7 @@ impl tabled::Tabled for Value {
 
 #[doc = "A user's handle on a social network"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SocialsOneOf {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
@@ -868,7 +874,7 @@ impl tabled::Tabled for SocialsOneOf {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -892,7 +898,7 @@ impl std::default::Default for SocialsOneOfOneOfType {
 
 #[doc = "A user's email address"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SocialsOneOfOneOf {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
@@ -950,7 +956,7 @@ pub enum Socials {
 
 #[doc = "Geographical data for the user"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Location {
     #[doc = "The city where the user lives"]
@@ -1127,7 +1133,7 @@ impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBody {
 
 #[doc = "A user's handle on a social network"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateOrUpdateCommunityMemberRequestBodySocialsOneOf {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
@@ -1171,7 +1177,7 @@ impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBodySocialsOneOf {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq,
+    PartialEq, Eq,
     Hash,
     Debug,
     Clone,
@@ -1195,7 +1201,7 @@ impl std::default::Default for CreateOrUpdateCommunityMemberRequestBodySocialsOn
 
 #[doc = "A user's email address"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOf {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
@@ -1252,7 +1258,7 @@ pub enum CreateOrUpdateCommunityMemberRequestBodySocials {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddNoteToMemberRequestBody {
     #[doc = "Must be email, twitter, github, or linkedin"]
@@ -1312,7 +1318,7 @@ impl tabled::Tabled for AddNoteToMemberRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetMemberCustomFieldsResponse {
     #[doc = "Custom field name"]
@@ -1367,7 +1373,7 @@ impl tabled::Tabled for GetMemberCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldValue {
     #[doc = "enum, string, date, int, url, boolean"]
@@ -1487,7 +1493,7 @@ impl tabled::Tabled for SetMemberCustomFieldValueRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddTagsToMemberRequestBody {
     #[doc = "Must be email, twitter, github, or linkedin"]
@@ -1589,7 +1595,7 @@ impl tabled::Tabled for Segments {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFields {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1866,7 +1872,7 @@ impl tabled::Tabled for GetMemberBySocialsResponseSegments {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetMemberBySocialsResponseCustomFields {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2001,7 +2007,7 @@ impl tabled::Tabled for ActiveCommunityMembersByRoleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateCommunityMemberWithSpecificRoleRequestBodyEmails {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2054,7 +2060,7 @@ impl tabled::Tabled for CreateCommunityMemberWithSpecificRoleRequestBodyEmails {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateCommunityMemberWithSpecificRoleRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2124,10 +2130,11 @@ impl tabled::Tabled for CreateCommunityMemberWithSpecificRoleRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OperationsValue {
-    #[doc = "Will upgrade or downgrade user account's role based on this property. When set to false\nuser account is downgraded\n"]
+    #[doc = "Will upgrade or downgrade user account's role based on this property. When set to \
+             false\nuser account is downgraded\n"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub active: Option<bool>,
 }
@@ -2158,7 +2165,7 @@ impl tabled::Tabled for OperationsValue {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Operations {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2246,10 +2253,11 @@ impl tabled::Tabled for UpdateUserAccountRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateUserAccountRequestBodyOperationsValue {
-    #[doc = "Will upgrade or downgrade user account's role based on this property. When set to false\nuser account is downgraded\n"]
+    #[doc = "Will upgrade or downgrade user account's role based on this property. When set to \
+             false\nuser account is downgraded\n"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub active: Option<bool>,
 }
@@ -2280,7 +2288,7 @@ impl tabled::Tabled for UpdateUserAccountRequestBodyOperationsValue {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateUserAccountRequestBodyOperations {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2322,7 +2330,7 @@ impl tabled::Tabled for UpdateUserAccountRequestBodyOperations {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateUserInputActivityRequestBody {
     #[doc = "Source of the information"]
@@ -2334,7 +2342,7 @@ pub struct CreateUserInputActivityRequestBody {
     pub value: String,
     #[doc = "ActivityType. Use the GetActivityType API to get a list of types"]
     #[serde(rename = "activityType")]
-    pub activity_type: ActivityType,
+    pub activity_type: String,
     #[serde(rename = "activityBody")]
     pub activity_body: String,
     #[doc = "Date when the activity occurred in ISO 8601 format"]
@@ -2366,7 +2374,7 @@ impl tabled::Tabled for CreateUserInputActivityRequestBody {
             self.source.clone(),
             self.social_type.clone(),
             self.value.clone(),
-            format!("{:?}", self.activity_type),
+            self.activity_type.clone(),
             self.activity_body.clone(),
             if let Some(occurred_at) = &self.occurred_at {
                 format!("{:?}", occurred_at)
@@ -2395,7 +2403,7 @@ impl tabled::Tabled for CreateUserInputActivityRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetActivityTypesResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]

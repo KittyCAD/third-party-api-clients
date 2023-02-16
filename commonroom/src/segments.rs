@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Segments {
     pub client: Client,
@@ -30,14 +31,18 @@ impl Segments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Gets all status for a segment\n\nGets all status for a segment\n\n\n```rust,no_run\nasync fn example_segments_get_statuses() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: Vec<commonroom_api::types::GetSegmentStatusesResponse> =\n        client.segments().get_statuses().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Gets all status for a segment\n\nGets all status for a \
+             segment\n\n\n```rust,no_run\nasync fn example_segments_get_statuses() -> \
+             anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    \
+             let result: Vec<commonroom_api::types::GetSegmentStatusesResponse> =\n        \
+             client.segments().get_statuses().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_statuses<'a>(
         &'a self,
@@ -56,7 +61,6 @@ impl Segments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -84,7 +88,12 @@ impl Segments {
         }
     }
 
-    #[doc = "Add a Note to a Segment\n\nAdd a Note to a Segment\n\n\n```rust,no_run\nasync fn example_segments_add_note_to() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .segments()\n        .add_note_to(&commonroom_api::types::AddNoteToSegmentRequestBody {\n            segment_id: Some(3.14 as f64),\n            note: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add a Note to a Segment\n\nAdd a Note to a Segment\n\n\n```rust,no_run\nasync fn \
+             example_segments_add_note_to() -> anyhow::Result<()> {\n    let client = \
+             commonroom_api::Client::new_from_env();\n    client\n        .segments()\n        \
+             .add_note_to(&commonroom_api::types::AddNoteToSegmentRequestBody {\n            \
+             segment_id: Some(3.14 as f64),\n            note: \
+             Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_note_to<'a>(
         &'a self,

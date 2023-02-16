@@ -1,5 +1,6 @@
-use crate::Client;
 use anyhow::Result;
+
+use crate::Client;
 #[derive(Clone, Debug)]
 pub struct Members {
     pub client: Client,
@@ -32,7 +33,14 @@ impl Members {
         }
     }
 
-    #[doc = "Add a Note to a Community Member\n\nAdd a Note to a Community Member\n\n\n```rust,no_run\nasync fn example_members_add_note_to() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .members()\n        .add_note_to(&commonroom_api::types::AddNoteToMemberRequestBody {\n            social_type: Some(\"some-string\".to_string()),\n            value: Some(\"some-string\".to_string()),\n            note: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add a Note to a Community Member\n\nAdd a Note to a Community \
+             Member\n\n\n```rust,no_run\nasync fn example_members_add_note_to() -> \
+             anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    \
+             client\n        .members()\n        \
+             .add_note_to(&commonroom_api::types::AddNoteToMemberRequestBody {\n            \
+             social_type: Some(\"some-string\".to_string()),\n            value: \
+             Some(\"some-string\".to_string()),\n            note: \
+             Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_note_to<'a>(
         &'a self,
@@ -53,7 +61,12 @@ impl Members {
         }
     }
 
-    #[doc = "Gets all member custom fields for a community\n\nGets all member custom fields for a community\n\n\n```rust,no_run\nasync fn example_members_get_custom_fields() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: Vec<commonroom_api::types::GetMemberCustomFieldsResponse> =\n        client.members().get_custom_fields().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Gets all member custom fields for a community\n\nGets all member custom fields for a \
+             community\n\n\n```rust,no_run\nasync fn example_members_get_custom_fields() -> \
+             anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    \
+             let result: Vec<commonroom_api::types::GetMemberCustomFieldsResponse> =\n        \
+             client.members().get_custom_fields().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_custom_fields<'a>(
         &'a self,
@@ -72,7 +85,6 @@ impl Members {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -100,7 +112,14 @@ impl Members {
         }
     }
 
-    #[doc = "Adds a new or existing tag to a Community Member\n\nAdds a new or existing tag to a Community Member\n\n\n```rust,no_run\nasync fn example_members_add_tags_to() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .members()\n        .add_tags_to(&commonroom_api::types::AddTagsToMemberRequestBody {\n            social_type: Some(\"some-string\".to_string()),\n            value: Some(\"some-string\".to_string()),\n            tags: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Adds a new or existing tag to a Community Member\n\nAdds a new or existing tag to a \
+             Community Member\n\n\n```rust,no_run\nasync fn example_members_add_tags_to() -> \
+             anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    \
+             client\n        .members()\n        \
+             .add_tags_to(&commonroom_api::types::AddTagsToMemberRequestBody {\n            \
+             social_type: Some(\"some-string\".to_string()),\n            value: \
+             Some(\"some-string\".to_string()),\n            tags: \
+             Some(\"some-string\".to_string()),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_tags_to<'a>(
         &'a self,
@@ -121,7 +140,13 @@ impl Members {
         }
     }
 
-    #[doc = "Get Community Member by E-Mail\n\nA Community Member's profile based on an email address.\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn example_members_get_by_email() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: Vec<commonroom_api::types::CommunityMember> =\n        client.members().get_by_email(\"email@example.com\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get Community Member by E-Mail\n\nA Community Member's profile based on an email \
+             address.\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync \
+             fn example_members_get_by_email() -> anyhow::Result<()> {\n    let client = \
+             commonroom_api::Client::new_from_env();\n    let result: \
+             Vec<commonroom_api::types::CommunityMember> =\n        \
+             client.members().get_by_email(\"email@example.com\").await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_by_email<'a>(
         &'a self,
@@ -132,7 +157,7 @@ impl Members {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "user/{email}".replace("{email}", &email)
+                "user/{email}".replace("{email}", email)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -145,14 +170,20 @@ impl Members {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Anonymize Community Member\n\nRequest removal of all personally identifiable information (PII) for the\nCommunity Member associated by this email address.\n\nThis does not immediately anonymize the community member. The anonymization\nis queued and will happen at a future time within 15 days.\n\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn example_members_anonymize() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: String = client.members().anonymize(\"email@example.com\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Anonymize Community Member\n\nRequest removal of all personally identifiable \
+             information (PII) for the\nCommunity Member associated by this email address.\n\nThis \
+             does not immediately anonymize the community member. The anonymization\nis queued and \
+             will happen at a future time within 15 days.\n\n\n**Parameters:**\n\n- `email: \
+             &'astr` (required)\n\n```rust,no_run\nasync fn example_members_anonymize() -> \
+             anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    \
+             let result: String = client.members().anonymize(\"email@example.com\").await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn anonymize<'a>(
         &'a self,
@@ -163,7 +194,7 @@ impl Members {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "user/{email}".replace("{email}", &email)
+                "user/{email}".replace("{email}", email)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -218,7 +249,6 @@ impl Members {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
