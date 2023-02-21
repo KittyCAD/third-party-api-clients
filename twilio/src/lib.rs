@@ -65,11 +65,12 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[doc(hidden)]
 pub mod default;
 #[cfg(test)]
 mod tests;
 pub mod types;
+#[doc(hidden)]
+pub mod utils;
 
 use std::env;
 

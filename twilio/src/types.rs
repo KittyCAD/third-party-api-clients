@@ -444,10 +444,18 @@ pub struct ApiV2010Account {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub auth_token: Option<String>,
     #[doc = "The date that this account was created, in GMT in RFC 2822 format"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this account was last updated, in GMT in RFC 2822 format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A human readable description of this account, up to 64 characters long. By default \
              the FriendlyName is your email address."]
@@ -614,10 +622,18 @@ pub struct ApiV2010AccountAddress {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub customer_name: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -966,10 +982,18 @@ pub struct ApiV2010AccountApplication {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub api_version: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1206,10 +1230,18 @@ pub struct ApiV2010AccountAuthorizedConnectApp {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connect_app_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The set of permissions that you authorized for the Connect App.  Can be: `get-all` \
              or `post-all`."]
@@ -2602,10 +2634,18 @@ pub struct ApiV2010AccountCall {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The SID that identifies the call that created this leg."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2634,10 +2674,18 @@ pub struct ApiV2010AccountCall {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<CallEnumStatus>,
     #[doc = "The start time of the call, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format. Empty if the call has not yet been dialed."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub start_time: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The time the call ended, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format. Empty if the call did not complete successfully."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub end_time: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The length of the call in seconds. This value is empty for busy, failed, unanswered, \
              or ongoing calls."]
@@ -3010,10 +3058,18 @@ pub struct ApiV2010AccountCallCallFeedback {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date that this resource was created, given in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A list of issues experienced during the call. The issues can be: `imperfect-audio`, \
              `dropped-call`, `incorrect-caller-id`, `post-dial-delay`, `digits-not-captured`, \
@@ -3143,10 +3199,18 @@ pub struct ApiV2010AccountCallCallFeedbackSummary {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_feedback_count: Option<i64>,
     #[doc = "The date that this resource was created, given in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The last date for which feedback entries are included in this Feedback Summary, \
              formatted as `YYYY-MM-DD` and specified in UTC."]
@@ -3370,10 +3434,18 @@ pub struct ApiV2010AccountCallCallNotification {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A unique error code for the error condition that is described in our [Error Dictionary](https://www.twilio.com/docs/api/errors)."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3383,7 +3455,11 @@ pub struct ApiV2010AccountCallCallNotification {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub log: Option<String>,
     #[doc = "The date the notification was actually generated in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format. Message buffering can cause this value to differ from `date_created`."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub message_date: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The text of the notification."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3534,10 +3610,18 @@ pub struct ApiV2010AccountCallCallNotificationInstance {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A unique error code for the error condition that is described in our [Error Dictionary](https://www.twilio.com/docs/api/errors)."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3547,7 +3631,11 @@ pub struct ApiV2010AccountCallCallNotificationInstance {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub log: Option<String>,
     #[doc = "The date the notification was actually generated in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format. Message buffering can cause this value to differ from `date_created`."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub message_date: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The text of the notification."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3731,13 +3819,25 @@ pub struct ApiV2010AccountCallCallRecording {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conference_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The start time of the recording in GMT and in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub start_time: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The length of the recording in seconds."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3969,10 +4069,18 @@ pub struct ApiV2010AccountConference {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The API version used to create this conference."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4199,13 +4307,25 @@ pub struct ApiV2010AccountConferenceConferenceRecording {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conference_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The start time of the recording in GMT and in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub start_time: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The length of the recording in seconds."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4644,10 +4764,18 @@ pub struct ApiV2010AccountAddressDependentPhoneNumber {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub voice_caller_id_lookup: Option<bool>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The HTTP method we use to call `sms_fallback_url`. Can be: `GET` or `POST`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5013,10 +5141,18 @@ pub struct ApiV2010AccountIncomingPhoneNumber {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capabilities: Option<ApiV2010AccountIncomingPhoneNumberCapabilities>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5465,10 +5601,18 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOn {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unique_name: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5697,10 +5841,18 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLocal {
     pub capabilities:
         Option<ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLocalCapabilities>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6211,10 +6363,18 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMobile {
     pub capabilities:
         Option<ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMobileCapabilities>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6727,10 +6887,18 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFree {
     pub capabilities:
         Option<ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFreeCapabilities>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7162,10 +7330,18 @@ pub struct ApiV2010AccountKey {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub friendly_name: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
 }
 
@@ -7229,10 +7405,18 @@ pub struct ApiV2010AccountMessageMedia {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content_type: Option<String>,
     #[doc = "The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The SID of the resource that created the media."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7319,7 +7503,11 @@ pub struct ApiV2010AccountQueueMember {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_sid: Option<String>,
     #[doc = "The date that the member was enqueued, given in RFC 2822 format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_enqueued: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "This member's current position in the queue."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7419,7 +7607,11 @@ pub struct ApiV2010AccountMessage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to: Option<String>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The amount billed for the message, in the currency specified by `price_unit`.  Note \
              that your account is charged for each segment we send to the handset. Populated \
@@ -7451,10 +7643,18 @@ pub struct ApiV2010AccountMessage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was sent specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format. For outgoing messages, this is when we sent the message. For incoming messages, this is when we made the HTTP request to your application. "]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_sent: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The error code returned if your message `status` is `failed` or `undelivered`. The \
              error_code provides more information about the failure. If the message was \
@@ -7833,10 +8033,18 @@ pub struct ApiV2010AccountMessageMessageFeedback {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub outcome: Option<MessageFeedbackEnumOutcome>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7936,10 +8144,18 @@ pub struct ApiV2010AccountNewKey {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub friendly_name: Option<String>,
     #[doc = "The date and time in GMT that the API Key was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the new API Key was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The secret your application uses to sign Access Tokens and to authenticate to the \
              REST API (you will use this as the basic-auth `password`).  **Note that for security \
@@ -8012,10 +8228,18 @@ pub struct ApiV2010AccountNewSigningKey {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub friendly_name: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The secret your application uses to sign Access Tokens and to authenticate to the \
              REST API (you will use this as the basic-auth `password`).  **Note that for security \
@@ -8094,10 +8318,18 @@ pub struct ApiV2010AccountNotification {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A unique error code for the error condition that is described in our [Error Dictionary](https://www.twilio.com/docs/api/errors)."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8107,7 +8339,11 @@ pub struct ApiV2010AccountNotification {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub log: Option<String>,
     #[doc = "The date the notification was actually generated in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format. Message buffering can cause this value to differ from `date_created`."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub message_date: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The text of the notification."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8259,10 +8495,18 @@ pub struct ApiV2010AccountNotificationInstance {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub call_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A unique error code for the error condition that is described in our [Error Dictionary](https://www.twilio.com/docs/api/errors)."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8272,7 +8516,11 @@ pub struct ApiV2010AccountNotificationInstance {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub log: Option<String>,
     #[doc = "The date the notification was actually generated in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format. Message buffering can cause this value to differ from `date_created`."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub message_date: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The text of the notification."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8444,10 +8692,18 @@ pub struct ApiV2010AccountOutgoingCallerId {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8555,10 +8811,18 @@ pub struct ApiV2010AccountConferenceParticipant {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conference_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "Whether the conference ends when the participant leaves. Can be: `true` or `false` \
              and the default is `false`. If `true`, the conference ends and all other \
@@ -8742,10 +9006,18 @@ pub struct ApiV2010AccountCallPayments {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8941,7 +9213,11 @@ pub enum PaymentsEnumStatus {
 )]
 pub struct ApiV2010AccountQueue {
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The number of calls currently in the queue."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8964,7 +9240,11 @@ pub struct ApiV2010AccountQueue {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = " The maximum number of calls that can be in the queue. The default is 100 and the \
              maximum is 5000."]
@@ -9070,13 +9350,25 @@ pub struct ApiV2010AccountRecording {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conference_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The start time of the recording in GMT and in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub start_time: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The length of the recording in seconds."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9333,13 +9625,25 @@ pub struct ApiV2010AccountRecordingRecordingAddOnResult {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub add_on_configuration_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the result was completed specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_completed: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The SID of the recording to which the AddOnResult resource belongs."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9500,10 +9804,18 @@ pub struct ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPaylo
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content_type: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The SID of the recording to which the AddOnResult resource that contains the payload \
              belongs."]
@@ -9615,10 +9927,18 @@ pub struct ApiV2010AccountRecordingRecordingTranscription {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub api_version: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The duration of the transcribed audio in seconds."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9860,10 +10180,18 @@ pub struct ApiV2010AccountShortCode {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub api_version: Option<String>,
     #[doc = "The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A string that you assigned to describe this resource. By default, the `FriendlyName` \
              is the short code."]
@@ -9996,9 +10324,17 @@ pub struct ApiV2010AccountSigningKey {
     pub sid: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub friendly_name: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
 }
 
@@ -10136,10 +10472,18 @@ pub struct ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialL
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10216,10 +10560,18 @@ pub struct ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessCon
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10323,10 +10675,18 @@ pub struct ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistra
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10358,10 +10718,18 @@ pub struct ApiV2010AccountSipSipCredentialListSipCredential {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI for this resource, relative to `https://api.twilio.com`"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10442,10 +10810,18 @@ pub struct ApiV2010AccountSipSipCredentialList {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A human readable descriptive text that describes the CredentialList, up to 64 \
              characters long."]
@@ -10535,10 +10911,18 @@ pub struct ApiV2010AccountSipSipDomainSipCredentialListMapping {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The unique string that is created to identify the SipDomain resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10672,10 +11056,18 @@ pub struct ApiV2010AccountSipSipDomain {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub auth_type: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The unique address you reserve on Twilio to which you route your SIP traffic. Domain \
              names can contain letters, digits, and \"-\" and must end with `sip.twilio.com`."]
@@ -10899,10 +11291,18 @@ pub struct ApiV2010AccountSipSipIpAccessControlList {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub friendly_name: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A list of the IpAddress resources associated with this IP access control list \
              resource."]
@@ -10986,10 +11386,18 @@ pub struct ApiV2010AccountSipSipDomainSipIpAccessControlListMapping {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The unique string that is created to identify the SipDomain resource."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11096,10 +11504,18 @@ pub struct ApiV2010AccountSipSipIpAccessControlListSipIpAddress {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ip_access_control_list_sid: Option<String>,
     #[doc = "The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date that this resource was last updated, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI for this resource, relative to `https://api.twilio.com`"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11205,7 +11621,11 @@ pub struct ApiV2010AccountCallSiprec {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<SiprecEnumStatus>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11371,7 +11791,11 @@ pub struct ApiV2010AccountCallStream {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<StreamEnumStatus>,
     #[doc = "The date and time in GMT that this resource was last updated, specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11585,10 +12009,18 @@ pub struct ApiV2010AccountToken {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub account_sid: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "An array representing the ephemeral credentials and the STUN and TURN server URIs."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11681,10 +12113,18 @@ pub struct ApiV2010AccountTranscription {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub api_version: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The duration of the transcribed audio in seconds."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -20214,13 +20654,25 @@ pub struct ApiV2010AccountUsageUsageTrigger {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub current_value: Option<String>,
     #[doc = "The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the trigger was last fired specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_fired: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_updated: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The string that you assigned to describe the trigger."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -21184,7 +21636,11 @@ pub struct ApiV2010AccountCallUserDefinedMessage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sid: Option<String>,
     #[doc = "The date that this User Defined Message was created, given in RFC 2822 format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
 }
 
@@ -21253,7 +21709,11 @@ pub struct ApiV2010AccountCallUserDefinedMessageSubscription {
     pub sid: Option<String>,
     #[doc = "The date that this User Defined Message Subscription was created, given in RFC 2822 \
              format."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub date_created: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "The URI of the User Defined Message Subscription Resource, relative to `https://api.twilio.com`."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -29977,7 +30437,12 @@ pub struct CreateMessageRequest {
     )]
     pub schedule_type: Option<MessageEnumScheduleType>,
     #[doc = "The time that Twilio will send the message. Must be in ISO 8601 format."]
-    #[serde(rename = "SendAt", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "SendAt",
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::utils::nullable_date_time_format::deserialize"
+    )]
     pub send_at: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "If set to True, Twilio will deliver the message as a single MMS message, regardless \
              of the presence of media."]

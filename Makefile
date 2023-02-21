@@ -76,5 +76,5 @@ twilio:
 		--output ./twilio \
 		--name twilio-api \
 		--description "A fully generated & opinionated API client for the Twilio API." \
-		--base-url "https://api.twilio.com"
-
+		--base-url "https://api.twilio.com" \
+		--date-time-format "%a, %d %b %Y %H:%M:%S %z" $(EXTRA_ARGS)
