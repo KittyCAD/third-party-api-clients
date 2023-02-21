@@ -26,7 +26,7 @@ impl Default {
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "2010-04-01/Accounts.json"),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = friendly_name {
             query_params.push(("FriendlyName", p));
@@ -81,7 +81,7 @@ impl Default {
             http::Method::POST,
             format!("{}/{}", self.client.base_url, "2010-04-01/Accounts.json"),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -119,7 +119,7 @@ impl Default {
                 "2010-04-01/Accounts/{Sid}.json".replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -150,7 +150,7 @@ impl Default {
                 "2010-04-01/Accounts/{Sid}.json".replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -188,7 +188,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = customer_name {
             query_params.push(("CustomerName", p));
@@ -246,7 +246,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -280,7 +280,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -314,7 +314,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -348,7 +348,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -377,7 +377,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = friendly_name {
             query_params.push(("FriendlyName", p));
@@ -427,7 +427,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -461,7 +461,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -495,7 +495,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -529,7 +529,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -556,7 +556,7 @@ impl Default {
                     .replace("{ConnectAppSid}", connect_app_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -590,7 +590,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -639,7 +639,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -687,7 +687,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -742,7 +742,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -886,7 +886,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1027,7 +1027,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1169,7 +1169,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1311,7 +1311,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1453,7 +1453,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1594,7 +1594,7 @@ impl Default {
                     .replace("{CountryCode}", country_code)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = area_code {
             query_params.push(("AreaCode", format!("{p}")));
@@ -1720,7 +1720,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -1759,7 +1759,7 @@ impl Default {
                 "2010-04-01/Accounts/{AccountSid}/Calls.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = end_time {
             query_params.push(("EndTime", format!("{p}")));
@@ -1828,7 +1828,7 @@ impl Default {
                 "2010-04-01/Accounts/{AccountSid}/Calls.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -1862,7 +1862,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -1896,7 +1896,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -1930,7 +1930,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -1960,7 +1960,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -2007,7 +2007,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2041,7 +2041,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2075,7 +2075,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2110,7 +2110,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2143,7 +2143,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2173,7 +2173,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2211,7 +2211,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = log {
             query_params.push(("Log", format!("{p}")));
@@ -2270,7 +2270,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = date_created {
             query_params.push(("DateCreated", format!("{p}")));
@@ -2322,7 +2322,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2358,7 +2358,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2394,7 +2394,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2430,7 +2430,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2457,7 +2457,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2491,7 +2491,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2530,7 +2530,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = date_created {
             query_params.push(("DateCreated", format!("{p}")));
@@ -2599,7 +2599,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2639,7 +2639,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2676,7 +2676,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2707,7 +2707,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = date_created {
             query_params.push(("DateCreated", format!("{p}")));
@@ -2758,7 +2758,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2792,7 +2792,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -2826,7 +2826,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2854,7 +2854,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -2905,7 +2905,7 @@ impl Default {
                     .replace("{AddressSid}", address_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -2952,7 +2952,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -2986,7 +2986,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3020,7 +3020,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3052,7 +3052,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = beta {
             query_params.push(("Beta", format!("{p}")));
@@ -3114,7 +3114,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3154,7 +3154,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3190,7 +3190,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3224,7 +3224,7 @@ impl Default {
                     .replace("{ResourceSid}", resource_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -3276,7 +3276,7 @@ impl Default {
                     .replace("{ResourceSid}", resource_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3308,7 +3308,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3350,7 +3350,7 @@ impl Default {
                     .replace("{ResourceSid}", resource_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -3403,7 +3403,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = beta {
             query_params.push(("Beta", format!("{p}")));
@@ -3468,7 +3468,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3508,7 +3508,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = beta {
             query_params.push(("Beta", format!("{p}")));
@@ -3573,7 +3573,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3613,7 +3613,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = beta {
             query_params.push(("Beta", format!("{p}")));
@@ -3678,7 +3678,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3712,7 +3712,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3746,7 +3746,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3780,7 +3780,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3807,7 +3807,7 @@ impl Default {
                 "2010-04-01/Accounts/{AccountSid}/Keys.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -3852,7 +3852,7 @@ impl Default {
                 "2010-04-01/Accounts/{AccountSid}/Keys.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -3888,7 +3888,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3923,7 +3923,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -3954,7 +3954,7 @@ impl Default {
                     .replace("{MessageSid}", message_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = date_created {
             query_params.push(("DateCreated", format!("{p}")));
@@ -4007,7 +4007,7 @@ impl Default {
                     .replace("{QueueSid}", queue_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4043,7 +4043,7 @@ impl Default {
                     .replace("{QueueSid}", queue_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4080,7 +4080,7 @@ impl Default {
                     .replace("{QueueSid}", queue_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -4131,7 +4131,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = date_sent {
             query_params.push(("DateSent", format!("{p}")));
@@ -4189,7 +4189,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4223,7 +4223,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4257,7 +4257,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4291,7 +4291,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4320,7 +4320,7 @@ impl Default {
                     .replace("{MessageSid}", message_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4355,7 +4355,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -4401,7 +4401,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4435,7 +4435,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4471,7 +4471,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = log {
             query_params.push(("Log", format!("{p}")));
@@ -4526,7 +4526,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4560,7 +4560,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4594,7 +4594,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4624,7 +4624,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = friendly_name {
             query_params.push(("FriendlyName", p));
@@ -4678,7 +4678,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4716,7 +4716,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4754,7 +4754,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4791,7 +4791,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -4824,7 +4824,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = coaching {
             query_params.push(("Coaching", format!("{p}")));
@@ -4885,7 +4885,7 @@ impl Default {
                     .replace("{ConferenceSid}", conference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4920,7 +4920,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4957,7 +4957,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -4991,7 +4991,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5025,7 +5025,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -5059,7 +5059,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5083,11 +5083,10 @@ impl Default {
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "2010-04-01/Accounts/{AccountSid}/Queues.json"
-                    .replace("{AccountSid}", account_sid)
+                "2010-04-01/Accounts/{AccountSid}/Queues.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -5129,11 +5128,10 @@ impl Default {
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "2010-04-01/Accounts/{AccountSid}/Queues.json"
-                    .replace("{AccountSid}", account_sid)
+                "2010-04-01/Accounts/{AccountSid}/Queues.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -5168,7 +5166,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = include_soft_deleted {
             query_params.push(("IncludeSoftDeleted", format!("{p}")));
@@ -5207,7 +5205,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5239,7 +5237,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = call_sid {
             query_params.push(("CallSid", p));
@@ -5308,7 +5306,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5344,7 +5342,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5374,7 +5372,7 @@ impl Default {
                     .replace("{ReferenceSid}", reference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -5429,7 +5427,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5467,7 +5465,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5501,7 +5499,7 @@ impl Default {
                     .replace("{ReferenceSid}", reference_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -5554,7 +5552,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5590,7 +5588,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5620,7 +5618,7 @@ impl Default {
                     .replace("{RecordingSid}", recording_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -5667,7 +5665,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5701,7 +5699,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -5738,7 +5736,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = friendly_name {
             query_params.push(("FriendlyName", p));
@@ -5793,7 +5791,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5827,7 +5825,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -5867,7 +5865,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -5901,7 +5899,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -5944,7 +5942,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -5975,7 +5973,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6011,7 +6009,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6045,7 +6043,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6088,7 +6086,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6119,7 +6117,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6155,7 +6153,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6189,7 +6187,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6232,7 +6230,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6263,7 +6261,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6299,7 +6297,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6330,7 +6328,7 @@ impl Default {
                     .replace("{CredentialListSid}", credential_list_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6396,7 +6394,7 @@ impl Default {
                     .replace("{CredentialListSid}", credential_list_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6448,7 +6446,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6488,7 +6486,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6535,7 +6533,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6563,7 +6561,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6609,7 +6607,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6643,7 +6641,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6677,7 +6675,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6719,7 +6717,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6751,7 +6749,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6803,7 +6801,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6843,7 +6841,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6879,7 +6877,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -6907,7 +6905,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -6953,7 +6951,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -6987,7 +6985,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7021,7 +7019,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7055,7 +7053,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7083,7 +7081,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -7130,7 +7128,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7165,7 +7163,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7200,7 +7198,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7234,7 +7232,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7267,7 +7265,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7303,7 +7301,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7335,7 +7333,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -7387,7 +7385,7 @@ impl Default {
                     .replace("{DomainSid}", domain_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7425,7 +7423,7 @@ impl Default {
                     .replace("{IpAccessControlListSid}", ip_access_control_list_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -7477,7 +7475,7 @@ impl Default {
                     .replace("{IpAccessControlListSid}", ip_access_control_list_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7517,7 +7515,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7557,7 +7555,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7594,7 +7592,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7622,7 +7620,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7659,7 +7657,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7694,7 +7692,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7731,7 +7729,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7760,11 +7758,10 @@ impl Default {
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "2010-04-01/Accounts/{AccountSid}/Tokens.json"
-                    .replace("{AccountSid}", account_sid)
+                "2010-04-01/Accounts/{AccountSid}/Tokens.json".replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -7798,7 +7795,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7831,7 +7828,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -7859,7 +7856,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -7911,7 +7908,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -7979,7 +7976,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8047,7 +8044,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8115,7 +8112,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8183,7 +8180,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8251,7 +8248,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8319,7 +8316,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8387,7 +8384,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8455,7 +8452,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = category {
             query_params.push(("Category", format!("{p}")));
@@ -8518,7 +8515,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -8552,7 +8549,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -8586,7 +8583,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -8617,7 +8614,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let mut query_params = vec![];
         if let Some(p) = page {
             query_params.push(("Page", format!("{p}")));
@@ -8675,7 +8672,7 @@ impl Default {
                     .replace("{AccountSid}", account_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -8711,7 +8708,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -8750,7 +8747,7 @@ impl Default {
                     .replace("{CallSid}", call_sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         req = req.form(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -8787,7 +8784,7 @@ impl Default {
                     .replace("{Sid}", sid)
             ),
         );
-        req = req.bearer_auth(&self.client.token);
+        req = req.basic_auth(&self.client.username, Some(&self.client.password));
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {

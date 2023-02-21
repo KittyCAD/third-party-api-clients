@@ -78,7 +78,8 @@ static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARG
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
 pub struct Client {
-    token: String,
+    username: String,
+    password: String,
     base_url: String,
 
     client: reqwest_middleware::ClientWithMiddleware,
@@ -89,7 +90,7 @@ impl Client {
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
     #[tracing::instrument]
-    pub fn new<T>(token: T) -> Self
+    pub fn new<T>(username: T, password: T) -> Self
     where
         T: ToString + std::fmt::Debug,
     {
@@ -114,7 +115,8 @@ impl Client {
                     .build();
 
                 Client {
-                    token: token.to_string(),
+                    username: username.to_string(),
+                    password: password.to_string(),
                     base_url: "https://api.twilio.com".to_string(),
 
                     client,
@@ -136,9 +138,10 @@ impl Client {
     /// Create a new Client struct from the environment variable: `TWILIO_API_TOKEN`.
     #[tracing::instrument]
     pub fn new_from_env() -> Self {
-        let token = env::var("TWILIO_API_TOKEN").expect("must set TWILIO_API_TOKEN");
+        let username = env::var("TWILIO_USERNAME").expect("must set TWILIO_USERNAME");
+        let password = env::var("TWILIO_PASSWORD").expect("must set TWILIO_PASSWORD");
 
-        Client::new(token)
+        Client::new(username, password)
     }
 
     /// Create a raw request to our API.
@@ -158,7 +161,7 @@ impl Client {
         let mut req = self.client.request(method, u);
 
         // Add in our authentication.
-        req = req.bearer_auth(&self.token);
+        req = req.basic_auth(&self.username, Some(&self.password));
 
         // Set the default headers.
         req = req.header(
