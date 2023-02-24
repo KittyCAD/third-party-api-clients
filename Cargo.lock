@@ -2136,6 +2136,49 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "59547bce71d9c38b83d9c0e92b6066c4253371f15005def0c30d9657f50c7642"
 
 [[package]]
+name = "twilio-api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "bytes 1.2.1",
+ "chrono",
+ "chrono-humanize",
+ "clap",
+ "data-encoding",
+ "dirs",
+ "expectorate",
+ "format_serde_error",
+ "futures",
+ "futures-util",
+ "http",
+ "hyperx",
+ "itertools 0.10.3",
+ "log",
+ "mime",
+ "parse-display",
+ "percent-encoding",
+ "phonenumber",
+ "pretty_assertions",
+ "reqwest",
+ "reqwest-conditional-middleware",
+ "reqwest-middleware",
+ "reqwest-retry",
+ "reqwest-tracing",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "serde_with",
+ "tabled",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "unicase"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
