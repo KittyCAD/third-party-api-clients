@@ -49,14 +49,16 @@ a user agent string and set of credentials.
 use twilio_api::Client;
 
 let client = Client::new(
-    String::from("api-key"),
+    String::from("username"),
+    String::from("password"),
 );
 ```
 
 Alternatively, the library can search for most of the variables required for
 the client in the environment:
 
-- `TWILIO_API_TOKEN`
+- `TWILIO_USERNAME`
+- `TWILIO_PASSWORD`
 
 And then you can create a client from the environment.
 
