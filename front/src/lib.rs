@@ -29,7 +29,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! front-api = "0.0.2"
+//! front-api = "0.0.3"
 //! ```
 //!
 //! ## Basic example

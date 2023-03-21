@@ -22,7 +22,7 @@ impl Employments {
     ) -> Result<crate::types::ListEmploymentsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/employments"),
+            format!("{}/{}", self.client.base_url, "v1/employments"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -31,11 +31,11 @@ impl Employments {
         }
 
         if let Some(p) = page {
-            query_params.push(("page", format!("{}", p)));
+            query_params.push(("page", format!("{p}")));
         }
 
         if let Some(p) = page_size {
-            query_params.push(("page_size", format!("{}", p)));
+            query_params.push(("page_size", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -62,7 +62,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "v1/employments"),
+            format!("{}/{}", self.client.base_url, "v1/employments"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -89,7 +89,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -120,7 +120,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -152,7 +152,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)

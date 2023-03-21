@@ -462,7 +462,7 @@ dependencies = [
 
 [[package]]
 name = "front-api"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1437,7 +1437,6 @@ dependencies = [
  "futures",
  "futures-util",
  "http",
- "hyperx",
  "itertools 0.10.3",
  "log",
  "mime",

@@ -19,7 +19,7 @@ impl Countries {
     ) -> Result<crate::types::CountriesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/countries"),
+            format!("{}/{}", self.client.base_url, "v1/countries"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -57,7 +57,7 @@ impl Countries {
     ) -> Result<crate::types::HolidaysResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/countries/{country_code}/holidays/{year}"
@@ -96,7 +96,7 @@ impl Countries {
     ) -> Result<crate::types::CountryFormResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/countries/{country_code}/{form}"
