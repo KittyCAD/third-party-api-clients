@@ -22,7 +22,7 @@ impl Shifts {
     ) -> Result<crate::types::ListShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "shifts"),
+            format!("{}/{}", self.client.base_url, "shifts"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -48,7 +48,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "shifts"),
+            format!("{}/{}", self.client.base_url, "shifts"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -75,7 +75,7 @@ impl Shifts {
     ) -> Result<crate::types::ListTeamShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/shifts".replace("{team_id}", team_id)
@@ -106,7 +106,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/shifts".replace("{team_id}", team_id)
@@ -143,7 +143,7 @@ impl Shifts {
     ) -> Result<crate::types::ListTeammateShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/shifts".replace("{teammate_id}", teammate_id)
@@ -173,7 +173,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}".replace("{shift_id}", shift_id)
@@ -209,7 +209,7 @@ impl Shifts {
     ) -> Result<crate::types::ListShiftTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -240,7 +240,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -273,7 +273,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -290,7 +290,7 @@ impl Shifts {
         }
     }
 
-    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Red),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update shift\n\nUpdate a shift.\n\n**Parameters:**\n\n- `shift_id: &'astr`: The Shift ID (required)\n\n```rust,no_run\nasync fn example_shifts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .shifts()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateShift {\n                name: Some(\"some-string\".to_string()),\n                color: Some(front_api::types::Color::Teal),\n                timezone: Some(\"some-string\".to_string()),\n                times: Some(front_api::types::ShiftIntervals {\n                    mon: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    tue: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    wed: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    thu: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    fri: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sat: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                    sun: Some(front_api::types::ShiftInterval {\n                        start: \"some-string\".to_string(),\n                        end: \"some-string\".to_string(),\n                    }),\n                }),\n                teammate_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -299,7 +299,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "shifts/{shift_id}".replace("{shift_id}", shift_id)

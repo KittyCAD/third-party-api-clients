@@ -26,7 +26,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxChannelsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/channels".replace("{inbox_id}", inbox_id)
@@ -59,7 +59,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "inboxes"),
+            format!("{}/{}", self.client.base_url, "inboxes"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -91,7 +91,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "inboxes"),
+            format!("{}/{}", self.client.base_url, "inboxes"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -118,7 +118,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListTeamInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/inboxes".replace("{team_id}", team_id)
@@ -157,7 +157,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/inboxes".replace("{team_id}", team_id)
@@ -187,7 +187,7 @@ impl Inboxes {
     ) -> Result<crate::types::InboxResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}".replace("{inbox_id}", inbox_id)
@@ -220,16 +220,16 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/conversations".replace("{inbox_id}", inbox_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -270,7 +270,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
@@ -308,7 +308,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
@@ -341,7 +341,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)

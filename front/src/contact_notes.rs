@@ -26,7 +26,7 @@ impl ContactNotes {
     ) -> Result<crate::types::ListNotesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}/notes".replace("{contact_id}", contact_id)
@@ -57,7 +57,7 @@ impl ContactNotes {
     ) -> Result<crate::types::ContactNoteResponses, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}/notes".replace("{contact_id}", contact_id)

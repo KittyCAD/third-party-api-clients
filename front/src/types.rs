@@ -205,16 +205,11 @@ pub mod phone_number {
                 return Ok(PhoneNumber(None));
             }
             let s = if !s.trim().starts_with('+') {
-                format!("+1{}", s)
+                format!("+1{s}")
                     .replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                    .replace(['(', ')', ' '], "")
             } else {
-                s.replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                s.replace(['-', '(', ')', ' '], "")
             };
             Ok(PhoneNumber(Some(phonenumber::parse(None, &s).map_err(
                 |e| anyhow::anyhow!("invalid phone number `{}`: {}", s, e),
@@ -232,7 +227,7 @@ pub mod phone_number {
             } else {
                 String::new()
             };
-            write!(f, "{}", s)
+            write!(f, "{s}")
         }
     }
 
@@ -261,40 +256,40 @@ pub mod phone_number {
         fn test_parse_phone_number() {
             let mut phone = "+1-555-555-5555";
             let mut phone_parsed: PhoneNumber =
-                serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+                serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             let mut expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             let mut expected_str = "+1 555-555-5555";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "+1 555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "5555555555";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510) 864-1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, "+15108641234").unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510)8641234";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             assert_eq!(phone_parsed, PhoneNumber(None));
             assert_eq!("", serde_json::json!(phone_parsed));
             phone = "+49 30  1234 1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+49 30 12341234";
@@ -371,22 +366,22 @@ pub mod error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
-                    write!(f, "Invalid Request: {}", s)
+                    write!(f, "Invalid Request: {s}")
                 }
                 Error::CommunicationError(e) => {
-                    write!(f, "Communication Error: {}", e)
+                    write!(f, "Communication Error: {e}")
                 }
                 Error::RequestError(e) => {
-                    write!(f, "Request Error: {}", e)
+                    write!(f, "Request Error: {e}")
                 }
                 Error::SerdeError { error, status: _ } => {
-                    write!(f, "Serde Error: {}", error)
+                    write!(f, "Serde Error: {error}")
                 }
                 Error::InvalidResponsePayload { error, response: _ } => {
-                    write!(f, "Invalid Response Payload: {}", error)
+                    write!(f, "Invalid Response Payload: {error}")
                 }
                 Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {:?}", r)
+                    write!(f, "Unexpected Response: {r:?}")
                 }
             }
         }
@@ -415,7 +410,7 @@ pub mod error {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftInterval {
     #[doc = "Start of shift"]
@@ -446,7 +441,7 @@ impl tabled::Tabled for ShiftInterval {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftIntervals {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -480,37 +475,37 @@ impl tabled::Tabled for ShiftIntervals {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mon) = &self.mon {
-                format!("{:?}", mon)
+                format!("{mon:?}")
             } else {
                 String::new()
             },
             if let Some(tue) = &self.tue {
-                format!("{:?}", tue)
+                format!("{tue:?}")
             } else {
                 String::new()
             },
             if let Some(wed) = &self.wed {
-                format!("{:?}", wed)
+                format!("{wed:?}")
             } else {
                 String::new()
             },
             if let Some(thu) = &self.thu {
-                format!("{:?}", thu)
+                format!("{thu:?}")
             } else {
                 String::new()
             },
             if let Some(fri) = &self.fri {
-                format!("{:?}", fri)
+                format!("{fri:?}")
             } else {
                 String::new()
             },
             if let Some(sat) = &self.sat {
-                format!("{:?}", sat)
+                format!("{sat:?}")
             } else {
                 String::new()
             },
             if let Some(sun) = &self.sun {
-                format!("{:?}", sun)
+                format!("{sun:?}")
             } else {
                 String::new()
             },
@@ -531,7 +526,7 @@ impl tabled::Tabled for ShiftIntervals {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagIds {
     pub tag_ids: Vec<String>,
@@ -559,7 +554,7 @@ impl tabled::Tabled for TagIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateIds {
     pub teammate_ids: Vec<String>,
@@ -587,7 +582,7 @@ impl tabled::Tabled for TeammateIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelIds {
     pub channel_ids: Vec<String>,
@@ -615,7 +610,7 @@ impl tabled::Tabled for ChannelIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxIds {
     pub inbox_ids: Vec<String>,
@@ -643,7 +638,7 @@ impl tabled::Tabled for InboxIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeamIds {
     pub team_ids: Vec<String>,
@@ -671,7 +666,7 @@ impl tabled::Tabled for TeamIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactIds {
     pub contact_ids: Vec<String>,
@@ -699,7 +694,7 @@ impl tabled::Tabled for ContactIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AccountIds {
     pub account_ids: Vec<String>,
@@ -727,7 +722,7 @@ impl tabled::Tabled for AccountIds {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Account {
     #[doc = "Name of the Account"]
@@ -761,27 +756,27 @@ impl tabled::Tabled for Account {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(domains) = &self.domains {
-                format!("{:?}", domains)
+                format!("{domains:?}")
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{external_id:?}")
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{custom_fields:?}")
             } else {
                 String::new()
             },
@@ -801,7 +796,7 @@ impl tabled::Tabled for Account {
 
 #[doc = "Resources to compute the analytics for. Defaults to all."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsFilters {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -833,32 +828,32 @@ impl tabled::Tabled for AnalyticsFilters {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{tag_ids:?}")
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{teammate_ids:?}")
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{channel_ids:?}")
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{inbox_ids:?}")
             } else {
                 String::new()
             },
             if let Some(team_ids) = &self.team_ids {
-                format!("{:?}", team_ids)
+                format!("{team_ids:?}")
             } else {
                 String::new()
             },
             if let Some(account_ids) = &self.account_ids {
-                format!("{:?}", account_ids)
+                format!("{account_ids:?}")
             } else {
                 String::new()
             },
@@ -915,12 +910,12 @@ impl tabled::Tabled for AnalyticsReportRequest2 {
             format!("{:?}", self.start),
             format!("{:?}", self.end),
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{timezone:?}")
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{filters:?}")
             } else {
                 String::new()
             },
@@ -943,7 +938,6 @@ impl tabled::Tabled for AnalyticsReportRequest2 {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -1000,12 +994,12 @@ impl tabled::Tabled for AnalyticsExportRequest2 {
             format!("{:?}", self.start),
             format!("{:?}", self.end),
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{timezone:?}")
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{filters:?}")
             } else {
                 String::new()
             },
@@ -1028,7 +1022,6 @@ impl tabled::Tabled for AnalyticsExportRequest2 {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -1103,7 +1096,7 @@ pub enum AnalyticsMetricId {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateFolderAsChild {
     #[doc = "Name of the message template folder"]
@@ -1133,7 +1126,7 @@ impl tabled::Tabled for CreateMessageTemplateFolderAsChild {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateFolder {
     #[doc = "Name of the message template folder"]
@@ -1160,7 +1153,7 @@ impl tabled::Tabled for CreateMessageTemplateFolder {
         vec![
             self.name.clone(),
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{:?}", parent_folder_id)
+                format!("{parent_folder_id:?}")
             } else {
                 String::new()
             },
@@ -1174,7 +1167,7 @@ impl tabled::Tabled for CreateMessageTemplateFolder {
 
 #[doc = "A message template folder that is used to store message templates or other folders."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateMessageTemplateFolder {
     #[doc = "Name of the message template folder"]
@@ -1201,12 +1194,12 @@ impl tabled::Tabled for UpdateMessageTemplateFolder {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{:?}", parent_folder_id)
+                format!("{parent_folder_id:?}")
             } else {
                 String::new()
             },
@@ -1219,7 +1212,7 @@ impl tabled::Tabled for UpdateMessageTemplateFolder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1254,27 +1247,27 @@ impl tabled::Tabled for UpdateMessageTemplate {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{folder_id:?}")
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{inbox_ids:?}")
             } else {
                 String::new()
             },
@@ -1294,7 +1287,7 @@ impl tabled::Tabled for UpdateMessageTemplate {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateMessageTemplateAsChild {
     #[doc = "Name of the message template"]
@@ -1325,13 +1318,13 @@ impl tabled::Tabled for CreateMessageTemplateAsChild {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{inbox_ids:?}")
             } else {
                 String::new()
             },
@@ -1350,7 +1343,7 @@ impl tabled::Tabled for CreateMessageTemplateAsChild {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreatePrivateMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1382,13 +1375,13 @@ impl tabled::Tabled for CreatePrivateMessageTemplate {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{folder_id:?}")
             } else {
                 String::new()
             },
@@ -1407,7 +1400,7 @@ impl tabled::Tabled for CreatePrivateMessageTemplate {
 
 #[doc = "A message template that is used for pre-written responses"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateSharedMessageTemplate {
     #[doc = "Name of the message template"]
@@ -1441,18 +1434,18 @@ impl tabled::Tabled for CreateSharedMessageTemplate {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{folder_id:?}")
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{inbox_ids:?}")
             } else {
                 String::new()
             },
@@ -1471,7 +1464,7 @@ impl tabled::Tabled for CreateSharedMessageTemplate {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContactGroup {
     #[doc = "Name of the group"]
@@ -1500,7 +1493,7 @@ impl tabled::Tabled for CreateContactGroup {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddContactsToGroup {
     #[doc = "List of IDs of the contacts to add in the requested group"]
@@ -1534,7 +1527,6 @@ impl tabled::Tabled for AddContactsToGroup {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -1569,7 +1561,7 @@ pub enum Source {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactHandle {
     #[doc = "Handle used to reach the contact."]
@@ -1601,7 +1593,7 @@ impl tabled::Tabled for ContactHandle {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContact {
     #[doc = "Contact name"]
@@ -1648,42 +1640,42 @@ impl tabled::Tabled for CreateContact {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{:?}", avatar)
+                format!("{avatar:?}")
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{is_spammer:?}")
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{links:?}")
             } else {
                 String::new()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{:?}", group_names)
+                format!("{group_names:?}")
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{custom_fields:?}")
             } else {
                 String::new()
             },
             if let Some(handles) = &self.handles {
-                format!("{:?}", handles)
+                format!("{handles:?}")
             } else {
                 String::new()
             },
@@ -1705,7 +1697,7 @@ impl tabled::Tabled for CreateContact {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Contact {
     #[doc = "Contact name"]
@@ -1748,37 +1740,37 @@ impl tabled::Tabled for Contact {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{:?}", avatar)
+                format!("{avatar:?}")
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{is_spammer:?}")
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{links:?}")
             } else {
                 String::new()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{:?}", group_names)
+                format!("{group_names:?}")
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{custom_fields:?}")
             } else {
                 String::new()
             },
@@ -1799,7 +1791,7 @@ impl tabled::Tabled for Contact {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MergeContacts {
     #[doc = "Optional contact ID to merge the other contacts into."]
@@ -1827,7 +1819,7 @@ impl tabled::Tabled for MergeContacts {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(target_contact_id) = &self.target_contact_id {
-                format!("{:?}", target_contact_id)
+                format!("{target_contact_id:?}")
             } else {
                 String::new()
             },
@@ -1841,7 +1833,7 @@ impl tabled::Tabled for MergeContacts {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteContactHandle {
     #[doc = "Handle used to reach the contact."]
@@ -1871,7 +1863,7 @@ impl tabled::Tabled for DeleteContactHandle {
             self.handle.clone(),
             format!("{:?}", self.source),
             if let Some(force) = &self.force {
-                format!("{:?}", force)
+                format!("{force:?}")
             } else {
                 String::new()
             },
@@ -1888,7 +1880,7 @@ impl tabled::Tabled for DeleteContactHandle {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateContactNote {
     #[doc = "ID of teammate creating the note"]
@@ -1921,7 +1913,7 @@ impl tabled::Tabled for CreateContactNote {
 #[doc = "Settings to replace.\nFor custom channels, all settings may be replaced.\nFor all other \
          channels, only `undo_send_time` and `all_teammates_can_reply` may be replaced.\n"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Settings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -1949,12 +1941,12 @@ impl tabled::Tabled for Settings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{undo_send_time:?}")
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{all_teammates_can_reply:?}")
             } else {
                 String::new()
             },
@@ -1970,7 +1962,7 @@ impl tabled::Tabled for Settings {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateChannel {
     #[doc = "Name of the channel"]
@@ -1998,12 +1990,12 @@ impl tabled::Tabled for UpdateChannel {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{settings:?}")
             } else {
                 String::new()
             },
@@ -2017,7 +2009,7 @@ impl tabled::Tabled for UpdateChannel {
 
 #[doc = "Settings of the channel"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateChannelSettings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -2045,12 +2037,12 @@ impl tabled::Tabled for CreateChannelSettings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{undo_send_time:?}")
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{all_teammates_can_reply:?}")
             } else {
                 String::new()
             },
@@ -2070,7 +2062,6 @@ impl tabled::Tabled for CreateChannelSettings {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -2093,7 +2084,7 @@ pub enum CreateChannelType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateChannel {
     #[doc = "Name of the channel"]
@@ -2125,18 +2116,18 @@ impl tabled::Tabled for CreateChannel {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{settings:?}")
             } else {
                 String::new()
             },
             format!("{:?}", self.type_),
             if let Some(send_as) = &self.send_as {
-                format!("{:?}", send_as)
+                format!("{send_as:?}")
             } else {
                 String::new()
             },
@@ -2154,7 +2145,7 @@ impl tabled::Tabled for CreateChannel {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateComment {
     #[doc = "ID of the teammate creating the comment. If omitted, will post as the API Token or \
@@ -2183,13 +2174,13 @@ impl tabled::Tabled for CreateComment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{author_id:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
@@ -2210,7 +2201,6 @@ impl tabled::Tabled for CreateComment {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -2234,7 +2224,7 @@ impl std::default::Default for CreateConversationType {
 
 #[doc = "Details for the starter comment"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Comment {
     #[doc = "ID of the teammate creating the comment. If omitted, will post as the API Token or \
@@ -2263,13 +2253,13 @@ impl tabled::Tabled for Comment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{author_id:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
@@ -2286,7 +2276,7 @@ impl tabled::Tabled for Comment {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateConversation {
     #[doc = "Conversation type"]
@@ -2322,12 +2312,12 @@ impl tabled::Tabled for CreateConversation {
         vec![
             format!("{:?}", self.type_),
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{:?}", inbox_id)
+                format!("{inbox_id:?}")
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{teammate_ids:?}")
             } else {
                 String::new()
             },
@@ -2352,7 +2342,6 @@ impl tabled::Tabled for CreateConversation {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -2378,7 +2367,7 @@ pub enum Status {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversation {
     #[doc = "ID of the teammate to assign the conversation to. Set it to null to unassign."]
@@ -2410,22 +2399,22 @@ impl tabled::Tabled for UpdateConversation {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{:?}", assignee_id)
+                format!("{assignee_id:?}")
             } else {
                 String::new()
             },
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{:?}", inbox_id)
+                format!("{inbox_id:?}")
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{tag_ids:?}")
             } else {
                 String::new()
             },
@@ -2443,7 +2432,7 @@ impl tabled::Tabled for UpdateConversation {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversationAssignee {
     #[doc = "ID of the teammate to assign the conversation to. Set it to null to unassign."]
@@ -2472,7 +2461,7 @@ impl tabled::Tabled for UpdateConversationAssignee {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateConversationReminders {
     #[doc = "ID of the teammate to create a reminder for. For a private conversation, specify the \
@@ -2505,7 +2494,7 @@ impl tabled::Tabled for UpdateConversationReminders {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateCustomField {
     #[doc = "Name of the custom field"]
@@ -2531,12 +2520,12 @@ impl tabled::Tabled for UpdateCustomField {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
@@ -2554,7 +2543,6 @@ impl tabled::Tabled for UpdateCustomField {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -2580,7 +2568,7 @@ impl std::default::Default for Mode {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2628,43 +2616,43 @@ impl tabled::Tabled for CreateDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{to:?}")
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{mode:?}")
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{signature_id:?}")
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{should_add_default_signature:?}")
             } else {
                 String::new()
             },
@@ -2688,7 +2676,7 @@ impl tabled::Tabled for CreateDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReplyDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2739,48 +2727,48 @@ impl tabled::Tabled for ReplyDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{to:?}")
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{mode:?}")
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{signature_id:?}")
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{should_add_default_signature:?}")
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{channel_id:?}")
             } else {
                 String::new()
             },
@@ -2810,7 +2798,6 @@ impl tabled::Tabled for ReplyDraft {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -2833,7 +2820,7 @@ impl std::default::Default for EditDraftMode {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EditDraft {
     #[doc = "ID of the teammate on behalf of whom the draft will be created"]
@@ -2887,53 +2874,53 @@ impl tabled::Tabled for EditDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{to:?}")
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{mode:?}")
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{signature_id:?}")
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{should_add_default_signature:?}")
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{channel_id:?}")
             } else {
                 String::new()
             },
             if let Some(version) = &self.version {
-                format!("{:?}", version)
+                format!("{version:?}")
             } else {
                 String::new()
             },
@@ -2959,7 +2946,7 @@ impl tabled::Tabled for EditDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteDraft {
     #[doc = "Version of the draft"]
@@ -2988,7 +2975,7 @@ impl tabled::Tabled for DeleteDraft {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateInbox {
     pub name: String,
@@ -3012,7 +2999,7 @@ impl tabled::Tabled for CreateInbox {
         vec![
             self.name.clone(),
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{teammate_ids:?}")
             } else {
                 String::new()
             },
@@ -3025,7 +3012,7 @@ impl tabled::Tabled for CreateInbox {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Options {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3050,12 +3037,12 @@ impl tabled::Tabled for Options {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{tag_ids:?}")
             } else {
                 String::new()
             },
             if let Some(archive) = &self.archive {
-                format!("{:?}", archive)
+                format!("{archive:?}")
             } else {
                 String::new()
             },
@@ -3068,7 +3055,7 @@ impl tabled::Tabled for Options {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundMessage {
     pub to: Vec<String>,
@@ -3120,53 +3107,53 @@ impl tabled::Tabled for OutboundMessage {
         vec![
             format!("{:?}", self.to),
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{:?}", sender_name)
+                format!("{sender_name:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{author_id:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{text:?}")
             } else {
                 String::new()
             },
             if let Some(options) = &self.options {
-                format!("{:?}", options)
+                format!("{options:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{signature_id:?}")
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{should_add_default_signature:?}")
             } else {
                 String::new()
             },
@@ -3192,7 +3179,7 @@ impl tabled::Tabled for OutboundMessage {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundReplyMessageOptions {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3217,12 +3204,12 @@ impl tabled::Tabled for OutboundReplyMessageOptions {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{tag_ids:?}")
             } else {
                 String::new()
             },
             if let Some(archive) = &self.archive {
-                format!("{:?}", archive)
+                format!("{archive:?}")
             } else {
                 String::new()
             },
@@ -3235,7 +3222,7 @@ impl tabled::Tabled for OutboundReplyMessageOptions {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OutboundReplyMessage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3290,63 +3277,63 @@ impl tabled::Tabled for OutboundReplyMessage {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{to:?}")
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{:?}", sender_name)
+                format!("{sender_name:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{author_id:?}")
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{channel_id:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{text:?}")
             } else {
                 String::new()
             },
             if let Some(options) = &self.options {
-                format!("{:?}", options)
+                format!("{options:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{signature_id:?}")
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{should_add_default_signature:?}")
             } else {
                 String::new()
             },
@@ -3374,7 +3361,7 @@ impl tabled::Tabled for OutboundReplyMessage {
 
 #[doc = "Data of the sender"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Sender {
     #[doc = "ID of the contact in Front corresponding to the sender"]
@@ -3402,12 +3389,12 @@ impl tabled::Tabled for Sender {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contact_id) = &self.contact_id {
-                format!("{:?}", contact_id)
+                format!("{contact_id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -3429,7 +3416,6 @@ impl tabled::Tabled for Sender {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -3455,7 +3441,7 @@ impl std::default::Default for BodyFormat {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Metadata {
     #[doc = "Reference which will be used to thread messages. If  omitted, Front threads by \
@@ -3482,12 +3468,12 @@ impl tabled::Tabled for Metadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{thread_ref:?}")
             } else {
                 String::new()
             },
             if let Some(headers) = &self.headers {
-                format!("{:?}", headers)
+                format!("{headers:?}")
             } else {
                 String::new()
             },
@@ -3500,7 +3486,7 @@ impl tabled::Tabled for Metadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomMessage {
     #[doc = "Data of the sender"]
@@ -3536,23 +3522,23 @@ impl tabled::Tabled for CustomMessage {
         vec![
             format!("{:?}", self.sender),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(body_format) = &self.body_format {
-                format!("{:?}", body_format)
+                format!("{body_format:?}")
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{metadata:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
@@ -3573,7 +3559,7 @@ impl tabled::Tabled for CustomMessage {
 
 #[doc = "Data of the sender"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessageSender {
     #[doc = "ID of the teammate who is the author of the message. Ignored if the message is \
@@ -3602,12 +3588,12 @@ impl tabled::Tabled for ImportMessageSender {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{author_id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -3630,7 +3616,6 @@ impl tabled::Tabled for ImportMessageSender {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -3660,7 +3645,6 @@ impl std::default::Default for ImportMessageBodyFormat {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -3692,7 +3676,7 @@ impl std::default::Default for ImportMessageType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessageMetadata {
     #[doc = "Reference which will be used to thread messages. If  omitted, Front threads by \
@@ -3724,18 +3708,18 @@ impl tabled::Tabled for ImportMessageMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{thread_ref:?}")
             } else {
                 String::new()
             },
             format!("{:?}", self.is_inbound),
             if let Some(is_archived) = &self.is_archived {
-                format!("{:?}", is_archived)
+                format!("{is_archived:?}")
             } else {
                 String::new()
             },
             if let Some(should_skip_rules) = &self.should_skip_rules {
-                format!("{:?}", should_skip_rules)
+                format!("{should_skip_rules:?}")
             } else {
                 String::new()
             },
@@ -3753,7 +3737,7 @@ impl tabled::Tabled for ImportMessageMetadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportMessage {
     #[doc = "Data of the sender"]
@@ -3809,46 +3793,46 @@ impl tabled::Tabled for ImportMessage {
             format!("{:?}", self.sender),
             format!("{:?}", self.to),
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{cc:?}")
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{bcc:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(body_format) = &self.body_format {
-                format!("{:?}", body_format)
+                format!("{body_format:?}")
             } else {
                 String::new()
             },
             self.external_id.clone(),
             format!("{:?}", self.created_at),
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{:?}", assignee_id)
+                format!("{assignee_id:?}")
             } else {
                 String::new()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{tags:?}")
             } else {
                 String::new()
             },
             format!("{:?}", self.metadata),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
@@ -3880,7 +3864,6 @@ impl tabled::Tabled for ImportMessage {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -4005,27 +3988,27 @@ impl tabled::Tabled for UpdateShift {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(color) = &self.color {
-                format!("{:?}", color)
+                format!("{color:?}")
             } else {
                 String::new()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{timezone:?}")
             } else {
                 String::new()
             },
             if let Some(times) = &self.times {
-                format!("{:?}", times)
+                format!("{times:?}")
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{teammate_ids:?}")
             } else {
                 String::new()
             },
@@ -4045,7 +4028,7 @@ impl tabled::Tabled for UpdateShift {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreatePrivateSignature {
     #[doc = "Name of the signature"]
@@ -4078,18 +4061,18 @@ impl tabled::Tabled for CreatePrivateSignature {
         vec![
             self.name.clone(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{sender_info:?}")
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{is_default:?}")
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{channel_ids:?}")
             } else {
                 String::new()
             },
@@ -4109,7 +4092,7 @@ impl tabled::Tabled for CreatePrivateSignature {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateSharedSignature {
     #[doc = "Name of the signature"]
@@ -4146,7 +4129,7 @@ impl tabled::Tabled for CreateSharedSignature {
         vec![
             self.name.clone(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{sender_info:?}")
             } else {
                 String::new()
             },
@@ -4154,17 +4137,17 @@ impl tabled::Tabled for CreateSharedSignature {
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{is_visible_for_all_teammate_channels:?}")
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{is_default:?}")
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{channel_ids:?}")
             } else {
                 String::new()
             },
@@ -4185,7 +4168,7 @@ impl tabled::Tabled for CreateSharedSignature {
 
 #[doc = "A signature that can be used to sign messages."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateSignature {
     #[doc = "Name of the signature"]
@@ -4223,34 +4206,34 @@ impl tabled::Tabled for UpdateSignature {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{sender_info:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{is_visible_for_all_teammate_channels:?}")
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{is_default:?}")
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{channel_ids:?}")
             } else {
                 String::new()
             },
@@ -4274,7 +4257,6 @@ impl tabled::Tabled for UpdateSignature {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -4316,7 +4298,7 @@ pub enum Highlight {
 
 #[doc = "A tag is a label that can be used to classify conversations."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateTag {
     #[doc = "Name of the tag"]
@@ -4345,12 +4327,12 @@ impl tabled::Tabled for CreateTag {
         vec![
             self.name.clone(),
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{highlight:?}")
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{is_visible_in_conversation_lists:?}")
             } else {
                 String::new()
             },
@@ -4367,7 +4349,7 @@ impl tabled::Tabled for CreateTag {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateTag {
     #[doc = "Name of the tag"]
@@ -4399,22 +4381,22 @@ impl tabled::Tabled for UpdateTag {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{highlight:?}")
             } else {
                 String::new()
             },
             if let Some(parent_tag_id) = &self.parent_tag_id {
-                format!("{:?}", parent_tag_id)
+                format!("{parent_tag_id:?}")
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{is_visible_in_conversation_lists:?}")
             } else {
                 String::new()
             },
@@ -4432,7 +4414,7 @@ impl tabled::Tabled for UpdateTag {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateTeammate {
     #[doc = "New username. It must be unique and can only contains lowercase letters, numbers and \
@@ -4465,22 +4447,22 @@ impl tabled::Tabled for UpdateTeammate {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{username:?}")
             } else {
                 String::new()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{first_name:?}")
             } else {
                 String::new()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{last_name:?}")
             } else {
                 String::new()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{:?}", is_available)
+                format!("{is_available:?}")
             } else {
                 String::new()
             },
@@ -4499,7 +4481,7 @@ impl tabled::Tabled for UpdateTeammate {
 
 #[doc = "A link is used to connect a Front conversation to an external resource."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateLink {
     #[doc = "Name of the link. If none is specified, the external_url is used as a default"]
@@ -4524,7 +4506,7 @@ impl tabled::Tabled for CreateLink {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -4538,7 +4520,7 @@ impl tabled::Tabled for CreateLink {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateLink {
     #[doc = "Name of the link"]
@@ -4560,7 +4542,7 @@ impl tabled::Tabled for UpdateLink {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(name) = &self.name {
-            format!("{:?}", name)
+            format!("{name:?}")
         } else {
             String::new()
         }]
@@ -4572,7 +4554,7 @@ impl tabled::Tabled for UpdateLink {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Related {
     #[doc = "Link to contacts associated to the account"]
@@ -4594,7 +4576,7 @@ impl tabled::Tabled for Related {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(contacts) = &self.contacts {
-            format!("{:?}", contacts)
+            format!("{contacts:?}")
         } else {
             String::new()
         }]
@@ -4606,7 +4588,7 @@ impl tabled::Tabled for Related {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UnderscoreLinks {
     #[doc = "Link to resource"]
@@ -4631,12 +4613,12 @@ impl tabled::Tabled for UnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -4697,52 +4679,52 @@ impl tabled::Tabled for AccountResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(logo_url) = &self.logo_url {
-                format!("{:?}", logo_url)
+                format!("{logo_url:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(domains) = &self.domains {
-                format!("{:?}", domains)
+                format!("{domains:?}")
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{external_id:?}")
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{custom_fields:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{updated_at:?}")
             } else {
                 String::new()
             },
@@ -4766,7 +4748,7 @@ impl tabled::Tabled for AccountResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EventResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -4788,7 +4770,7 @@ impl tabled::Tabled for EventResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -4804,7 +4786,6 @@ impl tabled::Tabled for EventResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -4864,7 +4845,6 @@ pub enum EventResponseType {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -4894,7 +4874,7 @@ pub enum MetaType {
 
 #[doc = "Metadata about the resource"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Meta {
     #[doc = "Type of resource"]
@@ -4916,7 +4896,7 @@ impl tabled::Tabled for Meta {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(type_) = &self.type_ {
-            format!("{:?}", type_)
+            format!("{type_:?}")
         } else {
             String::new()
         }]
@@ -4971,12 +4951,12 @@ impl tabled::Tabled for EventResponseSource {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(meta) = &self.meta {
-                format!("{:?}", meta)
+                format!("{meta:?}")
             } else {
                 String::new()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{data:?}")
             } else {
                 String::new()
             },
@@ -4993,7 +4973,6 @@ impl tabled::Tabled for EventResponseSource {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -5071,12 +5050,12 @@ impl tabled::Tabled for TargetMeta {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{data:?}")
             } else {
                 String::new()
             },
@@ -5112,7 +5091,7 @@ impl tabled::Tabled for Target {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(meta) = &self.meta {
-            format!("{:?}", meta)
+            format!("{meta:?}")
         } else {
             String::new()
         }]
@@ -5164,37 +5143,37 @@ impl tabled::Tabled for EventResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(emitted_at) = &self.emitted_at {
-                format!("{:?}", emitted_at)
+                format!("{emitted_at:?}")
             } else {
                 String::new()
             },
             if let Some(source) = &self.source {
-                format!("{:?}", source)
+                format!("{source:?}")
             } else {
                 String::new()
             },
             if let Some(target) = &self.target {
-                format!("{:?}", target)
+                format!("{target:?}")
             } else {
                 String::new()
             },
             if let Some(conversation) = &self.conversation {
-                format!("{:?}", conversation)
+                format!("{conversation:?}")
             } else {
                 String::new()
             },
@@ -5215,7 +5194,7 @@ impl tabled::Tabled for EventResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct IdentityResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -5237,7 +5216,7 @@ impl tabled::Tabled for IdentityResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -5249,7 +5228,7 @@ impl tabled::Tabled for IdentityResponseUnderscoreLinks {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct IdentityResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -5277,17 +5256,17 @@ impl tabled::Tabled for IdentityResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -5304,7 +5283,7 @@ impl tabled::Tabled for IdentityResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsExportResponse2UnderscoreLinks {
     #[doc = "Link to analytics export"]
@@ -5326,7 +5305,7 @@ impl tabled::Tabled for AnalyticsExportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -5342,7 +5321,6 @@ impl tabled::Tabled for AnalyticsExportResponse2UnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -5406,37 +5384,37 @@ impl tabled::Tabled for AnalyticsExportResponse2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(progress) = &self.progress {
-                format!("{:?}", progress)
+                format!("{progress:?}")
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{url:?}")
             } else {
                 String::new()
             },
             if let Some(size) = &self.size {
-                format!("{:?}", size)
+                format!("{size:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{filters:?}")
             } else {
                 String::new()
             },
@@ -5457,7 +5435,7 @@ impl tabled::Tabled for AnalyticsExportResponse2 {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AnalyticsReportResponse2UnderscoreLinks {
     #[doc = "Link to analytics job."]
@@ -5479,7 +5457,7 @@ impl tabled::Tabled for AnalyticsReportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -5495,7 +5473,6 @@ impl tabled::Tabled for AnalyticsReportResponse2UnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -5550,22 +5527,22 @@ impl tabled::Tabled for AnalyticsReportResponse2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(progress) = &self.progress {
-                format!("{:?}", progress)
+                format!("{progress:?}")
             } else {
                 String::new()
             },
             if let Some(metrics) = &self.metrics {
-                format!("{:?}", metrics)
+                format!("{metrics:?}")
             } else {
                 String::new()
             },
@@ -5609,17 +5586,17 @@ impl tabled::Tabled for AnalyticsScalar2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{value:?}")
             } else {
                 String::new()
             },
@@ -5635,7 +5612,6 @@ impl tabled::Tabled for AnalyticsScalar2 {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -5661,7 +5637,7 @@ pub enum AnalyticsScalarType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ResourceUnderscoreLinks {
     #[doc = "Link to a resource."]
@@ -5683,7 +5659,7 @@ impl tabled::Tabled for ResourceUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -5719,12 +5695,12 @@ impl tabled::Tabled for Resource {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
@@ -5761,12 +5737,12 @@ impl tabled::Tabled for ValueOneOf {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(label) = &self.label {
-                format!("{:?}", label)
+                format!("{label:?}")
             } else {
                 String::new()
             },
             if let Some(resource) = &self.resource {
-                format!("{:?}", resource)
+                format!("{resource:?}")
             } else {
                 String::new()
             },
@@ -5822,17 +5798,17 @@ impl tabled::Tabled for AnalyticsScalarValue {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{value:?}")
             } else {
                 String::new()
             },
@@ -5846,7 +5822,7 @@ impl tabled::Tabled for AnalyticsScalarValue {
 
 #[doc = "Attachment metadata"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AttachmentMetadata {
     #[doc = "Whether or not the attachment is part of the message body"]
@@ -5872,12 +5848,12 @@ impl tabled::Tabled for AttachmentMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(is_inline) = &self.is_inline {
-                format!("{:?}", is_inline)
+                format!("{is_inline:?}")
             } else {
                 String::new()
             },
             if let Some(cid) = &self.cid {
-                format!("{:?}", cid)
+                format!("{cid:?}")
             } else {
                 String::new()
             },
@@ -5890,7 +5866,7 @@ impl tabled::Tabled for AttachmentMetadata {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Attachment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5927,32 +5903,32 @@ impl tabled::Tabled for Attachment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(filename) = &self.filename {
-                format!("{:?}", filename)
+                format!("{filename:?}")
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{url:?}")
             } else {
                 String::new()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{:?}", content_type)
+                format!("{content_type:?}")
             } else {
                 String::new()
             },
             if let Some(size) = &self.size {
-                format!("{:?}", size)
+                format!("{size:?}")
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{metadata:?}")
             } else {
                 String::new()
             },
@@ -5972,7 +5948,7 @@ impl tabled::Tabled for Attachment {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateFolderResponseUnderscoreLinksRelated {
     #[doc = "Link to resource's owner"]
@@ -5994,7 +5970,7 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -6006,7 +5982,7 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateFolderResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6031,12 +6007,12 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -6077,17 +6053,17 @@ impl tabled::Tabled for MessageTemplateFolderResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -6104,7 +6080,7 @@ impl tabled::Tabled for MessageTemplateFolderResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateResponseUnderscoreLinksRelated {
     #[doc = "Link to resource's owner"]
@@ -6126,7 +6102,7 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -6138,7 +6114,7 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageTemplateResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6163,12 +6139,12 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -6223,42 +6199,42 @@ impl tabled::Tabled for MessageTemplateResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(is_available_for_all_inboxes) = &self.is_available_for_all_inboxes {
-                format!("{:?}", is_available_for_all_inboxes)
+                format!("{is_available_for_all_inboxes:?}")
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{inbox_ids:?}")
             } else {
                 String::new()
             },
@@ -6280,7 +6256,7 @@ impl tabled::Tabled for MessageTemplateResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactGroupResponsesUnderscoreLinksRelated {
     #[doc = "Link to group contacts"]
@@ -6306,12 +6282,12 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contacts) = &self.contacts {
-                format!("{:?}", contacts)
+                format!("{contacts:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
@@ -6324,7 +6300,7 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactGroupResponsesUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6349,12 +6325,12 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -6398,22 +6374,22 @@ impl tabled::Tabled for ContactGroupResponses {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
@@ -6460,17 +6436,17 @@ impl tabled::Tabled for ContactNoteResponses {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{author:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
@@ -6487,7 +6463,7 @@ impl tabled::Tabled for ContactNoteResponses {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseUnderscoreLinksRelated {
     #[doc = "Link to channel inbox"]
@@ -6513,12 +6489,12 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(inbox) = &self.inbox {
-                format!("{:?}", inbox)
+                format!("{inbox:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
@@ -6531,7 +6507,7 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6556,12 +6532,12 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -6578,7 +6554,6 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -6620,7 +6595,7 @@ pub enum Types {
 
 #[doc = "Channel settings"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ChannelResponseSettings {
     #[doc = "The time (measured in seconds) that users have to undo a send operation in the \
@@ -6648,12 +6623,12 @@ impl tabled::Tabled for ChannelResponseSettings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{undo_send_time:?}")
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{all_teammates_can_reply:?}")
             } else {
                 String::new()
             },
@@ -6712,42 +6687,42 @@ impl tabled::Tabled for ChannelResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(address) = &self.address {
-                format!("{:?}", address)
+                format!("{address:?}")
             } else {
                 String::new()
             },
             if let Some(types) = &self.types {
-                format!("{:?}", types)
+                format!("{types:?}")
             } else {
                 String::new()
             },
             if let Some(send_as) = &self.send_as {
-                format!("{:?}", send_as)
+                format!("{send_as:?}")
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{settings:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
             if let Some(is_valid) = &self.is_valid {
-                format!("{:?}", is_valid)
+                format!("{is_valid:?}")
             } else {
                 String::new()
             },
@@ -6769,7 +6744,7 @@ impl tabled::Tabled for ChannelResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommentResponseUnderscoreLinksRelated {
     #[doc = "Link to comment's conversation"]
@@ -6795,12 +6770,12 @@ impl tabled::Tabled for CommentResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{conversations:?}")
             } else {
                 String::new()
             },
             if let Some(mentions) = &self.mentions {
-                format!("{:?}", mentions)
+                format!("{mentions:?}")
             } else {
                 String::new()
             },
@@ -6813,7 +6788,7 @@ impl tabled::Tabled for CommentResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommentResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -6838,12 +6813,12 @@ impl tabled::Tabled for CommentResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -6893,32 +6868,32 @@ impl tabled::Tabled for CommentResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{author:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(posted_at) = &self.posted_at {
-                format!("{:?}", posted_at)
+                format!("{posted_at:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
@@ -6938,7 +6913,7 @@ impl tabled::Tabled for CommentResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactResponseUnderscoreLinksRelated {
     #[doc = "Link to contact notes"]
@@ -6967,17 +6942,17 @@ impl tabled::Tabled for ContactResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(notes) = &self.notes {
-                format!("{:?}", notes)
+                format!("{notes:?}")
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{conversations:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
@@ -6994,7 +6969,7 @@ impl tabled::Tabled for ContactResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ContactResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7019,12 +6994,12 @@ impl tabled::Tabled for ContactResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -7089,57 +7064,57 @@ impl tabled::Tabled for ContactResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(avatar_url) = &self.avatar_url {
-                format!("{:?}", avatar_url)
+                format!("{avatar_url:?}")
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{is_spammer:?}")
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{links:?}")
             } else {
                 String::new()
             },
             if let Some(groups) = &self.groups {
-                format!("{:?}", groups)
+                format!("{groups:?}")
             } else {
                 String::new()
             },
             if let Some(handles) = &self.handles {
-                format!("{:?}", handles)
+                format!("{handles:?}")
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{custom_fields:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
@@ -7164,7 +7139,7 @@ impl tabled::Tabled for ContactResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseUnderscoreLinksRelated {
     #[doc = "Link to conversation events"]
@@ -7202,32 +7177,32 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(events) = &self.events {
-                format!("{:?}", events)
+                format!("{events:?}")
             } else {
                 String::new()
             },
             if let Some(followers) = &self.followers {
-                format!("{:?}", followers)
+                format!("{followers:?}")
             } else {
                 String::new()
             },
             if let Some(messages) = &self.messages {
-                format!("{:?}", messages)
+                format!("{messages:?}")
             } else {
                 String::new()
             },
             if let Some(comments) = &self.comments {
-                format!("{:?}", comments)
+                format!("{comments:?}")
             } else {
                 String::new()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{inboxes:?}")
             } else {
                 String::new()
             },
             if let Some(last_message) = &self.last_message {
-                format!("{:?}", last_message)
+                format!("{last_message:?}")
             } else {
                 String::new()
             },
@@ -7247,7 +7222,7 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7272,12 +7247,12 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -7294,7 +7269,6 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -7321,7 +7295,7 @@ pub enum ConversationResponseStatus {
 
 #[doc = "Optional metadata about the conversation"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ConversationResponseMetadata {
     #[doc = "List of external_ids for partner channel associated with the conversation. Only \
@@ -7345,7 +7319,7 @@ impl tabled::Tabled for ConversationResponseMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(external_conversation_ids) = &self.external_conversation_ids {
-                format!("{:?}", external_conversation_ids)
+                format!("{external_conversation_ids:?}")
             } else {
                 String::new()
             },
@@ -7412,62 +7386,62 @@ impl tabled::Tabled for ConversationResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(assignee) = &self.assignee {
-                format!("{:?}", assignee)
+                format!("{assignee:?}")
             } else {
                 String::new()
             },
             if let Some(recipient) = &self.recipient {
-                format!("{:?}", recipient)
+                format!("{recipient:?}")
             } else {
                 String::new()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{tags:?}")
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{links:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
             if let Some(scheduled_reminders) = &self.scheduled_reminders {
-                format!("{:?}", scheduled_reminders)
+                format!("{scheduled_reminders:?}")
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{metadata:?}")
             } else {
                 String::new()
             },
@@ -7493,7 +7467,7 @@ impl tabled::Tabled for ConversationResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7515,7 +7489,7 @@ impl tabled::Tabled for CustomFieldResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -7531,7 +7505,6 @@ impl tabled::Tabled for CustomFieldResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -7557,7 +7530,7 @@ pub enum CustomFieldResponseType {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -7591,27 +7564,27 @@ impl tabled::Tabled for CustomFieldResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{description:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
@@ -7630,7 +7603,7 @@ impl tabled::Tabled for CustomFieldResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxResponseUnderscoreLinksRelated {
     #[doc = "Link to inbox teammates"]
@@ -7662,22 +7635,22 @@ impl tabled::Tabled for InboxResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{:?}", teammates)
+                format!("{teammates:?}")
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{conversations:?}")
             } else {
                 String::new()
             },
             if let Some(channels) = &self.channels {
-                format!("{:?}", channels)
+                format!("{channels:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
@@ -7695,7 +7668,7 @@ impl tabled::Tabled for InboxResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct InboxResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7720,12 +7693,12 @@ impl tabled::Tabled for InboxResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -7769,22 +7742,22 @@ impl tabled::Tabled for InboxResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
@@ -7802,7 +7775,7 @@ impl tabled::Tabled for InboxResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseUnderscoreLinksRelated {
     #[doc = "Link to message converation"]
@@ -7831,17 +7804,17 @@ impl tabled::Tabled for MessageResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversation) = &self.conversation {
-                format!("{:?}", conversation)
+                format!("{conversation:?}")
             } else {
                 String::new()
             },
             if let Some(message_replied_to) = &self.message_replied_to {
-                format!("{:?}", message_replied_to)
+                format!("{message_replied_to:?}")
             } else {
                 String::new()
             },
             if let Some(message_seen) = &self.message_seen {
-                format!("{:?}", message_seen)
+                format!("{message_seen:?}")
             } else {
                 String::new()
             },
@@ -7858,7 +7831,7 @@ impl tabled::Tabled for MessageResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -7883,12 +7856,12 @@ impl tabled::Tabled for MessageResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -7905,7 +7878,6 @@ impl tabled::Tabled for MessageResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -7949,7 +7921,6 @@ pub enum MessageResponseType {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -7970,7 +7941,7 @@ pub enum DraftMode {
 
 #[doc = "Optional metadata about the message"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MessageResponseMetadata {
     #[doc = "For `intercom` messages only. URL of the Intercom conversation the message is \
@@ -8023,52 +7994,52 @@ impl tabled::Tabled for MessageResponseMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(intercom_url) = &self.intercom_url {
-                format!("{:?}", intercom_url)
+                format!("{intercom_url:?}")
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{duration:?}")
             } else {
                 String::new()
             },
             if let Some(have_been_answered) = &self.have_been_answered {
-                format!("{:?}", have_been_answered)
+                format!("{have_been_answered:?}")
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{external_id:?}")
             } else {
                 String::new()
             },
             if let Some(twitter_url) = &self.twitter_url {
-                format!("{:?}", twitter_url)
+                format!("{twitter_url:?}")
             } else {
                 String::new()
             },
             if let Some(is_retweet) = &self.is_retweet {
-                format!("{:?}", is_retweet)
+                format!("{is_retweet:?}")
             } else {
                 String::new()
             },
             if let Some(have_been_retweeted) = &self.have_been_retweeted {
-                format!("{:?}", have_been_retweeted)
+                format!("{have_been_retweeted:?}")
             } else {
                 String::new()
             },
             if let Some(have_been_favorited) = &self.have_been_favorited {
-                format!("{:?}", have_been_favorited)
+                format!("{have_been_favorited:?}")
             } else {
                 String::new()
             },
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{thread_ref:?}")
             } else {
                 String::new()
             },
             if let Some(headers) = &self.headers {
-                format!("{:?}", headers)
+                format!("{headers:?}")
             } else {
                 String::new()
             },
@@ -8162,87 +8133,87 @@ impl tabled::Tabled for MessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(is_inbound) = &self.is_inbound {
-                format!("{:?}", is_inbound)
+                format!("{is_inbound:?}")
             } else {
                 String::new()
             },
             if let Some(draft_mode) = &self.draft_mode {
-                format!("{:?}", draft_mode)
+                format!("{draft_mode:?}")
             } else {
                 String::new()
             },
             if let Some(error_type) = &self.error_type {
-                format!("{:?}", error_type)
+                format!("{error_type:?}")
             } else {
                 String::new()
             },
             if let Some(version) = &self.version {
-                format!("{:?}", version)
+                format!("{version:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{subject:?}")
             } else {
                 String::new()
             },
             if let Some(blurb) = &self.blurb {
-                format!("{:?}", blurb)
+                format!("{blurb:?}")
             } else {
                 String::new()
             },
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{author:?}")
             } else {
                 String::new()
             },
             if let Some(recipients) = &self.recipients {
-                format!("{:?}", recipients)
+                format!("{recipients:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{text:?}")
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{attachments:?}")
             } else {
                 String::new()
             },
             if let Some(signature) = &self.signature {
-                format!("{:?}", signature)
+                format!("{signature:?}")
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{metadata:?}")
             } else {
                 String::new()
             },
@@ -8273,7 +8244,7 @@ impl tabled::Tabled for MessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RecipientResponseUnderscoreLinksRelated {
     #[doc = "Link to recipient contact"]
@@ -8295,7 +8266,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(contact) = &self.contact {
-            format!("{:?}", contact)
+            format!("{contact:?}")
         } else {
             String::new()
         }]
@@ -8307,7 +8278,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RecipientResponseUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8328,7 +8299,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{related:?}")
         } else {
             String::new()
         }]
@@ -8344,7 +8315,6 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -8401,22 +8371,22 @@ impl tabled::Tabled for RecipientResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(handle) = &self.handle {
-                format!("{:?}", handle)
+                format!("{handle:?}")
             } else {
                 String::new()
             },
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{role:?}")
             } else {
                 String::new()
             },
@@ -8434,7 +8404,7 @@ impl tabled::Tabled for RecipientResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReminderUnderscoreLinksRelated {
     #[doc = "Link to conversation owner"]
@@ -8456,7 +8426,7 @@ impl tabled::Tabled for ReminderUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -8468,7 +8438,7 @@ impl tabled::Tabled for ReminderUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReminderUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8489,7 +8459,7 @@ impl tabled::Tabled for ReminderUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{related:?}")
         } else {
             String::new()
         }]
@@ -8532,22 +8502,22 @@ impl tabled::Tabled for Reminder {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(scheduled_at) = &self.scheduled_at {
-                format!("{:?}", scheduled_at)
+                format!("{scheduled_at:?}")
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{updated_at:?}")
             } else {
                 String::new()
             },
@@ -8565,7 +8535,7 @@ impl tabled::Tabled for Reminder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RoleResponseUnderscoreLinksRelated {
     #[doc = "Link to role owner"]
@@ -8587,7 +8557,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -8599,7 +8569,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RoleResponseUnderscoreLinks {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8620,7 +8590,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{related:?}")
         } else {
             String::new()
         }]
@@ -8660,17 +8630,17 @@ impl tabled::Tabled for RoleResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
@@ -8687,7 +8657,7 @@ impl tabled::Tabled for RoleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RuleResponseUnderscoreLinksRelated {
     #[doc = "Link to rule owner"]
@@ -8709,7 +8679,7 @@ impl tabled::Tabled for RuleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -8721,7 +8691,7 @@ impl tabled::Tabled for RuleResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RuleResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -8746,12 +8716,12 @@ impl tabled::Tabled for RuleResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -8798,27 +8768,27 @@ impl tabled::Tabled for RuleResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(actions) = &self.actions {
-                format!("{:?}", actions)
+                format!("{actions:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
@@ -8837,7 +8807,7 @@ impl tabled::Tabled for RuleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SeenReceiptResponseUnderscoreLinksRelated {
     #[doc = "Link to message associated with the seen record"]
@@ -8859,7 +8829,7 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{message:?}")
         } else {
             String::new()
         }]
@@ -8871,7 +8841,7 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SeenReceiptResponseUnderscoreLinks {
     #[doc = "Link to self"]
@@ -8896,12 +8866,12 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -8941,17 +8911,17 @@ impl tabled::Tabled for SeenReceiptResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(first_seen_at) = &self.first_seen_at {
-                format!("{:?}", first_seen_at)
+                format!("{first_seen_at:?}")
             } else {
                 String::new()
             },
             if let Some(seen_by) = &self.seen_by {
-                format!("{:?}", seen_by)
+                format!("{seen_by:?}")
             } else {
                 String::new()
             },
@@ -8968,7 +8938,7 @@ impl tabled::Tabled for SeenReceiptResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftResponseUnderscoreLinksRelated {
     #[doc = "Link to shift teammates"]
@@ -8994,12 +8964,12 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{:?}", teammates)
+                format!("{teammates:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
@@ -9012,7 +8982,7 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ShiftResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9037,12 +9007,12 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -9059,7 +9029,6 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -9122,42 +9091,42 @@ impl tabled::Tabled for ShiftResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(color) = &self.color {
-                format!("{:?}", color)
+                format!("{color:?}")
             } else {
                 String::new()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{timezone:?}")
             } else {
                 String::new()
             },
             if let Some(times) = &self.times {
-                format!("{:?}", times)
+                format!("{times:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{updated_at:?}")
             } else {
                 String::new()
             },
@@ -9179,7 +9148,7 @@ impl tabled::Tabled for ShiftResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SignatureResponseUnderscoreLinksRelated {
     #[doc = "Link to signature's owner (either a team or teammate)"]
@@ -9201,7 +9170,7 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{owner:?}")
         } else {
             String::new()
         }]
@@ -9213,7 +9182,7 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct SignatureResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9238,12 +9207,12 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -9298,44 +9267,44 @@ impl tabled::Tabled for SignatureResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{body:?}")
             } else {
                 String::new()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{sender_info:?}")
             } else {
                 String::new()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{is_visible_for_all_teammate_channels:?}")
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{is_default:?}")
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{channel_ids:?}")
             } else {
                 String::new()
             },
@@ -9357,7 +9326,7 @@ impl tabled::Tabled for SignatureResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagResponseUnderscoreLinksRelated {
     #[doc = "Link to tag conversations"]
@@ -9386,17 +9355,17 @@ impl tabled::Tabled for TagResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{conversations:?}")
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{owner:?}")
             } else {
                 String::new()
             },
             if let Some(children) = &self.children {
-                format!("{:?}", children)
+                format!("{children:?}")
             } else {
                 String::new()
             },
@@ -9413,7 +9382,7 @@ impl tabled::Tabled for TagResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TagResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9438,12 +9407,12 @@ impl tabled::Tabled for TagResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -9500,42 +9469,42 @@ impl tabled::Tabled for TagResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{highlight:?}")
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{is_private:?}")
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{is_visible_in_conversation_lists:?}")
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{created_at:?}")
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{updated_at:?}")
             } else {
                 String::new()
             },
@@ -9557,7 +9526,7 @@ impl tabled::Tabled for TagResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeamResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9579,7 +9548,7 @@ impl tabled::Tabled for TeamResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -9625,27 +9594,27 @@ impl tabled::Tabled for TeamResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{inboxes:?}")
             } else {
                 String::new()
             },
             if let Some(members) = &self.members {
-                format!("{:?}", members)
+                format!("{members:?}")
             } else {
                 String::new()
             },
@@ -9664,7 +9633,7 @@ impl tabled::Tabled for TeamResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateResponseUnderscoreLinksRelated {
     #[doc = "Link to teammate's inboxes"]
@@ -9690,12 +9659,12 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{inboxes:?}")
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{conversations:?}")
             } else {
                 String::new()
             },
@@ -9708,7 +9677,7 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinksRelated {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct TeammateResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9733,12 +9702,12 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{self_:?}")
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{related:?}")
             } else {
                 String::new()
             },
@@ -9798,47 +9767,47 @@ impl tabled::Tabled for TeammateResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{email:?}")
             } else {
                 String::new()
             },
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{username:?}")
             } else {
                 String::new()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{first_name:?}")
             } else {
                 String::new()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{last_name:?}")
             } else {
                 String::new()
             },
             if let Some(is_admin) = &self.is_admin {
-                format!("{:?}", is_admin)
+                format!("{is_admin:?}")
             } else {
                 String::new()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{:?}", is_available)
+                format!("{is_available:?}")
             } else {
                 String::new()
             },
             if let Some(is_blocked) = &self.is_blocked {
-                format!("{:?}", is_blocked)
+                format!("{is_blocked:?}")
             } else {
                 String::new()
             },
@@ -9861,7 +9830,7 @@ impl tabled::Tabled for TeammateResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct LinkResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -9883,7 +9852,7 @@ impl tabled::Tabled for LinkResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -9896,7 +9865,7 @@ impl tabled::Tabled for LinkResponseUnderscoreLinks {
 
 #[doc = "A link used to connect a Front conversation to an external resource."]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct LinkResponse {
     #[serde(rename = "_links", default, skip_serializing_if = "Option::is_none")]
@@ -9930,27 +9899,27 @@ impl tabled::Tabled for LinkResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{id:?}")
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{name:?}")
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{type_:?}")
             } else {
                 String::new()
             },
             if let Some(external_url) = &self.external_url {
-                format!("{:?}", external_url)
+                format!("{external_url:?}")
             } else {
                 String::new()
             },
@@ -9972,7 +9941,6 @@ impl tabled::Tabled for LinkResponse {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
-    Eq,
     Hash,
     Debug,
     Clone,
@@ -9992,7 +9960,7 @@ pub enum SortOrder {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Pagination {
     #[doc = "Link to next page of results"]
@@ -10014,7 +9982,7 @@ impl tabled::Tabled for Pagination {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(next) = &self.next {
-            format!("{:?}", next)
+            format!("{next:?}")
         } else {
             String::new()
         }]
@@ -10026,7 +9994,7 @@ impl tabled::Tabled for Pagination {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10048,7 +10016,7 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10090,17 +10058,17 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10117,7 +10085,7 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10139,7 +10107,7 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks 
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10181,17 +10149,17 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10208,7 +10176,7 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfSignaturesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10230,7 +10198,7 @@ impl tabled::Tabled for ListOfSignaturesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10272,17 +10240,17 @@ impl tabled::Tabled for ListOfSignaturesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10299,7 +10267,7 @@ impl tabled::Tabled for ListOfSignaturesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfInboxesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10321,7 +10289,7 @@ impl tabled::Tabled for ListOfInboxesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10357,12 +10325,12 @@ impl tabled::Tabled for ListOfInboxesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10375,7 +10343,7 @@ impl tabled::Tabled for ListOfInboxesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCommentsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10397,7 +10365,7 @@ impl tabled::Tabled for ListOfCommentsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10433,12 +10401,12 @@ impl tabled::Tabled for ListOfCommentsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10451,7 +10419,7 @@ impl tabled::Tabled for ListOfCommentsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTeamsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10473,7 +10441,7 @@ impl tabled::Tabled for ListOfTeamsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10509,12 +10477,12 @@ impl tabled::Tabled for ListOfTeamsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10527,7 +10495,7 @@ impl tabled::Tabled for ListOfTeamsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTeammatesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10549,7 +10517,7 @@ impl tabled::Tabled for ListOfTeammatesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10585,12 +10553,12 @@ impl tabled::Tabled for ListOfTeammatesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10603,7 +10571,7 @@ impl tabled::Tabled for ListOfTeammatesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfShiftsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10625,7 +10593,7 @@ impl tabled::Tabled for ListOfShiftsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10661,12 +10629,12 @@ impl tabled::Tabled for ListOfShiftsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10679,7 +10647,7 @@ impl tabled::Tabled for ListOfShiftsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10701,7 +10669,7 @@ impl tabled::Tabled for ListOfContactsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10743,17 +10711,17 @@ impl tabled::Tabled for ListOfContactsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10770,7 +10738,7 @@ impl tabled::Tabled for ListOfContactsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfAccountsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10792,7 +10760,7 @@ impl tabled::Tabled for ListOfAccountsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10834,17 +10802,17 @@ impl tabled::Tabled for ListOfAccountsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10861,7 +10829,7 @@ impl tabled::Tabled for ListOfAccountsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactGroupsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10883,7 +10851,7 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10919,12 +10887,12 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -10937,7 +10905,7 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfContactNotesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -10959,7 +10927,7 @@ impl tabled::Tabled for ListOfContactNotesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -10995,12 +10963,12 @@ impl tabled::Tabled for ListOfContactNotesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11013,7 +10981,7 @@ impl tabled::Tabled for ListOfContactNotesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfMessagesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11035,7 +11003,7 @@ impl tabled::Tabled for ListOfMessagesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11077,17 +11045,17 @@ impl tabled::Tabled for ListOfMessagesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11104,7 +11072,7 @@ impl tabled::Tabled for ListOfMessagesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11126,7 +11094,7 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11168,17 +11136,17 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11195,7 +11163,7 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfConversationsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11217,7 +11185,7 @@ impl tabled::Tabled for ListOfConversationsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11259,17 +11227,17 @@ impl tabled::Tabled for ListOfConversationsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11317,17 +11285,17 @@ impl tabled::Tabled for ListOfConversationSearchResultsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(total) = &self.total {
-                format!("{:?}", total)
+                format!("{total:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11344,7 +11312,7 @@ impl tabled::Tabled for ListOfConversationSearchResultsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfEventsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11366,7 +11334,7 @@ impl tabled::Tabled for ListOfEventsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11408,17 +11376,17 @@ impl tabled::Tabled for ListOfEventsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11435,7 +11403,7 @@ impl tabled::Tabled for ListOfEventsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfRolesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11457,7 +11425,7 @@ impl tabled::Tabled for ListOfRolesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11493,12 +11461,12 @@ impl tabled::Tabled for ListOfRolesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11511,7 +11479,7 @@ impl tabled::Tabled for ListOfRolesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfRulesApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11533,7 +11501,7 @@ impl tabled::Tabled for ListOfRulesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11569,12 +11537,12 @@ impl tabled::Tabled for ListOfRulesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11587,7 +11555,7 @@ impl tabled::Tabled for ListOfRulesApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfTagsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11609,7 +11577,7 @@ impl tabled::Tabled for ListOfTagsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11645,12 +11613,12 @@ impl tabled::Tabled for ListOfTagsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11663,7 +11631,7 @@ impl tabled::Tabled for ListOfTagsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfLinksApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11685,7 +11653,7 @@ impl tabled::Tabled for ListOfLinksApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11721,12 +11689,12 @@ impl tabled::Tabled for ListOfLinksApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11739,7 +11707,7 @@ impl tabled::Tabled for ListOfLinksApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfChannelsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11761,7 +11729,7 @@ impl tabled::Tabled for ListOfChannelsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11797,12 +11765,12 @@ impl tabled::Tabled for ListOfChannelsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11815,7 +11783,7 @@ impl tabled::Tabled for ListOfChannelsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -11837,7 +11805,7 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -11873,12 +11841,12 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -11891,7 +11859,7 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedMessageApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11916,12 +11884,12 @@ impl tabled::Tabled for AcceptedMessageApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{message_uid:?}")
             } else {
                 String::new()
             },
@@ -11934,7 +11902,7 @@ impl tabled::Tabled for AcceptedMessageApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedCannedAnswerFolderDeletionApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11959,12 +11927,12 @@ impl tabled::Tabled for AcceptedCannedAnswerFolderDeletionApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{:?}", message_template_folder_id)
+                format!("{message_template_folder_id:?}")
             } else {
                 String::new()
             },
@@ -11980,7 +11948,7 @@ impl tabled::Tabled for AcceptedCannedAnswerFolderDeletionApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AcceptedApplicationJson {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12001,7 +11969,7 @@ impl tabled::Tabled for AcceptedApplicationJson {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(status) = &self.status {
-            format!("{:?}", status)
+            format!("{status:?}")
         } else {
             String::new()
         }]
@@ -12013,7 +11981,7 @@ impl tabled::Tabled for AcceptedApplicationJson {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAccountsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12035,7 +12003,7 @@ impl tabled::Tabled for ListAccountsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12077,17 +12045,17 @@ impl tabled::Tabled for ListAccountsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12104,7 +12072,7 @@ impl tabled::Tabled for ListAccountsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAccountContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12126,7 +12094,7 @@ impl tabled::Tabled for ListAccountContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12168,17 +12136,17 @@ impl tabled::Tabled for ListAccountContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12195,7 +12163,7 @@ impl tabled::Tabled for ListAccountContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListEventsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12217,7 +12185,7 @@ impl tabled::Tabled for ListEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12259,17 +12227,17 @@ impl tabled::Tabled for ListEventsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12286,7 +12254,7 @@ impl tabled::Tabled for ListEventsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12308,7 +12276,7 @@ impl tabled::Tabled for ListFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12350,17 +12318,17 @@ impl tabled::Tabled for ListFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12377,7 +12345,7 @@ impl tabled::Tabled for ListFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12399,7 +12367,7 @@ impl tabled::Tabled for ListTeamFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12441,17 +12409,17 @@ impl tabled::Tabled for ListTeamFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12468,7 +12436,7 @@ impl tabled::Tabled for ListTeamFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12490,7 +12458,7 @@ impl tabled::Tabled for ListTeammateFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12532,17 +12500,17 @@ impl tabled::Tabled for ListTeammateFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12559,7 +12527,7 @@ impl tabled::Tabled for ListTeammateFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetChildFoldersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12581,7 +12549,7 @@ impl tabled::Tabled for GetChildFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12623,17 +12591,17 @@ impl tabled::Tabled for GetChildFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12650,7 +12618,7 @@ impl tabled::Tabled for GetChildFoldersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetChildTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12672,7 +12640,7 @@ impl tabled::Tabled for GetChildTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12714,17 +12682,17 @@ impl tabled::Tabled for GetChildTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12741,7 +12709,7 @@ impl tabled::Tabled for GetChildTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteFolderResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12766,12 +12734,12 @@ impl tabled::Tabled for DeleteFolderResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{:?}", message_template_folder_id)
+                format!("{message_template_folder_id:?}")
             } else {
                 String::new()
             },
@@ -12787,7 +12755,7 @@ impl tabled::Tabled for DeleteFolderResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12809,7 +12777,7 @@ impl tabled::Tabled for ListMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12851,17 +12819,17 @@ impl tabled::Tabled for ListMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12878,7 +12846,7 @@ impl tabled::Tabled for ListMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12900,7 +12868,7 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -12942,17 +12910,17 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -12969,7 +12937,7 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateMessageTemplatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -12991,7 +12959,7 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13033,17 +13001,17 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13060,7 +13028,7 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13082,7 +13050,7 @@ impl tabled::Tabled for ListGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13118,12 +13086,12 @@ impl tabled::Tabled for ListGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13136,7 +13104,7 @@ impl tabled::Tabled for ListGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13158,7 +13126,7 @@ impl tabled::Tabled for ListTeamGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13194,12 +13162,12 @@ impl tabled::Tabled for ListTeamGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13212,7 +13180,7 @@ impl tabled::Tabled for ListTeamGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateGroupsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13234,7 +13202,7 @@ impl tabled::Tabled for ListTeammateGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13270,12 +13238,12 @@ impl tabled::Tabled for ListTeammateGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13288,7 +13256,7 @@ impl tabled::Tabled for ListTeammateGroupsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListGroupContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13310,7 +13278,7 @@ impl tabled::Tabled for ListGroupContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13352,17 +13320,17 @@ impl tabled::Tabled for ListGroupContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13379,7 +13347,7 @@ impl tabled::Tabled for ListGroupContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13401,7 +13369,7 @@ impl tabled::Tabled for ListContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13443,17 +13411,17 @@ impl tabled::Tabled for ListContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13470,7 +13438,7 @@ impl tabled::Tabled for ListContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13492,7 +13460,7 @@ impl tabled::Tabled for ListTeamContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13534,17 +13502,17 @@ impl tabled::Tabled for ListTeamContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13561,7 +13529,7 @@ impl tabled::Tabled for ListTeamContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateContactsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13583,7 +13551,7 @@ impl tabled::Tabled for ListTeammateContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13625,17 +13593,17 @@ impl tabled::Tabled for ListTeammateContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13652,7 +13620,7 @@ impl tabled::Tabled for ListTeammateContactsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13674,7 +13642,7 @@ impl tabled::Tabled for ListContactConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13716,17 +13684,17 @@ impl tabled::Tabled for ListContactConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13743,7 +13711,7 @@ impl tabled::Tabled for ListContactConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListNotesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13765,7 +13733,7 @@ impl tabled::Tabled for ListNotesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13801,12 +13769,12 @@ impl tabled::Tabled for ListNotesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13819,7 +13787,7 @@ impl tabled::Tabled for ListNotesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13841,7 +13809,7 @@ impl tabled::Tabled for ListChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13877,12 +13845,12 @@ impl tabled::Tabled for ListChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13895,7 +13863,7 @@ impl tabled::Tabled for ListChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13917,7 +13885,7 @@ impl tabled::Tabled for ListTeamChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -13953,12 +13921,12 @@ impl tabled::Tabled for ListTeamChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -13971,7 +13939,7 @@ impl tabled::Tabled for ListTeamChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -13993,7 +13961,7 @@ impl tabled::Tabled for ListTeammateChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14029,12 +13997,12 @@ impl tabled::Tabled for ListTeammateChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14047,7 +14015,7 @@ impl tabled::Tabled for ListTeammateChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ValidateChannelResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14068,7 +14036,7 @@ impl tabled::Tabled for ValidateChannelResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(status) = &self.status {
-            format!("{:?}", status)
+            format!("{status:?}")
         } else {
             String::new()
         }]
@@ -14080,7 +14048,7 @@ impl tabled::Tabled for ValidateChannelResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxChannelsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14102,7 +14070,7 @@ impl tabled::Tabled for ListInboxChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14138,12 +14106,12 @@ impl tabled::Tabled for ListInboxChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14156,7 +14124,7 @@ impl tabled::Tabled for ListInboxChannelsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationCommentsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14178,7 +14146,7 @@ impl tabled::Tabled for ListConversationCommentsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14214,12 +14182,12 @@ impl tabled::Tabled for ListConversationCommentsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14232,7 +14200,7 @@ impl tabled::Tabled for ListConversationCommentsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListCommentMentionsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14254,7 +14222,7 @@ impl tabled::Tabled for ListCommentMentionsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14290,12 +14258,12 @@ impl tabled::Tabled for ListCommentMentionsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14308,7 +14276,7 @@ impl tabled::Tabled for ListCommentMentionsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14330,7 +14298,7 @@ impl tabled::Tabled for ListConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14372,17 +14340,17 @@ impl tabled::Tabled for ListConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14399,7 +14367,7 @@ impl tabled::Tabled for ListConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddConversationLinkRequestBody {
     #[doc = "Link IDs to add. Either link_ids or link_external_urls must be specified but not both"]
@@ -14426,12 +14394,12 @@ impl tabled::Tabled for AddConversationLinkRequestBody {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(link_ids) = &self.link_ids {
-                format!("{:?}", link_ids)
+                format!("{link_ids:?}")
             } else {
                 String::new()
             },
             if let Some(link_external_urls) = &self.link_external_urls {
-                format!("{:?}", link_external_urls)
+                format!("{link_external_urls:?}")
             } else {
                 String::new()
             },
@@ -14444,7 +14412,7 @@ impl tabled::Tabled for AddConversationLinkRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct RemoveConversationLinkRequestBody {
     #[doc = "Link IDs to remove."]
@@ -14473,7 +14441,7 @@ impl tabled::Tabled for RemoveConversationLinkRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14495,7 +14463,7 @@ impl tabled::Tabled for ListConversationInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14531,12 +14499,12 @@ impl tabled::Tabled for ListConversationInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14549,7 +14517,7 @@ impl tabled::Tabled for ListConversationInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationFollowersResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14571,7 +14539,7 @@ impl tabled::Tabled for ListConversationFollowersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14607,12 +14575,12 @@ impl tabled::Tabled for ListConversationFollowersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14625,7 +14593,7 @@ impl tabled::Tabled for ListConversationFollowersResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddConversationFollowersRequestBody {
     #[doc = "IDs of the teammate to add to the followers list."]
@@ -14654,7 +14622,7 @@ impl tabled::Tabled for AddConversationFollowersRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct DeleteConversationFollowersRequestBody {
     #[doc = "IDs of the teammate to remove from the followers list."]
@@ -14683,7 +14651,7 @@ impl tabled::Tabled for DeleteConversationFollowersRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationMessagesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14705,7 +14673,7 @@ impl tabled::Tabled for ListConversationMessagesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14747,17 +14715,17 @@ impl tabled::Tabled for ListConversationMessagesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14774,7 +14742,7 @@ impl tabled::Tabled for ListConversationMessagesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationEventsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14796,7 +14764,7 @@ impl tabled::Tabled for ListConversationEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14838,17 +14806,17 @@ impl tabled::Tabled for ListConversationEventsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14865,7 +14833,7 @@ impl tabled::Tabled for ListConversationEventsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListContactCustomFieldsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14887,7 +14855,7 @@ impl tabled::Tabled for ListContactCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14923,12 +14891,12 @@ impl tabled::Tabled for ListContactCustomFieldsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -14941,7 +14909,7 @@ impl tabled::Tabled for ListContactCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListCustomFieldsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -14963,7 +14931,7 @@ impl tabled::Tabled for ListCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -14999,12 +14967,12 @@ impl tabled::Tabled for ListCustomFieldsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15017,7 +14985,7 @@ impl tabled::Tabled for ListCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListConversationDraftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15039,7 +15007,7 @@ impl tabled::Tabled for ListConversationDraftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15081,17 +15049,17 @@ impl tabled::Tabled for ListConversationDraftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15108,7 +15076,7 @@ impl tabled::Tabled for ListConversationDraftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15130,7 +15098,7 @@ impl tabled::Tabled for ListInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15166,12 +15134,12 @@ impl tabled::Tabled for ListInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15184,7 +15152,7 @@ impl tabled::Tabled for ListInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15206,7 +15174,7 @@ impl tabled::Tabled for ListTeamInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15242,12 +15210,12 @@ impl tabled::Tabled for ListTeamInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15260,7 +15228,7 @@ impl tabled::Tabled for ListTeamInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15282,7 +15250,7 @@ impl tabled::Tabled for ListInboxConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15324,17 +15292,17 @@ impl tabled::Tabled for ListInboxConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15351,7 +15319,7 @@ impl tabled::Tabled for ListInboxConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListInboxTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15373,7 +15341,7 @@ impl tabled::Tabled for ListInboxTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15409,12 +15377,12 @@ impl tabled::Tabled for ListInboxTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15427,7 +15395,7 @@ impl tabled::Tabled for ListInboxTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetMessageSeenStatusResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15449,7 +15417,7 @@ impl tabled::Tabled for GetMessageSeenStatusResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15491,17 +15459,17 @@ impl tabled::Tabled for GetMessageSeenStatusResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15518,7 +15486,7 @@ impl tabled::Tabled for GetMessageSeenStatusResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct MarkMessageSeenRequestBody {}
 
@@ -15544,7 +15512,7 @@ impl tabled::Tabled for MarkMessageSeenRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ReceiveCustomMessageResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15569,12 +15537,12 @@ impl tabled::Tabled for ReceiveCustomMessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{message_uid:?}")
             } else {
                 String::new()
             },
@@ -15587,7 +15555,7 @@ impl tabled::Tabled for ReceiveCustomMessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ImportInboxMessageResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15612,12 +15580,12 @@ impl tabled::Tabled for ImportInboxMessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{status:?}")
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{message_uid:?}")
             } else {
                 String::new()
             },
@@ -15630,7 +15598,7 @@ impl tabled::Tabled for ImportInboxMessageResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15652,7 +15620,7 @@ impl tabled::Tabled for ListRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15688,12 +15656,12 @@ impl tabled::Tabled for ListRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15706,7 +15674,7 @@ impl tabled::Tabled for ListRulesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15728,7 +15696,7 @@ impl tabled::Tabled for ListTeamRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15764,12 +15732,12 @@ impl tabled::Tabled for ListTeamRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15782,7 +15750,7 @@ impl tabled::Tabled for ListTeamRulesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateRulesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15804,7 +15772,7 @@ impl tabled::Tabled for ListTeammateRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15840,12 +15808,12 @@ impl tabled::Tabled for ListTeammateRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15889,17 +15857,17 @@ impl tabled::Tabled for SearchConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(total) = &self.total {
-                format!("{:?}", total)
+                format!("{total:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15916,7 +15884,7 @@ impl tabled::Tabled for SearchConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -15938,7 +15906,7 @@ impl tabled::Tabled for ListShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -15974,12 +15942,12 @@ impl tabled::Tabled for ListShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -15992,7 +15960,7 @@ impl tabled::Tabled for ListShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16014,7 +15982,7 @@ impl tabled::Tabled for ListTeamShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16050,12 +16018,12 @@ impl tabled::Tabled for ListTeamShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16068,7 +16036,7 @@ impl tabled::Tabled for ListTeamShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateShiftsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16090,7 +16058,7 @@ impl tabled::Tabled for ListTeammateShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16126,12 +16094,12 @@ impl tabled::Tabled for ListTeammateShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16144,7 +16112,7 @@ impl tabled::Tabled for ListTeammateShiftsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListShiftTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16166,7 +16134,7 @@ impl tabled::Tabled for ListShiftTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16202,12 +16170,12 @@ impl tabled::Tabled for ListShiftTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16220,7 +16188,7 @@ impl tabled::Tabled for ListShiftTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateSignaturesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16242,7 +16210,7 @@ impl tabled::Tabled for ListTeammateSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16284,17 +16252,17 @@ impl tabled::Tabled for ListTeammateSignaturesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16311,7 +16279,7 @@ impl tabled::Tabled for ListTeammateSignaturesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamSignaturesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16333,7 +16301,7 @@ impl tabled::Tabled for ListTeamSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16375,17 +16343,17 @@ impl tabled::Tabled for ListTeamSignaturesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16402,7 +16370,7 @@ impl tabled::Tabled for ListTeamSignaturesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16424,7 +16392,7 @@ impl tabled::Tabled for ListTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16460,12 +16428,12 @@ impl tabled::Tabled for ListTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16478,7 +16446,7 @@ impl tabled::Tabled for ListTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16500,7 +16468,7 @@ impl tabled::Tabled for ListTeamTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16536,12 +16504,12 @@ impl tabled::Tabled for ListTeamTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16554,7 +16522,7 @@ impl tabled::Tabled for ListTeamTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateTagsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16576,7 +16544,7 @@ impl tabled::Tabled for ListTeammateTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16612,12 +16580,12 @@ impl tabled::Tabled for ListTeammateTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16630,7 +16598,7 @@ impl tabled::Tabled for ListTeammateTagsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTagChildrenResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16652,7 +16620,7 @@ impl tabled::Tabled for ListTagChildrenResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16688,12 +16656,12 @@ impl tabled::Tabled for ListTagChildrenResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16706,7 +16674,7 @@ impl tabled::Tabled for ListTagChildrenResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTaggedConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16728,7 +16696,7 @@ impl tabled::Tabled for ListTaggedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16770,17 +16738,17 @@ impl tabled::Tabled for ListTaggedConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16797,7 +16765,7 @@ impl tabled::Tabled for ListTaggedConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeamsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16819,7 +16787,7 @@ impl tabled::Tabled for ListTeamsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16855,12 +16823,12 @@ impl tabled::Tabled for ListTeamsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16873,7 +16841,7 @@ impl tabled::Tabled for ListTeamsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammatesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16895,7 +16863,7 @@ impl tabled::Tabled for ListTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -16931,12 +16899,12 @@ impl tabled::Tabled for ListTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -16949,7 +16917,7 @@ impl tabled::Tabled for ListTeammatesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListAssignedConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -16971,7 +16939,7 @@ impl tabled::Tabled for ListAssignedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -17013,17 +16981,17 @@ impl tabled::Tabled for ListAssignedConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -17040,7 +17008,7 @@ impl tabled::Tabled for ListAssignedConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListTeammateInboxesResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17062,7 +17030,7 @@ impl tabled::Tabled for ListTeammateInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -17098,12 +17066,12 @@ impl tabled::Tabled for ListTeammateInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -17116,7 +17084,7 @@ impl tabled::Tabled for ListTeammateInboxesResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListLinkConversationsResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17138,7 +17106,7 @@ impl tabled::Tabled for ListLinkConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -17180,17 +17148,17 @@ impl tabled::Tabled for ListLinkConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{pagination:?}")
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },
@@ -17207,7 +17175,7 @@ impl tabled::Tabled for ListLinkConversationsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListLinksResponseUnderscoreLinks {
     #[doc = "Link to resource"]
@@ -17229,7 +17197,7 @@ impl tabled::Tabled for ListLinksResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{self_:?}")
         } else {
             String::new()
         }]
@@ -17265,12 +17233,12 @@ impl tabled::Tabled for ListLinksResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{underscore_links:?}")
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{results:?}")
             } else {
                 String::new()
             },

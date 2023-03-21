@@ -20,7 +20,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsReportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "analytics/reports"),
+            format!("{}/{}", self.client.base_url, "analytics/reports"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -52,7 +52,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsReportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "analytics/reports/{report_uid}".replace("{report_uid}", report_uid)
@@ -82,7 +82,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsExportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "analytics/exports"),
+            format!("{}/{}", self.client.base_url, "analytics/exports"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -114,7 +114,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsExportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "analytics/exports/{export_id}".replace("{export_id}", export_id)

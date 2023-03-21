@@ -23,12 +23,12 @@ impl Accounts {
     ) -> Result<crate::types::ListAccountsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "accounts"),
+            format!("{}/{}", self.client.base_url, "accounts"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -40,7 +40,7 @@ impl Accounts {
         }
 
         if let Some(p) = sort_order {
-            query_params.push(("sort_order", format!("{}", p)));
+            query_params.push(("sort_order", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -67,7 +67,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "accounts"),
+            format!("{}/{}", self.client.base_url, "accounts"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -94,7 +94,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -127,7 +127,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -152,7 +152,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -185,16 +185,16 @@ impl Accounts {
     ) -> Result<crate::types::ListAccountContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -233,7 +233,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)
@@ -266,7 +266,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)

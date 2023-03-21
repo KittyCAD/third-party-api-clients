@@ -25,7 +25,7 @@ impl Attachments {
     ) -> Result<crate::types::Attachment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "download/{attachment_link_id}"

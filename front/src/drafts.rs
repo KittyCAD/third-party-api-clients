@@ -26,7 +26,7 @@ impl Drafts {
     ) -> Result<crate::types::ListConversationDraftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -49,7 +49,7 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft reply\n\nCreate a new draft as a reply to the last message in the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_drafts_create_reply() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create_reply(\n            \"some-string\",\n            &front_api::types::ReplyDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n                channel_id: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_reply<'a>(
         &'a self,
@@ -58,7 +58,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -82,7 +82,7 @@ impl Drafts {
         }
     }
 
-    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create draft\n\nCreate a draft message which is the first message of a new conversation.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_drafts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::Mode::Private),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
@@ -91,7 +91,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/drafts".replace("{channel_id}", channel_id)
@@ -130,7 +130,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{message_id}/".replace("{message_id}", message_id)
@@ -162,7 +162,7 @@ impl Drafts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{draft_id}".replace("{draft_id}", draft_id)

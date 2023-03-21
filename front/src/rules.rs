@@ -23,7 +23,7 @@ impl Rules {
     ) -> Result<crate::types::ListRulesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "rules"),
+            format!("{}/{}", self.client.base_url, "rules"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -49,7 +49,7 @@ impl Rules {
     ) -> Result<crate::types::ListTeamRulesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/rules".replace("{team_id}", team_id)
@@ -85,7 +85,7 @@ impl Rules {
     ) -> Result<crate::types::ListTeammateRulesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/rules".replace("{teammate_id}", teammate_id)
@@ -115,7 +115,7 @@ impl Rules {
     ) -> Result<crate::types::RuleResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "rules/{rule_id}".replace("{rule_id}", rule_id)
