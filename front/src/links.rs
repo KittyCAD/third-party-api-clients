@@ -23,16 +23,16 @@ impl Links {
     ) -> Result<crate::types::ListLinkConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "links/{link_id}/conversations".replace("{link_id}", link_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -69,12 +69,12 @@ impl Links {
     ) -> Result<crate::types::ListLinksResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "links"),
+            format!("{}/{}", self.client.base_url, "links"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -117,7 +117,7 @@ impl Links {
     ) -> Result<crate::types::LinkResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "links"),
+            format!("{}/{}", self.client.base_url, "links"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -144,7 +144,7 @@ impl Links {
     ) -> Result<crate::types::LinkResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "links/{link_id}".replace("{link_id}", link_id)
@@ -180,7 +180,7 @@ impl Links {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "links/{link_id}".replace("{link_id}", link_id)

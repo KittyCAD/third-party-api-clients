@@ -23,7 +23,7 @@ impl TokenIdentity {
     ) -> Result<crate::types::IdentityResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "me"),
+            format!("{}/{}", self.client.base_url, "me"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;

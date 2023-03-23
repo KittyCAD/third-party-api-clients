@@ -22,12 +22,12 @@ impl Conversations {
     ) -> Result<crate::types::ListConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "conversations"),
+            format!("{}/{}", self.client.base_url, "conversations"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -62,7 +62,7 @@ impl Conversations {
     ) -> Result<crate::types::ConversationResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "conversations"),
+            format!("{}/{}", self.client.base_url, "conversations"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -97,7 +97,7 @@ impl Conversations {
     ) -> Result<crate::types::ConversationResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}".replace("{conversation_id}", conversation_id)
@@ -134,7 +134,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}".replace("{conversation_id}", conversation_id)
@@ -167,7 +167,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/assignee"
@@ -194,7 +194,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/tags"
@@ -228,7 +228,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/tags"
@@ -255,7 +255,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/links"
@@ -282,7 +282,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/links"
@@ -314,7 +314,7 @@ impl Conversations {
     ) -> Result<crate::types::ListConversationInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/inboxes"
@@ -351,7 +351,7 @@ impl Conversations {
     ) -> Result<crate::types::ListConversationFollowersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
@@ -383,7 +383,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
@@ -418,7 +418,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/followers"
@@ -455,7 +455,7 @@ impl Conversations {
     ) -> Result<crate::types::ListConversationMessagesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/messages"
@@ -463,9 +463,9 @@ impl Conversations {
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -507,7 +507,7 @@ impl Conversations {
     ) -> Result<crate::types::ListConversationEventsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/events"
@@ -515,9 +515,9 @@ impl Conversations {
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -559,7 +559,7 @@ impl Conversations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/reminders"
@@ -587,16 +587,16 @@ impl Conversations {
     ) -> Result<crate::types::SearchConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/search/{query}".replace("{query}", query)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {

@@ -22,12 +22,12 @@ impl Events {
     ) -> Result<crate::types::ListEventsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "events"),
+            format!("{}/{}", self.client.base_url, "events"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -70,7 +70,7 @@ impl Events {
     ) -> Result<crate::types::EventResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "events/{event_id}".replace("{event_id}", event_id)

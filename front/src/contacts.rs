@@ -24,12 +24,12 @@ impl Contacts {
     ) -> Result<crate::types::ListContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "contacts"),
+            format!("{}/{}", self.client.base_url, "contacts"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -45,7 +45,7 @@ impl Contacts {
         }
 
         if let Some(p) = sort_order {
-            query_params.push(("sort_order", format!("{}", p)));
+            query_params.push(("sort_order", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -64,7 +64,7 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create contact\n\nCreate a new contact.\n\n```rust,no_run\nasync fn example_contacts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create(&front_api::types::CreateContact {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            avatar: Some(bytes::Bytes::from(\"some-string\")),\n            is_spammer: Some(true),\n            links: Some(vec![\"some-string\".to_string()]),\n            group_names: Some(vec![\"some-string\".to_string()]),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n            handles: Some(vec![front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Intercom,\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create contact\n\nCreate a new contact.\n\n```rust,no_run\nasync fn example_contacts_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create(&front_api::types::CreateContact {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            avatar: Some(bytes::Bytes::from(\"some-string\")),\n            is_spammer: Some(true),\n            links: Some(vec![\"some-string\".to_string()]),\n            group_names: Some(vec![\"some-string\".to_string()]),\n            custom_fields: Some(std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )])),\n            handles: Some(vec![front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Phone,\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
@@ -72,7 +72,7 @@ impl Contacts {
     ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "contacts"),
+            format!("{}/{}", self.client.base_url, "contacts"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -104,16 +104,16 @@ impl Contacts {
     ) -> Result<crate::types::ListTeamContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/contacts".replace("{team_id}", team_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -129,7 +129,7 @@ impl Contacts {
         }
 
         if let Some(p) = sort_order {
-            query_params.push(("sort_order", format!("{}", p)));
+            query_params.push(("sort_order", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -148,7 +148,7 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create team contact\n\nCreate a contact for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Custom,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team contact\n\nCreate a contact for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::FrontChat,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
@@ -157,7 +157,7 @@ impl Contacts {
     ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/contacts".replace("{team_id}", team_id)
@@ -193,16 +193,16 @@ impl Contacts {
     ) -> Result<crate::types::ListTeammateContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/contacts".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -218,7 +218,7 @@ impl Contacts {
         }
 
         if let Some(p) = sort_order {
-            query_params.push(("sort_order", format!("{}", p)));
+            query_params.push(("sort_order", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -237,7 +237,7 @@ impl Contacts {
         }
     }
 
-    #[doc = "Create teammate contact\n\nCreate a contact for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Twitter,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate contact\n\nCreate a contact for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_contacts_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ContactResponse = client\n        .contacts()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateContact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n                handles: Some(vec![front_api::types::ContactHandle {\n                    handle: \"some-string\".to_string(),\n                    source: front_api::types::Source::Custom,\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -246,7 +246,7 @@ impl Contacts {
     ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/contacts".replace("{teammate_id}", teammate_id)
@@ -282,7 +282,7 @@ impl Contacts {
     ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}".replace("{contact_id}", contact_id)
@@ -315,7 +315,7 @@ impl Contacts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}".replace("{contact_id}", contact_id)
@@ -331,7 +331,7 @@ impl Contacts {
         }
     }
 
-    #[doc = "Update a contact\n\nUpdates a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contacts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contacts()\n        .update(\n            \"some-string\",\n            &front_api::types::Contact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(true),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update a contact\n\nUpdates a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contacts_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contacts()\n        .update(\n            \"some-string\",\n            &front_api::types::Contact {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                avatar: Some(bytes::Bytes::from(\"some-string\")),\n                is_spammer: Some(false),\n                links: Some(vec![\"some-string\".to_string()]),\n                group_names: Some(vec![\"some-string\".to_string()]),\n                custom_fields: Some(std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )])),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -340,7 +340,7 @@ impl Contacts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}".replace("{contact_id}", contact_id)
@@ -365,7 +365,7 @@ impl Contacts {
     ) -> Result<crate::types::ContactResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "contacts/merge"),
+            format!("{}/{}", self.client.base_url, "contacts/merge"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -395,16 +395,16 @@ impl Contacts {
     ) -> Result<crate::types::ListContactConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "contacts/{contact_id}/conversations".replace("{contact_id}", contact_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {

@@ -13,7 +13,7 @@ commonroom:
 front:
 	openapitor \
 		--input specs/front.json \
-		--version 0.0.2 \
+		--version 0.0.3 \
 		--output ./front \
 		--name front-api \
 		--base-url https://api2.frontapp.com \

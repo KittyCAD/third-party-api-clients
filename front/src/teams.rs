@@ -23,7 +23,7 @@ impl Teams {
     ) -> Result<crate::types::ListTeamsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "teams"),
+            format!("{}/{}", self.client.base_url, "teams"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -49,7 +49,7 @@ impl Teams {
     ) -> Result<crate::types::TeamResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}".replace("{team_id}", team_id)
@@ -87,7 +87,7 @@ impl Teams {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/teammates".replace("{team_id}", team_id)
@@ -120,7 +120,7 @@ impl Teams {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/teammates".replace("{team_id}", team_id)

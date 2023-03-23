@@ -34,7 +34,7 @@ impl CompanyManagers {
     ) -> Result<crate::types::CompanyManagersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/company-managers"),
+            format!("{}/{}", self.client.base_url, "v1/company-managers"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -43,11 +43,11 @@ impl CompanyManagers {
         }
 
         if let Some(p) = page {
-            query_params.push(("page", format!("{}", p)));
+            query_params.push(("page", format!("{p}")));
         }
 
         if let Some(p) = page_size {
-            query_params.push(("page_size", format!("{}", p)));
+            query_params.push(("page_size", format!("{p}")));
         }
 
         req = req.query(&query_params);
@@ -74,7 +74,7 @@ impl CompanyManagers {
     ) -> Result<crate::types::CompanyManagerCreatedResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "v1/company-managers"),
+            format!("{}/{}", self.client.base_url, "v1/company-managers"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);

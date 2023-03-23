@@ -23,7 +23,7 @@ impl Teammates {
     ) -> Result<crate::types::ListTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "teammates"),
+            format!("{}/{}", self.client.base_url, "teammates"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -54,7 +54,7 @@ impl Teammates {
     ) -> Result<crate::types::TeammateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
@@ -85,7 +85,7 @@ impl Teammates {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
@@ -113,16 +113,16 @@ impl Teammates {
     ) -> Result<crate::types::ListAssignedConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/conversations".replace("{teammate_id}", teammate_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = Vec::new();
+        let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{}", p)));
+            query_params.push(("limit", format!("{p}")));
         }
 
         if let Some(p) = page_token {
@@ -164,7 +164,7 @@ impl Teammates {
     ) -> Result<crate::types::ListTeammateInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/inboxes".replace("{teammate_id}", teammate_id)

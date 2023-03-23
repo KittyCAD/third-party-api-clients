@@ -37,7 +37,7 @@ async fn test_remote_employments() {
     let new_employment = new_employment_data
         .employment
         .expect("Employment key was empty on response");
-    println!("emp: {:?}", new_employment);
+    println!("emp: {new_employment:?}");
 
     let employments = client
         .employments()
@@ -48,7 +48,7 @@ async fn test_remote_employments() {
         )
         .await
         .expect("Employments to be listed");
-    println!("emps: {}", employments);
+    println!("emps: {employments}");
 
     let employment_response = client
         .employments()
@@ -74,7 +74,7 @@ async fn test_remote_employments() {
         .timeoffs
         .expect("And timeoffs should not be none");
 
-    println!("timeoffs: {:?}", timeoffs);
+    println!("timeoffs: {timeoffs:?}");
 
     // Type gen for create still broken, need to work on generator
     // let timeoff_created = client.time_off().post_create_timeoff(

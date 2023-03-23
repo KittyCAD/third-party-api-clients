@@ -29,7 +29,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/messages"
@@ -66,7 +66,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}".replace("{message_id}", message_id)
@@ -105,7 +105,7 @@ impl Messages {
     ) -> Result<crate::types::GetMessageSeenStatusResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}/seen".replace("{message_id}", message_id)
@@ -144,7 +144,7 @@ impl Messages {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}/seen".replace("{message_id}", message_id)
@@ -177,7 +177,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/messages".replace("{channel_id}", channel_id)
@@ -217,7 +217,7 @@ impl Messages {
     ) -> Result<crate::types::ReceiveCustomMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/incoming_messages".replace("{channel_id}", channel_id)
@@ -256,7 +256,7 @@ impl Messages {
     ) -> Result<crate::types::ImportInboxMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/imported_messages".replace("{inbox_id}", inbox_id)
