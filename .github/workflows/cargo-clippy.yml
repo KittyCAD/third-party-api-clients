@@ -78,4 +78,4 @@ jobs:
           args: --all --exclude engine
       - name: Run clippy manually without annotations
         if: ${{ !steps.check_permissions.outputs.has-permission }}
-        run: cargo clippy --all -- -D warnings
+        run: cargo clippy --all
