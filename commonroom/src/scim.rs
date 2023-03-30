@@ -23,7 +23,7 @@ impl Scim {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "Users"),
+            format!("{}/{}", self.client.base_url, "Users"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -66,7 +66,7 @@ impl Scim {
     ) -> Result<crate::types::User, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "Users"),
+            format!("{}/{}", self.client.base_url, "Users"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -112,7 +112,7 @@ impl Scim {
     ) -> Result<crate::types::User, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "Users/:email".replace("{email}", email)
@@ -134,7 +134,7 @@ impl Scim {
         }
     }
 
-    #[doc = "Updates an user account\n\nUpdates the user account specified in the query\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn example_scim_update_user_account() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User = client\n        .scim()\n        .update_user_account(\n            \"some-string\",\n            &commonroom_api::types::UpdateUserAccountRequestBody {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                operations: Some(vec![commonroom_api::types::UpdateUserAccountRequestBodyOperations {\n                    op: Some(\"some-string\".to_string()),\n                    value: Some(commonroom_api::types::UpdateUserAccountRequestBodyOperationsValue {\n                        active: Some(false),\n                    }),\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Updates an user account\n\nUpdates the user account specified in the query\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn example_scim_update_user_account() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User = client\n        .scim()\n        .update_user_account(\n            \"some-string\",\n            &commonroom_api::types::UpdateUserAccountRequestBody {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                operations: Some(vec![commonroom_api::types::UpdateUserAccountRequestBodyOperations {\n                    op: Some(\"some-string\".to_string()),\n                    value: Some(commonroom_api::types::UpdateUserAccountRequestBodyOperationsValue {\n                        active: Some(true),\n                    }),\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_user_account<'a>(
         &'a self,
@@ -143,7 +143,7 @@ impl Scim {
     ) -> Result<crate::types::User, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "Users/:email".replace("{email}", email)

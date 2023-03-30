@@ -26,7 +26,7 @@ impl Companies {
     ) -> Result<crate::types::Company, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}"
@@ -57,7 +57,7 @@ impl Companies {
     ) -> Result<crate::types::PostPartnerManagedCompaniesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "v1/partner_managed_companies"
             ),
@@ -87,7 +87,7 @@ impl Companies {
     ) -> Result<crate::types::PostProvisionResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "v1/provision"),
+            format!("{}/{}", self.client.base_url, "v1/provision"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);

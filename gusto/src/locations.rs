@@ -20,7 +20,7 @@ impl Locations {
     ) -> Result<Vec<crate::types::Location>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/locations"
@@ -52,7 +52,7 @@ impl Locations {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/locations"
@@ -84,7 +84,7 @@ impl Locations {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/locations/{location_id}".replace("{location_id}", location_id)
@@ -115,7 +115,7 @@ impl Locations {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/locations/{location_id}".replace("{location_id}", location_id)

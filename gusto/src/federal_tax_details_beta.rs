@@ -23,7 +23,7 @@ impl FederalTaxDetailsBeta {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"
@@ -58,7 +58,7 @@ impl FederalTaxDetailsBeta {
     > {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"

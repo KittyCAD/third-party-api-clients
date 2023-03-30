@@ -33,7 +33,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -55,7 +55,7 @@ impl Compensations {
         }
     }
 
-    #[doc = "Update a compensation\n\nCompensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.\n\nNote: Currently, jobs are arbitrarily limited to a single compensation as multiple compensations per job are not yet available in Gusto. The API is architected as if multiple compensations may exist, so integrations should integrate under the same assumption. The only exception is that creating a compensation with the same `job_id` as another will fail with a relevant error\n\n**Parameters:**\n\n- `compensation_id: &'astr`: The ID of the compensation (required)\n\n```rust,no_run\nasync fn example_compensations_put_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Compensation = client\n        .compensations()\n        .put_id(\n            \"some-string\",\n            &gusto_api::types::PutCompensationsCompensationIdRequestBody {\n                version: \"some-string\".to_string(),\n                rate: Some(\"some-string\".to_string()),\n                payment_unit: Some(gusto_api::types::PaymentUnit::Hour),\n                flsa_status: Some(gusto_api::types::FlsaStatus::Exempt),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update a compensation\n\nCompensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.\n\nNote: Currently, jobs are arbitrarily limited to a single compensation as multiple compensations per job are not yet available in Gusto. The API is architected as if multiple compensations may exist, so integrations should integrate under the same assumption. The only exception is that creating a compensation with the same `job_id` as another will fail with a relevant error\n\n**Parameters:**\n\n- `compensation_id: &'astr`: The ID of the compensation (required)\n\n```rust,no_run\nasync fn example_compensations_put_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Compensation = client\n        .compensations()\n        .put_id(\n            \"some-string\",\n            &gusto_api::types::PutCompensationsCompensationIdRequestBody {\n                version: \"some-string\".to_string(),\n                rate: Some(\"some-string\".to_string()),\n                payment_unit: Some(gusto_api::types::PaymentUnit::Month),\n                flsa_status: Some(gusto_api::types::FlsaStatus::Owner),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn put_id<'a>(
         &'a self,
@@ -64,7 +64,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -95,7 +95,7 @@ impl Compensations {
     ) -> Result<Vec<crate::types::Compensation>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}/compensations".replace("{job_id}", job_id)

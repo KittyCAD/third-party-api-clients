@@ -20,7 +20,7 @@ impl AdminsBeta {
     ) -> Result<Vec<crate::types::Admin>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/admins".replace("{company_id}", company_id)
@@ -51,7 +51,7 @@ impl AdminsBeta {
     ) -> Result<crate::types::Admin, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/admins".replace("{company_id}", company_id)

@@ -21,7 +21,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id_or_uuid}"
@@ -50,7 +50,7 @@ impl Employees {
         }
     }
 
-    #[doc = "Update an employee\n\nUpdate an employee.\n\n**Parameters:**\n\n- `employee_id_or_uuid: &'astr`: The ID or UUID of the employee (required)\n\n```rust,no_run\nasync fn example_employees_put() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Employee = client\n        .employees()\n        .put(\n            \"some-string\",\n            &gusto_api::types::PutEmployeesRequestBody {\n                version: \"some-string\".to_string(),\n                first_name: Some(\"some-string\".to_string()),\n                middle_initial: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                date_of_birth: Some(chrono::Utc::now().date().naive_utc()),\n                email: Some(\"some-string\".to_string()),\n                ssn: Some(\"some-string\".to_string()),\n                two_percent_shareholder: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update an employee\n\nUpdate an employee.\n\n**Parameters:**\n\n- `employee_id_or_uuid: &'astr`: The ID or UUID of the employee (required)\n\n```rust,no_run\nasync fn example_employees_put() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Employee = client\n        .employees()\n        .put(\n            \"some-string\",\n            &gusto_api::types::PutEmployeesRequestBody {\n                version: \"some-string\".to_string(),\n                first_name: Some(\"some-string\".to_string()),\n                middle_initial: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                date_of_birth: Some(chrono::Utc::now().date().naive_utc()),\n                email: Some(\"some-string\".to_string()),\n                ssn: Some(\"some-string\".to_string()),\n                two_percent_shareholder: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn put<'a>(
         &'a self,
@@ -59,7 +59,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id_or_uuid}"
@@ -96,7 +96,7 @@ impl Employees {
     ) -> Result<Vec<crate::types::Employee>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/employees"
@@ -147,7 +147,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/employees"
@@ -179,7 +179,7 @@ impl Employees {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/home_address".replace("{employee_id}", employee_id)
@@ -210,7 +210,7 @@ impl Employees {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/home_address".replace("{employee_id}", employee_id)

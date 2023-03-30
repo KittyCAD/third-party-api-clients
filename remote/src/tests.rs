@@ -1,7 +1,10 @@
 use pretty_assertions::assert_eq;
 
-#[tokio::test]
 async fn test_remote_employments() {
+    eprintln!(
+        "Token length: {}",
+        std::env::var("REMOTE_API_TOKEN").expect("no token?").len()
+    );
     let mut client = crate::Client::new_from_env();
     client.set_base_url("https://gateway.remote-sandbox.com");
 
@@ -20,7 +23,7 @@ async fn test_remote_employments() {
     let first_manager = managers.first().unwrap();
     let company_id = first_manager.company_id.as_ref().unwrap().clone();
 
-    let new_employee_response = client
+    let new_employee_response = match client
         .employments()
         .post_create(&crate::types::EmploymentBasicParams {
             company_id: company_id.clone(),
@@ -32,7 +35,20 @@ async fn test_remote_employments() {
             type_: crate::types::EmploymentBasicParamsType::Employee,
         })
         .await
-        .expect("Employee failed to create");
+    {
+        Ok(response) => response,
+        Err(e) => match e {
+            crate::types::error::Error::UnexpectedResponse(e) => {
+                let status = e.status();
+                let body = e
+                    .text()
+                    .await
+                    .expect("error getting body of unexpected response");
+                panic!("Unexpected response (HTTP {}): {}", status, body)
+            }
+            other => panic!("Employee failed to create: {:?}", other),
+        },
+    };
     let new_employment_data = new_employee_response.data.expect("Has data");
     let new_employment = new_employment_data
         .employment

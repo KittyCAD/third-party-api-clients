@@ -207,14 +207,9 @@ pub mod phone_number {
             let s = if !s.trim().starts_with('+') {
                 format!("+1{}", s)
                     .replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                    .replace(['(', ')', ' '], "")
             } else {
-                s.replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                s.replace(['-', '(', ')', ' '], "")
             };
             Ok(PhoneNumber(Some(phonenumber::parse(None, &s).map_err(
                 |e| anyhow::anyhow!("invalid phone number `{}`: {}", s, e),
@@ -1739,37 +1734,6 @@ impl std::fmt::Display for PaginatedResponseApiCardResourceSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiCardResourceSchema {
-    type Item = Card;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiCardResourceSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -2344,37 +2308,6 @@ impl std::fmt::Display for PaginatedResponseApiCardProgramResourceSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiCardProgramResourceSchema {
-    type Item = ApiCardProgramResource;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiCardProgramResourceSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -2814,37 +2747,6 @@ impl std::fmt::Display for PaginatedResponseApiDepartmentResourceSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiDepartmentResourceSchema {
-    type Item = Department;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiDepartmentResourceSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -2860,6 +2762,7 @@ impl tabled::Tabled for PaginatedResponseApiDepartmentResourceSchema {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ApiDepartmentCreate {
+    pub business_id: i64,
     pub name: String,
 }
 
@@ -2874,13 +2777,13 @@ impl std::fmt::Display for ApiDepartmentCreate {
 }
 
 impl tabled::Tabled for ApiDepartmentCreate {
-    const LENGTH: usize = 1;
+    const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
-        vec![self.name.clone()]
+        vec![format!("{:?}", self.business_id), self.name.clone()]
     }
 
     fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+        vec!["business_id".to_string(), "name".to_string()]
     }
 }
 
@@ -2956,37 +2859,6 @@ impl std::fmt::Display for PaginatedResponseApiLocationResourceSchema {
             "{}",
             serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
         )
-    }
-}
-
-impl crate::types::paginate::Pagination for PaginatedResponseApiLocationResourceSchema {
-    type Item = Location;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
     }
 }
 
@@ -3118,37 +2990,6 @@ impl std::fmt::Display for PaginatedResponseApiReceiptResourceSchema {
             "{}",
             serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
         )
-    }
-}
-
-impl crate::types::paginate::Pagination for PaginatedResponseApiReceiptResourceSchema {
-    type Item = Receipt;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
     }
 }
 
@@ -3534,37 +3375,6 @@ impl std::fmt::Display for PaginatedResponseApiReimbursementResourceSchema {
             "{}",
             serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
         )
-    }
-}
-
-impl crate::types::paginate::Pagination for PaginatedResponseApiReimbursementResourceSchema {
-    type Item = Reimbursement;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
     }
 }
 
@@ -4453,37 +4263,6 @@ impl std::fmt::Display for PaginatedResponseApiTransactionCanonicalSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiTransactionCanonicalSchema {
-    type Item = Transaction;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiTransactionCanonicalSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -4781,37 +4560,6 @@ impl std::fmt::Display for PaginatedResponseApiUserResourceSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiUserResourceSchema {
-    type Item = User;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiUserResourceSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -5095,37 +4843,6 @@ impl std::fmt::Display for PaginatedResponseApiMemoResourceSchema {
     }
 }
 
-impl crate::types::paginate::Pagination for PaginatedResponseApiMemoResourceSchema {
-    type Item = Memo;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
-    }
-}
-
 impl tabled::Tabled for PaginatedResponseApiMemoResourceSchema {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
@@ -5205,37 +4922,6 @@ impl std::fmt::Display for PaginatedResponseApiMerchantResourceSchema {
             "{}",
             serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
         )
-    }
-}
-
-impl crate::types::paginate::Pagination for PaginatedResponseApiMerchantResourceSchema {
-    type Item = Merchant;
-    fn has_more_pages(&self) -> bool {
-        self.page.next.is_some()
-    }
-
-    fn next_page(
-        &self,
-        req: reqwest::Request,
-    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
-        let mut req = req.try_clone().ok_or_else(|| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to clone request: {:?}",
-                req
-            ))
-        })?;
-        let new_url = url::Url::parse(&self.page.next.as_deref().unwrap_or("")).map_err(|_| {
-            crate::types::error::Error::InvalidRequest(format!(
-                "failed to parse url: {:?}",
-                self.page.next
-            ))
-        })?;
-        req.url_mut().set_query(new_url.query());
-        Ok(req)
-    }
-
-    fn items(&self) -> Vec<Self::Item> {
-        self.data.clone()
     }
 }
 
@@ -5539,15 +5225,13 @@ impl tabled::Tabled for ApiSalesLeadBusinessDump {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum Source {
+    #[default]
     AngelList,
 }
 
-impl std::default::Default for Source {
-    fn default() -> Self {
-        Source::AngelList
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -5862,15 +5546,13 @@ impl tabled::Tabled for ApiSalesLeadBusinessLoad {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum ApiSalesLeadCreateSource {
+    #[default]
     AngelList,
 }
 
-impl std::default::Default for ApiSalesLeadCreateSource {
-    fn default() -> Self {
-        ApiSalesLeadCreateSource::AngelList
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,

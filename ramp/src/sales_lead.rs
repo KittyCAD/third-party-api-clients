@@ -26,10 +26,10 @@ impl SalesLead {
     ) -> Result<crate::types::Lead, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "developer/v1/leads/{sales_lead_id}".replace("{sales_lead_id}", &sales_lead_id)
+                "developer/v1/leads/{sales_lead_id}".replace("{sales_lead_id}", sales_lead_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -42,14 +42,13 @@ impl SalesLead {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
         }
     }
 
-    #[doc = "Create a sales lead\n\n```rust,no_run\nasync fn example_sales_lead_post_creation() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    client\n        .sales_lead()\n        .post_creation(&ramp_api::types::ApiSalesLeadCreate {\n            phone: Some(\"some-string\".to_string()),\n            state: \"some-string\".to_string(),\n            source: ramp_api::types::ApiSalesLeadCreateSource::AngelList,\n            last_name: \"some-string\".to_string(),\n            redirect_uri: \"some-string\".to_string(),\n            email: \"some-string\".to_string(),\n            first_name: \"some-string\".to_string(),\n            external_id: \"some-string\".to_string(),\n            business_info: Some(ramp_api::types::ApiSalesLeadBusinessLoad {\n                office_address: Some(ramp_api::types::ApiSalesLeadOfficeAddress {\n                    office_postal_code: Some(\"some-string\".to_string()),\n                    office_state: Some(\"some-string\".to_string()),\n                    office_city: Some(\"some-string\".to_string()),\n                    office_street_address: Some(\"some-string\".to_string()),\n                    office_apt_suite: Some(\"some-string\".to_string()),\n                    office_country: Some(\"some-string\".to_string()),\n                }),\n                date_of_incorporation: Some(chrono::Utc::now().date().naive_utc()),\n                state_of_incorporation: Some(\"some-string\".to_string()),\n                business_description: Some(\"some-string\".to_string()),\n                ein_number: Some(\"some-string\".to_string()),\n                sector: Some(\"some-string\".to_string()),\n                business_name_website: Some(\"some-string\".to_string()),\n                estimated_monthly_spend: Some(\"some-string\".to_string()),\n                business_name_legal: \"some-string\".to_string(),\n                industry: Some(\"some-string\".to_string()),\n                business_name_dba: \"some-string\".to_string(),\n                industry_group: Some(\"some-string\".to_string()),\n                office_phone_number: Some(\"some-string\".to_string()),\n                entity_type: Some(ramp_api::types::EntityType::SoleProprietorship),\n                sub_industry: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Create a sales lead\n\n```rust,no_run\nasync fn example_sales_lead_post_creation() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    client\n        .sales_lead()\n        .post_creation(&ramp_api::types::ApiSalesLeadCreate {\n            phone: Some(\"some-string\".to_string()),\n            state: \"some-string\".to_string(),\n            source: ramp_api::types::ApiSalesLeadCreateSource::AngelList,\n            last_name: \"some-string\".to_string(),\n            redirect_uri: \"some-string\".to_string(),\n            email: \"some-string\".to_string(),\n            first_name: \"some-string\".to_string(),\n            external_id: \"some-string\".to_string(),\n            business_info: Some(ramp_api::types::ApiSalesLeadBusinessLoad {\n                office_address: Some(ramp_api::types::ApiSalesLeadOfficeAddress {\n                    office_postal_code: Some(\"some-string\".to_string()),\n                    office_state: Some(\"some-string\".to_string()),\n                    office_city: Some(\"some-string\".to_string()),\n                    office_street_address: Some(\"some-string\".to_string()),\n                    office_apt_suite: Some(\"some-string\".to_string()),\n                    office_country: Some(\"some-string\".to_string()),\n                }),\n                date_of_incorporation: Some(chrono::Utc::now().date().naive_utc()),\n                state_of_incorporation: Some(\"some-string\".to_string()),\n                business_description: Some(\"some-string\".to_string()),\n                ein_number: Some(\"some-string\".to_string()),\n                sector: Some(\"some-string\".to_string()),\n                business_name_website: Some(\"some-string\".to_string()),\n                estimated_monthly_spend: Some(\"some-string\".to_string()),\n                business_name_legal: \"some-string\".to_string(),\n                industry: Some(\"some-string\".to_string()),\n                business_name_dba: \"some-string\".to_string(),\n                industry_group: Some(\"some-string\".to_string()),\n                office_phone_number: Some(\"some-string\".to_string()),\n                entity_type: Some(ramp_api::types::EntityType::Cooperative),\n                sub_industry: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_creation<'a>(
         &'a self,
@@ -57,7 +56,7 @@ impl SalesLead {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/leads/"),
+            format!("{}/{}", self.client.base_url, "developer/v1/leads/"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -78,11 +77,11 @@ impl SalesLead {
     ) -> Result<crate::types::Upload, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/leads/{sales_lead_id}/upload_document"
-                    .replace("{sales_lead_id}", &sales_lead_id)
+                    .replace("{sales_lead_id}", sales_lead_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -95,7 +94,6 @@ impl SalesLead {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

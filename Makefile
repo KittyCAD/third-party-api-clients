@@ -1,6 +1,6 @@
 .PHONY: commonroom
 commonroom:
-	openapitor \
+		../kittycad.rs/target/debug/openapitor \
 		--input specs/commonroom.json \
 		--version 0.1.0 \
 		--output ./commonroom \
@@ -58,7 +58,7 @@ ramp:
 
 .PHONY: remote
 remote:
-	openapitor \
+	../kittycad.rs/target/debug/openapitor \
 		--input specs/remote.json \
 		--version 0.1.0 \
 		--output ./remote \
