@@ -21,7 +21,7 @@ impl EarningType {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/earning_types".replace("{company_id}", company_id)
@@ -52,7 +52,7 @@ impl EarningType {
     ) -> Result<crate::types::EarningType, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/earning_types".replace("{company_id}", company_id)
@@ -85,7 +85,7 @@ impl EarningType {
     ) -> Result<crate::types::EarningType, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/earning_types/{earning_type_uuid}"
@@ -119,7 +119,7 @@ impl EarningType {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/earning_types/{earning_type_uuid}"

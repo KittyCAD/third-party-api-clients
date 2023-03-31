@@ -22,7 +22,7 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPaymentSummary, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments"
@@ -69,7 +69,7 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPayment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments"
@@ -131,7 +131,7 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPayment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments/{contractor_payment_id_or_uuid}"
@@ -167,7 +167,7 @@ impl ContractorPayments {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments/{contractor_payment_id_or_uuid}"

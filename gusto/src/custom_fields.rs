@@ -29,7 +29,7 @@ impl CustomFields {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/custom_fields".replace("{employee_id}", employee_id)
@@ -69,7 +69,7 @@ impl CustomFields {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/custom_fields".replace("{company_id}", company_id)

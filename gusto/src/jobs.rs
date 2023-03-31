@@ -25,7 +25,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -56,7 +56,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -92,7 +92,7 @@ impl Jobs {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -123,7 +123,7 @@ impl Jobs {
     ) -> Result<Vec<crate::types::Job>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/jobs".replace("{employee_id}", employee_id)
@@ -154,7 +154,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/jobs".replace("{employee_id}", employee_id)
@@ -177,7 +177,7 @@ impl Jobs {
         }
     }
 
-    #[doc = "Create a compensation\n\nCompensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.\n\nNote: Currently, jobs are arbitrarily limited to a single compensation as multiple compensations per job are not yet available in Gusto. The API is architected as if multiple compensations may exist, so integrations should integrate under the same assumption. The only exception is that creating a compensation with the same `job_id` as another will fail with a relevant error\n\n**Parameters:**\n\n- `job_id: &'astr`: The ID of the job to which the compensation belongs (required)\n\n```rust,no_run\nasync fn example_jobs_post_id_compensations() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Compensation = client\n        .jobs()\n        .post_id_compensations(\n            \"some-string\",\n            &gusto_api::types::PostJobsJobIdCompensationsRequestBody {\n                rate: \"some-string\".to_string(),\n                payment_unit: gusto_api::types::PaymentUnit::Month,\n                flsa_status: gusto_api::types::FlsaStatus::Nonexempt,\n                effective_date: Some(chrono::Utc::now().date().naive_utc()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a compensation\n\nCompensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.\n\nNote: Currently, jobs are arbitrarily limited to a single compensation as multiple compensations per job are not yet available in Gusto. The API is architected as if multiple compensations may exist, so integrations should integrate under the same assumption. The only exception is that creating a compensation with the same `job_id` as another will fail with a relevant error\n\n**Parameters:**\n\n- `job_id: &'astr`: The ID of the job to which the compensation belongs (required)\n\n```rust,no_run\nasync fn example_jobs_post_id_compensations() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Compensation = client\n        .jobs()\n        .post_id_compensations(\n            \"some-string\",\n            &gusto_api::types::PostJobsJobIdCompensationsRequestBody {\n                rate: \"some-string\".to_string(),\n                payment_unit: gusto_api::types::PaymentUnit::Week,\n                flsa_status: gusto_api::types::FlsaStatus::SalariedNonexempt,\n                effective_date: Some(chrono::Utc::now().date().naive_utc()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_id_compensations<'a>(
         &'a self,
@@ -186,7 +186,7 @@ impl Jobs {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}/compensations".replace("{job_id}", job_id)
