@@ -1040,18 +1040,20 @@ pub struct Employment {
     #[doc = "Contract information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `contract_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub contract_details: Option<serde_json::Value>,
-    #[doc = "A supported country on Remote"]
-    pub country: Country,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country_code: Option<String>,
     pub created_at: String,
     #[doc = "Emergency contact information. Its properties may vary depending on the country."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub emergency_contact_details: Option<serde_json::Value>,
-    pub files: Vec<File>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub files: Option<Vec<File>>,
     pub full_name: String,
     pub id: String,
     pub job_title: String,
     #[doc = "All tasks that need to be completed before marking the employment as ready"]
-    pub onboarding_tasks: OnboardingTasks,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub onboarding_tasks: Option<OnboardingTasks>,
     #[doc = "Personal details information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `personal_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub personal_details: Option<serde_json::Value>,
@@ -1062,7 +1064,8 @@ pub struct Employment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub provisional_start_date: Option<chrono::NaiveDate>,
     #[doc = "The status of employment"]
-    pub status: EmploymentStatus,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<EmploymentStatus>,
     #[serde(rename = "type")]
     pub type_: EmploymentType,
     #[serde(deserialize_with = "crate::utils::date_time_format::deserialize")]
@@ -1089,14 +1092,26 @@ impl tabled::Tabled for Employment {
             format!("{:?}", self.billing_address_details),
             self.company_id.clone(),
             format!("{:?}", self.contract_details),
-            format!("{:?}", self.country),
+            if let Some(country_code) = &self.country_code {
+                format!("{:?}", country_code)
+            } else {
+                String::new()
+            },
             self.created_at.clone(),
             format!("{:?}", self.emergency_contact_details),
-            format!("{:?}", self.files),
+            if let Some(files) = &self.files {
+                format!("{:?}", files)
+            } else {
+                String::new()
+            },
             self.full_name.clone(),
             self.id.clone(),
             self.job_title.clone(),
-            format!("{:?}", self.onboarding_tasks),
+            if let Some(onboarding_tasks) = &self.onboarding_tasks {
+                format!("{:?}", onboarding_tasks)
+            } else {
+                String::new()
+            },
             format!("{:?}", self.personal_details),
             self.personal_email.clone(),
             format!("{:?}", self.pricing_plan_details),
@@ -1105,7 +1120,11 @@ impl tabled::Tabled for Employment {
             } else {
                 String::new()
             },
-            format!("{:?}", self.status),
+            if let Some(status) = &self.status {
+                format!("{:?}", status)
+            } else {
+                String::new()
+            },
             format!("{:?}", self.type_),
             format!("{:?}", self.updated_at),
         ]
@@ -1119,7 +1138,7 @@ impl tabled::Tabled for Employment {
             "billing_address_details".to_string(),
             "company_id".to_string(),
             "contract_details".to_string(),
-            "country".to_string(),
+            "country_code".to_string(),
             "created_at".to_string(),
             "emergency_contact_details".to_string(),
             "files".to_string(),
