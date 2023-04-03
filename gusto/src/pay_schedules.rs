@@ -29,7 +29,7 @@ impl PaySchedules {
     ) -> Result<Vec<crate::types::PaySchedule>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/pay_schedules".replace("{company_id}", company_id)
@@ -70,7 +70,7 @@ impl PaySchedules {
     ) -> Result<crate::types::PaySchedule, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/pay_schedules/{pay_schedule_id_or_uuid}"
@@ -104,7 +104,7 @@ impl PaySchedules {
     ) -> Result<crate::types::PaySchedule, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/pay_schedules/{pay_schedule_id_or_uuid}"

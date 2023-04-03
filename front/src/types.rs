@@ -205,7 +205,7 @@ pub mod phone_number {
                 return Ok(PhoneNumber(None));
             }
             let s = if !s.trim().starts_with('+') {
-                format!("+1{s}")
+                format!("+1{}", s)
                     .replace('-', "")
                     .replace(['(', ')', ' '], "")
             } else {
@@ -227,7 +227,7 @@ pub mod phone_number {
             } else {
                 String::new()
             };
-            write!(f, "{s}")
+            write!(f, "{}", s)
         }
     }
 
@@ -256,40 +256,40 @@ pub mod phone_number {
         fn test_parse_phone_number() {
             let mut phone = "+1-555-555-5555";
             let mut phone_parsed: PhoneNumber =
-                serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+                serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             let mut expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             let mut expected_str = "+1 555-555-5555";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "+1 555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "5555555555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510) 864-1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, "+15108641234").unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510)8641234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, PhoneNumber(None));
             assert_eq!("", serde_json::json!(phone_parsed));
             phone = "+49 30  1234 1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+49 30 12341234";
@@ -366,22 +366,22 @@ pub mod error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
-                    write!(f, "Invalid Request: {s}")
+                    write!(f, "Invalid Request: {}", s)
                 }
                 Error::CommunicationError(e) => {
-                    write!(f, "Communication Error: {e}")
+                    write!(f, "Communication Error: {}", e)
                 }
                 Error::RequestError(e) => {
-                    write!(f, "Request Error: {e}")
+                    write!(f, "Request Error: {}", e)
                 }
                 Error::SerdeError { error, status: _ } => {
-                    write!(f, "Serde Error: {error}")
+                    write!(f, "Serde Error: {}", error)
                 }
                 Error::InvalidResponsePayload { error, response: _ } => {
-                    write!(f, "Invalid Response Payload: {error}")
+                    write!(f, "Invalid Response Payload: {}", error)
                 }
                 Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {r:?}")
+                    write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
@@ -475,37 +475,37 @@ impl tabled::Tabled for ShiftIntervals {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mon) = &self.mon {
-                format!("{mon:?}")
+                format!("{:?}", mon)
             } else {
                 String::new()
             },
             if let Some(tue) = &self.tue {
-                format!("{tue:?}")
+                format!("{:?}", tue)
             } else {
                 String::new()
             },
             if let Some(wed) = &self.wed {
-                format!("{wed:?}")
+                format!("{:?}", wed)
             } else {
                 String::new()
             },
             if let Some(thu) = &self.thu {
-                format!("{thu:?}")
+                format!("{:?}", thu)
             } else {
                 String::new()
             },
             if let Some(fri) = &self.fri {
-                format!("{fri:?}")
+                format!("{:?}", fri)
             } else {
                 String::new()
             },
             if let Some(sat) = &self.sat {
-                format!("{sat:?}")
+                format!("{:?}", sat)
             } else {
                 String::new()
             },
             if let Some(sun) = &self.sun {
-                format!("{sun:?}")
+                format!("{:?}", sun)
             } else {
                 String::new()
             },
@@ -756,27 +756,27 @@ impl tabled::Tabled for Account {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(domains) = &self.domains {
-                format!("{domains:?}")
+                format!("{:?}", domains)
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{external_id:?}")
+                format!("{:?}", external_id)
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{custom_fields:?}")
+                format!("{:?}", custom_fields)
             } else {
                 String::new()
             },
@@ -828,32 +828,32 @@ impl tabled::Tabled for AnalyticsFilters {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{tag_ids:?}")
+                format!("{:?}", tag_ids)
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{teammate_ids:?}")
+                format!("{:?}", teammate_ids)
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{channel_ids:?}")
+                format!("{:?}", channel_ids)
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{inbox_ids:?}")
+                format!("{:?}", inbox_ids)
             } else {
                 String::new()
             },
             if let Some(team_ids) = &self.team_ids {
-                format!("{team_ids:?}")
+                format!("{:?}", team_ids)
             } else {
                 String::new()
             },
             if let Some(account_ids) = &self.account_ids {
-                format!("{account_ids:?}")
+                format!("{:?}", account_ids)
             } else {
                 String::new()
             },
@@ -910,12 +910,12 @@ impl tabled::Tabled for AnalyticsReportRequest2 {
             format!("{:?}", self.start),
             format!("{:?}", self.end),
             if let Some(timezone) = &self.timezone {
-                format!("{timezone:?}")
+                format!("{:?}", timezone)
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{filters:?}")
+                format!("{:?}", filters)
             } else {
                 String::new()
             },
@@ -994,12 +994,12 @@ impl tabled::Tabled for AnalyticsExportRequest2 {
             format!("{:?}", self.start),
             format!("{:?}", self.end),
             if let Some(timezone) = &self.timezone {
-                format!("{timezone:?}")
+                format!("{:?}", timezone)
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{filters:?}")
+                format!("{:?}", filters)
             } else {
                 String::new()
             },
@@ -1153,7 +1153,7 @@ impl tabled::Tabled for CreateMessageTemplateFolder {
         vec![
             self.name.clone(),
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{parent_folder_id:?}")
+                format!("{:?}", parent_folder_id)
             } else {
                 String::new()
             },
@@ -1194,12 +1194,12 @@ impl tabled::Tabled for UpdateMessageTemplateFolder {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{parent_folder_id:?}")
+                format!("{:?}", parent_folder_id)
             } else {
                 String::new()
             },
@@ -1247,27 +1247,27 @@ impl tabled::Tabled for UpdateMessageTemplate {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(folder_id) = &self.folder_id {
-                format!("{folder_id:?}")
+                format!("{:?}", folder_id)
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{inbox_ids:?}")
+                format!("{:?}", inbox_ids)
             } else {
                 String::new()
             },
@@ -1318,13 +1318,13 @@ impl tabled::Tabled for CreateMessageTemplateAsChild {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{inbox_ids:?}")
+                format!("{:?}", inbox_ids)
             } else {
                 String::new()
             },
@@ -1375,13 +1375,13 @@ impl tabled::Tabled for CreatePrivateMessageTemplate {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{folder_id:?}")
+                format!("{:?}", folder_id)
             } else {
                 String::new()
             },
@@ -1434,18 +1434,18 @@ impl tabled::Tabled for CreateSharedMessageTemplate {
         vec![
             self.name.clone(),
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{folder_id:?}")
+                format!("{:?}", folder_id)
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{inbox_ids:?}")
+                format!("{:?}", inbox_ids)
             } else {
                 String::new()
             },
@@ -1640,42 +1640,42 @@ impl tabled::Tabled for CreateContact {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{avatar:?}")
+                format!("{:?}", avatar)
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{is_spammer:?}")
+                format!("{:?}", is_spammer)
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{links:?}")
+                format!("{:?}", links)
             } else {
                 String::new()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{group_names:?}")
+                format!("{:?}", group_names)
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{custom_fields:?}")
+                format!("{:?}", custom_fields)
             } else {
                 String::new()
             },
             if let Some(handles) = &self.handles {
-                format!("{handles:?}")
+                format!("{:?}", handles)
             } else {
                 String::new()
             },
@@ -1740,37 +1740,37 @@ impl tabled::Tabled for Contact {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{avatar:?}")
+                format!("{:?}", avatar)
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{is_spammer:?}")
+                format!("{:?}", is_spammer)
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{links:?}")
+                format!("{:?}", links)
             } else {
                 String::new()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{group_names:?}")
+                format!("{:?}", group_names)
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{custom_fields:?}")
+                format!("{:?}", custom_fields)
             } else {
                 String::new()
             },
@@ -1819,7 +1819,7 @@ impl tabled::Tabled for MergeContacts {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(target_contact_id) = &self.target_contact_id {
-                format!("{target_contact_id:?}")
+                format!("{:?}", target_contact_id)
             } else {
                 String::new()
             },
@@ -1863,7 +1863,7 @@ impl tabled::Tabled for DeleteContactHandle {
             self.handle.clone(),
             format!("{:?}", self.source),
             if let Some(force) = &self.force {
-                format!("{force:?}")
+                format!("{:?}", force)
             } else {
                 String::new()
             },
@@ -1941,12 +1941,12 @@ impl tabled::Tabled for Settings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{undo_send_time:?}")
+                format!("{:?}", undo_send_time)
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{all_teammates_can_reply:?}")
+                format!("{:?}", all_teammates_can_reply)
             } else {
                 String::new()
             },
@@ -1990,12 +1990,12 @@ impl tabled::Tabled for UpdateChannel {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{settings:?}")
+                format!("{:?}", settings)
             } else {
                 String::new()
             },
@@ -2037,12 +2037,12 @@ impl tabled::Tabled for CreateChannelSettings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{undo_send_time:?}")
+                format!("{:?}", undo_send_time)
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{all_teammates_can_reply:?}")
+                format!("{:?}", all_teammates_can_reply)
             } else {
                 String::new()
             },
@@ -2116,18 +2116,18 @@ impl tabled::Tabled for CreateChannel {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{settings:?}")
+                format!("{:?}", settings)
             } else {
                 String::new()
             },
             format!("{:?}", self.type_),
             if let Some(send_as) = &self.send_as {
-                format!("{send_as:?}")
+                format!("{:?}", send_as)
             } else {
                 String::new()
             },
@@ -2174,13 +2174,13 @@ impl tabled::Tabled for CreateComment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{author_id:?}")
+                format!("{:?}", author_id)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
@@ -2210,17 +2210,15 @@ impl tabled::Tabled for CreateComment {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum CreateConversationType {
     #[serde(rename = "discussion")]
     #[display("discussion")]
+    #[default]
     Discussion,
 }
 
-impl std::default::Default for CreateConversationType {
-    fn default() -> Self {
-        CreateConversationType::Discussion
-    }
-}
+
 
 #[doc = "Details for the starter comment"]
 #[derive(
@@ -2253,13 +2251,13 @@ impl tabled::Tabled for Comment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{author_id:?}")
+                format!("{:?}", author_id)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
@@ -2312,12 +2310,12 @@ impl tabled::Tabled for CreateConversation {
         vec![
             format!("{:?}", self.type_),
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{inbox_id:?}")
+                format!("{:?}", inbox_id)
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{teammate_ids:?}")
+                format!("{:?}", teammate_ids)
             } else {
                 String::new()
             },
@@ -2399,22 +2397,22 @@ impl tabled::Tabled for UpdateConversation {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{assignee_id:?}")
+                format!("{:?}", assignee_id)
             } else {
                 String::new()
             },
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{inbox_id:?}")
+                format!("{:?}", inbox_id)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{tag_ids:?}")
+                format!("{:?}", tag_ids)
             } else {
                 String::new()
             },
@@ -2520,12 +2518,12 @@ impl tabled::Tabled for UpdateCustomField {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
@@ -2552,20 +2550,18 @@ impl tabled::Tabled for UpdateCustomField {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum Mode {
     #[serde(rename = "private")]
     #[display("private")]
+    #[default]
     Private,
     #[serde(rename = "shared")]
     #[display("shared")]
     Shared,
 }
 
-impl std::default::Default for Mode {
-    fn default() -> Self {
-        Mode::Private
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -2616,43 +2612,43 @@ impl tabled::Tabled for CreateDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{mode:?}")
+                format!("{:?}", mode)
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{signature_id:?}")
+                format!("{:?}", signature_id)
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{should_add_default_signature:?}")
+                format!("{:?}", should_add_default_signature)
             } else {
                 String::new()
             },
@@ -2727,48 +2723,48 @@ impl tabled::Tabled for ReplyDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{mode:?}")
+                format!("{:?}", mode)
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{signature_id:?}")
+                format!("{:?}", signature_id)
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{should_add_default_signature:?}")
+                format!("{:?}", should_add_default_signature)
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{channel_id:?}")
+                format!("{:?}", channel_id)
             } else {
                 String::new()
             },
@@ -2807,17 +2803,15 @@ impl tabled::Tabled for ReplyDraft {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum EditDraftMode {
     #[serde(rename = "shared")]
     #[display("shared")]
+    #[default]
     Shared,
 }
 
-impl std::default::Default for EditDraftMode {
-    fn default() -> Self {
-        EditDraftMode::Shared
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -2874,53 +2868,53 @@ impl tabled::Tabled for EditDraft {
         vec![
             self.author_id.clone(),
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(mode) = &self.mode {
-                format!("{mode:?}")
+                format!("{:?}", mode)
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{signature_id:?}")
+                format!("{:?}", signature_id)
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{should_add_default_signature:?}")
+                format!("{:?}", should_add_default_signature)
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{channel_id:?}")
+                format!("{:?}", channel_id)
             } else {
                 String::new()
             },
             if let Some(version) = &self.version {
-                format!("{version:?}")
+                format!("{:?}", version)
             } else {
                 String::new()
             },
@@ -2999,7 +2993,7 @@ impl tabled::Tabled for CreateInbox {
         vec![
             self.name.clone(),
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{teammate_ids:?}")
+                format!("{:?}", teammate_ids)
             } else {
                 String::new()
             },
@@ -3037,12 +3031,12 @@ impl tabled::Tabled for Options {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{tag_ids:?}")
+                format!("{:?}", tag_ids)
             } else {
                 String::new()
             },
             if let Some(archive) = &self.archive {
-                format!("{archive:?}")
+                format!("{:?}", archive)
             } else {
                 String::new()
             },
@@ -3107,53 +3101,53 @@ impl tabled::Tabled for OutboundMessage {
         vec![
             format!("{:?}", self.to),
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{sender_name:?}")
+                format!("{:?}", sender_name)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{author_id:?}")
+                format!("{:?}", author_id)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(text) = &self.text {
-                format!("{text:?}")
+                format!("{:?}", text)
             } else {
                 String::new()
             },
             if let Some(options) = &self.options {
-                format!("{options:?}")
+                format!("{:?}", options)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{signature_id:?}")
+                format!("{:?}", signature_id)
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{should_add_default_signature:?}")
+                format!("{:?}", should_add_default_signature)
             } else {
                 String::new()
             },
@@ -3204,12 +3198,12 @@ impl tabled::Tabled for OutboundReplyMessageOptions {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{tag_ids:?}")
+                format!("{:?}", tag_ids)
             } else {
                 String::new()
             },
             if let Some(archive) = &self.archive {
-                format!("{archive:?}")
+                format!("{:?}", archive)
             } else {
                 String::new()
             },
@@ -3277,63 +3271,63 @@ impl tabled::Tabled for OutboundReplyMessage {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{sender_name:?}")
+                format!("{:?}", sender_name)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{author_id:?}")
+                format!("{:?}", author_id)
             } else {
                 String::new()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{channel_id:?}")
+                format!("{:?}", channel_id)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(text) = &self.text {
-                format!("{text:?}")
+                format!("{:?}", text)
             } else {
                 String::new()
             },
             if let Some(options) = &self.options {
-                format!("{options:?}")
+                format!("{:?}", options)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{signature_id:?}")
+                format!("{:?}", signature_id)
             } else {
                 String::new()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{should_add_default_signature:?}")
+                format!("{:?}", should_add_default_signature)
             } else {
                 String::new()
             },
@@ -3389,12 +3383,12 @@ impl tabled::Tabled for Sender {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contact_id) = &self.contact_id {
-                format!("{contact_id:?}")
+                format!("{:?}", contact_id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -3425,20 +3419,18 @@ impl tabled::Tabled for Sender {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum BodyFormat {
     #[serde(rename = "html")]
     #[display("html")]
     Html,
     #[serde(rename = "markdown")]
     #[display("markdown")]
+    #[default]
     Markdown,
 }
 
-impl std::default::Default for BodyFormat {
-    fn default() -> Self {
-        BodyFormat::Markdown
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3468,12 +3460,12 @@ impl tabled::Tabled for Metadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{thread_ref:?}")
+                format!("{:?}", thread_ref)
             } else {
                 String::new()
             },
             if let Some(headers) = &self.headers {
-                format!("{headers:?}")
+                format!("{:?}", headers)
             } else {
                 String::new()
             },
@@ -3522,23 +3514,23 @@ impl tabled::Tabled for CustomMessage {
         vec![
             format!("{:?}", self.sender),
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(body_format) = &self.body_format {
-                format!("{body_format:?}")
+                format!("{:?}", body_format)
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{metadata:?}")
+                format!("{:?}", metadata)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
@@ -3588,12 +3580,12 @@ impl tabled::Tabled for ImportMessageSender {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{author_id:?}")
+                format!("{:?}", author_id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -3625,20 +3617,18 @@ impl tabled::Tabled for ImportMessageSender {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum ImportMessageBodyFormat {
     #[serde(rename = "html")]
     #[display("html")]
     Html,
     #[serde(rename = "markdown")]
     #[display("markdown")]
+    #[default]
     Markdown,
 }
 
-impl std::default::Default for ImportMessageBodyFormat {
-    fn default() -> Self {
-        ImportMessageBodyFormat::Markdown
-    }
-}
+
 
 #[doc = "Type of the message to import. Default is `email`."]
 #[derive(
@@ -3654,9 +3644,11 @@ impl std::default::Default for ImportMessageBodyFormat {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum ImportMessageType {
     #[serde(rename = "email")]
     #[display("email")]
+    #[default]
     Email,
     #[serde(rename = "sms")]
     #[display("sms")]
@@ -3669,11 +3661,7 @@ pub enum ImportMessageType {
     Custom,
 }
 
-impl std::default::Default for ImportMessageType {
-    fn default() -> Self {
-        ImportMessageType::Email
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3708,18 +3696,18 @@ impl tabled::Tabled for ImportMessageMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{thread_ref:?}")
+                format!("{:?}", thread_ref)
             } else {
                 String::new()
             },
             format!("{:?}", self.is_inbound),
             if let Some(is_archived) = &self.is_archived {
-                format!("{is_archived:?}")
+                format!("{:?}", is_archived)
             } else {
                 String::new()
             },
             if let Some(should_skip_rules) = &self.should_skip_rules {
-                format!("{should_skip_rules:?}")
+                format!("{:?}", should_skip_rules)
             } else {
                 String::new()
             },
@@ -3793,46 +3781,46 @@ impl tabled::Tabled for ImportMessage {
             format!("{:?}", self.sender),
             format!("{:?}", self.to),
             if let Some(cc) = &self.cc {
-                format!("{cc:?}")
+                format!("{:?}", cc)
             } else {
                 String::new()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{bcc:?}")
+                format!("{:?}", bcc)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(body_format) = &self.body_format {
-                format!("{body_format:?}")
+                format!("{:?}", body_format)
             } else {
                 String::new()
             },
             self.external_id.clone(),
             format!("{:?}", self.created_at),
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{assignee_id:?}")
+                format!("{:?}", assignee_id)
             } else {
                 String::new()
             },
             if let Some(tags) = &self.tags {
-                format!("{tags:?}")
+                format!("{:?}", tags)
             } else {
                 String::new()
             },
             format!("{:?}", self.metadata),
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
@@ -3988,27 +3976,27 @@ impl tabled::Tabled for UpdateShift {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(color) = &self.color {
-                format!("{color:?}")
+                format!("{:?}", color)
             } else {
                 String::new()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{timezone:?}")
+                format!("{:?}", timezone)
             } else {
                 String::new()
             },
             if let Some(times) = &self.times {
-                format!("{times:?}")
+                format!("{:?}", times)
             } else {
                 String::new()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{teammate_ids:?}")
+                format!("{:?}", teammate_ids)
             } else {
                 String::new()
             },
@@ -4061,18 +4049,18 @@ impl tabled::Tabled for CreatePrivateSignature {
         vec![
             self.name.clone(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{sender_info:?}")
+                format!("{:?}", sender_info)
             } else {
                 String::new()
             },
             self.body.clone(),
             if let Some(is_default) = &self.is_default {
-                format!("{is_default:?}")
+                format!("{:?}", is_default)
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{channel_ids:?}")
+                format!("{:?}", channel_ids)
             } else {
                 String::new()
             },
@@ -4129,7 +4117,7 @@ impl tabled::Tabled for CreateSharedSignature {
         vec![
             self.name.clone(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{sender_info:?}")
+                format!("{:?}", sender_info)
             } else {
                 String::new()
             },
@@ -4137,17 +4125,17 @@ impl tabled::Tabled for CreateSharedSignature {
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{is_visible_for_all_teammate_channels:?}")
+                format!("{:?}", is_visible_for_all_teammate_channels)
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{is_default:?}")
+                format!("{:?}", is_default)
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{channel_ids:?}")
+                format!("{:?}", channel_ids)
             } else {
                 String::new()
             },
@@ -4206,34 +4194,34 @@ impl tabled::Tabled for UpdateSignature {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{sender_info:?}")
+                format!("{:?}", sender_info)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{is_visible_for_all_teammate_channels:?}")
+                format!("{:?}", is_visible_for_all_teammate_channels)
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{is_default:?}")
+                format!("{:?}", is_default)
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{channel_ids:?}")
+                format!("{:?}", channel_ids)
             } else {
                 String::new()
             },
@@ -4327,12 +4315,12 @@ impl tabled::Tabled for CreateTag {
         vec![
             self.name.clone(),
             if let Some(highlight) = &self.highlight {
-                format!("{highlight:?}")
+                format!("{:?}", highlight)
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{is_visible_in_conversation_lists:?}")
+                format!("{:?}", is_visible_in_conversation_lists)
             } else {
                 String::new()
             },
@@ -4381,22 +4369,22 @@ impl tabled::Tabled for UpdateTag {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{highlight:?}")
+                format!("{:?}", highlight)
             } else {
                 String::new()
             },
             if let Some(parent_tag_id) = &self.parent_tag_id {
-                format!("{parent_tag_id:?}")
+                format!("{:?}", parent_tag_id)
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{is_visible_in_conversation_lists:?}")
+                format!("{:?}", is_visible_in_conversation_lists)
             } else {
                 String::new()
             },
@@ -4447,22 +4435,22 @@ impl tabled::Tabled for UpdateTeammate {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(username) = &self.username {
-                format!("{username:?}")
+                format!("{:?}", username)
             } else {
                 String::new()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{first_name:?}")
+                format!("{:?}", first_name)
             } else {
                 String::new()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{last_name:?}")
+                format!("{:?}", last_name)
             } else {
                 String::new()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{is_available:?}")
+                format!("{:?}", is_available)
             } else {
                 String::new()
             },
@@ -4506,7 +4494,7 @@ impl tabled::Tabled for CreateLink {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -4542,7 +4530,7 @@ impl tabled::Tabled for UpdateLink {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(name) = &self.name {
-            format!("{name:?}")
+            format!("{:?}", name)
         } else {
             String::new()
         }]
@@ -4576,7 +4564,7 @@ impl tabled::Tabled for Related {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(contacts) = &self.contacts {
-            format!("{contacts:?}")
+            format!("{:?}", contacts)
         } else {
             String::new()
         }]
@@ -4613,12 +4601,12 @@ impl tabled::Tabled for UnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -4679,52 +4667,52 @@ impl tabled::Tabled for AccountResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(logo_url) = &self.logo_url {
-                format!("{logo_url:?}")
+                format!("{:?}", logo_url)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(domains) = &self.domains {
-                format!("{domains:?}")
+                format!("{:?}", domains)
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{external_id:?}")
+                format!("{:?}", external_id)
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{custom_fields:?}")
+                format!("{:?}", custom_fields)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{updated_at:?}")
+                format!("{:?}", updated_at)
             } else {
                 String::new()
             },
@@ -4770,7 +4758,7 @@ impl tabled::Tabled for EventResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -4896,7 +4884,7 @@ impl tabled::Tabled for Meta {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(type_) = &self.type_ {
-            format!("{type_:?}")
+            format!("{:?}", type_)
         } else {
             String::new()
         }]
@@ -4951,12 +4939,12 @@ impl tabled::Tabled for EventResponseSource {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(meta) = &self.meta {
-                format!("{meta:?}")
+                format!("{:?}", meta)
             } else {
                 String::new()
             },
             if let Some(data) = &self.data {
-                format!("{data:?}")
+                format!("{:?}", data)
             } else {
                 String::new()
             },
@@ -5050,12 +5038,12 @@ impl tabled::Tabled for TargetMeta {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(data) = &self.data {
-                format!("{data:?}")
+                format!("{:?}", data)
             } else {
                 String::new()
             },
@@ -5091,7 +5079,7 @@ impl tabled::Tabled for Target {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(meta) = &self.meta {
-            format!("{meta:?}")
+            format!("{:?}", meta)
         } else {
             String::new()
         }]
@@ -5143,37 +5131,37 @@ impl tabled::Tabled for EventResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(emitted_at) = &self.emitted_at {
-                format!("{emitted_at:?}")
+                format!("{:?}", emitted_at)
             } else {
                 String::new()
             },
             if let Some(source) = &self.source {
-                format!("{source:?}")
+                format!("{:?}", source)
             } else {
                 String::new()
             },
             if let Some(target) = &self.target {
-                format!("{target:?}")
+                format!("{:?}", target)
             } else {
                 String::new()
             },
             if let Some(conversation) = &self.conversation {
-                format!("{conversation:?}")
+                format!("{:?}", conversation)
             } else {
                 String::new()
             },
@@ -5216,7 +5204,7 @@ impl tabled::Tabled for IdentityResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -5256,17 +5244,17 @@ impl tabled::Tabled for IdentityResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -5305,7 +5293,7 @@ impl tabled::Tabled for AnalyticsExportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -5384,37 +5372,37 @@ impl tabled::Tabled for AnalyticsExportResponse2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(progress) = &self.progress {
-                format!("{progress:?}")
+                format!("{:?}", progress)
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{url:?}")
+                format!("{:?}", url)
             } else {
                 String::new()
             },
             if let Some(size) = &self.size {
-                format!("{size:?}")
+                format!("{:?}", size)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(filters) = &self.filters {
-                format!("{filters:?}")
+                format!("{:?}", filters)
             } else {
                 String::new()
             },
@@ -5457,7 +5445,7 @@ impl tabled::Tabled for AnalyticsReportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -5527,22 +5515,22 @@ impl tabled::Tabled for AnalyticsReportResponse2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(progress) = &self.progress {
-                format!("{progress:?}")
+                format!("{:?}", progress)
             } else {
                 String::new()
             },
             if let Some(metrics) = &self.metrics {
-                format!("{metrics:?}")
+                format!("{:?}", metrics)
             } else {
                 String::new()
             },
@@ -5586,17 +5574,17 @@ impl tabled::Tabled for AnalyticsScalar2 {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(value) = &self.value {
-                format!("{value:?}")
+                format!("{:?}", value)
             } else {
                 String::new()
             },
@@ -5659,7 +5647,7 @@ impl tabled::Tabled for ResourceUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -5695,12 +5683,12 @@ impl tabled::Tabled for Resource {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
@@ -5737,12 +5725,12 @@ impl tabled::Tabled for ValueOneOf {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(label) = &self.label {
-                format!("{label:?}")
+                format!("{:?}", label)
             } else {
                 String::new()
             },
             if let Some(resource) = &self.resource {
-                format!("{resource:?}")
+                format!("{:?}", resource)
             } else {
                 String::new()
             },
@@ -5798,17 +5786,17 @@ impl tabled::Tabled for AnalyticsScalarValue {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(value) = &self.value {
-                format!("{value:?}")
+                format!("{:?}", value)
             } else {
                 String::new()
             },
@@ -5848,12 +5836,12 @@ impl tabled::Tabled for AttachmentMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(is_inline) = &self.is_inline {
-                format!("{is_inline:?}")
+                format!("{:?}", is_inline)
             } else {
                 String::new()
             },
             if let Some(cid) = &self.cid {
-                format!("{cid:?}")
+                format!("{:?}", cid)
             } else {
                 String::new()
             },
@@ -5903,32 +5891,32 @@ impl tabled::Tabled for Attachment {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(filename) = &self.filename {
-                format!("{filename:?}")
+                format!("{:?}", filename)
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{url:?}")
+                format!("{:?}", url)
             } else {
                 String::new()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{content_type:?}")
+                format!("{:?}", content_type)
             } else {
                 String::new()
             },
             if let Some(size) = &self.size {
-                format!("{size:?}")
+                format!("{:?}", size)
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{metadata:?}")
+                format!("{:?}", metadata)
             } else {
                 String::new()
             },
@@ -5970,7 +5958,7 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -6007,12 +5995,12 @@ impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -6053,17 +6041,17 @@ impl tabled::Tabled for MessageTemplateFolderResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -6102,7 +6090,7 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -6139,12 +6127,12 @@ impl tabled::Tabled for MessageTemplateResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -6199,42 +6187,42 @@ impl tabled::Tabled for MessageTemplateResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(is_available_for_all_inboxes) = &self.is_available_for_all_inboxes {
-                format!("{is_available_for_all_inboxes:?}")
+                format!("{:?}", is_available_for_all_inboxes)
             } else {
                 String::new()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{inbox_ids:?}")
+                format!("{:?}", inbox_ids)
             } else {
                 String::new()
             },
@@ -6282,12 +6270,12 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contacts) = &self.contacts {
-                format!("{contacts:?}")
+                format!("{:?}", contacts)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
@@ -6325,12 +6313,12 @@ impl tabled::Tabled for ContactGroupResponsesUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -6374,22 +6362,22 @@ impl tabled::Tabled for ContactGroupResponses {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
@@ -6436,17 +6424,17 @@ impl tabled::Tabled for ContactNoteResponses {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(author) = &self.author {
-                format!("{author:?}")
+                format!("{:?}", author)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
@@ -6489,12 +6477,12 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(inbox) = &self.inbox {
-                format!("{inbox:?}")
+                format!("{:?}", inbox)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
@@ -6532,12 +6520,12 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -6623,12 +6611,12 @@ impl tabled::Tabled for ChannelResponseSettings {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{undo_send_time:?}")
+                format!("{:?}", undo_send_time)
             } else {
                 String::new()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{all_teammates_can_reply:?}")
+                format!("{:?}", all_teammates_can_reply)
             } else {
                 String::new()
             },
@@ -6687,42 +6675,42 @@ impl tabled::Tabled for ChannelResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(address) = &self.address {
-                format!("{address:?}")
+                format!("{:?}", address)
             } else {
                 String::new()
             },
             if let Some(types) = &self.types {
-                format!("{types:?}")
+                format!("{:?}", types)
             } else {
                 String::new()
             },
             if let Some(send_as) = &self.send_as {
-                format!("{send_as:?}")
+                format!("{:?}", send_as)
             } else {
                 String::new()
             },
             if let Some(settings) = &self.settings {
-                format!("{settings:?}")
+                format!("{:?}", settings)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
             if let Some(is_valid) = &self.is_valid {
-                format!("{is_valid:?}")
+                format!("{:?}", is_valid)
             } else {
                 String::new()
             },
@@ -6770,12 +6758,12 @@ impl tabled::Tabled for CommentResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{conversations:?}")
+                format!("{:?}", conversations)
             } else {
                 String::new()
             },
             if let Some(mentions) = &self.mentions {
-                format!("{mentions:?}")
+                format!("{:?}", mentions)
             } else {
                 String::new()
             },
@@ -6813,12 +6801,12 @@ impl tabled::Tabled for CommentResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -6868,32 +6856,32 @@ impl tabled::Tabled for CommentResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(author) = &self.author {
-                format!("{author:?}")
+                format!("{:?}", author)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(posted_at) = &self.posted_at {
-                format!("{posted_at:?}")
+                format!("{:?}", posted_at)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
@@ -6942,17 +6930,17 @@ impl tabled::Tabled for ContactResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(notes) = &self.notes {
-                format!("{notes:?}")
+                format!("{:?}", notes)
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{conversations:?}")
+                format!("{:?}", conversations)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
@@ -6994,12 +6982,12 @@ impl tabled::Tabled for ContactResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -7064,57 +7052,57 @@ impl tabled::Tabled for ContactResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(avatar_url) = &self.avatar_url {
-                format!("{avatar_url:?}")
+                format!("{:?}", avatar_url)
             } else {
                 String::new()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{is_spammer:?}")
+                format!("{:?}", is_spammer)
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{links:?}")
+                format!("{:?}", links)
             } else {
                 String::new()
             },
             if let Some(groups) = &self.groups {
-                format!("{groups:?}")
+                format!("{:?}", groups)
             } else {
                 String::new()
             },
             if let Some(handles) = &self.handles {
-                format!("{handles:?}")
+                format!("{:?}", handles)
             } else {
                 String::new()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{custom_fields:?}")
+                format!("{:?}", custom_fields)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
@@ -7177,32 +7165,32 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(events) = &self.events {
-                format!("{events:?}")
+                format!("{:?}", events)
             } else {
                 String::new()
             },
             if let Some(followers) = &self.followers {
-                format!("{followers:?}")
+                format!("{:?}", followers)
             } else {
                 String::new()
             },
             if let Some(messages) = &self.messages {
-                format!("{messages:?}")
+                format!("{:?}", messages)
             } else {
                 String::new()
             },
             if let Some(comments) = &self.comments {
-                format!("{comments:?}")
+                format!("{:?}", comments)
             } else {
                 String::new()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{inboxes:?}")
+                format!("{:?}", inboxes)
             } else {
                 String::new()
             },
             if let Some(last_message) = &self.last_message {
-                format!("{last_message:?}")
+                format!("{:?}", last_message)
             } else {
                 String::new()
             },
@@ -7247,12 +7235,12 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -7319,7 +7307,7 @@ impl tabled::Tabled for ConversationResponseMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(external_conversation_ids) = &self.external_conversation_ids {
-                format!("{external_conversation_ids:?}")
+                format!("{:?}", external_conversation_ids)
             } else {
                 String::new()
             },
@@ -7386,62 +7374,62 @@ impl tabled::Tabled for ConversationResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(assignee) = &self.assignee {
-                format!("{assignee:?}")
+                format!("{:?}", assignee)
             } else {
                 String::new()
             },
             if let Some(recipient) = &self.recipient {
-                format!("{recipient:?}")
+                format!("{:?}", recipient)
             } else {
                 String::new()
             },
             if let Some(tags) = &self.tags {
-                format!("{tags:?}")
+                format!("{:?}", tags)
             } else {
                 String::new()
             },
             if let Some(links) = &self.links {
-                format!("{links:?}")
+                format!("{:?}", links)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
             if let Some(scheduled_reminders) = &self.scheduled_reminders {
-                format!("{scheduled_reminders:?}")
+                format!("{:?}", scheduled_reminders)
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{metadata:?}")
+                format!("{:?}", metadata)
             } else {
                 String::new()
             },
@@ -7489,7 +7477,7 @@ impl tabled::Tabled for CustomFieldResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -7564,27 +7552,27 @@ impl tabled::Tabled for CustomFieldResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
@@ -7635,22 +7623,22 @@ impl tabled::Tabled for InboxResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{teammates:?}")
+                format!("{:?}", teammates)
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{conversations:?}")
+                format!("{:?}", conversations)
             } else {
                 String::new()
             },
             if let Some(channels) = &self.channels {
-                format!("{channels:?}")
+                format!("{:?}", channels)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
@@ -7693,12 +7681,12 @@ impl tabled::Tabled for InboxResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -7742,22 +7730,22 @@ impl tabled::Tabled for InboxResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
@@ -7804,17 +7792,17 @@ impl tabled::Tabled for MessageResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversation) = &self.conversation {
-                format!("{conversation:?}")
+                format!("{:?}", conversation)
             } else {
                 String::new()
             },
             if let Some(message_replied_to) = &self.message_replied_to {
-                format!("{message_replied_to:?}")
+                format!("{:?}", message_replied_to)
             } else {
                 String::new()
             },
             if let Some(message_seen) = &self.message_seen {
-                format!("{message_seen:?}")
+                format!("{:?}", message_seen)
             } else {
                 String::new()
             },
@@ -7856,12 +7844,12 @@ impl tabled::Tabled for MessageResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -7994,52 +7982,52 @@ impl tabled::Tabled for MessageResponseMetadata {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(intercom_url) = &self.intercom_url {
-                format!("{intercom_url:?}")
+                format!("{:?}", intercom_url)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(have_been_answered) = &self.have_been_answered {
-                format!("{have_been_answered:?}")
+                format!("{:?}", have_been_answered)
             } else {
                 String::new()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{external_id:?}")
+                format!("{:?}", external_id)
             } else {
                 String::new()
             },
             if let Some(twitter_url) = &self.twitter_url {
-                format!("{twitter_url:?}")
+                format!("{:?}", twitter_url)
             } else {
                 String::new()
             },
             if let Some(is_retweet) = &self.is_retweet {
-                format!("{is_retweet:?}")
+                format!("{:?}", is_retweet)
             } else {
                 String::new()
             },
             if let Some(have_been_retweeted) = &self.have_been_retweeted {
-                format!("{have_been_retweeted:?}")
+                format!("{:?}", have_been_retweeted)
             } else {
                 String::new()
             },
             if let Some(have_been_favorited) = &self.have_been_favorited {
-                format!("{have_been_favorited:?}")
+                format!("{:?}", have_been_favorited)
             } else {
                 String::new()
             },
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{thread_ref:?}")
+                format!("{:?}", thread_ref)
             } else {
                 String::new()
             },
             if let Some(headers) = &self.headers {
-                format!("{headers:?}")
+                format!("{:?}", headers)
             } else {
                 String::new()
             },
@@ -8133,87 +8121,87 @@ impl tabled::Tabled for MessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(is_inbound) = &self.is_inbound {
-                format!("{is_inbound:?}")
+                format!("{:?}", is_inbound)
             } else {
                 String::new()
             },
             if let Some(draft_mode) = &self.draft_mode {
-                format!("{draft_mode:?}")
+                format!("{:?}", draft_mode)
             } else {
                 String::new()
             },
             if let Some(error_type) = &self.error_type {
-                format!("{error_type:?}")
+                format!("{:?}", error_type)
             } else {
                 String::new()
             },
             if let Some(version) = &self.version {
-                format!("{version:?}")
+                format!("{:?}", version)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(subject) = &self.subject {
-                format!("{subject:?}")
+                format!("{:?}", subject)
             } else {
                 String::new()
             },
             if let Some(blurb) = &self.blurb {
-                format!("{blurb:?}")
+                format!("{:?}", blurb)
             } else {
                 String::new()
             },
             if let Some(author) = &self.author {
-                format!("{author:?}")
+                format!("{:?}", author)
             } else {
                 String::new()
             },
             if let Some(recipients) = &self.recipients {
-                format!("{recipients:?}")
+                format!("{:?}", recipients)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(text) = &self.text {
-                format!("{text:?}")
+                format!("{:?}", text)
             } else {
                 String::new()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{attachments:?}")
+                format!("{:?}", attachments)
             } else {
                 String::new()
             },
             if let Some(signature) = &self.signature {
-                format!("{signature:?}")
+                format!("{:?}", signature)
             } else {
                 String::new()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{metadata:?}")
+                format!("{:?}", metadata)
             } else {
                 String::new()
             },
@@ -8266,7 +8254,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(contact) = &self.contact {
-            format!("{contact:?}")
+            format!("{:?}", contact)
         } else {
             String::new()
         }]
@@ -8299,7 +8287,7 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{related:?}")
+            format!("{:?}", related)
         } else {
             String::new()
         }]
@@ -8371,22 +8359,22 @@ impl tabled::Tabled for RecipientResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(handle) = &self.handle {
-                format!("{handle:?}")
+                format!("{:?}", handle)
             } else {
                 String::new()
             },
             if let Some(role) = &self.role {
-                format!("{role:?}")
+                format!("{:?}", role)
             } else {
                 String::new()
             },
@@ -8426,7 +8414,7 @@ impl tabled::Tabled for ReminderUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -8459,7 +8447,7 @@ impl tabled::Tabled for ReminderUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{related:?}")
+            format!("{:?}", related)
         } else {
             String::new()
         }]
@@ -8502,22 +8490,22 @@ impl tabled::Tabled for Reminder {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(scheduled_at) = &self.scheduled_at {
-                format!("{scheduled_at:?}")
+                format!("{:?}", scheduled_at)
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{updated_at:?}")
+                format!("{:?}", updated_at)
             } else {
                 String::new()
             },
@@ -8557,7 +8545,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -8590,7 +8578,7 @@ impl tabled::Tabled for RoleResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(related) = &self.related {
-            format!("{related:?}")
+            format!("{:?}", related)
         } else {
             String::new()
         }]
@@ -8630,17 +8618,17 @@ impl tabled::Tabled for RoleResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -8679,7 +8667,7 @@ impl tabled::Tabled for RuleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -8716,12 +8704,12 @@ impl tabled::Tabled for RuleResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -8768,27 +8756,27 @@ impl tabled::Tabled for RuleResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(actions) = &self.actions {
-                format!("{actions:?}")
+                format!("{:?}", actions)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
@@ -8829,7 +8817,7 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{message:?}")
+            format!("{:?}", message)
         } else {
             String::new()
         }]
@@ -8866,12 +8854,12 @@ impl tabled::Tabled for SeenReceiptResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -8911,17 +8899,17 @@ impl tabled::Tabled for SeenReceiptResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(first_seen_at) = &self.first_seen_at {
-                format!("{first_seen_at:?}")
+                format!("{:?}", first_seen_at)
             } else {
                 String::new()
             },
             if let Some(seen_by) = &self.seen_by {
-                format!("{seen_by:?}")
+                format!("{:?}", seen_by)
             } else {
                 String::new()
             },
@@ -8964,12 +8952,12 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{teammates:?}")
+                format!("{:?}", teammates)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
@@ -9007,12 +8995,12 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -9038,17 +9026,15 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum ShiftResponseColor {
     #[serde(rename = "black")]
     #[display("black")]
+    #[default]
     Black,
 }
 
-impl std::default::Default for ShiftResponseColor {
-    fn default() -> Self {
-        ShiftResponseColor::Black
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -9091,42 +9077,42 @@ impl tabled::Tabled for ShiftResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(color) = &self.color {
-                format!("{color:?}")
+                format!("{:?}", color)
             } else {
                 String::new()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{timezone:?}")
+                format!("{:?}", timezone)
             } else {
                 String::new()
             },
             if let Some(times) = &self.times {
-                format!("{times:?}")
+                format!("{:?}", times)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{updated_at:?}")
+                format!("{:?}", updated_at)
             } else {
                 String::new()
             },
@@ -9170,7 +9156,7 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(owner) = &self.owner {
-            format!("{owner:?}")
+            format!("{:?}", owner)
         } else {
             String::new()
         }]
@@ -9207,12 +9193,12 @@ impl tabled::Tabled for SignatureResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -9267,44 +9253,44 @@ impl tabled::Tabled for SignatureResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{sender_info:?}")
+                format!("{:?}", sender_info)
             } else {
                 String::new()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{is_visible_for_all_teammate_channels:?}")
+                format!("{:?}", is_visible_for_all_teammate_channels)
             } else {
                 String::new()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{is_default:?}")
+                format!("{:?}", is_default)
             } else {
                 String::new()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{channel_ids:?}")
+                format!("{:?}", channel_ids)
             } else {
                 String::new()
             },
@@ -9355,17 +9341,17 @@ impl tabled::Tabled for TagResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{conversations:?}")
+                format!("{:?}", conversations)
             } else {
                 String::new()
             },
             if let Some(owner) = &self.owner {
-                format!("{owner:?}")
+                format!("{:?}", owner)
             } else {
                 String::new()
             },
             if let Some(children) = &self.children {
-                format!("{children:?}")
+                format!("{:?}", children)
             } else {
                 String::new()
             },
@@ -9407,12 +9393,12 @@ impl tabled::Tabled for TagResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -9469,42 +9455,42 @@ impl tabled::Tabled for TagResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{highlight:?}")
+                format!("{:?}", highlight)
             } else {
                 String::new()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{is_private:?}")
+                format!("{:?}", is_private)
             } else {
                 String::new()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{is_visible_in_conversation_lists:?}")
+                format!("{:?}", is_visible_in_conversation_lists)
             } else {
                 String::new()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{created_at:?}")
+                format!("{:?}", created_at)
             } else {
                 String::new()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{updated_at:?}")
+                format!("{:?}", updated_at)
             } else {
                 String::new()
             },
@@ -9548,7 +9534,7 @@ impl tabled::Tabled for TeamResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -9594,27 +9580,27 @@ impl tabled::Tabled for TeamResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{inboxes:?}")
+                format!("{:?}", inboxes)
             } else {
                 String::new()
             },
             if let Some(members) = &self.members {
-                format!("{members:?}")
+                format!("{:?}", members)
             } else {
                 String::new()
             },
@@ -9659,12 +9645,12 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinksRelated {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(inboxes) = &self.inboxes {
-                format!("{inboxes:?}")
+                format!("{:?}", inboxes)
             } else {
                 String::new()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{conversations:?}")
+                format!("{:?}", conversations)
             } else {
                 String::new()
             },
@@ -9702,12 +9688,12 @@ impl tabled::Tabled for TeammateResponseUnderscoreLinks {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{self_:?}")
+                format!("{:?}", self_)
             } else {
                 String::new()
             },
             if let Some(related) = &self.related {
-                format!("{related:?}")
+                format!("{:?}", related)
             } else {
                 String::new()
             },
@@ -9767,47 +9753,47 @@ impl tabled::Tabled for TeammateResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(email) = &self.email {
-                format!("{email:?}")
+                format!("{:?}", email)
             } else {
                 String::new()
             },
             if let Some(username) = &self.username {
-                format!("{username:?}")
+                format!("{:?}", username)
             } else {
                 String::new()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{first_name:?}")
+                format!("{:?}", first_name)
             } else {
                 String::new()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{last_name:?}")
+                format!("{:?}", last_name)
             } else {
                 String::new()
             },
             if let Some(is_admin) = &self.is_admin {
-                format!("{is_admin:?}")
+                format!("{:?}", is_admin)
             } else {
                 String::new()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{is_available:?}")
+                format!("{:?}", is_available)
             } else {
                 String::new()
             },
             if let Some(is_blocked) = &self.is_blocked {
-                format!("{is_blocked:?}")
+                format!("{:?}", is_blocked)
             } else {
                 String::new()
             },
@@ -9852,7 +9838,7 @@ impl tabled::Tabled for LinkResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -9899,27 +9885,27 @@ impl tabled::Tabled for LinkResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(id) = &self.id {
-                format!("{id:?}")
+                format!("{:?}", id)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(external_url) = &self.external_url {
-                format!("{external_url:?}")
+                format!("{:?}", external_url)
             } else {
                 String::new()
             },
@@ -9982,7 +9968,7 @@ impl tabled::Tabled for Pagination {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(next) = &self.next {
-            format!("{next:?}")
+            format!("{:?}", next)
         } else {
             String::new()
         }]
@@ -10016,7 +10002,7 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10058,17 +10044,17 @@ impl tabled::Tabled for ListOfCannedAnswersApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10107,7 +10093,7 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks 
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10149,17 +10135,17 @@ impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10198,7 +10184,7 @@ impl tabled::Tabled for ListOfSignaturesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10240,17 +10226,17 @@ impl tabled::Tabled for ListOfSignaturesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10289,7 +10275,7 @@ impl tabled::Tabled for ListOfInboxesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10325,12 +10311,12 @@ impl tabled::Tabled for ListOfInboxesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10365,7 +10351,7 @@ impl tabled::Tabled for ListOfCommentsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10401,12 +10387,12 @@ impl tabled::Tabled for ListOfCommentsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10441,7 +10427,7 @@ impl tabled::Tabled for ListOfTeamsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10477,12 +10463,12 @@ impl tabled::Tabled for ListOfTeamsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10517,7 +10503,7 @@ impl tabled::Tabled for ListOfTeammatesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10553,12 +10539,12 @@ impl tabled::Tabled for ListOfTeammatesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10593,7 +10579,7 @@ impl tabled::Tabled for ListOfShiftsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10629,12 +10615,12 @@ impl tabled::Tabled for ListOfShiftsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10669,7 +10655,7 @@ impl tabled::Tabled for ListOfContactsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10711,17 +10697,17 @@ impl tabled::Tabled for ListOfContactsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10760,7 +10746,7 @@ impl tabled::Tabled for ListOfAccountsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10802,17 +10788,17 @@ impl tabled::Tabled for ListOfAccountsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10851,7 +10837,7 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10887,12 +10873,12 @@ impl tabled::Tabled for ListOfContactGroupsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -10927,7 +10913,7 @@ impl tabled::Tabled for ListOfContactNotesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -10963,12 +10949,12 @@ impl tabled::Tabled for ListOfContactNotesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11003,7 +10989,7 @@ impl tabled::Tabled for ListOfMessagesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11045,17 +11031,17 @@ impl tabled::Tabled for ListOfMessagesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11094,7 +11080,7 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11136,17 +11122,17 @@ impl tabled::Tabled for ListOfSeenReceiptsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11185,7 +11171,7 @@ impl tabled::Tabled for ListOfConversationsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11227,17 +11213,17 @@ impl tabled::Tabled for ListOfConversationsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11285,17 +11271,17 @@ impl tabled::Tabled for ListOfConversationSearchResultsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(total) = &self.total {
-                format!("{total:?}")
+                format!("{:?}", total)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11334,7 +11320,7 @@ impl tabled::Tabled for ListOfEventsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11376,17 +11362,17 @@ impl tabled::Tabled for ListOfEventsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11425,7 +11411,7 @@ impl tabled::Tabled for ListOfRolesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11461,12 +11447,12 @@ impl tabled::Tabled for ListOfRolesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11501,7 +11487,7 @@ impl tabled::Tabled for ListOfRulesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11537,12 +11523,12 @@ impl tabled::Tabled for ListOfRulesApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11577,7 +11563,7 @@ impl tabled::Tabled for ListOfTagsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11613,12 +11599,12 @@ impl tabled::Tabled for ListOfTagsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11653,7 +11639,7 @@ impl tabled::Tabled for ListOfLinksApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11689,12 +11675,12 @@ impl tabled::Tabled for ListOfLinksApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11729,7 +11715,7 @@ impl tabled::Tabled for ListOfChannelsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11765,12 +11751,12 @@ impl tabled::Tabled for ListOfChannelsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11805,7 +11791,7 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -11841,12 +11827,12 @@ impl tabled::Tabled for ListOfCustomFieldsApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -11884,12 +11870,12 @@ impl tabled::Tabled for AcceptedMessageApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{message_uid:?}")
+                format!("{:?}", message_uid)
             } else {
                 String::new()
             },
@@ -11927,12 +11913,12 @@ impl tabled::Tabled for AcceptedCannedAnswerFolderDeletionApplicationJson {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{message_template_folder_id:?}")
+                format!("{:?}", message_template_folder_id)
             } else {
                 String::new()
             },
@@ -11969,7 +11955,7 @@ impl tabled::Tabled for AcceptedApplicationJson {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(status) = &self.status {
-            format!("{status:?}")
+            format!("{:?}", status)
         } else {
             String::new()
         }]
@@ -12003,7 +11989,7 @@ impl tabled::Tabled for ListAccountsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12045,17 +12031,17 @@ impl tabled::Tabled for ListAccountsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12094,7 +12080,7 @@ impl tabled::Tabled for ListAccountContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12136,17 +12122,17 @@ impl tabled::Tabled for ListAccountContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12185,7 +12171,7 @@ impl tabled::Tabled for ListEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12227,17 +12213,17 @@ impl tabled::Tabled for ListEventsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12276,7 +12262,7 @@ impl tabled::Tabled for ListFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12318,17 +12304,17 @@ impl tabled::Tabled for ListFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12367,7 +12353,7 @@ impl tabled::Tabled for ListTeamFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12409,17 +12395,17 @@ impl tabled::Tabled for ListTeamFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12458,7 +12444,7 @@ impl tabled::Tabled for ListTeammateFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12500,17 +12486,17 @@ impl tabled::Tabled for ListTeammateFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12549,7 +12535,7 @@ impl tabled::Tabled for GetChildFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12591,17 +12577,17 @@ impl tabled::Tabled for GetChildFoldersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12640,7 +12626,7 @@ impl tabled::Tabled for GetChildTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12682,17 +12668,17 @@ impl tabled::Tabled for GetChildTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12734,12 +12720,12 @@ impl tabled::Tabled for DeleteFolderResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{message_template_folder_id:?}")
+                format!("{:?}", message_template_folder_id)
             } else {
                 String::new()
             },
@@ -12777,7 +12763,7 @@ impl tabled::Tabled for ListMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12819,17 +12805,17 @@ impl tabled::Tabled for ListMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12868,7 +12854,7 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -12910,17 +12896,17 @@ impl tabled::Tabled for ListTeamMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -12959,7 +12945,7 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13001,17 +12987,17 @@ impl tabled::Tabled for ListTeammateMessageTemplatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13050,7 +13036,7 @@ impl tabled::Tabled for ListGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13086,12 +13072,12 @@ impl tabled::Tabled for ListGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13126,7 +13112,7 @@ impl tabled::Tabled for ListTeamGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13162,12 +13148,12 @@ impl tabled::Tabled for ListTeamGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13202,7 +13188,7 @@ impl tabled::Tabled for ListTeammateGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13238,12 +13224,12 @@ impl tabled::Tabled for ListTeammateGroupsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13278,7 +13264,7 @@ impl tabled::Tabled for ListGroupContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13320,17 +13306,17 @@ impl tabled::Tabled for ListGroupContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13369,7 +13355,7 @@ impl tabled::Tabled for ListContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13411,17 +13397,17 @@ impl tabled::Tabled for ListContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13460,7 +13446,7 @@ impl tabled::Tabled for ListTeamContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13502,17 +13488,17 @@ impl tabled::Tabled for ListTeamContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13551,7 +13537,7 @@ impl tabled::Tabled for ListTeammateContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13593,17 +13579,17 @@ impl tabled::Tabled for ListTeammateContactsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13642,7 +13628,7 @@ impl tabled::Tabled for ListContactConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13684,17 +13670,17 @@ impl tabled::Tabled for ListContactConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13733,7 +13719,7 @@ impl tabled::Tabled for ListNotesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13769,12 +13755,12 @@ impl tabled::Tabled for ListNotesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13809,7 +13795,7 @@ impl tabled::Tabled for ListChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13845,12 +13831,12 @@ impl tabled::Tabled for ListChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13885,7 +13871,7 @@ impl tabled::Tabled for ListTeamChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13921,12 +13907,12 @@ impl tabled::Tabled for ListTeamChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -13961,7 +13947,7 @@ impl tabled::Tabled for ListTeammateChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -13997,12 +13983,12 @@ impl tabled::Tabled for ListTeammateChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14036,7 +14022,7 @@ impl tabled::Tabled for ValidateChannelResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(status) = &self.status {
-            format!("{status:?}")
+            format!("{:?}", status)
         } else {
             String::new()
         }]
@@ -14070,7 +14056,7 @@ impl tabled::Tabled for ListInboxChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14106,12 +14092,12 @@ impl tabled::Tabled for ListInboxChannelsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14146,7 +14132,7 @@ impl tabled::Tabled for ListConversationCommentsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14182,12 +14168,12 @@ impl tabled::Tabled for ListConversationCommentsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14222,7 +14208,7 @@ impl tabled::Tabled for ListCommentMentionsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14258,12 +14244,12 @@ impl tabled::Tabled for ListCommentMentionsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14298,7 +14284,7 @@ impl tabled::Tabled for ListConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14340,17 +14326,17 @@ impl tabled::Tabled for ListConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14394,12 +14380,12 @@ impl tabled::Tabled for AddConversationLinkRequestBody {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(link_ids) = &self.link_ids {
-                format!("{link_ids:?}")
+                format!("{:?}", link_ids)
             } else {
                 String::new()
             },
             if let Some(link_external_urls) = &self.link_external_urls {
-                format!("{link_external_urls:?}")
+                format!("{:?}", link_external_urls)
             } else {
                 String::new()
             },
@@ -14463,7 +14449,7 @@ impl tabled::Tabled for ListConversationInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14499,12 +14485,12 @@ impl tabled::Tabled for ListConversationInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14539,7 +14525,7 @@ impl tabled::Tabled for ListConversationFollowersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14575,12 +14561,12 @@ impl tabled::Tabled for ListConversationFollowersResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14673,7 +14659,7 @@ impl tabled::Tabled for ListConversationMessagesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14715,17 +14701,17 @@ impl tabled::Tabled for ListConversationMessagesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14764,7 +14750,7 @@ impl tabled::Tabled for ListConversationEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14806,17 +14792,17 @@ impl tabled::Tabled for ListConversationEventsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14855,7 +14841,7 @@ impl tabled::Tabled for ListContactCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14891,12 +14877,12 @@ impl tabled::Tabled for ListContactCustomFieldsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -14931,7 +14917,7 @@ impl tabled::Tabled for ListCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -14967,12 +14953,12 @@ impl tabled::Tabled for ListCustomFieldsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15007,7 +14993,7 @@ impl tabled::Tabled for ListConversationDraftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15049,17 +15035,17 @@ impl tabled::Tabled for ListConversationDraftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15098,7 +15084,7 @@ impl tabled::Tabled for ListInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15134,12 +15120,12 @@ impl tabled::Tabled for ListInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15174,7 +15160,7 @@ impl tabled::Tabled for ListTeamInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15210,12 +15196,12 @@ impl tabled::Tabled for ListTeamInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15250,7 +15236,7 @@ impl tabled::Tabled for ListInboxConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15292,17 +15278,17 @@ impl tabled::Tabled for ListInboxConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15341,7 +15327,7 @@ impl tabled::Tabled for ListInboxTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15377,12 +15363,12 @@ impl tabled::Tabled for ListInboxTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15417,7 +15403,7 @@ impl tabled::Tabled for GetMessageSeenStatusResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15459,17 +15445,17 @@ impl tabled::Tabled for GetMessageSeenStatusResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15537,12 +15523,12 @@ impl tabled::Tabled for ReceiveCustomMessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{message_uid:?}")
+                format!("{:?}", message_uid)
             } else {
                 String::new()
             },
@@ -15580,12 +15566,12 @@ impl tabled::Tabled for ImportInboxMessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{message_uid:?}")
+                format!("{:?}", message_uid)
             } else {
                 String::new()
             },
@@ -15620,7 +15606,7 @@ impl tabled::Tabled for ListRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15656,12 +15642,12 @@ impl tabled::Tabled for ListRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15696,7 +15682,7 @@ impl tabled::Tabled for ListTeamRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15732,12 +15718,12 @@ impl tabled::Tabled for ListTeamRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15772,7 +15758,7 @@ impl tabled::Tabled for ListTeammateRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15808,12 +15794,12 @@ impl tabled::Tabled for ListTeammateRulesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15857,17 +15843,17 @@ impl tabled::Tabled for SearchConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(total) = &self.total {
-                format!("{total:?}")
+                format!("{:?}", total)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15906,7 +15892,7 @@ impl tabled::Tabled for ListShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -15942,12 +15928,12 @@ impl tabled::Tabled for ListShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -15982,7 +15968,7 @@ impl tabled::Tabled for ListTeamShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16018,12 +16004,12 @@ impl tabled::Tabled for ListTeamShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16058,7 +16044,7 @@ impl tabled::Tabled for ListTeammateShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16094,12 +16080,12 @@ impl tabled::Tabled for ListTeammateShiftsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16134,7 +16120,7 @@ impl tabled::Tabled for ListShiftTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16170,12 +16156,12 @@ impl tabled::Tabled for ListShiftTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16210,7 +16196,7 @@ impl tabled::Tabled for ListTeammateSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16252,17 +16238,17 @@ impl tabled::Tabled for ListTeammateSignaturesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16301,7 +16287,7 @@ impl tabled::Tabled for ListTeamSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16343,17 +16329,17 @@ impl tabled::Tabled for ListTeamSignaturesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16392,7 +16378,7 @@ impl tabled::Tabled for ListTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16428,12 +16414,12 @@ impl tabled::Tabled for ListTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16468,7 +16454,7 @@ impl tabled::Tabled for ListTeamTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16504,12 +16490,12 @@ impl tabled::Tabled for ListTeamTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16544,7 +16530,7 @@ impl tabled::Tabled for ListTeammateTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16580,12 +16566,12 @@ impl tabled::Tabled for ListTeammateTagsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16620,7 +16606,7 @@ impl tabled::Tabled for ListTagChildrenResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16656,12 +16642,12 @@ impl tabled::Tabled for ListTagChildrenResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16696,7 +16682,7 @@ impl tabled::Tabled for ListTaggedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16738,17 +16724,17 @@ impl tabled::Tabled for ListTaggedConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16787,7 +16773,7 @@ impl tabled::Tabled for ListTeamsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16823,12 +16809,12 @@ impl tabled::Tabled for ListTeamsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16863,7 +16849,7 @@ impl tabled::Tabled for ListTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16899,12 +16885,12 @@ impl tabled::Tabled for ListTeammatesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -16939,7 +16925,7 @@ impl tabled::Tabled for ListAssignedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -16981,17 +16967,17 @@ impl tabled::Tabled for ListAssignedConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -17030,7 +17016,7 @@ impl tabled::Tabled for ListTeammateInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -17066,12 +17052,12 @@ impl tabled::Tabled for ListTeammateInboxesResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -17106,7 +17092,7 @@ impl tabled::Tabled for ListLinkConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -17148,17 +17134,17 @@ impl tabled::Tabled for ListLinkConversationsResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{pagination:?}")
+                format!("{:?}", pagination)
             } else {
                 String::new()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },
@@ -17197,7 +17183,7 @@ impl tabled::Tabled for ListLinksResponseUnderscoreLinks {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{self_:?}")
+            format!("{:?}", self_)
         } else {
             String::new()
         }]
@@ -17233,12 +17219,12 @@ impl tabled::Tabled for ListLinksResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{underscore_links:?}")
+                format!("{:?}", underscore_links)
             } else {
                 String::new()
             },
             if let Some(results) = &self.results {
-                format!("{results:?}")
+                format!("{:?}", results)
             } else {
                 String::new()
             },

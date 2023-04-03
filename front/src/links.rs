@@ -32,7 +32,7 @@ impl Links {
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{p}")));
+            query_params.push(("limit", format!("{}", p)));
         }
 
         if let Some(p) = page_token {
@@ -74,7 +74,7 @@ impl Links {
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
         if let Some(p) = limit {
-            query_params.push(("limit", format!("{p}")));
+            query_params.push(("limit", format!("{}", p)));
         }
 
         if let Some(p) = page_token {

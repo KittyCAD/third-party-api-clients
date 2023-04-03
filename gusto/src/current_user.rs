@@ -25,7 +25,7 @@ impl CurrentUser {
     ) -> Result<crate::types::CurrentUser, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/me"),
+            format!("{}/{}", self.client.base_url, "v1/me"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;

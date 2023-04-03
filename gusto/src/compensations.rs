@@ -33,7 +33,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -64,7 +64,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -95,7 +95,7 @@ impl Compensations {
     ) -> Result<Vec<crate::types::Compensation>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}/compensations".replace("{job_id}", job_id)

@@ -25,7 +25,7 @@ impl Business {
     ) -> Result<crate::types::Business, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/business/"),
+            format!("{}/{}", self.client.base_url, "developer/v1/business/"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -37,7 +37,6 @@ impl Business {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -51,7 +50,7 @@ impl Business {
     ) -> Result<crate::types::BusinessBalance, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/business/balance"
             ),
@@ -66,7 +65,6 @@ impl Business {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))

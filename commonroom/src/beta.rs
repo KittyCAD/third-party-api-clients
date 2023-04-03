@@ -24,7 +24,7 @@ impl Beta {
     ) -> Result<crate::types::ApiToken, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "api-token-status"),
+            format!("{}/{}", self.client.base_url, "api-token-status"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;

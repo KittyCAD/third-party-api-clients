@@ -43,11 +43,11 @@ impl CompanyManagers {
         }
 
         if let Some(p) = page {
-            query_params.push(("page", format!("{p}")));
+            query_params.push(("page", format!("{}", p)));
         }
 
         if let Some(p) = page_size {
-            query_params.push(("page_size", format!("{p}")));
+            query_params.push(("page_size", format!("{}", p)));
         }
 
         req = req.query(&query_params);
