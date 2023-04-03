@@ -85,7 +85,6 @@ jobs:
           #version: '0.15.0'
           #args: '--exclude-files schema.rs --timeout 2000 --all'
           #env:
-          #ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
           #RUST_BACKTRACE: 1
 
           #- name: Upload to codecov.io
