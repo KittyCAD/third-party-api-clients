@@ -170,8 +170,9 @@ impl Links {
              ID (required)\n\n```rust,no_run\nasync fn example_links_update() -> \
              anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
              client\n        .links()\n        .update(\n            \"some-string\",\n            \
-             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
-             .await?;\n    Ok(())\n}\n```"]
+             &front_api::types::UpdateLink {\n                name: \
+             Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,

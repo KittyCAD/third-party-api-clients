@@ -74,7 +74,6 @@ pub mod company_bank_accounts_beta;
 pub mod compensations;
 pub mod contractor_payments;
 pub mod contractors;
-#[doc(hidden)]
 pub mod current_user;
 pub mod custom_fields;
 pub mod earning_type;

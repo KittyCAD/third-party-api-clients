@@ -47,7 +47,7 @@ impl Tags {
              .create(&front_api::types::CreateTag {\n            name: \
              \"some-string\".to_string(),\n            highlight: \
              Some(front_api::types::Highlight::Yellow),\n            \
-             is_visible_in_conversation_lists: Some(true),\n        })\n        .await?;\n    \
+             is_visible_in_conversation_lists: Some(false),\n        })\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
@@ -105,7 +105,7 @@ impl Tags {
         }
     }
 
-    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Blue),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Green),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
@@ -173,7 +173,7 @@ impl Tags {
         }
     }
 
-    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Blue),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Pink),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -241,7 +241,7 @@ impl Tags {
         }
     }
 
-    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Blue),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Green),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_child<'a>(
         &'a self,
@@ -327,7 +327,7 @@ impl Tags {
         }
     }
 
-    #[doc = "Update a tag\n\nUpdate a tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .tags()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update a tag\n\nUpdate a tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .tags()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateTag {\n                name: Some(\"some-string\".to_string()),\n                highlight: Some(front_api::types::Highlight::Green),\n                parent_tag_id: Some(\"some-string\".to_string()),\n                is_visible_in_conversation_lists: Some(true),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,

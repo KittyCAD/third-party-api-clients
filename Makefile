@@ -83,11 +83,14 @@ twilio:
 		--basic-auth \
 		--date-time-format "%a, %d %b %Y %H:%M:%S %z" $(EXTRA_ARGS)
 
+.PHONY: openapitor
+openapitor:
+	cd kittycad.rs/openapitor && cargo build
+
 # Mailchimp is currently broken so it's not in this list.
 .PHONY: all
 all:
-	git submodule update --init --recursive
-	cd kittycad.rs/openapitor && cargo build
+	make openapitor
 	make commonroom
 	make front
 	make gusto

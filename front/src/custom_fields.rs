@@ -76,7 +76,7 @@ impl CustomFields {
         }
     }
 
-    #[doc = "Update custom field\n\nUpdate a custom field. (⚠\u{fe0f} Deprecated)\n\n**Parameters:**\n\n- `custom_field_id: &'astr`: Custom Field ID (required)\n\n**NOTE:** This operation is marked as deprecated.\n\n```rust,no_run\nasync fn example_custom_fields_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .custom_fields()\n        .update(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update custom field\n\nUpdate a custom field. (⚠\u{fe0f} Deprecated)\n\n**Parameters:**\n\n- `custom_field_id: &'astr`: Custom Field ID (required)\n\n**NOTE:** This operation is marked as deprecated.\n\n```rust,no_run\nasync fn example_custom_fields_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .custom_fields()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateCustomField {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,

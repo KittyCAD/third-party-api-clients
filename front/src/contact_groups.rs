@@ -258,7 +258,7 @@ impl ContactGroups {
         }
     }
 
-    #[doc = "Add contacts to group\n\nAdd contacts to the requested group.\n\n**Parameters:**\n\n- `contact_group_id: &'astr`: The contact group ID (required)\n\n```rust,no_run\nasync fn example_contact_groups_add_contacts_to_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .add_contacts_to_group(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add contacts to group\n\nAdd contacts to the requested group.\n\n**Parameters:**\n\n- `contact_group_id: &'astr`: The contact group ID (required)\n\n```rust,no_run\nasync fn example_contact_groups_add_contacts_to_group() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_groups()\n        .add_contacts_to_group(\n            \"some-string\",\n            &front_api::types::AddContactsToGroup {\n                contact_ids: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add_contacts_to_group<'a>(
         &'a self,

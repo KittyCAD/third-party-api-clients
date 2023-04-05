@@ -50,7 +50,7 @@ impl Comments {
         }
     }
 
-    #[doc = "Create comment\n\nAdd a comment to a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_comments_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client\n        .comments()\n        .create(\n            \"some-string\",\n            &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create comment\n\nAdd a comment to a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_comments_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::CommentResponse = client\n        .comments()\n        .create(\n            \"some-string\",\n            &front_api::types::CreateComment {\n                author_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,

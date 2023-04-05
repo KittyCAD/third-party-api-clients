@@ -69,7 +69,6 @@ pub mod activities;
 /// **BETA** APIs. These APIs are still under development.
 /// .
 pub mod beta;
-#[doc(hidden)]
 pub mod members;
 pub mod scim;
 pub mod segments;

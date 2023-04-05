@@ -61,7 +61,6 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[doc(hidden)]
 pub mod business;
 pub mod card;
 pub mod card_program;

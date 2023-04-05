@@ -70,7 +70,6 @@ pub mod default;
 #[cfg(test)]
 mod tests;
 pub mod types;
-#[doc(hidden)]
 pub mod utils;
 
 use std::env;
