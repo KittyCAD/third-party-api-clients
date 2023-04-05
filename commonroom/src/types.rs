@@ -207,14 +207,9 @@ pub mod phone_number {
             let s = if !s.trim().starts_with('+') {
                 format!("+1{}", s)
                     .replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                    .replace(['(', ')', ' '], "")
             } else {
-                s.replace('-', "")
-                    .replace('(', "")
-                    .replace(')', "")
-                    .replace(' ', "")
+                s.replace(['-', '(', ')', ' '], "")
             };
             Ok(PhoneNumber(Some(phonenumber::parse(None, &s).map_err(
                 |e| anyhow::anyhow!("invalid phone number `{}`: {}", s, e),
@@ -415,7 +410,7 @@ pub mod error {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ApiToken {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -476,7 +471,7 @@ impl tabled::Tabled for ApiToken {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CommunityMember {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -511,7 +506,7 @@ impl tabled::Tabled for CommunityMember {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
     Hash,
     Debug,
     Clone,
@@ -534,7 +529,7 @@ pub enum StatusStatus {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Status {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -587,7 +582,7 @@ impl tabled::Tabled for Status {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Name {
     #[serde(rename = "givenName", default, skip_serializing_if = "Option::is_none")]
@@ -633,7 +628,7 @@ impl tabled::Tabled for Name {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Emails {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -687,7 +682,7 @@ impl tabled::Tabled for Emails {
 
 #[doc = "Represents the user account in the Common Room community\nThis account is used for identity mangement via SCIM\nSpecification can be found at https://datatracker.ietf.org/doc/html/rfc7643#section-4.1\n"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct User {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -767,7 +762,7 @@ impl tabled::Tabled for User {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
     Hash,
     Debug,
     Clone,
@@ -796,7 +791,7 @@ pub enum Type {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Value {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -830,16 +825,16 @@ impl tabled::Tabled for Value {
 
 #[doc = "A user's handle on a social network"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct SocialsOneOf {
+pub struct Social {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<Type>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value: Option<Value>,
 }
 
-impl std::fmt::Display for SocialsOneOf {
+impl std::fmt::Display for Social {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -849,7 +844,7 @@ impl std::fmt::Display for SocialsOneOf {
     }
 }
 
-impl tabled::Tabled for SocialsOneOf {
+impl tabled::Tabled for Social {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
         vec![
@@ -874,7 +869,7 @@ impl tabled::Tabled for SocialsOneOf {
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
-    PartialEq, Eq,
+    PartialEq,
     Hash,
     Debug,
     Clone,
@@ -884,31 +879,29 @@ impl tabled::Tabled for SocialsOneOf {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
-pub enum SocialsOneOfOneOfType {
+#[derive(Default)]
+pub enum EmailType {
     #[serde(rename = "email")]
     #[display("email")]
+    #[default]
     Email,
 }
 
-impl std::default::Default for SocialsOneOfOneOfType {
-    fn default() -> Self {
-        SocialsOneOfOneOfType::Email
-    }
-}
+
 
 #[doc = "A user's email address"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct SocialsOneOfOneOf {
+pub struct Email {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<SocialsOneOfOneOfType>,
+    pub type_: Option<EmailType>,
     #[doc = "email address"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
-impl std::fmt::Display for SocialsOneOfOneOf {
+impl std::fmt::Display for Email {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -918,7 +911,7 @@ impl std::fmt::Display for SocialsOneOfOneOf {
     }
 }
 
-impl tabled::Tabled for SocialsOneOfOneOf {
+impl tabled::Tabled for Email {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<String> {
         vec![
@@ -950,13 +943,13 @@ impl tabled::Tabled for SocialsOneOfOneOf {
     tabled :: Tabled,
 )]
 pub enum Socials {
-    Social(SocialsOneOf),
-    Email(SocialsOneOfOneOf),
+    Social(Social),
+    Email(Email),
 }
 
 #[doc = "Geographical data for the user"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Location {
     #[doc = "The city where the user lives"]
@@ -1131,134 +1124,8 @@ impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBody {
     }
 }
 
-#[doc = "A user's handle on a social network"]
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct CreateOrUpdateCommunityMemberRequestBodySocialsOneOf {
-    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<Type>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<Value>,
-}
-
-impl std::fmt::Display for CreateOrUpdateCommunityMemberRequestBodySocialsOneOf {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBodySocialsOneOf {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
-            } else {
-                String::new()
-            },
-            if let Some(value) = &self.value {
-                format!("{:?}", value)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "value".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq, Eq,
-    Hash,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
-    parse_display :: FromStr,
-    parse_display :: Display,
-)]
-pub enum CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOfType {
-    #[serde(rename = "email")]
-    #[display("email")]
-    Email,
-}
-
-impl std::default::Default for CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOfType {
-    fn default() -> Self {
-        CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOfType::Email
-    }
-}
-
-#[doc = "A user's email address"]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOf {
-    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOfType>,
-    #[doc = "email address"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<String>,
-}
-
-impl std::fmt::Display for CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOf {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOf {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
-            } else {
-                String::new()
-            },
-            if let Some(value) = &self.value {
-                format!("{:?}", value)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "value".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
-)]
-pub enum CreateOrUpdateCommunityMemberRequestBodySocials {
-    Social(CreateOrUpdateCommunityMemberRequestBodySocialsOneOf),
-    Email(CreateOrUpdateCommunityMemberRequestBodySocialsOneOfOneOf),
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddNoteToMemberRequestBody {
     #[doc = "Must be email, twitter, github, or linkedin"]
@@ -1318,7 +1185,7 @@ impl tabled::Tabled for AddNoteToMemberRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetMemberCustomFieldsResponse {
     #[doc = "Custom field name"]
@@ -1373,7 +1240,7 @@ impl tabled::Tabled for GetMemberCustomFieldsResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFieldValue {
     #[doc = "enum, string, date, int, url, boolean"]
@@ -1493,7 +1360,7 @@ impl tabled::Tabled for SetMemberCustomFieldValueRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct AddTagsToMemberRequestBody {
     #[doc = "Must be email, twitter, github, or linkedin"]
@@ -1595,7 +1462,7 @@ impl tabled::Tabled for Segments {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CustomFields {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1832,99 +1699,6 @@ impl tabled::Tabled for GetMemberBySocialsResponse {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct GetMemberBySocialsResponseSegments {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-}
-
-impl std::fmt::Display for GetMemberBySocialsResponseSegments {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for GetMemberBySocialsResponseSegments {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(id) = &self.id {
-                format!("{:?}", id)
-            } else {
-                String::new()
-            },
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "name".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct GetMemberBySocialsResponseCustomFields {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    #[doc = "enum, string, date, int, url, boolean"]
-    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<String>,
-    #[doc = "Value of custom field"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<serde_json::Value>,
-}
-
-impl std::fmt::Display for GetMemberBySocialsResponseCustomFields {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for GetMemberBySocialsResponseCustomFields {
-    const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
-            } else {
-                String::new()
-            },
-            if let Some(value) = &self.value {
-                format!("{:?}", value)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "type_".to_string(), "value".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
 pub struct ActiveCommunityMembersByRoleResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schemas: Option<Vec<String>>,
@@ -2007,60 +1781,7 @@ impl tabled::Tabled for ActiveCommunityMembersByRoleResponse {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct CreateCommunityMemberWithSpecificRoleRequestBodyEmails {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub primary: Option<bool>,
-    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<String>,
-}
-
-impl std::fmt::Display for CreateCommunityMemberWithSpecificRoleRequestBodyEmails {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for CreateCommunityMemberWithSpecificRoleRequestBodyEmails {
-    const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(value) = &self.value {
-                format!("{:?}", value)
-            } else {
-                String::new()
-            },
-            if let Some(primary) = &self.primary {
-                format!("{:?}", primary)
-            } else {
-                String::new()
-            },
-            if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "value".to_string(),
-            "primary".to_string(),
-            "type_".to_string(),
-        ]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateCommunityMemberWithSpecificRoleRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2070,7 +1791,7 @@ pub struct CreateCommunityMemberWithSpecificRoleRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<Name>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub emails: Option<Vec<CreateCommunityMemberWithSpecificRoleRequestBodyEmails>>,
+    pub emails: Option<Vec<Emails>>,
     #[doc = "Indicates whether the user has a login account in the community"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub active: Option<bool>,
@@ -2130,7 +1851,7 @@ impl tabled::Tabled for CreateCommunityMemberWithSpecificRoleRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct OperationsValue {
     #[doc = "Will upgrade or downgrade user account's role based on this property. When set to \
@@ -2165,7 +1886,7 @@ impl tabled::Tabled for OperationsValue {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Operations {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2253,84 +1974,7 @@ impl tabled::Tabled for UpdateUserAccountRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct UpdateUserAccountRequestBodyOperationsValue {
-    #[doc = "Will upgrade or downgrade user account's role based on this property. When set to \
-             false\nuser account is downgraded\n"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
-}
-
-impl std::fmt::Display for UpdateUserAccountRequestBodyOperationsValue {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for UpdateUserAccountRequestBodyOperationsValue {
-    const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![if let Some(active) = &self.active {
-            format!("{:?}", active)
-        } else {
-            String::new()
-        }]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["active".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct UpdateUserAccountRequestBodyOperations {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub op: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<UpdateUserAccountRequestBodyOperationsValue>,
-}
-
-impl std::fmt::Display for UpdateUserAccountRequestBodyOperations {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for UpdateUserAccountRequestBodyOperations {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(op) = &self.op {
-                format!("{:?}", op)
-            } else {
-                String::new()
-            },
-            if let Some(value) = &self.value {
-                format!("{:?}", value)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec!["op".to_string(), "value".to_string()]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CreateUserInputActivityRequestBody {
     #[doc = "Source of the information"]
@@ -2403,7 +2047,7 @@ impl tabled::Tabled for CreateUserInputActivityRequestBody {
 }
 
 #[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Eq, Debug, Clone, schemars :: JsonSchema,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct GetActivityTypesResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]

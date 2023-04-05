@@ -69,7 +69,6 @@ pub mod activities;
 /// **BETA** APIs. These APIs are still under development.
 /// .
 pub mod beta;
-#[doc(hidden)]
 pub mod members;
 pub mod scim;
 pub mod segments;
@@ -161,7 +160,7 @@ impl Client {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(method, &u);
+        let mut req = self.client.request(method, u);
 
         // Add in our authentication.
         req = req.bearer_auth(&self.token);

@@ -205,7 +205,7 @@ pub mod phone_number {
                 return Ok(PhoneNumber(None));
             }
             let s = if !s.trim().starts_with('+') {
-                format!("+1{s}")
+                format!("+1{}", s)
                     .replace('-', "")
                     .replace(['(', ')', ' '], "")
             } else {
@@ -227,7 +227,7 @@ pub mod phone_number {
             } else {
                 String::new()
             };
-            write!(f, "{s}")
+            write!(f, "{}", s)
         }
     }
 
@@ -256,40 +256,40 @@ pub mod phone_number {
         fn test_parse_phone_number() {
             let mut phone = "+1-555-555-5555";
             let mut phone_parsed: PhoneNumber =
-                serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+                serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             let mut expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             let mut expected_str = "+1 555-555-5555";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "+1 555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "5555555555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510) 864-1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, "+15108641234").unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510)8641234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, PhoneNumber(None));
             assert_eq!("", serde_json::json!(phone_parsed));
             phone = "+49 30  1234 1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+49 30 12341234";
@@ -366,22 +366,22 @@ pub mod error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
-                    write!(f, "Invalid Request: {s}")
+                    write!(f, "Invalid Request: {}", s)
                 }
                 Error::CommunicationError(e) => {
-                    write!(f, "Communication Error: {e}")
+                    write!(f, "Communication Error: {}", e)
                 }
                 Error::RequestError(e) => {
-                    write!(f, "Request Error: {e}")
+                    write!(f, "Request Error: {}", e)
                 }
                 Error::SerdeError { error, status: _ } => {
-                    write!(f, "Serde Error: {error}")
+                    write!(f, "Serde Error: {}", error)
                 }
                 Error::InvalidResponsePayload { error, response: _ } => {
-                    write!(f, "Invalid Response Payload: {error}")
+                    write!(f, "Invalid Response Payload: {}", error)
                 }
                 Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {r:?}")
+                    write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
@@ -459,12 +459,12 @@ impl tabled::Tabled for TaskDescription {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -509,7 +509,7 @@ impl tabled::Tabled for File {
             format!("{:?}", self.inserted_at),
             self.name.clone(),
             if let Some(sub_type) = &self.sub_type {
-                format!("{sub_type:?}")
+                format!("{:?}", sub_type)
             } else {
                 String::new()
             },
@@ -550,7 +550,7 @@ impl tabled::Tabled for ConflictResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{message:?}")
+            format!("{:?}", message)
         } else {
             String::new()
         }]
@@ -635,7 +635,7 @@ impl tabled::Tabled for Creator {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(name) = &self.name {
-            format!("{name:?}")
+            format!("{:?}", name)
         } else {
             String::new()
         }]
@@ -668,7 +668,7 @@ impl tabled::Tabled for LastEditor {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(name) = &self.name {
-            format!("{name:?}")
+            format!("{:?}", name)
         } else {
             String::new()
         }]
@@ -819,50 +819,50 @@ impl tabled::Tabled for PayrollRun {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(creator) = &self.creator {
-                format!("{creator:?}")
+                format!("{:?}", creator)
             } else {
                 String::new()
             },
             if let Some(customer_inputs_reviewed) = &self.customer_inputs_reviewed {
-                format!("{customer_inputs_reviewed:?}")
+                format!("{:?}", customer_inputs_reviewed)
             } else {
                 String::new()
             },
             if let Some(field_for_employment_matching) = &self.field_for_employment_matching {
-                format!("{field_for_employment_matching:?}")
+                format!("{:?}", field_for_employment_matching)
             } else {
                 String::new()
             },
             if let Some(inserted_at) = &self.inserted_at {
-                format!("{inserted_at:?}")
+                format!("{:?}", inserted_at)
             } else {
                 String::new()
             },
             if let Some(last_editor) = &self.last_editor {
-                format!("{last_editor:?}")
+                format!("{:?}", last_editor)
             } else {
                 String::new()
             },
             format!("{:?}", self.legal_entity),
             if let Some(mapping_rules) = &self.mapping_rules {
-                format!("{mapping_rules:?}")
+                format!("{:?}", mapping_rules)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(net_pay_extraction_expression) = &self.net_pay_extraction_expression {
-                format!("{net_pay_extraction_expression:?}")
+                format!("{:?}", net_pay_extraction_expression)
             } else {
                 String::new()
             },
             format!("{:?}", self.period_end),
             format!("{:?}", self.period_start),
             if let Some(product_type) = &self.product_type {
-                format!("{product_type:?}")
+                format!("{:?}", product_type)
             } else {
                 String::new()
             },
@@ -870,12 +870,12 @@ impl tabled::Tabled for PayrollRun {
             format!("{:?}", self.status),
             format!("{:?}", self.summarize_automatically),
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(validations) = &self.validations {
-                format!("{validations:?}")
+                format!("{:?}", validations)
             } else {
                 String::new()
             },
@@ -942,42 +942,42 @@ impl tabled::Tabled for Address {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(address) = &self.address {
-                format!("{address:?}")
+                format!("{:?}", address)
             } else {
                 String::new()
             },
             if let Some(address_line_2) = &self.address_line_2 {
-                format!("{address_line_2:?}")
+                format!("{:?}", address_line_2)
             } else {
                 String::new()
             },
             if let Some(city) = &self.city {
-                format!("{city:?}")
+                format!("{:?}", city)
             } else {
                 String::new()
             },
             if let Some(country) = &self.country {
-                format!("{country:?}")
+                format!("{:?}", country)
             } else {
                 String::new()
             },
             if let Some(local_details) = &self.local_details {
-                format!("{local_details:?}")
+                format!("{:?}", local_details)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(slug) = &self.slug {
-                format!("{slug:?}")
+                format!("{:?}", slug)
             } else {
                 String::new()
             },
             if let Some(state) = &self.state {
-                format!("{state:?}")
+                format!("{:?}", state)
             } else {
                 String::new()
             },
@@ -1025,34 +1025,36 @@ pub enum EmploymentType {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Employment {
-    #[doc = "Home address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `address_details` as path parameters."]
+    #[doc = "Home address information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub address_details: Option<serde_json::Value>,
-    #[doc = "Administrative information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `administrative_details` as path parameters."]
+    #[doc = "Administrative information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `administrative_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_details: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bank_account_details: Option<Vec<serde_json::Value>>,
-    #[doc = "Billing address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `billing_address_details` as path parameters."]
+    #[doc = "Billing address information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `billing_address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub billing_address_details: Option<serde_json::Value>,
     pub company_id: String,
-    #[doc = "Contract information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `contract_details` as path parameters."]
+    #[doc = "Contract information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `contract_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub contract_details: Option<serde_json::Value>,
-    #[doc = "A supported country on Remote"]
-    pub country: Country,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country_code: Option<String>,
     pub created_at: String,
     #[doc = "Emergency contact information. Its properties may vary depending on the country."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub emergency_contact_details: Option<serde_json::Value>,
-    pub files: Vec<File>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub files: Option<Vec<File>>,
     pub full_name: String,
     pub id: String,
     pub job_title: String,
     #[doc = "All tasks that need to be completed before marking the employment as ready"]
-    pub onboarding_tasks: OnboardingTasks,
-    #[doc = "Personal details information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `personal_details` as path parameters."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub onboarding_tasks: Option<OnboardingTasks>,
+    #[doc = "Personal details information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `personal_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub personal_details: Option<serde_json::Value>,
     pub personal_email: String,
@@ -1062,7 +1064,8 @@ pub struct Employment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub provisional_start_date: Option<chrono::NaiveDate>,
     #[doc = "The status of employment"]
-    pub status: EmploymentStatus,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<EmploymentStatus>,
     #[serde(rename = "type")]
     pub type_: EmploymentType,
     #[serde(deserialize_with = "crate::utils::date_time_format::deserialize")]
@@ -1089,23 +1092,39 @@ impl tabled::Tabled for Employment {
             format!("{:?}", self.billing_address_details),
             self.company_id.clone(),
             format!("{:?}", self.contract_details),
-            format!("{:?}", self.country),
+            if let Some(country_code) = &self.country_code {
+                format!("{:?}", country_code)
+            } else {
+                String::new()
+            },
             self.created_at.clone(),
             format!("{:?}", self.emergency_contact_details),
-            format!("{:?}", self.files),
+            if let Some(files) = &self.files {
+                format!("{:?}", files)
+            } else {
+                String::new()
+            },
             self.full_name.clone(),
             self.id.clone(),
             self.job_title.clone(),
-            format!("{:?}", self.onboarding_tasks),
+            if let Some(onboarding_tasks) = &self.onboarding_tasks {
+                format!("{:?}", onboarding_tasks)
+            } else {
+                String::new()
+            },
             format!("{:?}", self.personal_details),
             self.personal_email.clone(),
             format!("{:?}", self.pricing_plan_details),
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{provisional_start_date:?}")
+                format!("{:?}", provisional_start_date)
             } else {
                 String::new()
             },
-            format!("{:?}", self.status),
+            if let Some(status) = &self.status {
+                format!("{:?}", status)
+            } else {
+                String::new()
+            },
             format!("{:?}", self.type_),
             format!("{:?}", self.updated_at),
         ]
@@ -1119,7 +1138,7 @@ impl tabled::Tabled for Employment {
             "billing_address_details".to_string(),
             "company_id".to_string(),
             "contract_details".to_string(),
-            "country".to_string(),
+            "country_code".to_string(),
             "created_at".to_string(),
             "emergency_contact_details".to_string(),
             "files".to_string(),
@@ -1170,22 +1189,22 @@ impl tabled::Tabled for Data {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(current_page) = &self.current_page {
-                format!("{current_page:?}")
+                format!("{:?}", current_page)
             } else {
                 String::new()
             },
             if let Some(employments) = &self.employments {
-                format!("{employments:?}")
+                format!("{:?}", employments)
             } else {
                 String::new()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{total_count:?}")
+                format!("{:?}", total_count)
             } else {
                 String::new()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{total_pages:?}")
+                format!("{:?}", total_pages)
             } else {
                 String::new()
             },
@@ -1225,7 +1244,7 @@ impl tabled::Tabled for ListEmploymentsResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -1318,12 +1337,12 @@ impl tabled::Tabled for ListTimeoffTypesResponseData {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
@@ -1358,7 +1377,7 @@ impl tabled::Tabled for ListTimeoffTypesResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -1455,7 +1474,7 @@ impl tabled::Tabled for EmploymentBasicParams {
             self.job_title.clone(),
             self.personal_email.clone(),
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{provisional_start_date:?}")
+                format!("{:?}", provisional_start_date)
             } else {
                 String::new()
             },
@@ -1525,7 +1544,7 @@ impl tabled::Tabled for EmploymentResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -1559,7 +1578,7 @@ impl tabled::Tabled for EmploymentData {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(employment) = &self.employment {
-            format!("{employment:?}")
+            format!("{:?}", employment)
         } else {
             String::new()
         }]
@@ -1643,54 +1662,54 @@ impl tabled::Tabled for UpdateApprovedTimeoffParams {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(approved_at) = &self.approved_at {
-                format!("{approved_at:?}")
+                format!("{:?}", approved_at)
             } else {
                 String::new()
             },
             if let Some(approver_id) = &self.approver_id {
-                format!("{approver_id:?}")
+                format!("{:?}", approver_id)
             } else {
                 String::new()
             },
             self.cancel_reason.clone(),
             if let Some(document) = &self.document {
-                format!("{document:?}")
+                format!("{:?}", document)
             } else {
                 String::new()
             },
             self.edit_reason.clone(),
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(notes) = &self.notes {
-                format!("{notes:?}")
+                format!("{:?}", notes)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(timeoff_days) = &self.timeoff_days {
-                format!("{timeoff_days:?}")
+                format!("{:?}", timeoff_days)
             } else {
                 String::new()
             },
             if let Some(timeoff_type) = &self.timeoff_type {
-                format!("{timeoff_type:?}")
+                format!("{:?}", timeoff_type)
             } else {
                 String::new()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{timezone:?}")
+                format!("{:?}", timezone)
             } else {
                 String::new()
             },
@@ -1854,7 +1873,7 @@ impl tabled::Tabled for TimeoffDay {
             format!("{:?}", self.day),
             format!("{:?}", self.hours),
             if let Some(payroll_run) = &self.payroll_run {
-                format!("{payroll_run:?}")
+                format!("{:?}", payroll_run)
             } else {
                 String::new()
             },
@@ -1916,7 +1935,7 @@ impl tabled::Tabled for HolidaysResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -2037,27 +2056,27 @@ impl tabled::Tabled for Timeoff {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(approved_at) = &self.approved_at {
-                format!("{approved_at:?}")
+                format!("{:?}", approved_at)
             } else {
                 String::new()
             },
             if let Some(approver_id) = &self.approver_id {
-                format!("{approver_id:?}")
+                format!("{:?}", approver_id)
             } else {
                 String::new()
             },
             if let Some(cancel_reason) = &self.cancel_reason {
-                format!("{cancel_reason:?}")
+                format!("{:?}", cancel_reason)
             } else {
                 String::new()
             },
             if let Some(cancelled_at) = &self.cancelled_at {
-                format!("{cancelled_at:?}")
+                format!("{:?}", cancelled_at)
             } else {
                 String::new()
             },
             if let Some(document) = &self.document {
-                format!("{document:?}")
+                format!("{:?}", document)
             } else {
                 String::new()
             },
@@ -2065,7 +2084,7 @@ impl tabled::Tabled for Timeoff {
             format!("{:?}", self.end_date),
             self.id.clone(),
             if let Some(notes) = &self.notes {
-                format!("{notes:?}")
+                format!("{:?}", notes)
             } else {
                 String::new()
             },
@@ -2133,27 +2152,27 @@ impl tabled::Tabled for CompanyManager {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(company_id) = &self.company_id {
-                format!("{company_id:?}")
+                format!("{:?}", company_id)
             } else {
                 String::new()
             },
             if let Some(role) = &self.role {
-                format!("{role:?}")
+                format!("{:?}", role)
             } else {
                 String::new()
             },
             if let Some(user_email) = &self.user_email {
-                format!("{user_email:?}")
+                format!("{:?}", user_email)
             } else {
                 String::new()
             },
             if let Some(user_id) = &self.user_id {
-                format!("{user_id:?}")
+                format!("{:?}", user_id)
             } else {
                 String::new()
             },
             if let Some(user_name) = &self.user_name {
-                format!("{user_name:?}")
+                format!("{:?}", user_name)
             } else {
                 String::new()
             },
@@ -2239,7 +2258,7 @@ impl tabled::Tabled for CompanyManagerParams {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(company_id) = &self.company_id {
-                format!("{company_id:?}")
+                format!("{:?}", company_id)
             } else {
                 String::new()
             },
@@ -2281,7 +2300,7 @@ impl tabled::Tabled for NotFoundResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{message:?}")
+            format!("{:?}", message)
         } else {
             String::new()
         }]
@@ -2319,7 +2338,7 @@ impl tabled::Tabled for Country {
         vec![
             self.code.clone(),
             if let Some(country_subdivisions) = &self.country_subdivisions {
-                format!("{country_subdivisions:?}")
+                format!("{:?}", country_subdivisions)
             } else {
                 String::new()
             },
@@ -2343,20 +2362,20 @@ impl tabled::Tabled for Country {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EmploymentFullParams {
-    #[doc = "Home address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `address_details` as path parameters."]
+    #[doc = "Home address information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub address_details: Option<serde_json::Value>,
-    #[doc = "Administrative information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `administrative_details` as path parameters."]
+    #[doc = "Administrative information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `administrative_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_details: Option<serde_json::Value>,
-    #[doc = "Bank account information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `bank_account_details` as path parameters."]
+    #[doc = "Bank account information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `bank_account_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bank_account_details: Option<serde_json::Value>,
-    #[doc = "Billing address information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `billing_address_details` as path parameters."]
+    #[doc = "Billing address information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `billing_address_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub billing_address_details: Option<serde_json::Value>,
     pub company_id: String,
-    #[doc = "Contract information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `contract_details` as path parameters."]
+    #[doc = "Contract information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `contract_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub contract_details: Option<serde_json::Value>,
     #[doc = "A supported country on Remote"]
@@ -2373,7 +2392,7 @@ pub struct EmploymentFullParams {
              available for active employments.**\n"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub manager_id: Option<String>,
-    #[doc = "Personal details information. As its properties may vary depending on the country,\n               you must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\n            passing the country code and `personal_details` as path parameters."]
+    #[doc = "Personal details information. As its properties may vary depending on the country,\nyou must query the [Show form schema](https://gateway.remote.com/eor/v1/docs/openapi.html#tag/Countries/operation/get_show_form_country) endpoint\npassing the country code and `personal_details` as path parameters."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub personal_details: Option<serde_json::Value>,
     pub personal_email: String,
@@ -2400,61 +2419,61 @@ impl tabled::Tabled for EmploymentFullParams {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(address_details) = &self.address_details {
-                format!("{address_details:?}")
+                format!("{:?}", address_details)
             } else {
                 String::new()
             },
             if let Some(administrative_details) = &self.administrative_details {
-                format!("{administrative_details:?}")
+                format!("{:?}", administrative_details)
             } else {
                 String::new()
             },
             if let Some(bank_account_details) = &self.bank_account_details {
-                format!("{bank_account_details:?}")
+                format!("{:?}", bank_account_details)
             } else {
                 String::new()
             },
             if let Some(billing_address_details) = &self.billing_address_details {
-                format!("{billing_address_details:?}")
+                format!("{:?}", billing_address_details)
             } else {
                 String::new()
             },
             self.company_id.clone(),
             if let Some(contract_details) = &self.contract_details {
-                format!("{contract_details:?}")
+                format!("{:?}", contract_details)
             } else {
                 String::new()
             },
             if let Some(country) = &self.country {
-                format!("{country:?}")
+                format!("{:?}", country)
             } else {
                 String::new()
             },
             if let Some(emergency_contact_details) = &self.emergency_contact_details {
-                format!("{emergency_contact_details:?}")
+                format!("{:?}", emergency_contact_details)
             } else {
                 String::new()
             },
             self.full_name.clone(),
             self.job_title.clone(),
             if let Some(manager_id) = &self.manager_id {
-                format!("{manager_id:?}")
+                format!("{:?}", manager_id)
             } else {
                 String::new()
             },
             if let Some(personal_details) = &self.personal_details {
-                format!("{personal_details:?}")
+                format!("{:?}", personal_details)
             } else {
                 String::new()
             },
             self.personal_email.clone(),
             if let Some(pricing_plan_details) = &self.pricing_plan_details {
-                format!("{pricing_plan_details:?}")
+                format!("{:?}", pricing_plan_details)
             } else {
                 String::new()
             },
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{provisional_start_date:?}")
+                format!("{:?}", provisional_start_date)
             } else {
                 String::new()
             },
@@ -2507,12 +2526,12 @@ impl tabled::Tabled for MaybeMinimalCompany {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(slug) = &self.slug {
-                format!("{slug:?}")
+                format!("{:?}", slug)
             } else {
                 String::new()
             },
@@ -2556,22 +2575,22 @@ impl tabled::Tabled for CompanyManagersResponseData {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(company_managers) = &self.company_managers {
-                format!("{company_managers:?}")
+                format!("{:?}", company_managers)
             } else {
                 String::new()
             },
             if let Some(current_page) = &self.current_page {
-                format!("{current_page:?}")
+                format!("{:?}", current_page)
             } else {
                 String::new()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{total_count:?}")
+                format!("{:?}", total_count)
             } else {
                 String::new()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{total_pages:?}")
+                format!("{:?}", total_pages)
             } else {
                 String::new()
             },
@@ -2611,7 +2630,7 @@ impl tabled::Tabled for CompanyManagersResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -2645,7 +2664,7 @@ impl tabled::Tabled for CountriesResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -2678,7 +2697,7 @@ impl tabled::Tabled for CompanyManagerCreatedResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(company_manager) = &self.company_manager {
-            format!("{company_manager:?}")
+            format!("{:?}", company_manager)
         } else {
             String::new()
         }]
@@ -2720,7 +2739,7 @@ impl tabled::Tabled for RemoteEntity {
             format!("{:?}", self.address),
             format!("{:?}", self.company),
             if let Some(is_internal) = &self.is_internal {
-                format!("{is_internal:?}")
+                format!("{:?}", is_internal)
             } else {
                 String::new()
             },
@@ -2763,7 +2782,7 @@ impl tabled::Tabled for CountryFormResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -2851,7 +2870,7 @@ impl tabled::Tabled for TooManyRequestsResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{message:?}")
+            format!("{:?}", message)
         } else {
             String::new()
         }]
@@ -2889,7 +2908,7 @@ impl tabled::Tabled for Holiday {
             format!("{:?}", self.day),
             self.name.clone(),
             if let Some(note) = &self.note {
-                format!("{note:?}")
+                format!("{:?}", note)
             } else {
                 String::new()
             },
@@ -2923,7 +2942,7 @@ impl tabled::Tabled for BadRequestResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(message) = &self.message {
-            format!("{message:?}")
+            format!("{:?}", message)
         } else {
             String::new()
         }]
@@ -2989,13 +3008,13 @@ impl tabled::Tabled for CountrySubdivision {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(code) = &self.code {
-                format!("{code:?}")
+                format!("{:?}", code)
             } else {
                 String::new()
             },
             self.name.clone(),
             if let Some(subdivision_type) = &self.subdivision_type {
-                format!("{subdivision_type:?}")
+                format!("{:?}", subdivision_type)
             } else {
                 String::new()
             },
@@ -3046,14 +3065,14 @@ impl tabled::Tabled for CreateTimeoffParams {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(document) = &self.document {
-                format!("{document:?}")
+                format!("{:?}", document)
             } else {
                 String::new()
             },
             self.employment_id.clone(),
             format!("{:?}", self.end_date),
             if let Some(notes) = &self.notes {
-                format!("{notes:?}")
+                format!("{:?}", notes)
             } else {
                 String::new()
             },
@@ -3105,12 +3124,12 @@ impl tabled::Tabled for TimeoffDaysParams {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(day) = &self.day {
-                format!("{day:?}")
+                format!("{:?}", day)
             } else {
                 String::new()
             },
             if let Some(hours) = &self.hours {
-                format!("{hours:?}")
+                format!("{:?}", hours)
             } else {
                 String::new()
             },
@@ -3229,22 +3248,22 @@ impl tabled::Tabled for ListTimeoffResponseData {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(current_page) = &self.current_page {
-                format!("{current_page:?}")
+                format!("{:?}", current_page)
             } else {
                 String::new()
             },
             if let Some(timeoffs) = &self.timeoffs {
-                format!("{timeoffs:?}")
+                format!("{:?}", timeoffs)
             } else {
                 String::new()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{total_count:?}")
+                format!("{:?}", total_count)
             } else {
                 String::new()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{total_pages:?}")
+                format!("{:?}", total_pages)
             } else {
                 String::new()
             },
@@ -3284,7 +3303,7 @@ impl tabled::Tabled for ListTimeoffResponse {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(data) = &self.data {
-            format!("{data:?}")
+            format!("{:?}", data)
         } else {
             String::new()
         }]
@@ -3320,7 +3339,7 @@ impl tabled::Tabled for EmploymentUpdateParams {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(status) = &self.status {
-            format!("{status:?}")
+            format!("{:?}", status)
         } else {
             String::new()
         }]

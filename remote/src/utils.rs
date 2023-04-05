@@ -16,10 +16,11 @@ pub mod date_time_format {
         let s: String = String::deserialize(deserializer)?;
         match Utc.datetime_from_str(&s, FORMAT) {
             Ok(t) => Ok(t),
-            Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{s}\"")) {
+            Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{}\"", s)) {
                 Ok(t) => Ok(t),
                 Err(e) => Err(serde::de::Error::custom(format!(
-                    "deserializing {s} as DateTime<Utc> failed: {e}"
+                    "deserializing {} as DateTime<Utc> failed: {}",
+                    s, e
                 ))),
             },
         }
@@ -46,10 +47,11 @@ pub mod nullable_date_time_format {
             // This is standard.
             match Utc.datetime_from_str(&s, FORMAT) {
                 Ok(t) => Ok(Some(t)),
-                Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{s}\"")) {
+                Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{}\"", s)) {
                     Ok(t) => Ok(Some(t)),
                     Err(e) => Err(serde::de::Error::custom(format!(
-                        "deserializing {s} as DateTime<Utc> failed: {e}"
+                        "deserializing {} as DateTime<Utc> failed: {}",
+                        s, e
                     ))),
                 },
             }

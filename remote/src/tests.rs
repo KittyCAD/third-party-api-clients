@@ -5,7 +5,8 @@ async fn test_remote_employments() {
     let mut client = crate::Client::new_from_env();
     client.set_base_url("https://gateway.remote-sandbox.com");
 
-    let test_email = "bob4@bobson.com";
+    let rand_num = rand::random::<u32>();
+    let test_email = format!("bob{rand_num}@bobson.com");
 
     let managers = client
         .company_managers()

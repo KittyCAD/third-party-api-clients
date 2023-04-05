@@ -47,10 +47,6 @@ jobs:
         uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 10
-      - name: setup tailscale
-        uses: tailscale/github-action@v1
-        with:
-          authkey: ${{ secrets.TAILSCALE_MACHINE_KEY }}
       - name: Install latest rust
         uses: actions-rs/toolchain@v1
         with:
@@ -78,9 +74,9 @@ jobs:
         run: |
           cargo test --all
         env:
-          ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
           RUST_BACKTRACE: 1
           FRONT_API_TOKEN: ${{secrets.FRONT_API_TOKEN}}
+          REMOTE_API_TOKEN: ${{secrets.REMOTE_API_TOKEN_DEV_CI}}
 
           # TODO: turn back on coverage.
           #- name: Run cargo-tarpaulin
@@ -89,7 +85,6 @@ jobs:
           #version: '0.15.0'
           #args: '--exclude-files schema.rs --timeout 2000 --all'
           #env:
-          #ZENDESK_TOKEN: ${{secrets.ZENDESK_TOKEN}}
           #RUST_BACKTRACE: 1
 
           #- name: Upload to codecov.io

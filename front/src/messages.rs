@@ -12,15 +12,7 @@ impl Messages {
         Self { client }
     }
 
-    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending \
-             it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The \
-             conversation ID (required)\n\n```rust,no_run\nasync fn \
-             example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = \
-             front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse \
-             = client\n        .messages()\n        .reply_to_conversation(\n            \
-             \"some-string\",\n            \
-             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &front_api::types::OutboundReplyMessage {\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                channel_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::OutboundReplyMessageOptions {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: Some(true),\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn reply_to_conversation<'a>(
         &'a self,
@@ -161,14 +153,7 @@ impl Messages {
         }
     }
 
-    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- \
-             `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn \
-             example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = \
-             front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse \
-             = client\n        .messages()\n        .create_conversation(\n            \
-             \"some-string\",\n            \
-             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &front_api::types::OutboundMessage {\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::Options {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: Some(true),\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_conversation<'a>(
         &'a self,
@@ -200,15 +185,7 @@ impl Messages {
         }
     }
 
-    #[doc = "Receive custom messages\n\nReceive a custom message in Front. This endpoint is \
-             available for custom channels **ONLY**.\n\n**Parameters:**\n\n- `channel_id: &'astr`: \
-             The channel ID (required)\n\n```rust,no_run\nasync fn \
-             example_messages_receive_custom() -> anyhow::Result<()> {\n    let client = \
-             front_api::Client::new_from_env();\n    let result: \
-             front_api::types::ReceiveCustomMessageResponse = client\n        .messages()\n        \
-             .receive_custom(\n            \"some-string\",\n            \
-             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Receive custom messages\n\nReceive a custom message in Front. This endpoint is available for custom channels **ONLY**.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The channel ID (required)\n\n```rust,no_run\nasync fn example_messages_receive_custom() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ReceiveCustomMessageResponse = client\n        .messages()\n        .receive_custom(\n            \"some-string\",\n            &front_api::types::CustomMessage {\n                sender: front_api::types::Sender {\n                    contact_id: Some(\"some-string\".to_string()),\n                    name: Some(\"some-string\".to_string()),\n                    handle: \"some-string\".to_string(),\n                },\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                body_format: Some(front_api::types::BodyFormat::Html),\n                metadata: Some(front_api::types::Metadata {\n                    thread_ref: Some(\"some-string\".to_string()),\n                    headers: Some(std::collections::HashMap::from([(\n                        \"some-key\".to_string(),\n                        \"some-string\".to_string(),\n                    )])),\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn receive_custom<'a>(
         &'a self,
@@ -240,14 +217,7 @@ impl Messages {
         }
     }
 
-    #[doc = "Import message\n\nImport a new message in an inbox.\n\n**Parameters:**\n\n- \
-             `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn \
-             example_messages_import_inbox() -> anyhow::Result<()> {\n    let client = \
-             front_api::Client::new_from_env();\n    let result: \
-             front_api::types::ImportInboxMessageResponse = client\n        .messages()\n        \
-             .import_inbox(\n            \"some-string\",\n            \
-             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Import message\n\nImport a new message in an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_messages_import_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ImportInboxMessageResponse = client\n        .messages()\n        .import_inbox(\n            \"some-string\",\n            &front_api::types::ImportMessage {\n                sender: front_api::types::ImportMessageSender {\n                    author_id: Some(\"some-string\".to_string()),\n                    name: Some(\"some-string\".to_string()),\n                    handle: \"some-string\".to_string(),\n                },\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                body_format: Some(front_api::types::ImportMessageBodyFormat::Html),\n                external_id: \"some-string\".to_string(),\n                created_at: 4 as i64,\n                type_: Some(front_api::types::ImportMessageType::Custom),\n                assignee_id: Some(\"some-string\".to_string()),\n                tags: Some(vec![\"some-string\".to_string()]),\n                metadata: front_api::types::ImportMessageMetadata {\n                    thread_ref: Some(\"some-string\".to_string()),\n                    is_inbound: false,\n                    is_archived: Some(true),\n                    should_skip_rules: Some(false),\n                },\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn import_inbox<'a>(
         &'a self,

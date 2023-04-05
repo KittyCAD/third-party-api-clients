@@ -205,7 +205,7 @@ pub mod phone_number {
                 return Ok(PhoneNumber(None));
             }
             let s = if !s.trim().starts_with('+') {
-                format!("+1{s}")
+                format!("+1{}", s)
                     .replace('-', "")
                     .replace(['(', ')', ' '], "")
             } else {
@@ -227,7 +227,7 @@ pub mod phone_number {
             } else {
                 String::new()
             };
-            write!(f, "{s}")
+            write!(f, "{}", s)
         }
     }
 
@@ -256,40 +256,40 @@ pub mod phone_number {
         fn test_parse_phone_number() {
             let mut phone = "+1-555-555-5555";
             let mut phone_parsed: PhoneNumber =
-                serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+                serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             let mut expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             let mut expected_str = "+1 555-555-5555";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "+1 555-555-5555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "5555555555";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510) 864-1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, "+15108641234").unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "(510)8641234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, expected);
             expected_str = "+1 510-864-1234";
             assert_eq!(expected_str, serde_json::json!(phone_parsed));
             phone = "";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             assert_eq!(phone_parsed, PhoneNumber(None));
             assert_eq!("", serde_json::json!(phone_parsed));
             phone = "+49 30  1234 1234";
-            phone_parsed = serde_json::from_str(&format!(r#""{phone}""#)).unwrap();
+            phone_parsed = serde_json::from_str(&format!(r#""{}""#, phone)).unwrap();
             expected = PhoneNumber(Some(phonenumber::parse(None, phone).unwrap()));
             assert_eq!(phone_parsed, expected);
             expected_str = "+49 30 12341234";
@@ -366,22 +366,22 @@ pub mod error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
-                    write!(f, "Invalid Request: {s}")
+                    write!(f, "Invalid Request: {}", s)
                 }
                 Error::CommunicationError(e) => {
-                    write!(f, "Communication Error: {e}")
+                    write!(f, "Communication Error: {}", e)
                 }
                 Error::RequestError(e) => {
-                    write!(f, "Request Error: {e}")
+                    write!(f, "Request Error: {}", e)
                 }
                 Error::SerdeError { error, status: _ } => {
-                    write!(f, "Serde Error: {error}")
+                    write!(f, "Serde Error: {}", error)
                 }
                 Error::InvalidResponsePayload { error, response: _ } => {
-                    write!(f, "Invalid Response Payload: {error}")
+                    write!(f, "Invalid Response Payload: {}", error)
                 }
                 Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {r:?}")
+                    write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
@@ -495,52 +495,52 @@ impl tabled::Tabled for ApiV2010Account {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(auth_token) = &self.auth_token {
-                format!("{auth_token:?}")
+                format!("{:?}", auth_token)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(owner_account_sid) = &self.owner_account_sid {
-                format!("{owner_account_sid:?}")
+                format!("{:?}", owner_account_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -691,82 +691,82 @@ impl tabled::Tabled for ApiV2010AccountAddress {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(city) = &self.city {
-                format!("{city:?}")
+                format!("{:?}", city)
             } else {
                 String::new()
             },
             if let Some(customer_name) = &self.customer_name {
-                format!("{customer_name:?}")
+                format!("{:?}", customer_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(street) = &self.street {
-                format!("{street:?}")
+                format!("{:?}", street)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{emergency_enabled:?}")
+                format!("{:?}", emergency_enabled)
             } else {
                 String::new()
             },
             if let Some(validated) = &self.validated {
-                format!("{validated:?}")
+                format!("{:?}", validated)
             } else {
                 String::new()
             },
             if let Some(verified) = &self.verified {
-                format!("{verified:?}")
+                format!("{:?}", verified)
             } else {
                 String::new()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{street_secondary:?}")
+                format!("{:?}", street_secondary)
             } else {
                 String::new()
             },
@@ -1070,109 +1070,109 @@ impl tabled::Tabled for ApiV2010AccountApplication {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{message_status_callback:?}")
+                format!("{:?}", message_status_callback)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{sms_status_callback:?}")
+                format!("{:?}", sms_status_callback)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{public_application_connect_enabled:?}")
+                format!("{:?}", public_application_connect_enabled)
             } else {
                 String::new()
             },
@@ -1267,52 +1267,52 @@ impl tabled::Tabled for ApiV2010AccountAuthorizedConnectApp {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(connect_app_company_name) = &self.connect_app_company_name {
-                format!("{connect_app_company_name:?}")
+                format!("{:?}", connect_app_company_name)
             } else {
                 String::new()
             },
             if let Some(connect_app_description) = &self.connect_app_description {
-                format!("{connect_app_description:?}")
+                format!("{:?}", connect_app_description)
             } else {
                 String::new()
             },
             if let Some(connect_app_friendly_name) = &self.connect_app_friendly_name {
-                format!("{connect_app_friendly_name:?}")
+                format!("{:?}", connect_app_friendly_name)
             } else {
                 String::new()
             },
             if let Some(connect_app_homepage_url) = &self.connect_app_homepage_url {
-                format!("{connect_app_homepage_url:?}")
+                format!("{:?}", connect_app_homepage_url)
             } else {
                 String::new()
             },
             if let Some(connect_app_sid) = &self.connect_app_sid {
-                format!("{connect_app_sid:?}")
+                format!("{:?}", connect_app_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{permissions:?}")
+                format!("{:?}", permissions)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -1396,27 +1396,27 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountry {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(country_code) = &self.country_code {
-                format!("{country_code:?}")
+                format!("{:?}", country_code)
             } else {
                 String::new()
             },
             if let Some(country) = &self.country {
-                format!("{country:?}")
+                format!("{:?}", country)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -1466,22 +1466,22 @@ impl tabled::Tabled for Capabilities {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{mms:?}")
+                format!("{:?}", mms)
             } else {
                 String::new()
             },
             if let Some(sms) = &self.sms {
-                format!("{sms:?}")
+                format!("{:?}", sms)
             } else {
                 String::new()
             },
             if let Some(voice) = &self.voice {
-                format!("{voice:?}")
+                format!("{:?}", voice)
             } else {
                 String::new()
             },
             if let Some(fax) = &self.fax {
-                format!("{fax:?}")
+                format!("{:?}", fax)
             } else {
                 String::new()
             },
@@ -1574,57 +1574,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -1730,57 +1730,57 @@ impl tabled::Tabled
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -1882,57 +1882,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -2034,57 +2034,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -2188,57 +2188,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -2340,57 +2340,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -2492,57 +2492,57 @@ impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhone
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(lata) = &self.lata {
-                format!("{lata:?}")
+                format!("{:?}", lata)
             } else {
                 String::new()
             },
             if let Some(locality) = &self.locality {
-                format!("{locality:?}")
+                format!("{:?}", locality)
             } else {
                 String::new()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{rate_center:?}")
+                format!("{:?}", rate_center)
             } else {
                 String::new()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{latitude:?}")
+                format!("{:?}", latitude)
             } else {
                 String::new()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{longitude:?}")
+                format!("{:?}", longitude)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{iso_country:?}")
+                format!("{:?}", iso_country)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
@@ -2600,17 +2600,17 @@ impl tabled::Tabled for ApiV2010AccountBalance {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(balance) = &self.balance {
-                format!("{balance:?}")
+                format!("{:?}", balance)
             } else {
                 String::new()
             },
             if let Some(currency) = &self.currency {
-                format!("{currency:?}")
+                format!("{:?}", currency)
             } else {
                 String::new()
             },
@@ -2750,132 +2750,132 @@ impl tabled::Tabled for ApiV2010AccountCall {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(parent_call_sid) = &self.parent_call_sid {
-                format!("{parent_call_sid:?}")
+                format!("{:?}", parent_call_sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(to_formatted) = &self.to_formatted {
-                format!("{to_formatted:?}")
+                format!("{:?}", to_formatted)
             } else {
                 String::new()
             },
             if let Some(from) = &self.from {
-                format!("{from:?}")
+                format!("{:?}", from)
             } else {
                 String::new()
             },
             if let Some(from_formatted) = &self.from_formatted {
-                format!("{from_formatted:?}")
+                format!("{:?}", from_formatted)
             } else {
                 String::new()
             },
             if let Some(phone_number_sid) = &self.phone_number_sid {
-                format!("{phone_number_sid:?}")
+                format!("{:?}", phone_number_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{start_time:?}")
+                format!("{:?}", start_time)
             } else {
                 String::new()
             },
             if let Some(end_time) = &self.end_time {
-                format!("{end_time:?}")
+                format!("{:?}", end_time)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(direction) = &self.direction {
-                format!("{direction:?}")
+                format!("{:?}", direction)
             } else {
                 String::new()
             },
             if let Some(answered_by) = &self.answered_by {
-                format!("{answered_by:?}")
+                format!("{:?}", answered_by)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(forwarded_from) = &self.forwarded_from {
-                format!("{forwarded_from:?}")
+                format!("{:?}", forwarded_from)
             } else {
                 String::new()
             },
             if let Some(group_sid) = &self.group_sid {
-                format!("{group_sid:?}")
+                format!("{:?}", group_sid)
             } else {
                 String::new()
             },
             if let Some(caller_name) = &self.caller_name {
-                format!("{caller_name:?}")
+                format!("{:?}", caller_name)
             } else {
                 String::new()
             },
             if let Some(queue_time) = &self.queue_time {
-                format!("{queue_time:?}")
+                format!("{:?}", queue_time)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -3032,12 +3032,12 @@ impl tabled::Tabled for ApiV2010AccountCallCallEvent {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(request) = &self.request {
-                format!("{request:?}")
+                format!("{:?}", request)
             } else {
                 String::new()
             },
             if let Some(response) = &self.response {
-                format!("{response:?}")
+                format!("{:?}", response)
             } else {
                 String::new()
             },
@@ -3100,32 +3100,32 @@ impl tabled::Tabled for ApiV2010AccountCallCallFeedback {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(issues) = &self.issues {
-                format!("{issues:?}")
+                format!("{:?}", issues)
             } else {
                 String::new()
             },
             if let Some(quality_score) = &self.quality_score {
-                format!("{quality_score:?}")
+                format!("{:?}", quality_score)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
@@ -3260,72 +3260,72 @@ impl tabled::Tabled for ApiV2010AccountCallCallFeedbackSummary {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_count) = &self.call_count {
-                format!("{call_count:?}")
+                format!("{:?}", call_count)
             } else {
                 String::new()
             },
             if let Some(call_feedback_count) = &self.call_feedback_count {
-                format!("{call_feedback_count:?}")
+                format!("{:?}", call_feedback_count)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(include_subaccounts) = &self.include_subaccounts {
-                format!("{include_subaccounts:?}")
+                format!("{:?}", include_subaccounts)
             } else {
                 String::new()
             },
             if let Some(issues) = &self.issues {
-                format!("{issues:?}")
+                format!("{:?}", issues)
             } else {
                 String::new()
             },
             if let Some(quality_score_average) = &self.quality_score_average {
-                format!("{quality_score_average:?}")
+                format!("{:?}", quality_score_average)
             } else {
                 String::new()
             },
             if let Some(quality_score_median) = &self.quality_score_median {
-                format!("{quality_score_median:?}")
+                format!("{:?}", quality_score_median)
             } else {
                 String::new()
             },
             if let Some(quality_score_standard_deviation) = &self.quality_score_standard_deviation {
-                format!("{quality_score_standard_deviation:?}")
+                format!("{:?}", quality_score_standard_deviation)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -3502,72 +3502,72 @@ impl tabled::Tabled for ApiV2010AccountCallCallNotification {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(log) = &self.log {
-                format!("{log:?}")
+                format!("{:?}", log)
             } else {
                 String::new()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{message_date:?}")
+                format!("{:?}", message_date)
             } else {
                 String::new()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{message_text:?}")
+                format!("{:?}", message_text)
             } else {
                 String::new()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{more_info:?}")
+                format!("{:?}", more_info)
             } else {
                 String::new()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{request_method:?}")
+                format!("{:?}", request_method)
             } else {
                 String::new()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{request_url:?}")
+                format!("{:?}", request_url)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -3689,87 +3689,87 @@ impl tabled::Tabled for ApiV2010AccountCallCallNotificationInstance {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(log) = &self.log {
-                format!("{log:?}")
+                format!("{:?}", log)
             } else {
                 String::new()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{message_date:?}")
+                format!("{:?}", message_date)
             } else {
                 String::new()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{message_text:?}")
+                format!("{:?}", message_text)
             } else {
                 String::new()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{more_info:?}")
+                format!("{:?}", more_info)
             } else {
                 String::new()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{request_method:?}")
+                format!("{:?}", request_method)
             } else {
                 String::new()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{request_url:?}")
+                format!("{:?}", request_url)
             } else {
                 String::new()
             },
             if let Some(request_variables) = &self.request_variables {
-                format!("{request_variables:?}")
+                format!("{:?}", request_variables)
             } else {
                 String::new()
             },
             if let Some(response_body) = &self.response_body {
-                format!("{response_body:?}")
+                format!("{:?}", response_body)
             } else {
                 String::new()
             },
             if let Some(response_headers) = &self.response_headers {
-                format!("{response_headers:?}")
+                format!("{:?}", response_headers)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -3887,92 +3887,92 @@ impl tabled::Tabled for ApiV2010AccountCallCallRecording {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{conference_sid:?}")
+                format!("{:?}", conference_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{start_time:?}")
+                format!("{:?}", start_time)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{encryption_details:?}")
+                format!("{:?}", encryption_details)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(channels) = &self.channels {
-                format!("{channels:?}")
+                format!("{:?}", channels)
             } else {
                 String::new()
             },
             if let Some(source) = &self.source {
-                format!("{source:?}")
+                format!("{:?}", source)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(track) = &self.track {
-                format!("{track:?}")
+                format!("{:?}", track)
             } else {
                 String::new()
             },
@@ -4127,62 +4127,62 @@ impl tabled::Tabled for ApiV2010AccountConference {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(reason_conference_ended) = &self.reason_conference_ended {
-                format!("{reason_conference_ended:?}")
+                format!("{:?}", reason_conference_ended)
             } else {
                 String::new()
             },
             if let Some(call_sid_ending_conference) = &self.call_sid_ending_conference {
-                format!("{call_sid_ending_conference:?}")
+                format!("{:?}", call_sid_ending_conference)
             } else {
                 String::new()
             },
@@ -4245,17 +4245,15 @@ pub enum ConferenceEnumStatus {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum ConferenceEnumUpdateStatus {
     #[serde(rename = "completed")]
     #[display("completed")]
+    #[default]
     Completed,
 }
 
-impl std::default::Default for ConferenceEnumUpdateStatus {
-    fn default() -> Self {
-        ConferenceEnumUpdateStatus::Completed
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -4372,87 +4370,87 @@ impl tabled::Tabled for ApiV2010AccountConferenceConferenceRecording {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{conference_sid:?}")
+                format!("{:?}", conference_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{start_time:?}")
+                format!("{:?}", start_time)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(channels) = &self.channels {
-                format!("{channels:?}")
+                format!("{:?}", channels)
             } else {
                 String::new()
             },
             if let Some(source) = &self.source {
-                format!("{source:?}")
+                format!("{:?}", source)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{encryption_details:?}")
+                format!("{:?}", encryption_details)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -4631,57 +4629,57 @@ impl tabled::Tabled for ApiV2010AccountConnectApp {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(authorize_redirect_url) = &self.authorize_redirect_url {
-                format!("{authorize_redirect_url:?}")
+                format!("{:?}", authorize_redirect_url)
             } else {
                 String::new()
             },
             if let Some(company_name) = &self.company_name {
-                format!("{company_name:?}")
+                format!("{:?}", company_name)
             } else {
                 String::new()
             },
             if let Some(deauthorize_callback_method) = &self.deauthorize_callback_method {
-                format!("{deauthorize_callback_method:?}")
+                format!("{:?}", deauthorize_callback_method)
             } else {
                 String::new()
             },
             if let Some(deauthorize_callback_url) = &self.deauthorize_callback_url {
-                format!("{deauthorize_callback_url:?}")
+                format!("{:?}", deauthorize_callback_url)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(homepage_url) = &self.homepage_url {
-                format!("{homepage_url:?}")
+                format!("{:?}", homepage_url)
             } else {
                 String::new()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{permissions:?}")
+                format!("{:?}", permissions)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -4850,124 +4848,124 @@ impl tabled::Tabled for ApiV2010AccountAddressDependentPhoneNumber {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.friendly_name),
             format!("{:?}", self.phone_number),
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -5084,22 +5082,22 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberCapabilities {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{mms:?}")
+                format!("{:?}", mms)
             } else {
                 String::new()
             },
             if let Some(sms) = &self.sms {
-                format!("{sms:?}")
+                format!("{:?}", sms)
             } else {
                 String::new()
             },
             if let Some(voice) = &self.voice {
-                format!("{voice:?}")
+                format!("{:?}", voice)
             } else {
                 String::new()
             },
             if let Some(fax) = &self.fax {
-                format!("{fax:?}")
+                format!("{:?}", fax)
             } else {
                 String::new()
             },
@@ -5263,168 +5261,168 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumber {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(origin) = &self.origin {
-                format!("{origin:?}")
+                format!("{:?}", origin)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{emergency_address_status:?}")
+                format!("{:?}", emergency_address_status)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -5637,57 +5635,57 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAss
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(resource_sid) = &self.resource_sid {
-                format!("{resource_sid:?}")
+                format!("{:?}", resource_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(configuration) = &self.configuration {
-                format!("{configuration:?}")
+                format!("{:?}", configuration)
             } else {
                 String::new()
             },
             if let Some(unique_name) = &self.unique_name {
-                format!("{unique_name:?}")
+                format!("{:?}", unique_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -5749,7 +5747,7 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnInc
 
 impl std :: fmt :: Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { fn fmt (& self , f : & mut std :: fmt :: Formatter < '_ >) -> Result < () , std :: fmt :: Error > { write ! (f , "{}" , serde_json :: to_string_pretty (self) . map_err (| _ | std :: fmt :: Error) ?) } }
 
-impl tabled :: Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { const LENGTH : usize = 9 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (sid) = & self . sid { format ! ("{sid:?}" ) } else { String :: new () } , if let Some (account_sid) = & self . account_sid { format ! ("{account_sid:?}" ) } else { String :: new () } , if let Some (resource_sid) = & self . resource_sid { format ! ("{resource_sid:?}" ) } else { String :: new () } , if let Some (assigned_add_on_sid) = & self . assigned_add_on_sid { format ! ("{assigned_add_on_sid:?}" ) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{friendly_name:?}" ) } else { String :: new () } , if let Some (product_name) = & self . product_name { format ! ("{product_name:?}" ) } else { String :: new () } , if let Some (unique_name) = & self . unique_name { format ! ("{unique_name:?}" ) } else { String :: new () } , if let Some (uri) = & self . uri { format ! ("{uri:?}" ) } else { String :: new () } , if let Some (enabled) = & self . enabled { format ! ("{enabled:?}" ) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["sid" . to_string () , "account_sid" . to_string () , "resource_sid" . to_string () , "assigned_add_on_sid" . to_string () , "friendly_name" . to_string () , "product_name" . to_string () , "unique_name" . to_string () , "uri" . to_string () , "enabled" . to_string ()] } }
+impl tabled :: Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { const LENGTH : usize = 9 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (sid) = & self . sid { format ! ("{:?}" , sid) } else { String :: new () } , if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) } else { String :: new () } , if let Some (resource_sid) = & self . resource_sid { format ! ("{:?}" , resource_sid) } else { String :: new () } , if let Some (assigned_add_on_sid) = & self . assigned_add_on_sid { format ! ("{:?}" , assigned_add_on_sid) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) } else { String :: new () } , if let Some (product_name) = & self . product_name { format ! ("{:?}" , product_name) } else { String :: new () } , if let Some (unique_name) = & self . unique_name { format ! ("{:?}" , unique_name) } else { String :: new () } , if let Some (uri) = & self . uri { format ! ("{:?}" , uri) } else { String :: new () } , if let Some (enabled) = & self . enabled { format ! ("{:?}" , enabled) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["sid" . to_string () , "account_sid" . to_string () , "resource_sid" . to_string () , "assigned_add_on_sid" . to_string () , "friendly_name" . to_string () , "product_name" . to_string () , "unique_name" . to_string () , "uri" . to_string () , "enabled" . to_string ()] } }
 
 #[doc = "The set of Boolean properties that indicate whether a phone number can receive calls or \
          messages.  Capabilities are  `Voice`, `SMS`, and `MMS` and each capability can be: `true` \
@@ -5783,22 +5781,22 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLoc
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{mms:?}")
+                format!("{:?}", mms)
             } else {
                 String::new()
             },
             if let Some(sms) = &self.sms {
-                format!("{sms:?}")
+                format!("{:?}", sms)
             } else {
                 String::new()
             },
             if let Some(voice) = &self.voice {
-                format!("{voice:?}")
+                format!("{:?}", voice)
             } else {
                 String::new()
             },
             if let Some(fax) = &self.fax {
-                format!("{fax:?}")
+                format!("{:?}", fax)
             } else {
                 String::new()
             },
@@ -5963,168 +5961,168 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLoc
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(origin) = &self.origin {
-                format!("{origin:?}")
+                format!("{:?}", origin)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{emergency_address_status:?}")
+                format!("{:?}", emergency_address_status)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -6305,22 +6303,22 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMob
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{mms:?}")
+                format!("{:?}", mms)
             } else {
                 String::new()
             },
             if let Some(sms) = &self.sms {
-                format!("{sms:?}")
+                format!("{:?}", sms)
             } else {
                 String::new()
             },
             if let Some(voice) = &self.voice {
-                format!("{voice:?}")
+                format!("{:?}", voice)
             } else {
                 String::new()
             },
             if let Some(fax) = &self.fax {
-                format!("{fax:?}")
+                format!("{:?}", fax)
             } else {
                 String::new()
             },
@@ -6485,168 +6483,168 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMob
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(origin) = &self.origin {
-                format!("{origin:?}")
+                format!("{:?}", origin)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{emergency_address_status:?}")
+                format!("{:?}", emergency_address_status)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -6829,22 +6827,22 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTol
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{mms:?}")
+                format!("{:?}", mms)
             } else {
                 String::new()
             },
             if let Some(sms) = &self.sms {
-                format!("{sms:?}")
+                format!("{:?}", sms)
             } else {
                 String::new()
             },
             if let Some(voice) = &self.voice {
-                format!("{voice:?}")
+                format!("{:?}", voice)
             } else {
                 String::new()
             },
             if let Some(fax) = &self.fax {
-                format!("{fax:?}")
+                format!("{:?}", fax)
             } else {
                 String::new()
             },
@@ -7009,168 +7007,168 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTol
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{address_requirements:?}")
+                format!("{:?}", address_requirements)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(beta) = &self.beta {
-                format!("{beta:?}")
+                format!("{:?}", beta)
             } else {
                 String::new()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{capabilities:?}")
+                format!("{:?}", capabilities)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(origin) = &self.origin {
-                format!("{origin:?}")
+                format!("{:?}", origin)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{emergency_address_status:?}")
+                format!("{:?}", emergency_address_status)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -7360,22 +7358,22 @@ impl tabled::Tabled for ApiV2010AccountKey {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
@@ -7444,37 +7442,37 @@ impl tabled::Tabled for ApiV2010AccountMessageMedia {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{content_type:?}")
+                format!("{:?}", content_type)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(parent_sid) = &self.parent_sid {
-                format!("{parent_sid:?}")
+                format!("{:?}", parent_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -7538,32 +7536,32 @@ impl tabled::Tabled for ApiV2010AccountQueueMember {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(date_enqueued) = &self.date_enqueued {
-                format!("{date_enqueued:?}")
+                format!("{:?}", date_enqueued)
             } else {
                 String::new()
             },
             if let Some(position) = &self.position {
-                format!("{position:?}")
+                format!("{:?}", position)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(wait_time) = &self.wait_time {
-                format!("{wait_time:?}")
+                format!("{:?}", wait_time)
             } else {
                 String::new()
             },
             if let Some(queue_sid) = &self.queue_sid {
-                format!("{queue_sid:?}")
+                format!("{:?}", queue_sid)
             } else {
                 String::new()
             },
@@ -7687,98 +7685,98 @@ impl tabled::Tabled for ApiV2010AccountMessage {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(num_segments) = &self.num_segments {
-                format!("{num_segments:?}")
+                format!("{:?}", num_segments)
             } else {
                 String::new()
             },
             if let Some(direction) = &self.direction {
-                format!("{direction:?}")
+                format!("{:?}", direction)
             } else {
                 String::new()
             },
             format!("{:?}", self.from),
             if let Some(to) = &self.to {
-                format!("{to:?}")
+                format!("{:?}", to)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(error_message) = &self.error_message {
-                format!("{error_message:?}")
+                format!("{:?}", error_message)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(num_media) = &self.num_media {
-                format!("{num_media:?}")
+                format!("{:?}", num_media)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(messaging_service_sid) = &self.messaging_service_sid {
-                format!("{messaging_service_sid:?}")
+                format!("{:?}", messaging_service_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_sent) = &self.date_sent {
-                format!("{date_sent:?}")
+                format!("{:?}", date_sent)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -7879,17 +7877,15 @@ pub enum MessageEnumStatus {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum MessageEnumUpdateStatus {
     #[serde(rename = "canceled")]
     #[display("canceled")]
+    #[default]
     Canceled,
 }
 
-impl std::default::Default for MessageEnumUpdateStatus {
-    fn default() -> Self {
-        MessageEnumUpdateStatus::Canceled
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -7932,17 +7928,15 @@ pub enum MessageEnumDirection {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum MessageEnumContentRetention {
     #[serde(rename = "retain")]
     #[display("retain")]
+    #[default]
     Retain,
 }
 
-impl std::default::Default for MessageEnumContentRetention {
-    fn default() -> Self {
-        MessageEnumContentRetention::Retain
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -7957,17 +7951,15 @@ impl std::default::Default for MessageEnumContentRetention {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum MessageEnumAddressRetention {
     #[serde(rename = "retain")]
     #[display("retain")]
+    #[default]
     Retain,
 }
 
-impl std::default::Default for MessageEnumAddressRetention {
-    fn default() -> Self {
-        MessageEnumAddressRetention::Retain
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -7982,17 +7974,15 @@ impl std::default::Default for MessageEnumAddressRetention {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum MessageEnumTrafficType {
     #[serde(rename = "free")]
     #[display("free")]
+    #[default]
     Free,
 }
 
-impl std::default::Default for MessageEnumTrafficType {
-    fn default() -> Self {
-        MessageEnumTrafficType::Free
-    }
-}
+
 
 #[derive(
     serde :: Serialize,
@@ -8007,17 +7997,15 @@ impl std::default::Default for MessageEnumTrafficType {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum MessageEnumScheduleType {
     #[serde(rename = "fixed")]
     #[display("fixed")]
+    #[default]
     Fixed,
 }
 
-impl std::default::Default for MessageEnumScheduleType {
-    fn default() -> Self {
-        MessageEnumScheduleType::Fixed
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -8066,32 +8054,32 @@ impl tabled::Tabled for ApiV2010AccountMessageMessageFeedback {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(message_sid) = &self.message_sid {
-                format!("{message_sid:?}")
+                format!("{:?}", message_sid)
             } else {
                 String::new()
             },
             if let Some(outcome) = &self.outcome {
-                format!("{outcome:?}")
+                format!("{:?}", outcome)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -8179,27 +8167,27 @@ impl tabled::Tabled for ApiV2010AccountNewKey {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(secret) = &self.secret {
-                format!("{secret:?}")
+                format!("{:?}", secret)
             } else {
                 String::new()
             },
@@ -8263,27 +8251,27 @@ impl tabled::Tabled for ApiV2010AccountNewSigningKey {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(secret) = &self.secret {
-                format!("{secret:?}")
+                format!("{:?}", secret)
             } else {
                 String::new()
             },
@@ -8386,72 +8374,72 @@ impl tabled::Tabled for ApiV2010AccountNotification {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(log) = &self.log {
-                format!("{log:?}")
+                format!("{:?}", log)
             } else {
                 String::new()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{message_date:?}")
+                format!("{:?}", message_date)
             } else {
                 String::new()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{message_text:?}")
+                format!("{:?}", message_text)
             } else {
                 String::new()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{more_info:?}")
+                format!("{:?}", more_info)
             } else {
                 String::new()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{request_method:?}")
+                format!("{:?}", request_method)
             } else {
                 String::new()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{request_url:?}")
+                format!("{:?}", request_url)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -8574,87 +8562,87 @@ impl tabled::Tabled for ApiV2010AccountNotificationInstance {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(log) = &self.log {
-                format!("{log:?}")
+                format!("{:?}", log)
             } else {
                 String::new()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{message_date:?}")
+                format!("{:?}", message_date)
             } else {
                 String::new()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{message_text:?}")
+                format!("{:?}", message_text)
             } else {
                 String::new()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{more_info:?}")
+                format!("{:?}", more_info)
             } else {
                 String::new()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{request_method:?}")
+                format!("{:?}", request_method)
             } else {
                 String::new()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{request_url:?}")
+                format!("{:?}", request_url)
             } else {
                 String::new()
             },
             if let Some(request_variables) = &self.request_variables {
-                format!("{request_variables:?}")
+                format!("{:?}", request_variables)
             } else {
                 String::new()
             },
             if let Some(response_body) = &self.response_body {
-                format!("{response_body:?}")
+                format!("{:?}", response_body)
             } else {
                 String::new()
             },
             if let Some(response_headers) = &self.response_headers {
-                format!("{response_headers:?}")
+                format!("{:?}", response_headers)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -8736,33 +8724,33 @@ impl tabled::Tabled for ApiV2010AccountOutgoingCallerId {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -8863,72 +8851,72 @@ impl tabled::Tabled for ApiV2010AccountConferenceParticipant {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(label) = &self.label {
-                format!("{label:?}")
+                format!("{:?}", label)
             } else {
                 String::new()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{call_sid_to_coach:?}")
+                format!("{:?}", call_sid_to_coach)
             } else {
                 String::new()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{coaching:?}")
+                format!("{:?}", coaching)
             } else {
                 String::new()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{conference_sid:?}")
+                format!("{:?}", conference_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{end_conference_on_exit:?}")
+                format!("{:?}", end_conference_on_exit)
             } else {
                 String::new()
             },
             if let Some(muted) = &self.muted {
-                format!("{muted:?}")
+                format!("{:?}", muted)
             } else {
                 String::new()
             },
             if let Some(hold) = &self.hold {
-                format!("{hold:?}")
+                format!("{:?}", hold)
             } else {
                 String::new()
             },
             if let Some(start_conference_on_enter) = &self.start_conference_on_enter {
-                format!("{start_conference_on_enter:?}")
+                format!("{:?}", start_conference_on_enter)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -9039,32 +9027,32 @@ impl tabled::Tabled for ApiV2010AccountCallPayments {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -9267,47 +9255,47 @@ impl tabled::Tabled for ApiV2010AccountQueue {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(current_size) = &self.current_size {
-                format!("{current_size:?}")
+                format!("{:?}", current_size)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(average_wait_time) = &self.average_wait_time {
-                format!("{average_wait_time:?}")
+                format!("{:?}", average_wait_time)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(max_size) = &self.max_size {
-                format!("{max_size:?}")
+                format!("{:?}", max_size)
             } else {
                 String::new()
             },
@@ -9422,97 +9410,97 @@ impl tabled::Tabled for ApiV2010AccountRecording {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{conference_sid:?}")
+                format!("{:?}", conference_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{start_time:?}")
+                format!("{:?}", start_time)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(channels) = &self.channels {
-                format!("{channels:?}")
+                format!("{:?}", channels)
             } else {
                 String::new()
             },
             if let Some(source) = &self.source {
-                format!("{source:?}")
+                format!("{:?}", source)
             } else {
                 String::new()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{error_code:?}")
+                format!("{:?}", error_code)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{encryption_details:?}")
+                format!("{:?}", encryption_details)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(media_url) = &self.media_url {
-                format!("{media_url:?}")
+                format!("{:?}", media_url)
             } else {
                 String::new()
             },
@@ -9668,52 +9656,52 @@ impl tabled::Tabled for ApiV2010AccountRecordingRecordingAddOnResult {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(add_on_sid) = &self.add_on_sid {
-                format!("{add_on_sid:?}")
+                format!("{:?}", add_on_sid)
             } else {
                 String::new()
             },
             if let Some(add_on_configuration_sid) = &self.add_on_configuration_sid {
-                format!("{add_on_configuration_sid:?}")
+                format!("{:?}", add_on_configuration_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(date_completed) = &self.date_completed {
-                format!("{date_completed:?}")
+                format!("{:?}", date_completed)
             } else {
                 String::new()
             },
             if let Some(reference_sid) = &self.reference_sid {
-                format!("{reference_sid:?}")
+                format!("{:?}", reference_sid)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -9841,57 +9829,57 @@ impl tabled::Tabled for ApiV2010AccountRecordingRecordingAddOnResultRecordingAdd
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(add_on_result_sid) = &self.add_on_result_sid {
-                format!("{add_on_result_sid:?}")
+                format!("{:?}", add_on_result_sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(label) = &self.label {
-                format!("{label:?}")
+                format!("{:?}", label)
             } else {
                 String::new()
             },
             if let Some(add_on_sid) = &self.add_on_sid {
-                format!("{add_on_sid:?}")
+                format!("{:?}", add_on_sid)
             } else {
                 String::new()
             },
             if let Some(add_on_configuration_sid) = &self.add_on_configuration_sid {
-                format!("{add_on_configuration_sid:?}")
+                format!("{:?}", add_on_configuration_sid)
             } else {
                 String::new()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{content_type:?}")
+                format!("{:?}", content_type)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(reference_sid) = &self.reference_sid {
-                format!("{reference_sid:?}")
+                format!("{:?}", reference_sid)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
@@ -9986,67 +9974,67 @@ impl tabled::Tabled for ApiV2010AccountRecordingRecordingTranscription {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(recording_sid) = &self.recording_sid {
-                format!("{recording_sid:?}")
+                format!("{:?}", recording_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(transcription_text) = &self.transcription_text {
-                format!("{transcription_text:?}")
+                format!("{:?}", transcription_text)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -10236,62 +10224,62 @@ impl tabled::Tabled for ApiV2010AccountShortCode {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(short_code) = &self.short_code {
-                format!("{short_code:?}")
+                format!("{:?}", short_code)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -10353,22 +10341,22 @@ impl tabled::Tabled for ApiV2010AccountSigningKey {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
@@ -10513,27 +10501,27 @@ impl tabled::Tabled
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
@@ -10601,27 +10589,27 @@ impl tabled::Tabled
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
@@ -10699,7 +10687,7 @@ pub struct ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistra
 
 impl std :: fmt :: Display for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { fn fmt (& self , f : & mut std :: fmt :: Formatter < '_ >) -> Result < () , std :: fmt :: Error > { write ! (f , "{}" , serde_json :: to_string_pretty (self) . map_err (| _ | std :: fmt :: Error) ?) } }
 
-impl tabled :: Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { const LENGTH : usize = 5 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (account_sid) = & self . account_sid { format ! ("{account_sid:?}" ) } else { String :: new () } , if let Some (date_created) = & self . date_created { format ! ("{date_created:?}" ) } else { String :: new () } , if let Some (date_updated) = & self . date_updated { format ! ("{date_updated:?}" ) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{friendly_name:?}" ) } else { String :: new () } , if let Some (sid) = & self . sid { format ! ("{sid:?}" ) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["account_sid" . to_string () , "date_created" . to_string () , "date_updated" . to_string () , "friendly_name" . to_string () , "sid" . to_string ()] } }
+impl tabled :: Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { const LENGTH : usize = 5 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) } else { String :: new () } , if let Some (date_created) = & self . date_created { format ! ("{:?}" , date_created) } else { String :: new () } , if let Some (date_updated) = & self . date_updated { format ! ("{:?}" , date_updated) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) } else { String :: new () } , if let Some (sid) = & self . sid { format ! ("{:?}" , sid) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["account_sid" . to_string () , "date_created" . to_string () , "date_updated" . to_string () , "friendly_name" . to_string () , "sid" . to_string ()] } }
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -10751,37 +10739,37 @@ impl tabled::Tabled for ApiV2010AccountSipSipCredentialListSipCredential {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(credential_list_sid) = &self.credential_list_sid {
-                format!("{credential_list_sid:?}")
+                format!("{:?}", credential_list_sid)
             } else {
                 String::new()
             },
             if let Some(username) = &self.username {
-                format!("{username:?}")
+                format!("{:?}", username)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -10853,37 +10841,37 @@ impl tabled::Tabled for ApiV2010AccountSipSipCredentialList {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -10953,37 +10941,37 @@ impl tabled::Tabled for ApiV2010AccountSipSipDomainSipCredentialListMapping {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(domain_sid) = &self.domain_sid {
-                format!("{domain_sid:?}")
+                format!("{:?}", domain_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11142,107 +11130,107 @@ impl tabled::Tabled for ApiV2010AccountSipSipDomain {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(auth_type) = &self.auth_type {
-                format!("{auth_type:?}")
+                format!("{:?}", auth_type)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(domain_name) = &self.domain_name {
-                format!("{domain_name:?}")
+                format!("{:?}", domain_name)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{voice_status_callback_method:?}")
+                format!("{:?}", voice_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{voice_status_callback_url:?}")
+                format!("{:?}", voice_status_callback_url)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{sip_registration:?}")
+                format!("{:?}", sip_registration)
             } else {
                 String::new()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{emergency_calling_enabled:?}")
+                format!("{:?}", emergency_calling_enabled)
             } else {
                 String::new()
             },
             if let Some(secure) = &self.secure {
-                format!("{secure:?}")
+                format!("{:?}", secure)
             } else {
                 String::new()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{byoc_trunk_sid:?}")
+                format!("{:?}", byoc_trunk_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{emergency_caller_sid:?}")
+                format!("{:?}", emergency_caller_sid)
             } else {
                 String::new()
             },
@@ -11328,37 +11316,37 @@ impl tabled::Tabled for ApiV2010AccountSipSipIpAccessControlList {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11428,37 +11416,37 @@ impl tabled::Tabled for ApiV2010AccountSipSipDomainSipIpAccessControlListMapping
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(domain_sid) = &self.domain_sid {
-                format!("{domain_sid:?}")
+                format!("{:?}", domain_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11537,47 +11525,47 @@ impl tabled::Tabled for ApiV2010AccountSipSipIpAccessControlListSipIpAddress {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(ip_address) = &self.ip_address {
-                format!("{ip_address:?}")
+                format!("{:?}", ip_address)
             } else {
                 String::new()
             },
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{cidr_prefix_length:?}")
+                format!("{:?}", cidr_prefix_length)
             } else {
                 String::new()
             },
             if let Some(ip_access_control_list_sid) = &self.ip_access_control_list_sid {
-                format!("{ip_access_control_list_sid:?}")
+                format!("{:?}", ip_access_control_list_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11647,37 +11635,37 @@ impl tabled::Tabled for ApiV2010AccountCallSiprec {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11757,17 +11745,15 @@ pub enum SiprecEnumStatus {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum SiprecEnumUpdateStatus {
     #[serde(rename = "stopped")]
     #[display("stopped")]
+    #[default]
     Stopped,
 }
 
-impl std::default::Default for SiprecEnumUpdateStatus {
-    fn default() -> Self {
-        SiprecEnumUpdateStatus::Stopped
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -11817,37 +11803,37 @@ impl tabled::Tabled for ApiV2010AccountCallStream {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -11927,17 +11913,15 @@ pub enum StreamEnumStatus {
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[derive(Default)]
 pub enum StreamEnumUpdateStatus {
     #[serde(rename = "stopped")]
     #[display("stopped")]
+    #[default]
     Stopped,
 }
 
-impl std::default::Default for StreamEnumUpdateStatus {
-    fn default() -> Self {
-        StreamEnumUpdateStatus::Stopped
-    }
-}
+
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -11968,22 +11952,22 @@ impl tabled::Tabled for IceServers {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(credential) = &self.credential {
-                format!("{credential:?}")
+                format!("{:?}", credential)
             } else {
                 String::new()
             },
             if let Some(username) = &self.username {
-                format!("{username:?}")
+                format!("{:?}", username)
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{url:?}")
+                format!("{:?}", url)
             } else {
                 String::new()
             },
             if let Some(urls) = &self.urls {
-                format!("{urls:?}")
+                format!("{:?}", urls)
             } else {
                 String::new()
             },
@@ -12051,37 +12035,37 @@ impl tabled::Tabled for ApiV2010AccountToken {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(ice_servers) = &self.ice_servers {
-                format!("{ice_servers:?}")
+                format!("{:?}", ice_servers)
             } else {
                 String::new()
             },
             if let Some(password) = &self.password {
-                format!("{password:?}")
+                format!("{:?}", password)
             } else {
                 String::new()
             },
             if let Some(ttl) = &self.ttl {
-                format!("{ttl:?}")
+                format!("{:?}", ttl)
             } else {
                 String::new()
             },
             if let Some(username) = &self.username {
-                format!("{username:?}")
+                format!("{:?}", username)
             } else {
                 String::new()
             },
@@ -12172,67 +12156,67 @@ impl tabled::Tabled for ApiV2010AccountTranscription {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(duration) = &self.duration {
-                format!("{duration:?}")
+                format!("{:?}", duration)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(recording_sid) = &self.recording_sid {
-                format!("{recording_sid:?}")
+                format!("{:?}", recording_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(transcription_text) = &self.transcription_text {
-                format!("{transcription_text:?}")
+                format!("{:?}", transcription_text)
             } else {
                 String::new()
             },
             if let Some(type_) = &self.type_ {
-                format!("{type_:?}")
+                format!("{:?}", type_)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -12381,77 +12365,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecord {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -13302,77 +13286,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordAllTime {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -14223,77 +14207,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordDaily {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -15144,77 +15128,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordLastMonth {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -16065,77 +16049,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordMonthly {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -16986,77 +16970,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordThisMonth {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -17907,77 +17891,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordToday {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -18828,77 +18812,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYearly {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -19749,77 +19733,77 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYesterday {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{as_of:?}")
+                format!("{:?}", as_of)
             } else {
                 String::new()
             },
             if let Some(category) = &self.category {
-                format!("{category:?}")
+                format!("{:?}", category)
             } else {
                 String::new()
             },
             if let Some(count) = &self.count {
-                format!("{count:?}")
+                format!("{:?}", count)
             } else {
                 String::new()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{count_unit:?}")
+                format!("{:?}", count_unit)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{end_date:?}")
+                format!("{:?}", end_date)
             } else {
                 String::new()
             },
             if let Some(price) = &self.price {
-                format!("{price:?}")
+                format!("{:?}", price)
             } else {
                 String::new()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{price_unit:?}")
+                format!("{:?}", price_unit)
             } else {
                 String::new()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{start_date:?}")
+                format!("{:?}", start_date)
             } else {
                 String::new()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{subresource_uris:?}")
+                format!("{:?}", subresource_uris)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage) = &self.usage {
-                format!("{usage:?}")
+                format!("{:?}", usage)
             } else {
                 String::new()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{usage_unit:?}")
+                format!("{:?}", usage_unit)
             } else {
                 String::new()
             },
@@ -20712,82 +20696,82 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageTrigger {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(callback_method) = &self.callback_method {
-                format!("{callback_method:?}")
+                format!("{:?}", callback_method)
             } else {
                 String::new()
             },
             if let Some(callback_url) = &self.callback_url {
-                format!("{callback_url:?}")
+                format!("{:?}", callback_url)
             } else {
                 String::new()
             },
             if let Some(current_value) = &self.current_value {
-                format!("{current_value:?}")
+                format!("{:?}", current_value)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(date_fired) = &self.date_fired {
-                format!("{date_fired:?}")
+                format!("{:?}", date_fired)
             } else {
                 String::new()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{date_updated:?}")
+                format!("{:?}", date_updated)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(recurring) = &self.recurring {
-                format!("{recurring:?}")
+                format!("{:?}", recurring)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(trigger_by) = &self.trigger_by {
-                format!("{trigger_by:?}")
+                format!("{:?}", trigger_by)
             } else {
                 String::new()
             },
             if let Some(trigger_value) = &self.trigger_value {
-                format!("{trigger_value:?}")
+                format!("{:?}", trigger_value)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
             if let Some(usage_category) = &self.usage_category {
-                format!("{usage_category:?}")
+                format!("{:?}", usage_category)
             } else {
                 String::new()
             },
             if let Some(usage_record_uri) = &self.usage_record_uri {
-                format!("{usage_record_uri:?}")
+                format!("{:?}", usage_record_uri)
             } else {
                 String::new()
             },
@@ -21659,22 +21643,22 @@ impl tabled::Tabled for ApiV2010AccountCallUserDefinedMessage {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
@@ -21735,27 +21719,27 @@ impl tabled::Tabled for ApiV2010AccountCallUserDefinedMessageSubscription {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(sid) = &self.sid {
-                format!("{sid:?}")
+                format!("{:?}", sid)
             } else {
                 String::new()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{date_created:?}")
+                format!("{:?}", date_created)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -21814,23 +21798,23 @@ impl tabled::Tabled for ApiV2010AccountValidationRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{call_sid:?}")
+                format!("{:?}", call_sid)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(validation_code) = &self.validation_code {
-                format!("{validation_code:?}")
+                format!("{:?}", validation_code)
             } else {
                 String::new()
             },
@@ -21887,47 +21871,47 @@ impl tabled::Tabled for ListAccountResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(accounts) = &self.accounts {
-                format!("{accounts:?}")
+                format!("{:?}", accounts)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -21977,7 +21961,7 @@ impl tabled::Tabled for CreateAccountRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -22018,12 +22002,12 @@ impl tabled::Tabled for UpdateAccountRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -22074,47 +22058,47 @@ impl tabled::Tabled for ListAddressResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(addresses) = &self.addresses {
-                format!("{addresses:?}")
+                format!("{:?}", addresses)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -22212,22 +22196,22 @@ impl tabled::Tabled for CreateAddressRequest {
             self.postal_code.clone(),
             self.iso_country.clone(),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{emergency_enabled:?}")
+                format!("{:?}", emergency_enabled)
             } else {
                 String::new()
             },
             if let Some(auto_correct_address) = &self.auto_correct_address {
-                format!("{auto_correct_address:?}")
+                format!("{:?}", auto_correct_address)
             } else {
                 String::new()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{street_secondary:?}")
+                format!("{:?}", street_secondary)
             } else {
                 String::new()
             },
@@ -22325,47 +22309,47 @@ impl tabled::Tabled for UpdateAddressRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(customer_name) = &self.customer_name {
-                format!("{customer_name:?}")
+                format!("{:?}", customer_name)
             } else {
                 String::new()
             },
             if let Some(street) = &self.street {
-                format!("{street:?}")
+                format!("{:?}", street)
             } else {
                 String::new()
             },
             if let Some(city) = &self.city {
-                format!("{city:?}")
+                format!("{:?}", city)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{emergency_enabled:?}")
+                format!("{:?}", emergency_enabled)
             } else {
                 String::new()
             },
             if let Some(auto_correct_address) = &self.auto_correct_address {
-                format!("{auto_correct_address:?}")
+                format!("{:?}", auto_correct_address)
             } else {
                 String::new()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{street_secondary:?}")
+                format!("{:?}", street_secondary)
             } else {
                 String::new()
             },
@@ -22426,47 +22410,47 @@ impl tabled::Tabled for ListApplicationResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(applications) = &self.applications {
-                format!("{applications:?}")
+                format!("{:?}", applications)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -22794,84 +22778,84 @@ impl tabled::Tabled for CreateApplicationRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{sms_status_callback:?}")
+                format!("{:?}", sms_status_callback)
             } else {
                 String::new()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{message_status_callback:?}")
+                format!("{:?}", message_status_callback)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{public_application_connect_enabled:?}")
+                format!("{:?}", public_application_connect_enabled)
             } else {
                 String::new()
             },
@@ -23207,84 +23191,84 @@ impl tabled::Tabled for UpdateApplicationRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{sms_status_callback:?}")
+                format!("{:?}", sms_status_callback)
             } else {
                 String::new()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{message_status_callback:?}")
+                format!("{:?}", message_status_callback)
             } else {
                 String::new()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{public_application_connect_enabled:?}")
+                format!("{:?}", public_application_connect_enabled)
             } else {
                 String::new()
             },
@@ -23352,47 +23336,47 @@ impl tabled::Tabled for ListAuthorizedConnectAppResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(authorized_connect_apps) = &self.authorized_connect_apps {
-                format!("{authorized_connect_apps:?}")
+                format!("{:?}", authorized_connect_apps)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23453,47 +23437,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberCountryResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(countries) = &self.countries {
-                format!("{countries:?}")
+                format!("{:?}", countries)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23555,47 +23539,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberLocalResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23657,47 +23641,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberMachineToMachineResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23759,47 +23743,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberMobileResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23861,47 +23845,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberNationalResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -23963,47 +23947,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberSharedCostResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -24065,47 +24049,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberTollFreeResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -24167,47 +24151,47 @@ impl tabled::Tabled for ListAvailablePhoneNumberVoipResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{available_phone_numbers:?}")
+                format!("{:?}", available_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -24268,47 +24252,47 @@ impl tabled::Tabled for ListCallResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(calls) = &self.calls {
-                format!("{calls:?}")
+                format!("{:?}", calls)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -24787,172 +24771,172 @@ impl tabled::Tabled for CreateCallRequest {
             self.to.clone(),
             self.from.clone(),
             if let Some(method) = &self.method {
-                format!("{method:?}")
+                format!("{:?}", method)
             } else {
                 String::new()
             },
             if let Some(fallback_url) = &self.fallback_url {
-                format!("{fallback_url:?}")
+                format!("{:?}", fallback_url)
             } else {
                 String::new()
             },
             if let Some(fallback_method) = &self.fallback_method {
-                format!("{fallback_method:?}")
+                format!("{:?}", fallback_method)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_event) = &self.status_callback_event {
-                format!("{status_callback_event:?}")
+                format!("{:?}", status_callback_event)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(send_digits) = &self.send_digits {
-                format!("{send_digits:?}")
+                format!("{:?}", send_digits)
             } else {
                 String::new()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{timeout:?}")
+                format!("{:?}", timeout)
             } else {
                 String::new()
             },
             if let Some(record) = &self.record {
-                format!("{record:?}")
+                format!("{:?}", record)
             } else {
                 String::new()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{recording_channels:?}")
+                format!("{:?}", recording_channels)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{recording_status_callback:?}")
+                format!("{:?}", recording_status_callback)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{recording_status_callback_method:?}")
+                format!("{:?}", recording_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(sip_auth_username) = &self.sip_auth_username {
-                format!("{sip_auth_username:?}")
+                format!("{:?}", sip_auth_username)
             } else {
                 String::new()
             },
             if let Some(sip_auth_password) = &self.sip_auth_password {
-                format!("{sip_auth_password:?}")
+                format!("{:?}", sip_auth_password)
             } else {
                 String::new()
             },
             if let Some(machine_detection) = &self.machine_detection {
-                format!("{machine_detection:?}")
+                format!("{:?}", machine_detection)
             } else {
                 String::new()
             },
             if let Some(machine_detection_timeout) = &self.machine_detection_timeout {
-                format!("{machine_detection_timeout:?}")
+                format!("{:?}", machine_detection_timeout)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{recording_status_callback_event:?}")
+                format!("{:?}", recording_status_callback_event)
             } else {
                 String::new()
             },
             if let Some(trim) = &self.trim {
-                format!("{trim:?}")
+                format!("{:?}", trim)
             } else {
                 String::new()
             },
             if let Some(caller_id) = &self.caller_id {
-                format!("{caller_id:?}")
+                format!("{:?}", caller_id)
             } else {
                 String::new()
             },
             if let Some(machine_detection_speech_threshold) =
                 &self.machine_detection_speech_threshold
             {
-                format!("{machine_detection_speech_threshold:?}")
+                format!("{:?}", machine_detection_speech_threshold)
             } else {
                 String::new()
             },
             if let Some(machine_detection_speech_end_threshold) =
                 &self.machine_detection_speech_end_threshold
             {
-                format!("{machine_detection_speech_end_threshold:?}")
+                format!("{:?}", machine_detection_speech_end_threshold)
             } else {
                 String::new()
             },
             if let Some(machine_detection_silence_timeout) = &self.machine_detection_silence_timeout
             {
-                format!("{machine_detection_silence_timeout:?}")
+                format!("{:?}", machine_detection_silence_timeout)
             } else {
                 String::new()
             },
             if let Some(async_amd) = &self.async_amd {
-                format!("{async_amd:?}")
+                format!("{:?}", async_amd)
             } else {
                 String::new()
             },
             if let Some(async_amd_status_callback) = &self.async_amd_status_callback {
-                format!("{async_amd_status_callback:?}")
+                format!("{:?}", async_amd_status_callback)
             } else {
                 String::new()
             },
             if let Some(async_amd_status_callback_method) = &self.async_amd_status_callback_method {
-                format!("{async_amd_status_callback_method:?}")
+                format!("{:?}", async_amd_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(byoc) = &self.byoc {
-                format!("{byoc:?}")
+                format!("{:?}", byoc)
             } else {
                 String::new()
             },
             if let Some(call_reason) = &self.call_reason {
-                format!("{call_reason:?}")
+                format!("{:?}", call_reason)
             } else {
                 String::new()
             },
             if let Some(call_token) = &self.call_token {
-                format!("{call_token:?}")
+                format!("{:?}", call_token)
             } else {
                 String::new()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{recording_track:?}")
+                format!("{:?}", recording_track)
             } else {
                 String::new()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{time_limit:?}")
+                format!("{:?}", time_limit)
             } else {
                 String::new()
             },
             if let Some(url) = &self.url {
-                format!("{url:?}")
+                format!("{:?}", url)
             } else {
                 String::new()
             },
             if let Some(twiml) = &self.twiml {
-                format!("{twiml:?}")
+                format!("{:?}", twiml)
             } else {
                 String::new()
             },
             if let Some(application_sid) = &self.application_sid {
-                format!("{application_sid:?}")
+                format!("{:?}", application_sid)
             } else {
                 String::new()
             },
@@ -25150,47 +25134,47 @@ impl tabled::Tabled for UpdateCallRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(url) = &self.url {
-                format!("{url:?}")
+                format!("{:?}", url)
             } else {
                 String::new()
             },
             if let Some(method) = &self.method {
-                format!("{method:?}")
+                format!("{:?}", method)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(fallback_url) = &self.fallback_url {
-                format!("{fallback_url:?}")
+                format!("{:?}", fallback_url)
             } else {
                 String::new()
             },
             if let Some(fallback_method) = &self.fallback_method {
-                format!("{fallback_method:?}")
+                format!("{:?}", fallback_method)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(twiml) = &self.twiml {
-                format!("{twiml:?}")
+                format!("{:?}", twiml)
             } else {
                 String::new()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{time_limit:?}")
+                format!("{:?}", time_limit)
             } else {
                 String::new()
             },
@@ -25251,47 +25235,47 @@ impl tabled::Tabled for ListCallEventResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(events) = &self.events {
-                format!("{events:?}")
+                format!("{:?}", events)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -25347,12 +25331,12 @@ impl tabled::Tabled for UpdateCallFeedbackRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(quality_score) = &self.quality_score {
-                format!("{quality_score:?}")
+                format!("{:?}", quality_score)
             } else {
                 String::new()
             },
             if let Some(issue) = &self.issue {
-                format!("{issue:?}")
+                format!("{:?}", issue)
             } else {
                 String::new()
             },
@@ -25454,17 +25438,17 @@ impl tabled::Tabled for CreateCallFeedbackSummaryRequest {
             format!("{:?}", self.start_date),
             format!("{:?}", self.end_date),
             if let Some(include_subaccounts) = &self.include_subaccounts {
-                format!("{include_subaccounts:?}")
+                format!("{:?}", include_subaccounts)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
@@ -25521,47 +25505,47 @@ impl tabled::Tabled for ListCallNotificationResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(notifications) = &self.notifications {
-                format!("{notifications:?}")
+                format!("{:?}", notifications)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -25622,47 +25606,47 @@ impl tabled::Tabled for ListCallRecordingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{recordings:?}")
+                format!("{:?}", recordings)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -25791,32 +25775,32 @@ impl tabled::Tabled for CreateCallRecordingRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{recording_status_callback_event:?}")
+                format!("{:?}", recording_status_callback_event)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{recording_status_callback:?}")
+                format!("{:?}", recording_status_callback)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{recording_status_callback_method:?}")
+                format!("{:?}", recording_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(trim) = &self.trim {
-                format!("{trim:?}")
+                format!("{:?}", trim)
             } else {
                 String::new()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{recording_channels:?}")
+                format!("{:?}", recording_channels)
             } else {
                 String::new()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{recording_track:?}")
+                format!("{:?}", recording_track)
             } else {
                 String::new()
             },
@@ -25869,7 +25853,7 @@ impl tabled::Tabled for UpdateCallRecordingRequest {
         vec![
             format!("{:?}", self.status),
             if let Some(pause_behavior) = &self.pause_behavior {
-                format!("{pause_behavior:?}")
+                format!("{:?}", pause_behavior)
             } else {
                 String::new()
             },
@@ -25957,17 +25941,17 @@ impl tabled::Tabled for UpdateConferenceRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
             if let Some(announce_url) = &self.announce_url {
-                format!("{announce_url:?}")
+                format!("{:?}", announce_url)
             } else {
                 String::new()
             },
             if let Some(announce_method) = &self.announce_method {
-                format!("{announce_method:?}")
+                format!("{:?}", announce_method)
             } else {
                 String::new()
             },
@@ -26022,47 +26006,47 @@ impl tabled::Tabled for ListConferenceResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(conferences) = &self.conferences {
-                format!("{conferences:?}")
+                format!("{:?}", conferences)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -26118,7 +26102,7 @@ impl tabled::Tabled for UpdateConferenceRecordingRequest {
         vec![
             format!("{:?}", self.status),
             if let Some(pause_behavior) = &self.pause_behavior {
-                format!("{pause_behavior:?}")
+                format!("{:?}", pause_behavior)
             } else {
                 String::new()
             },
@@ -26169,47 +26153,47 @@ impl tabled::Tabled for ListConferenceRecordingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{recordings:?}")
+                format!("{:?}", recordings)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -26347,42 +26331,42 @@ impl tabled::Tabled for UpdateConnectAppRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(authorize_redirect_url) = &self.authorize_redirect_url {
-                format!("{authorize_redirect_url:?}")
+                format!("{:?}", authorize_redirect_url)
             } else {
                 String::new()
             },
             if let Some(company_name) = &self.company_name {
-                format!("{company_name:?}")
+                format!("{:?}", company_name)
             } else {
                 String::new()
             },
             if let Some(deauthorize_callback_method) = &self.deauthorize_callback_method {
-                format!("{deauthorize_callback_method:?}")
+                format!("{:?}", deauthorize_callback_method)
             } else {
                 String::new()
             },
             if let Some(deauthorize_callback_url) = &self.deauthorize_callback_url {
-                format!("{deauthorize_callback_url:?}")
+                format!("{:?}", deauthorize_callback_url)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(homepage_url) = &self.homepage_url {
-                format!("{homepage_url:?}")
+                format!("{:?}", homepage_url)
             } else {
                 String::new()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{permissions:?}")
+                format!("{:?}", permissions)
             } else {
                 String::new()
             },
@@ -26442,47 +26426,47 @@ impl tabled::Tabled for ListConnectAppResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(connect_apps) = &self.connect_apps {
-                format!("{connect_apps:?}")
+                format!("{:?}", connect_apps)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -26543,47 +26527,47 @@ impl tabled::Tabled for ListDependentPhoneNumberResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(dependent_phone_numbers) = &self.dependent_phone_numbers {
-                format!("{dependent_phone_numbers:?}")
+                format!("{:?}", dependent_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -26969,117 +26953,117 @@ impl tabled::Tabled for UpdateIncomingPhoneNumberRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{account_sid:?}")
+                format!("{:?}", account_sid)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
@@ -27154,47 +27138,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{incoming_phone_numbers:?}")
+                format!("{:?}", incoming_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -27587,118 +27571,118 @@ impl tabled::Tabled for CreateIncomingPhoneNumberRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
             format!("{:?}", self.phone_number),
             if let Some(area_code) = &self.area_code {
-                format!("{area_code:?}")
+                format!("{:?}", area_code)
             } else {
                 String::new()
             },
@@ -27775,47 +27759,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberAssignedAddOnResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(assigned_add_ons) = &self.assigned_add_ons {
-                format!("{assigned_add_ons:?}")
+                format!("{:?}", assigned_add_ons)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -27887,47 +27871,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberAssignedAddOnExtensionResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(extensions) = &self.extensions {
-                format!("{extensions:?}")
+                format!("{:?}", extensions)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -27989,47 +27973,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberLocalResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{incoming_phone_numbers:?}")
+                format!("{:?}", incoming_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -28416,112 +28400,112 @@ impl tabled::Tabled for CreateIncomingPhoneNumberLocalRequest {
         vec![
             format!("{:?}", self.phone_number),
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
@@ -28597,47 +28581,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberMobileResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{incoming_phone_numbers:?}")
+                format!("{:?}", incoming_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -29024,112 +29008,112 @@ impl tabled::Tabled for CreateIncomingPhoneNumberMobileRequest {
         vec![
             format!("{:?}", self.phone_number),
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
@@ -29205,47 +29189,47 @@ impl tabled::Tabled for ListIncomingPhoneNumberTollFreeResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{incoming_phone_numbers:?}")
+                format!("{:?}", incoming_phone_numbers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -29633,112 +29617,112 @@ impl tabled::Tabled for CreateIncomingPhoneNumberTollFreeRequest {
         vec![
             format!("{:?}", self.phone_number),
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{sms_application_sid:?}")
+                format!("{:?}", sms_application_sid)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{voice_application_sid:?}")
+                format!("{:?}", voice_application_sid)
             } else {
                 String::new()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{voice_caller_id_lookup:?}")
+                format!("{:?}", voice_caller_id_lookup)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{identity_sid:?}")
+                format!("{:?}", identity_sid)
             } else {
                 String::new()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{address_sid:?}")
+                format!("{:?}", address_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{emergency_status:?}")
+                format!("{:?}", emergency_status)
             } else {
                 String::new()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{emergency_address_sid:?}")
+                format!("{:?}", emergency_address_sid)
             } else {
                 String::new()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{trunk_sid:?}")
+                format!("{:?}", trunk_sid)
             } else {
                 String::new()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{voice_receive_mode:?}")
+                format!("{:?}", voice_receive_mode)
             } else {
                 String::new()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{bundle_sid:?}")
+                format!("{:?}", bundle_sid)
             } else {
                 String::new()
             },
@@ -29802,7 +29786,7 @@ impl tabled::Tabled for UpdateKeyRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -29852,47 +29836,47 @@ impl tabled::Tabled for ListKeyResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(keys) = &self.keys {
-                format!("{keys:?}")
+                format!("{:?}", keys)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -29942,7 +29926,7 @@ impl tabled::Tabled for CreateNewKeyRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -29992,47 +29976,47 @@ impl tabled::Tabled for ListMediaResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(media_list) = &self.media_list {
-                format!("{media_list:?}")
+                format!("{:?}", media_list)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -30120,7 +30104,7 @@ impl tabled::Tabled for UpdateMemberRequest {
         vec![
             self.url.clone(),
             if let Some(method) = &self.method {
-                format!("{method:?}")
+                format!("{:?}", method)
             } else {
                 String::new()
             },
@@ -30171,47 +30155,47 @@ impl tabled::Tabled for ListMemberResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(queue_members) = &self.queue_members {
-                format!("{queue_members:?}")
+                format!("{:?}", queue_members)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -30272,47 +30256,47 @@ impl tabled::Tabled for ListMessageResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(messages) = &self.messages {
-                format!("{messages:?}")
+                format!("{:?}", messages)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -30498,103 +30482,103 @@ impl tabled::Tabled for CreateMessageRequest {
         vec![
             format!("{:?}", self.to),
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(application_sid) = &self.application_sid {
-                format!("{application_sid:?}")
+                format!("{:?}", application_sid)
             } else {
                 String::new()
             },
             if let Some(max_price) = &self.max_price {
-                format!("{max_price:?}")
+                format!("{:?}", max_price)
             } else {
                 String::new()
             },
             if let Some(provide_feedback) = &self.provide_feedback {
-                format!("{provide_feedback:?}")
+                format!("{:?}", provide_feedback)
             } else {
                 String::new()
             },
             if let Some(attempt) = &self.attempt {
-                format!("{attempt:?}")
+                format!("{:?}", attempt)
             } else {
                 String::new()
             },
             if let Some(validity_period) = &self.validity_period {
-                format!("{validity_period:?}")
+                format!("{:?}", validity_period)
             } else {
                 String::new()
             },
             if let Some(force_delivery) = &self.force_delivery {
-                format!("{force_delivery:?}")
+                format!("{:?}", force_delivery)
             } else {
                 String::new()
             },
             if let Some(content_retention) = &self.content_retention {
-                format!("{content_retention:?}")
+                format!("{:?}", content_retention)
             } else {
                 String::new()
             },
             if let Some(address_retention) = &self.address_retention {
-                format!("{address_retention:?}")
+                format!("{:?}", address_retention)
             } else {
                 String::new()
             },
             if let Some(smart_encoded) = &self.smart_encoded {
-                format!("{smart_encoded:?}")
+                format!("{:?}", smart_encoded)
             } else {
                 String::new()
             },
             if let Some(persistent_action) = &self.persistent_action {
-                format!("{persistent_action:?}")
+                format!("{:?}", persistent_action)
             } else {
                 String::new()
             },
             if let Some(shorten_urls) = &self.shorten_urls {
-                format!("{shorten_urls:?}")
+                format!("{:?}", shorten_urls)
             } else {
                 String::new()
             },
             if let Some(schedule_type) = &self.schedule_type {
-                format!("{schedule_type:?}")
+                format!("{:?}", schedule_type)
             } else {
                 String::new()
             },
             if let Some(send_at) = &self.send_at {
-                format!("{send_at:?}")
+                format!("{:?}", send_at)
             } else {
                 String::new()
             },
             if let Some(send_as_mms) = &self.send_as_mms {
-                format!("{send_as_mms:?}")
+                format!("{:?}", send_as_mms)
             } else {
                 String::new()
             },
             if let Some(content_sid) = &self.content_sid {
-                format!("{content_sid:?}")
+                format!("{:?}", content_sid)
             } else {
                 String::new()
             },
             if let Some(content_variables) = &self.content_variables {
-                format!("{content_variables:?}")
+                format!("{:?}", content_variables)
             } else {
                 String::new()
             },
             format!("{:?}", self.from),
             if let Some(messaging_service_sid) = &self.messaging_service_sid {
-                format!("{messaging_service_sid:?}")
+                format!("{:?}", messaging_service_sid)
             } else {
                 String::new()
             },
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(media_url) = &self.media_url {
-                format!("{media_url:?}")
+                format!("{:?}", media_url)
             } else {
                 String::new()
             },
@@ -30655,12 +30639,12 @@ impl tabled::Tabled for UpdateMessageRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(body) = &self.body {
-                format!("{body:?}")
+                format!("{:?}", body)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -30694,7 +30678,7 @@ impl tabled::Tabled for CreateMessageFeedbackRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(outcome) = &self.outcome {
-            format!("{outcome:?}")
+            format!("{:?}", outcome)
         } else {
             String::new()
         }]
@@ -30744,47 +30728,47 @@ impl tabled::Tabled for ListSigningKeyResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(signing_keys) = &self.signing_keys {
-                format!("{signing_keys:?}")
+                format!("{:?}", signing_keys)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -30834,7 +30818,7 @@ impl tabled::Tabled for CreateNewSigningKeyRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -30884,47 +30868,47 @@ impl tabled::Tabled for ListNotificationResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(notifications) = &self.notifications {
-                format!("{notifications:?}")
+                format!("{:?}", notifications)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -30974,7 +30958,7 @@ impl tabled::Tabled for UpdateOutgoingCallerIdRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -31024,47 +31008,47 @@ impl tabled::Tabled for ListOutgoingCallerIdResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(outgoing_caller_ids) = &self.outgoing_caller_ids {
-                format!("{outgoing_caller_ids:?}")
+                format!("{:?}", outgoing_caller_ids)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -31185,27 +31169,27 @@ impl tabled::Tabled for CreateValidationRequestRequest {
         vec![
             format!("{:?}", self.phone_number),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(call_delay) = &self.call_delay {
-                format!("{call_delay:?}")
+                format!("{:?}", call_delay)
             } else {
                 String::new()
             },
             if let Some(extension) = &self.extension {
-                format!("{extension:?}")
+                format!("{:?}", extension)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
@@ -31434,62 +31418,62 @@ impl tabled::Tabled for UpdateParticipantRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(muted) = &self.muted {
-                format!("{muted:?}")
+                format!("{:?}", muted)
             } else {
                 String::new()
             },
             if let Some(hold) = &self.hold {
-                format!("{hold:?}")
+                format!("{:?}", hold)
             } else {
                 String::new()
             },
             if let Some(hold_url) = &self.hold_url {
-                format!("{hold_url:?}")
+                format!("{:?}", hold_url)
             } else {
                 String::new()
             },
             if let Some(hold_method) = &self.hold_method {
-                format!("{hold_method:?}")
+                format!("{:?}", hold_method)
             } else {
                 String::new()
             },
             if let Some(announce_url) = &self.announce_url {
-                format!("{announce_url:?}")
+                format!("{:?}", announce_url)
             } else {
                 String::new()
             },
             if let Some(announce_method) = &self.announce_method {
-                format!("{announce_method:?}")
+                format!("{:?}", announce_method)
             } else {
                 String::new()
             },
             if let Some(wait_url) = &self.wait_url {
-                format!("{wait_url:?}")
+                format!("{:?}", wait_url)
             } else {
                 String::new()
             },
             if let Some(wait_method) = &self.wait_method {
-                format!("{wait_method:?}")
+                format!("{:?}", wait_method)
             } else {
                 String::new()
             },
             if let Some(beep_on_exit) = &self.beep_on_exit {
-                format!("{beep_on_exit:?}")
+                format!("{:?}", beep_on_exit)
             } else {
                 String::new()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{end_conference_on_exit:?}")
+                format!("{:?}", end_conference_on_exit)
             } else {
                 String::new()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{coaching:?}")
+                format!("{:?}", coaching)
             } else {
                 String::new()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{call_sid_to_coach:?}")
+                format!("{:?}", call_sid_to_coach)
             } else {
                 String::new()
             },
@@ -31553,47 +31537,47 @@ impl tabled::Tabled for ListParticipantResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(participants) = &self.participants {
-                format!("{participants:?}")
+                format!("{:?}", participants)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -32150,234 +32134,234 @@ impl tabled::Tabled for CreateParticipantRequest {
             self.from.clone(),
             self.to.clone(),
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(status_callback_event) = &self.status_callback_event {
-                format!("{status_callback_event:?}")
+                format!("{:?}", status_callback_event)
             } else {
                 String::new()
             },
             if let Some(label) = &self.label {
-                format!("{label:?}")
+                format!("{:?}", label)
             } else {
                 String::new()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{timeout:?}")
+                format!("{:?}", timeout)
             } else {
                 String::new()
             },
             if let Some(record) = &self.record {
-                format!("{record:?}")
+                format!("{:?}", record)
             } else {
                 String::new()
             },
             if let Some(muted) = &self.muted {
-                format!("{muted:?}")
+                format!("{:?}", muted)
             } else {
                 String::new()
             },
             if let Some(beep) = &self.beep {
-                format!("{beep:?}")
+                format!("{:?}", beep)
             } else {
                 String::new()
             },
             if let Some(start_conference_on_enter) = &self.start_conference_on_enter {
-                format!("{start_conference_on_enter:?}")
+                format!("{:?}", start_conference_on_enter)
             } else {
                 String::new()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{end_conference_on_exit:?}")
+                format!("{:?}", end_conference_on_exit)
             } else {
                 String::new()
             },
             if let Some(wait_url) = &self.wait_url {
-                format!("{wait_url:?}")
+                format!("{:?}", wait_url)
             } else {
                 String::new()
             },
             if let Some(wait_method) = &self.wait_method {
-                format!("{wait_method:?}")
+                format!("{:?}", wait_method)
             } else {
                 String::new()
             },
             if let Some(early_media) = &self.early_media {
-                format!("{early_media:?}")
+                format!("{:?}", early_media)
             } else {
                 String::new()
             },
             if let Some(max_participants) = &self.max_participants {
-                format!("{max_participants:?}")
+                format!("{:?}", max_participants)
             } else {
                 String::new()
             },
             if let Some(conference_record) = &self.conference_record {
-                format!("{conference_record:?}")
+                format!("{:?}", conference_record)
             } else {
                 String::new()
             },
             if let Some(conference_trim) = &self.conference_trim {
-                format!("{conference_trim:?}")
+                format!("{:?}", conference_trim)
             } else {
                 String::new()
             },
             if let Some(conference_status_callback) = &self.conference_status_callback {
-                format!("{conference_status_callback:?}")
+                format!("{:?}", conference_status_callback)
             } else {
                 String::new()
             },
             if let Some(conference_status_callback_method) = &self.conference_status_callback_method
             {
-                format!("{conference_status_callback_method:?}")
+                format!("{:?}", conference_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(conference_status_callback_event) = &self.conference_status_callback_event {
-                format!("{conference_status_callback_event:?}")
+                format!("{:?}", conference_status_callback_event)
             } else {
                 String::new()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{recording_channels:?}")
+                format!("{:?}", recording_channels)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{recording_status_callback:?}")
+                format!("{:?}", recording_status_callback)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{recording_status_callback_method:?}")
+                format!("{:?}", recording_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(sip_auth_username) = &self.sip_auth_username {
-                format!("{sip_auth_username:?}")
+                format!("{:?}", sip_auth_username)
             } else {
                 String::new()
             },
             if let Some(sip_auth_password) = &self.sip_auth_password {
-                format!("{sip_auth_password:?}")
+                format!("{:?}", sip_auth_password)
             } else {
                 String::new()
             },
             if let Some(region) = &self.region {
-                format!("{region:?}")
+                format!("{:?}", region)
             } else {
                 String::new()
             },
             if let Some(conference_recording_status_callback) =
                 &self.conference_recording_status_callback
             {
-                format!("{conference_recording_status_callback:?}")
+                format!("{:?}", conference_recording_status_callback)
             } else {
                 String::new()
             },
             if let Some(conference_recording_status_callback_method) =
                 &self.conference_recording_status_callback_method
             {
-                format!("{conference_recording_status_callback_method:?}")
+                format!("{:?}", conference_recording_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{recording_status_callback_event:?}")
+                format!("{:?}", recording_status_callback_event)
             } else {
                 String::new()
             },
             if let Some(conference_recording_status_callback_event) =
                 &self.conference_recording_status_callback_event
             {
-                format!("{conference_recording_status_callback_event:?}")
+                format!("{:?}", conference_recording_status_callback_event)
             } else {
                 String::new()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{coaching:?}")
+                format!("{:?}", coaching)
             } else {
                 String::new()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{call_sid_to_coach:?}")
+                format!("{:?}", call_sid_to_coach)
             } else {
                 String::new()
             },
             if let Some(jitter_buffer_size) = &self.jitter_buffer_size {
-                format!("{jitter_buffer_size:?}")
+                format!("{:?}", jitter_buffer_size)
             } else {
                 String::new()
             },
             if let Some(byoc) = &self.byoc {
-                format!("{byoc:?}")
+                format!("{:?}", byoc)
             } else {
                 String::new()
             },
             if let Some(caller_id) = &self.caller_id {
-                format!("{caller_id:?}")
+                format!("{:?}", caller_id)
             } else {
                 String::new()
             },
             if let Some(call_reason) = &self.call_reason {
-                format!("{call_reason:?}")
+                format!("{:?}", call_reason)
             } else {
                 String::new()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{recording_track:?}")
+                format!("{:?}", recording_track)
             } else {
                 String::new()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{time_limit:?}")
+                format!("{:?}", time_limit)
             } else {
                 String::new()
             },
             if let Some(machine_detection) = &self.machine_detection {
-                format!("{machine_detection:?}")
+                format!("{:?}", machine_detection)
             } else {
                 String::new()
             },
             if let Some(machine_detection_timeout) = &self.machine_detection_timeout {
-                format!("{machine_detection_timeout:?}")
+                format!("{:?}", machine_detection_timeout)
             } else {
                 String::new()
             },
             if let Some(machine_detection_speech_threshold) =
                 &self.machine_detection_speech_threshold
             {
-                format!("{machine_detection_speech_threshold:?}")
+                format!("{:?}", machine_detection_speech_threshold)
             } else {
                 String::new()
             },
             if let Some(machine_detection_speech_end_threshold) =
                 &self.machine_detection_speech_end_threshold
             {
-                format!("{machine_detection_speech_end_threshold:?}")
+                format!("{:?}", machine_detection_speech_end_threshold)
             } else {
                 String::new()
             },
             if let Some(machine_detection_silence_timeout) = &self.machine_detection_silence_timeout
             {
-                format!("{machine_detection_silence_timeout:?}")
+                format!("{:?}", machine_detection_silence_timeout)
             } else {
                 String::new()
             },
             if let Some(amd_status_callback) = &self.amd_status_callback {
-                format!("{amd_status_callback:?}")
+                format!("{:?}", amd_status_callback)
             } else {
                 String::new()
             },
             if let Some(amd_status_callback_method) = &self.amd_status_callback_method {
-                format!("{amd_status_callback_method:?}")
+                format!("{:?}", amd_status_callback_method)
             } else {
                 String::new()
             },
@@ -32553,72 +32537,72 @@ impl tabled::Tabled for CreatePaymentsRequest {
             self.idempotency_key.clone(),
             self.status_callback.clone(),
             if let Some(bank_account_type) = &self.bank_account_type {
-                format!("{bank_account_type:?}")
+                format!("{:?}", bank_account_type)
             } else {
                 String::new()
             },
             if let Some(charge_amount) = &self.charge_amount {
-                format!("{charge_amount:?}")
+                format!("{:?}", charge_amount)
             } else {
                 String::new()
             },
             if let Some(currency) = &self.currency {
-                format!("{currency:?}")
+                format!("{:?}", currency)
             } else {
                 String::new()
             },
             if let Some(description) = &self.description {
-                format!("{description:?}")
+                format!("{:?}", description)
             } else {
                 String::new()
             },
             if let Some(input) = &self.input {
-                format!("{input:?}")
+                format!("{:?}", input)
             } else {
                 String::new()
             },
             if let Some(min_postal_code_length) = &self.min_postal_code_length {
-                format!("{min_postal_code_length:?}")
+                format!("{:?}", min_postal_code_length)
             } else {
                 String::new()
             },
             if let Some(parameter) = &self.parameter {
-                format!("{parameter:?}")
+                format!("{:?}", parameter)
             } else {
                 String::new()
             },
             if let Some(payment_connector) = &self.payment_connector {
-                format!("{payment_connector:?}")
+                format!("{:?}", payment_connector)
             } else {
                 String::new()
             },
             if let Some(payment_method) = &self.payment_method {
-                format!("{payment_method:?}")
+                format!("{:?}", payment_method)
             } else {
                 String::new()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{postal_code:?}")
+                format!("{:?}", postal_code)
             } else {
                 String::new()
             },
             if let Some(security_code) = &self.security_code {
-                format!("{security_code:?}")
+                format!("{:?}", security_code)
             } else {
                 String::new()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{timeout:?}")
+                format!("{:?}", timeout)
             } else {
                 String::new()
             },
             if let Some(token_type) = &self.token_type {
-                format!("{token_type:?}")
+                format!("{:?}", token_type)
             } else {
                 String::new()
             },
             if let Some(valid_card_types) = &self.valid_card_types {
-                format!("{valid_card_types:?}")
+                format!("{:?}", valid_card_types)
             } else {
                 String::new()
             },
@@ -32682,12 +32666,12 @@ impl tabled::Tabled for UpdatePaymentsRequest {
             self.idempotency_key.clone(),
             self.status_callback.clone(),
             if let Some(capture) = &self.capture {
-                format!("{capture:?}")
+                format!("{:?}", capture)
             } else {
                 String::new()
             },
             if let Some(status) = &self.status {
-                format!("{status:?}")
+                format!("{:?}", status)
             } else {
                 String::new()
             },
@@ -32737,12 +32721,12 @@ impl tabled::Tabled for UpdateQueueRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(max_size) = &self.max_size {
-                format!("{max_size:?}")
+                format!("{:?}", max_size)
             } else {
                 String::new()
             },
@@ -32793,47 +32777,47 @@ impl tabled::Tabled for ListQueueResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(queues) = &self.queues {
-                format!("{queues:?}")
+                format!("{:?}", queues)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -32885,7 +32869,7 @@ impl tabled::Tabled for CreateQueueRequest {
         vec![
             self.friendly_name.clone(),
             if let Some(max_size) = &self.max_size {
-                format!("{max_size:?}")
+                format!("{:?}", max_size)
             } else {
                 String::new()
             },
@@ -32936,47 +32920,47 @@ impl tabled::Tabled for ListRecordingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{recordings:?}")
+                format!("{:?}", recordings)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33037,47 +33021,47 @@ impl tabled::Tabled for ListRecordingAddOnResultResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(add_on_results) = &self.add_on_results {
-                format!("{add_on_results:?}")
+                format!("{:?}", add_on_results)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33139,47 +33123,47 @@ impl tabled::Tabled for ListRecordingAddOnResultPayloadResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(payloads) = &self.payloads {
-                format!("{payloads:?}")
+                format!("{:?}", payloads)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33240,47 +33224,47 @@ impl tabled::Tabled for ListRecordingTranscriptionResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(transcriptions) = &self.transcriptions {
-                format!("{transcriptions:?}")
+                format!("{:?}", transcriptions)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33432,32 +33416,32 @@ impl tabled::Tabled for UpdateShortCodeRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{api_version:?}")
+                format!("{:?}", api_version)
             } else {
                 String::new()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{sms_url:?}")
+                format!("{:?}", sms_url)
             } else {
                 String::new()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{sms_method:?}")
+                format!("{:?}", sms_method)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{sms_fallback_url:?}")
+                format!("{:?}", sms_fallback_url)
             } else {
                 String::new()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{sms_fallback_method:?}")
+                format!("{:?}", sms_fallback_method)
             } else {
                 String::new()
             },
@@ -33515,47 +33499,47 @@ impl tabled::Tabled for ListShortCodeResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(short_codes) = &self.short_codes {
-                format!("{short_codes:?}")
+                format!("{:?}", short_codes)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33604,7 +33588,7 @@ impl tabled::Tabled for UpdateSigningKeyRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{friendly_name:?}")
+            format!("{:?}", friendly_name)
         } else {
             String::new()
         }]
@@ -33656,47 +33640,47 @@ impl tabled::Tabled for ListSipAuthCallsCredentialListMappingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{contents:?}")
+                format!("{:?}", contents)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33789,47 +33773,47 @@ impl tabled::Tabled for ListSipAuthCallsIpAccessControlListMappingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{contents:?}")
+                format!("{:?}", contents)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -33901,47 +33885,47 @@ impl tabled::Tabled for ListSipAuthRegistrationsCredentialListMappingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{contents:?}")
+                format!("{:?}", contents)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -34032,47 +34016,47 @@ impl tabled::Tabled for ListSipCredentialResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(credentials) = &self.credentials {
-                format!("{credentials:?}")
+                format!("{:?}", credentials)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -34156,7 +34140,7 @@ impl tabled::Tabled for UpdateSipCredentialRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(password) = &self.password {
-            format!("{password:?}")
+            format!("{:?}", password)
         } else {
             String::new()
         }]
@@ -34206,47 +34190,47 @@ impl tabled::Tabled for ListSipCredentialListResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(credential_lists) = &self.credential_lists {
-                format!("{credential_lists:?}")
+                format!("{:?}", credential_lists)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -34368,47 +34352,47 @@ impl tabled::Tabled for ListSipCredentialListMappingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(credential_list_mappings) = &self.credential_list_mappings {
-                format!("{credential_list_mappings:?}")
+                format!("{:?}", credential_list_mappings)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -34500,47 +34484,47 @@ impl tabled::Tabled for ListSipDomainResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(domains) = &self.domains {
-                format!("{domains:?}")
+                format!("{:?}", domains)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -34780,62 +34764,62 @@ impl tabled::Tabled for CreateSipDomainRequest {
         vec![
             self.domain_name.clone(),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{voice_status_callback_url:?}")
+                format!("{:?}", voice_status_callback_url)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{voice_status_callback_method:?}")
+                format!("{:?}", voice_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{sip_registration:?}")
+                format!("{:?}", sip_registration)
             } else {
                 String::new()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{emergency_calling_enabled:?}")
+                format!("{:?}", emergency_calling_enabled)
             } else {
                 String::new()
             },
             if let Some(secure) = &self.secure {
-                format!("{secure:?}")
+                format!("{:?}", secure)
             } else {
                 String::new()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{byoc_trunk_sid:?}")
+                format!("{:?}", byoc_trunk_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{emergency_caller_sid:?}")
+                format!("{:?}", emergency_caller_sid)
             } else {
                 String::new()
             },
@@ -35082,67 +35066,67 @@ impl tabled::Tabled for UpdateSipDomainRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{voice_fallback_method:?}")
+                format!("{:?}", voice_fallback_method)
             } else {
                 String::new()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{voice_fallback_url:?}")
+                format!("{:?}", voice_fallback_url)
             } else {
                 String::new()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{voice_method:?}")
+                format!("{:?}", voice_method)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{voice_status_callback_method:?}")
+                format!("{:?}", voice_status_callback_method)
             } else {
                 String::new()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{voice_status_callback_url:?}")
+                format!("{:?}", voice_status_callback_url)
             } else {
                 String::new()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{voice_url:?}")
+                format!("{:?}", voice_url)
             } else {
                 String::new()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{sip_registration:?}")
+                format!("{:?}", sip_registration)
             } else {
                 String::new()
             },
             if let Some(domain_name) = &self.domain_name {
-                format!("{domain_name:?}")
+                format!("{:?}", domain_name)
             } else {
                 String::new()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{emergency_calling_enabled:?}")
+                format!("{:?}", emergency_calling_enabled)
             } else {
                 String::new()
             },
             if let Some(secure) = &self.secure {
-                format!("{secure:?}")
+                format!("{:?}", secure)
             } else {
                 String::new()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{byoc_trunk_sid:?}")
+                format!("{:?}", byoc_trunk_sid)
             } else {
                 String::new()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{emergency_caller_sid:?}")
+                format!("{:?}", emergency_caller_sid)
             } else {
                 String::new()
             },
@@ -35207,47 +35191,47 @@ impl tabled::Tabled for ListSipIpAccessControlListResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(ip_access_control_lists) = &self.ip_access_control_lists {
-                format!("{ip_access_control_lists:?}")
+                format!("{:?}", ip_access_control_lists)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -35370,47 +35354,47 @@ impl tabled::Tabled for ListSipIpAccessControlListMappingResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(ip_access_control_list_mappings) = &self.ip_access_control_list_mappings {
-                format!("{ip_access_control_list_mappings:?}")
+                format!("{:?}", ip_access_control_list_mappings)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -35501,47 +35485,47 @@ impl tabled::Tabled for ListSipIpAddressResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(ip_addresses) = &self.ip_addresses {
-                format!("{ip_addresses:?}")
+                format!("{:?}", ip_addresses)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -35602,7 +35586,7 @@ impl tabled::Tabled for CreateSipIpAddressRequest {
             self.friendly_name.clone(),
             self.ip_address.clone(),
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{cidr_prefix_length:?}")
+                format!("{:?}", cidr_prefix_length)
             } else {
                 String::new()
             },
@@ -35659,17 +35643,17 @@ impl tabled::Tabled for UpdateSipIpAddressRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(ip_address) = &self.ip_address {
-                format!("{ip_address:?}")
+                format!("{:?}", ip_address)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{cidr_prefix_length:?}")
+                format!("{:?}", cidr_prefix_length)
             } else {
                 String::new()
             },
@@ -37154,1017 +37138,1017 @@ impl tabled::Tabled for CreateSiprecRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(connector_name) = &self.connector_name {
-                format!("{connector_name:?}")
+                format!("{:?}", connector_name)
             } else {
                 String::new()
             },
             if let Some(track) = &self.track {
-                format!("{track:?}")
+                format!("{:?}", track)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(parameter_1_name) = &self.parameter_1_name {
-                format!("{parameter_1_name:?}")
+                format!("{:?}", parameter_1_name)
             } else {
                 String::new()
             },
             if let Some(parameter_1_value) = &self.parameter_1_value {
-                format!("{parameter_1_value:?}")
+                format!("{:?}", parameter_1_value)
             } else {
                 String::new()
             },
             if let Some(parameter_2_name) = &self.parameter_2_name {
-                format!("{parameter_2_name:?}")
+                format!("{:?}", parameter_2_name)
             } else {
                 String::new()
             },
             if let Some(parameter_2_value) = &self.parameter_2_value {
-                format!("{parameter_2_value:?}")
+                format!("{:?}", parameter_2_value)
             } else {
                 String::new()
             },
             if let Some(parameter_3_name) = &self.parameter_3_name {
-                format!("{parameter_3_name:?}")
+                format!("{:?}", parameter_3_name)
             } else {
                 String::new()
             },
             if let Some(parameter_3_value) = &self.parameter_3_value {
-                format!("{parameter_3_value:?}")
+                format!("{:?}", parameter_3_value)
             } else {
                 String::new()
             },
             if let Some(parameter_4_name) = &self.parameter_4_name {
-                format!("{parameter_4_name:?}")
+                format!("{:?}", parameter_4_name)
             } else {
                 String::new()
             },
             if let Some(parameter_4_value) = &self.parameter_4_value {
-                format!("{parameter_4_value:?}")
+                format!("{:?}", parameter_4_value)
             } else {
                 String::new()
             },
             if let Some(parameter_5_name) = &self.parameter_5_name {
-                format!("{parameter_5_name:?}")
+                format!("{:?}", parameter_5_name)
             } else {
                 String::new()
             },
             if let Some(parameter_5_value) = &self.parameter_5_value {
-                format!("{parameter_5_value:?}")
+                format!("{:?}", parameter_5_value)
             } else {
                 String::new()
             },
             if let Some(parameter_6_name) = &self.parameter_6_name {
-                format!("{parameter_6_name:?}")
+                format!("{:?}", parameter_6_name)
             } else {
                 String::new()
             },
             if let Some(parameter_6_value) = &self.parameter_6_value {
-                format!("{parameter_6_value:?}")
+                format!("{:?}", parameter_6_value)
             } else {
                 String::new()
             },
             if let Some(parameter_7_name) = &self.parameter_7_name {
-                format!("{parameter_7_name:?}")
+                format!("{:?}", parameter_7_name)
             } else {
                 String::new()
             },
             if let Some(parameter_7_value) = &self.parameter_7_value {
-                format!("{parameter_7_value:?}")
+                format!("{:?}", parameter_7_value)
             } else {
                 String::new()
             },
             if let Some(parameter_8_name) = &self.parameter_8_name {
-                format!("{parameter_8_name:?}")
+                format!("{:?}", parameter_8_name)
             } else {
                 String::new()
             },
             if let Some(parameter_8_value) = &self.parameter_8_value {
-                format!("{parameter_8_value:?}")
+                format!("{:?}", parameter_8_value)
             } else {
                 String::new()
             },
             if let Some(parameter_9_name) = &self.parameter_9_name {
-                format!("{parameter_9_name:?}")
+                format!("{:?}", parameter_9_name)
             } else {
                 String::new()
             },
             if let Some(parameter_9_value) = &self.parameter_9_value {
-                format!("{parameter_9_value:?}")
+                format!("{:?}", parameter_9_value)
             } else {
                 String::new()
             },
             if let Some(parameter_10_name) = &self.parameter_10_name {
-                format!("{parameter_10_name:?}")
+                format!("{:?}", parameter_10_name)
             } else {
                 String::new()
             },
             if let Some(parameter_10_value) = &self.parameter_10_value {
-                format!("{parameter_10_value:?}")
+                format!("{:?}", parameter_10_value)
             } else {
                 String::new()
             },
             if let Some(parameter_11_name) = &self.parameter_11_name {
-                format!("{parameter_11_name:?}")
+                format!("{:?}", parameter_11_name)
             } else {
                 String::new()
             },
             if let Some(parameter_11_value) = &self.parameter_11_value {
-                format!("{parameter_11_value:?}")
+                format!("{:?}", parameter_11_value)
             } else {
                 String::new()
             },
             if let Some(parameter_12_name) = &self.parameter_12_name {
-                format!("{parameter_12_name:?}")
+                format!("{:?}", parameter_12_name)
             } else {
                 String::new()
             },
             if let Some(parameter_12_value) = &self.parameter_12_value {
-                format!("{parameter_12_value:?}")
+                format!("{:?}", parameter_12_value)
             } else {
                 String::new()
             },
             if let Some(parameter_13_name) = &self.parameter_13_name {
-                format!("{parameter_13_name:?}")
+                format!("{:?}", parameter_13_name)
             } else {
                 String::new()
             },
             if let Some(parameter_13_value) = &self.parameter_13_value {
-                format!("{parameter_13_value:?}")
+                format!("{:?}", parameter_13_value)
             } else {
                 String::new()
             },
             if let Some(parameter_14_name) = &self.parameter_14_name {
-                format!("{parameter_14_name:?}")
+                format!("{:?}", parameter_14_name)
             } else {
                 String::new()
             },
             if let Some(parameter_14_value) = &self.parameter_14_value {
-                format!("{parameter_14_value:?}")
+                format!("{:?}", parameter_14_value)
             } else {
                 String::new()
             },
             if let Some(parameter_15_name) = &self.parameter_15_name {
-                format!("{parameter_15_name:?}")
+                format!("{:?}", parameter_15_name)
             } else {
                 String::new()
             },
             if let Some(parameter_15_value) = &self.parameter_15_value {
-                format!("{parameter_15_value:?}")
+                format!("{:?}", parameter_15_value)
             } else {
                 String::new()
             },
             if let Some(parameter_16_name) = &self.parameter_16_name {
-                format!("{parameter_16_name:?}")
+                format!("{:?}", parameter_16_name)
             } else {
                 String::new()
             },
             if let Some(parameter_16_value) = &self.parameter_16_value {
-                format!("{parameter_16_value:?}")
+                format!("{:?}", parameter_16_value)
             } else {
                 String::new()
             },
             if let Some(parameter_17_name) = &self.parameter_17_name {
-                format!("{parameter_17_name:?}")
+                format!("{:?}", parameter_17_name)
             } else {
                 String::new()
             },
             if let Some(parameter_17_value) = &self.parameter_17_value {
-                format!("{parameter_17_value:?}")
+                format!("{:?}", parameter_17_value)
             } else {
                 String::new()
             },
             if let Some(parameter_18_name) = &self.parameter_18_name {
-                format!("{parameter_18_name:?}")
+                format!("{:?}", parameter_18_name)
             } else {
                 String::new()
             },
             if let Some(parameter_18_value) = &self.parameter_18_value {
-                format!("{parameter_18_value:?}")
+                format!("{:?}", parameter_18_value)
             } else {
                 String::new()
             },
             if let Some(parameter_19_name) = &self.parameter_19_name {
-                format!("{parameter_19_name:?}")
+                format!("{:?}", parameter_19_name)
             } else {
                 String::new()
             },
             if let Some(parameter_19_value) = &self.parameter_19_value {
-                format!("{parameter_19_value:?}")
+                format!("{:?}", parameter_19_value)
             } else {
                 String::new()
             },
             if let Some(parameter_20_name) = &self.parameter_20_name {
-                format!("{parameter_20_name:?}")
+                format!("{:?}", parameter_20_name)
             } else {
                 String::new()
             },
             if let Some(parameter_20_value) = &self.parameter_20_value {
-                format!("{parameter_20_value:?}")
+                format!("{:?}", parameter_20_value)
             } else {
                 String::new()
             },
             if let Some(parameter_21_name) = &self.parameter_21_name {
-                format!("{parameter_21_name:?}")
+                format!("{:?}", parameter_21_name)
             } else {
                 String::new()
             },
             if let Some(parameter_21_value) = &self.parameter_21_value {
-                format!("{parameter_21_value:?}")
+                format!("{:?}", parameter_21_value)
             } else {
                 String::new()
             },
             if let Some(parameter_22_name) = &self.parameter_22_name {
-                format!("{parameter_22_name:?}")
+                format!("{:?}", parameter_22_name)
             } else {
                 String::new()
             },
             if let Some(parameter_22_value) = &self.parameter_22_value {
-                format!("{parameter_22_value:?}")
+                format!("{:?}", parameter_22_value)
             } else {
                 String::new()
             },
             if let Some(parameter_23_name) = &self.parameter_23_name {
-                format!("{parameter_23_name:?}")
+                format!("{:?}", parameter_23_name)
             } else {
                 String::new()
             },
             if let Some(parameter_23_value) = &self.parameter_23_value {
-                format!("{parameter_23_value:?}")
+                format!("{:?}", parameter_23_value)
             } else {
                 String::new()
             },
             if let Some(parameter_24_name) = &self.parameter_24_name {
-                format!("{parameter_24_name:?}")
+                format!("{:?}", parameter_24_name)
             } else {
                 String::new()
             },
             if let Some(parameter_24_value) = &self.parameter_24_value {
-                format!("{parameter_24_value:?}")
+                format!("{:?}", parameter_24_value)
             } else {
                 String::new()
             },
             if let Some(parameter_25_name) = &self.parameter_25_name {
-                format!("{parameter_25_name:?}")
+                format!("{:?}", parameter_25_name)
             } else {
                 String::new()
             },
             if let Some(parameter_25_value) = &self.parameter_25_value {
-                format!("{parameter_25_value:?}")
+                format!("{:?}", parameter_25_value)
             } else {
                 String::new()
             },
             if let Some(parameter_26_name) = &self.parameter_26_name {
-                format!("{parameter_26_name:?}")
+                format!("{:?}", parameter_26_name)
             } else {
                 String::new()
             },
             if let Some(parameter_26_value) = &self.parameter_26_value {
-                format!("{parameter_26_value:?}")
+                format!("{:?}", parameter_26_value)
             } else {
                 String::new()
             },
             if let Some(parameter_27_name) = &self.parameter_27_name {
-                format!("{parameter_27_name:?}")
+                format!("{:?}", parameter_27_name)
             } else {
                 String::new()
             },
             if let Some(parameter_27_value) = &self.parameter_27_value {
-                format!("{parameter_27_value:?}")
+                format!("{:?}", parameter_27_value)
             } else {
                 String::new()
             },
             if let Some(parameter_28_name) = &self.parameter_28_name {
-                format!("{parameter_28_name:?}")
+                format!("{:?}", parameter_28_name)
             } else {
                 String::new()
             },
             if let Some(parameter_28_value) = &self.parameter_28_value {
-                format!("{parameter_28_value:?}")
+                format!("{:?}", parameter_28_value)
             } else {
                 String::new()
             },
             if let Some(parameter_29_name) = &self.parameter_29_name {
-                format!("{parameter_29_name:?}")
+                format!("{:?}", parameter_29_name)
             } else {
                 String::new()
             },
             if let Some(parameter_29_value) = &self.parameter_29_value {
-                format!("{parameter_29_value:?}")
+                format!("{:?}", parameter_29_value)
             } else {
                 String::new()
             },
             if let Some(parameter_30_name) = &self.parameter_30_name {
-                format!("{parameter_30_name:?}")
+                format!("{:?}", parameter_30_name)
             } else {
                 String::new()
             },
             if let Some(parameter_30_value) = &self.parameter_30_value {
-                format!("{parameter_30_value:?}")
+                format!("{:?}", parameter_30_value)
             } else {
                 String::new()
             },
             if let Some(parameter_31_name) = &self.parameter_31_name {
-                format!("{parameter_31_name:?}")
+                format!("{:?}", parameter_31_name)
             } else {
                 String::new()
             },
             if let Some(parameter_31_value) = &self.parameter_31_value {
-                format!("{parameter_31_value:?}")
+                format!("{:?}", parameter_31_value)
             } else {
                 String::new()
             },
             if let Some(parameter_32_name) = &self.parameter_32_name {
-                format!("{parameter_32_name:?}")
+                format!("{:?}", parameter_32_name)
             } else {
                 String::new()
             },
             if let Some(parameter_32_value) = &self.parameter_32_value {
-                format!("{parameter_32_value:?}")
+                format!("{:?}", parameter_32_value)
             } else {
                 String::new()
             },
             if let Some(parameter_33_name) = &self.parameter_33_name {
-                format!("{parameter_33_name:?}")
+                format!("{:?}", parameter_33_name)
             } else {
                 String::new()
             },
             if let Some(parameter_33_value) = &self.parameter_33_value {
-                format!("{parameter_33_value:?}")
+                format!("{:?}", parameter_33_value)
             } else {
                 String::new()
             },
             if let Some(parameter_34_name) = &self.parameter_34_name {
-                format!("{parameter_34_name:?}")
+                format!("{:?}", parameter_34_name)
             } else {
                 String::new()
             },
             if let Some(parameter_34_value) = &self.parameter_34_value {
-                format!("{parameter_34_value:?}")
+                format!("{:?}", parameter_34_value)
             } else {
                 String::new()
             },
             if let Some(parameter_35_name) = &self.parameter_35_name {
-                format!("{parameter_35_name:?}")
+                format!("{:?}", parameter_35_name)
             } else {
                 String::new()
             },
             if let Some(parameter_35_value) = &self.parameter_35_value {
-                format!("{parameter_35_value:?}")
+                format!("{:?}", parameter_35_value)
             } else {
                 String::new()
             },
             if let Some(parameter_36_name) = &self.parameter_36_name {
-                format!("{parameter_36_name:?}")
+                format!("{:?}", parameter_36_name)
             } else {
                 String::new()
             },
             if let Some(parameter_36_value) = &self.parameter_36_value {
-                format!("{parameter_36_value:?}")
+                format!("{:?}", parameter_36_value)
             } else {
                 String::new()
             },
             if let Some(parameter_37_name) = &self.parameter_37_name {
-                format!("{parameter_37_name:?}")
+                format!("{:?}", parameter_37_name)
             } else {
                 String::new()
             },
             if let Some(parameter_37_value) = &self.parameter_37_value {
-                format!("{parameter_37_value:?}")
+                format!("{:?}", parameter_37_value)
             } else {
                 String::new()
             },
             if let Some(parameter_38_name) = &self.parameter_38_name {
-                format!("{parameter_38_name:?}")
+                format!("{:?}", parameter_38_name)
             } else {
                 String::new()
             },
             if let Some(parameter_38_value) = &self.parameter_38_value {
-                format!("{parameter_38_value:?}")
+                format!("{:?}", parameter_38_value)
             } else {
                 String::new()
             },
             if let Some(parameter_39_name) = &self.parameter_39_name {
-                format!("{parameter_39_name:?}")
+                format!("{:?}", parameter_39_name)
             } else {
                 String::new()
             },
             if let Some(parameter_39_value) = &self.parameter_39_value {
-                format!("{parameter_39_value:?}")
+                format!("{:?}", parameter_39_value)
             } else {
                 String::new()
             },
             if let Some(parameter_40_name) = &self.parameter_40_name {
-                format!("{parameter_40_name:?}")
+                format!("{:?}", parameter_40_name)
             } else {
                 String::new()
             },
             if let Some(parameter_40_value) = &self.parameter_40_value {
-                format!("{parameter_40_value:?}")
+                format!("{:?}", parameter_40_value)
             } else {
                 String::new()
             },
             if let Some(parameter_41_name) = &self.parameter_41_name {
-                format!("{parameter_41_name:?}")
+                format!("{:?}", parameter_41_name)
             } else {
                 String::new()
             },
             if let Some(parameter_41_value) = &self.parameter_41_value {
-                format!("{parameter_41_value:?}")
+                format!("{:?}", parameter_41_value)
             } else {
                 String::new()
             },
             if let Some(parameter_42_name) = &self.parameter_42_name {
-                format!("{parameter_42_name:?}")
+                format!("{:?}", parameter_42_name)
             } else {
                 String::new()
             },
             if let Some(parameter_42_value) = &self.parameter_42_value {
-                format!("{parameter_42_value:?}")
+                format!("{:?}", parameter_42_value)
             } else {
                 String::new()
             },
             if let Some(parameter_43_name) = &self.parameter_43_name {
-                format!("{parameter_43_name:?}")
+                format!("{:?}", parameter_43_name)
             } else {
                 String::new()
             },
             if let Some(parameter_43_value) = &self.parameter_43_value {
-                format!("{parameter_43_value:?}")
+                format!("{:?}", parameter_43_value)
             } else {
                 String::new()
             },
             if let Some(parameter_44_name) = &self.parameter_44_name {
-                format!("{parameter_44_name:?}")
+                format!("{:?}", parameter_44_name)
             } else {
                 String::new()
             },
             if let Some(parameter_44_value) = &self.parameter_44_value {
-                format!("{parameter_44_value:?}")
+                format!("{:?}", parameter_44_value)
             } else {
                 String::new()
             },
             if let Some(parameter_45_name) = &self.parameter_45_name {
-                format!("{parameter_45_name:?}")
+                format!("{:?}", parameter_45_name)
             } else {
                 String::new()
             },
             if let Some(parameter_45_value) = &self.parameter_45_value {
-                format!("{parameter_45_value:?}")
+                format!("{:?}", parameter_45_value)
             } else {
                 String::new()
             },
             if let Some(parameter_46_name) = &self.parameter_46_name {
-                format!("{parameter_46_name:?}")
+                format!("{:?}", parameter_46_name)
             } else {
                 String::new()
             },
             if let Some(parameter_46_value) = &self.parameter_46_value {
-                format!("{parameter_46_value:?}")
+                format!("{:?}", parameter_46_value)
             } else {
                 String::new()
             },
             if let Some(parameter_47_name) = &self.parameter_47_name {
-                format!("{parameter_47_name:?}")
+                format!("{:?}", parameter_47_name)
             } else {
                 String::new()
             },
             if let Some(parameter_47_value) = &self.parameter_47_value {
-                format!("{parameter_47_value:?}")
+                format!("{:?}", parameter_47_value)
             } else {
                 String::new()
             },
             if let Some(parameter_48_name) = &self.parameter_48_name {
-                format!("{parameter_48_name:?}")
+                format!("{:?}", parameter_48_name)
             } else {
                 String::new()
             },
             if let Some(parameter_48_value) = &self.parameter_48_value {
-                format!("{parameter_48_value:?}")
+                format!("{:?}", parameter_48_value)
             } else {
                 String::new()
             },
             if let Some(parameter_49_name) = &self.parameter_49_name {
-                format!("{parameter_49_name:?}")
+                format!("{:?}", parameter_49_name)
             } else {
                 String::new()
             },
             if let Some(parameter_49_value) = &self.parameter_49_value {
-                format!("{parameter_49_value:?}")
+                format!("{:?}", parameter_49_value)
             } else {
                 String::new()
             },
             if let Some(parameter_50_name) = &self.parameter_50_name {
-                format!("{parameter_50_name:?}")
+                format!("{:?}", parameter_50_name)
             } else {
                 String::new()
             },
             if let Some(parameter_50_value) = &self.parameter_50_value {
-                format!("{parameter_50_value:?}")
+                format!("{:?}", parameter_50_value)
             } else {
                 String::new()
             },
             if let Some(parameter_51_name) = &self.parameter_51_name {
-                format!("{parameter_51_name:?}")
+                format!("{:?}", parameter_51_name)
             } else {
                 String::new()
             },
             if let Some(parameter_51_value) = &self.parameter_51_value {
-                format!("{parameter_51_value:?}")
+                format!("{:?}", parameter_51_value)
             } else {
                 String::new()
             },
             if let Some(parameter_52_name) = &self.parameter_52_name {
-                format!("{parameter_52_name:?}")
+                format!("{:?}", parameter_52_name)
             } else {
                 String::new()
             },
             if let Some(parameter_52_value) = &self.parameter_52_value {
-                format!("{parameter_52_value:?}")
+                format!("{:?}", parameter_52_value)
             } else {
                 String::new()
             },
             if let Some(parameter_53_name) = &self.parameter_53_name {
-                format!("{parameter_53_name:?}")
+                format!("{:?}", parameter_53_name)
             } else {
                 String::new()
             },
             if let Some(parameter_53_value) = &self.parameter_53_value {
-                format!("{parameter_53_value:?}")
+                format!("{:?}", parameter_53_value)
             } else {
                 String::new()
             },
             if let Some(parameter_54_name) = &self.parameter_54_name {
-                format!("{parameter_54_name:?}")
+                format!("{:?}", parameter_54_name)
             } else {
                 String::new()
             },
             if let Some(parameter_54_value) = &self.parameter_54_value {
-                format!("{parameter_54_value:?}")
+                format!("{:?}", parameter_54_value)
             } else {
                 String::new()
             },
             if let Some(parameter_55_name) = &self.parameter_55_name {
-                format!("{parameter_55_name:?}")
+                format!("{:?}", parameter_55_name)
             } else {
                 String::new()
             },
             if let Some(parameter_55_value) = &self.parameter_55_value {
-                format!("{parameter_55_value:?}")
+                format!("{:?}", parameter_55_value)
             } else {
                 String::new()
             },
             if let Some(parameter_56_name) = &self.parameter_56_name {
-                format!("{parameter_56_name:?}")
+                format!("{:?}", parameter_56_name)
             } else {
                 String::new()
             },
             if let Some(parameter_56_value) = &self.parameter_56_value {
-                format!("{parameter_56_value:?}")
+                format!("{:?}", parameter_56_value)
             } else {
                 String::new()
             },
             if let Some(parameter_57_name) = &self.parameter_57_name {
-                format!("{parameter_57_name:?}")
+                format!("{:?}", parameter_57_name)
             } else {
                 String::new()
             },
             if let Some(parameter_57_value) = &self.parameter_57_value {
-                format!("{parameter_57_value:?}")
+                format!("{:?}", parameter_57_value)
             } else {
                 String::new()
             },
             if let Some(parameter_58_name) = &self.parameter_58_name {
-                format!("{parameter_58_name:?}")
+                format!("{:?}", parameter_58_name)
             } else {
                 String::new()
             },
             if let Some(parameter_58_value) = &self.parameter_58_value {
-                format!("{parameter_58_value:?}")
+                format!("{:?}", parameter_58_value)
             } else {
                 String::new()
             },
             if let Some(parameter_59_name) = &self.parameter_59_name {
-                format!("{parameter_59_name:?}")
+                format!("{:?}", parameter_59_name)
             } else {
                 String::new()
             },
             if let Some(parameter_59_value) = &self.parameter_59_value {
-                format!("{parameter_59_value:?}")
+                format!("{:?}", parameter_59_value)
             } else {
                 String::new()
             },
             if let Some(parameter_60_name) = &self.parameter_60_name {
-                format!("{parameter_60_name:?}")
+                format!("{:?}", parameter_60_name)
             } else {
                 String::new()
             },
             if let Some(parameter_60_value) = &self.parameter_60_value {
-                format!("{parameter_60_value:?}")
+                format!("{:?}", parameter_60_value)
             } else {
                 String::new()
             },
             if let Some(parameter_61_name) = &self.parameter_61_name {
-                format!("{parameter_61_name:?}")
+                format!("{:?}", parameter_61_name)
             } else {
                 String::new()
             },
             if let Some(parameter_61_value) = &self.parameter_61_value {
-                format!("{parameter_61_value:?}")
+                format!("{:?}", parameter_61_value)
             } else {
                 String::new()
             },
             if let Some(parameter_62_name) = &self.parameter_62_name {
-                format!("{parameter_62_name:?}")
+                format!("{:?}", parameter_62_name)
             } else {
                 String::new()
             },
             if let Some(parameter_62_value) = &self.parameter_62_value {
-                format!("{parameter_62_value:?}")
+                format!("{:?}", parameter_62_value)
             } else {
                 String::new()
             },
             if let Some(parameter_63_name) = &self.parameter_63_name {
-                format!("{parameter_63_name:?}")
+                format!("{:?}", parameter_63_name)
             } else {
                 String::new()
             },
             if let Some(parameter_63_value) = &self.parameter_63_value {
-                format!("{parameter_63_value:?}")
+                format!("{:?}", parameter_63_value)
             } else {
                 String::new()
             },
             if let Some(parameter_64_name) = &self.parameter_64_name {
-                format!("{parameter_64_name:?}")
+                format!("{:?}", parameter_64_name)
             } else {
                 String::new()
             },
             if let Some(parameter_64_value) = &self.parameter_64_value {
-                format!("{parameter_64_value:?}")
+                format!("{:?}", parameter_64_value)
             } else {
                 String::new()
             },
             if let Some(parameter_65_name) = &self.parameter_65_name {
-                format!("{parameter_65_name:?}")
+                format!("{:?}", parameter_65_name)
             } else {
                 String::new()
             },
             if let Some(parameter_65_value) = &self.parameter_65_value {
-                format!("{parameter_65_value:?}")
+                format!("{:?}", parameter_65_value)
             } else {
                 String::new()
             },
             if let Some(parameter_66_name) = &self.parameter_66_name {
-                format!("{parameter_66_name:?}")
+                format!("{:?}", parameter_66_name)
             } else {
                 String::new()
             },
             if let Some(parameter_66_value) = &self.parameter_66_value {
-                format!("{parameter_66_value:?}")
+                format!("{:?}", parameter_66_value)
             } else {
                 String::new()
             },
             if let Some(parameter_67_name) = &self.parameter_67_name {
-                format!("{parameter_67_name:?}")
+                format!("{:?}", parameter_67_name)
             } else {
                 String::new()
             },
             if let Some(parameter_67_value) = &self.parameter_67_value {
-                format!("{parameter_67_value:?}")
+                format!("{:?}", parameter_67_value)
             } else {
                 String::new()
             },
             if let Some(parameter_68_name) = &self.parameter_68_name {
-                format!("{parameter_68_name:?}")
+                format!("{:?}", parameter_68_name)
             } else {
                 String::new()
             },
             if let Some(parameter_68_value) = &self.parameter_68_value {
-                format!("{parameter_68_value:?}")
+                format!("{:?}", parameter_68_value)
             } else {
                 String::new()
             },
             if let Some(parameter_69_name) = &self.parameter_69_name {
-                format!("{parameter_69_name:?}")
+                format!("{:?}", parameter_69_name)
             } else {
                 String::new()
             },
             if let Some(parameter_69_value) = &self.parameter_69_value {
-                format!("{parameter_69_value:?}")
+                format!("{:?}", parameter_69_value)
             } else {
                 String::new()
             },
             if let Some(parameter_70_name) = &self.parameter_70_name {
-                format!("{parameter_70_name:?}")
+                format!("{:?}", parameter_70_name)
             } else {
                 String::new()
             },
             if let Some(parameter_70_value) = &self.parameter_70_value {
-                format!("{parameter_70_value:?}")
+                format!("{:?}", parameter_70_value)
             } else {
                 String::new()
             },
             if let Some(parameter_71_name) = &self.parameter_71_name {
-                format!("{parameter_71_name:?}")
+                format!("{:?}", parameter_71_name)
             } else {
                 String::new()
             },
             if let Some(parameter_71_value) = &self.parameter_71_value {
-                format!("{parameter_71_value:?}")
+                format!("{:?}", parameter_71_value)
             } else {
                 String::new()
             },
             if let Some(parameter_72_name) = &self.parameter_72_name {
-                format!("{parameter_72_name:?}")
+                format!("{:?}", parameter_72_name)
             } else {
                 String::new()
             },
             if let Some(parameter_72_value) = &self.parameter_72_value {
-                format!("{parameter_72_value:?}")
+                format!("{:?}", parameter_72_value)
             } else {
                 String::new()
             },
             if let Some(parameter_73_name) = &self.parameter_73_name {
-                format!("{parameter_73_name:?}")
+                format!("{:?}", parameter_73_name)
             } else {
                 String::new()
             },
             if let Some(parameter_73_value) = &self.parameter_73_value {
-                format!("{parameter_73_value:?}")
+                format!("{:?}", parameter_73_value)
             } else {
                 String::new()
             },
             if let Some(parameter_74_name) = &self.parameter_74_name {
-                format!("{parameter_74_name:?}")
+                format!("{:?}", parameter_74_name)
             } else {
                 String::new()
             },
             if let Some(parameter_74_value) = &self.parameter_74_value {
-                format!("{parameter_74_value:?}")
+                format!("{:?}", parameter_74_value)
             } else {
                 String::new()
             },
             if let Some(parameter_75_name) = &self.parameter_75_name {
-                format!("{parameter_75_name:?}")
+                format!("{:?}", parameter_75_name)
             } else {
                 String::new()
             },
             if let Some(parameter_75_value) = &self.parameter_75_value {
-                format!("{parameter_75_value:?}")
+                format!("{:?}", parameter_75_value)
             } else {
                 String::new()
             },
             if let Some(parameter_76_name) = &self.parameter_76_name {
-                format!("{parameter_76_name:?}")
+                format!("{:?}", parameter_76_name)
             } else {
                 String::new()
             },
             if let Some(parameter_76_value) = &self.parameter_76_value {
-                format!("{parameter_76_value:?}")
+                format!("{:?}", parameter_76_value)
             } else {
                 String::new()
             },
             if let Some(parameter_77_name) = &self.parameter_77_name {
-                format!("{parameter_77_name:?}")
+                format!("{:?}", parameter_77_name)
             } else {
                 String::new()
             },
             if let Some(parameter_77_value) = &self.parameter_77_value {
-                format!("{parameter_77_value:?}")
+                format!("{:?}", parameter_77_value)
             } else {
                 String::new()
             },
             if let Some(parameter_78_name) = &self.parameter_78_name {
-                format!("{parameter_78_name:?}")
+                format!("{:?}", parameter_78_name)
             } else {
                 String::new()
             },
             if let Some(parameter_78_value) = &self.parameter_78_value {
-                format!("{parameter_78_value:?}")
+                format!("{:?}", parameter_78_value)
             } else {
                 String::new()
             },
             if let Some(parameter_79_name) = &self.parameter_79_name {
-                format!("{parameter_79_name:?}")
+                format!("{:?}", parameter_79_name)
             } else {
                 String::new()
             },
             if let Some(parameter_79_value) = &self.parameter_79_value {
-                format!("{parameter_79_value:?}")
+                format!("{:?}", parameter_79_value)
             } else {
                 String::new()
             },
             if let Some(parameter_80_name) = &self.parameter_80_name {
-                format!("{parameter_80_name:?}")
+                format!("{:?}", parameter_80_name)
             } else {
                 String::new()
             },
             if let Some(parameter_80_value) = &self.parameter_80_value {
-                format!("{parameter_80_value:?}")
+                format!("{:?}", parameter_80_value)
             } else {
                 String::new()
             },
             if let Some(parameter_81_name) = &self.parameter_81_name {
-                format!("{parameter_81_name:?}")
+                format!("{:?}", parameter_81_name)
             } else {
                 String::new()
             },
             if let Some(parameter_81_value) = &self.parameter_81_value {
-                format!("{parameter_81_value:?}")
+                format!("{:?}", parameter_81_value)
             } else {
                 String::new()
             },
             if let Some(parameter_82_name) = &self.parameter_82_name {
-                format!("{parameter_82_name:?}")
+                format!("{:?}", parameter_82_name)
             } else {
                 String::new()
             },
             if let Some(parameter_82_value) = &self.parameter_82_value {
-                format!("{parameter_82_value:?}")
+                format!("{:?}", parameter_82_value)
             } else {
                 String::new()
             },
             if let Some(parameter_83_name) = &self.parameter_83_name {
-                format!("{parameter_83_name:?}")
+                format!("{:?}", parameter_83_name)
             } else {
                 String::new()
             },
             if let Some(parameter_83_value) = &self.parameter_83_value {
-                format!("{parameter_83_value:?}")
+                format!("{:?}", parameter_83_value)
             } else {
                 String::new()
             },
             if let Some(parameter_84_name) = &self.parameter_84_name {
-                format!("{parameter_84_name:?}")
+                format!("{:?}", parameter_84_name)
             } else {
                 String::new()
             },
             if let Some(parameter_84_value) = &self.parameter_84_value {
-                format!("{parameter_84_value:?}")
+                format!("{:?}", parameter_84_value)
             } else {
                 String::new()
             },
             if let Some(parameter_85_name) = &self.parameter_85_name {
-                format!("{parameter_85_name:?}")
+                format!("{:?}", parameter_85_name)
             } else {
                 String::new()
             },
             if let Some(parameter_85_value) = &self.parameter_85_value {
-                format!("{parameter_85_value:?}")
+                format!("{:?}", parameter_85_value)
             } else {
                 String::new()
             },
             if let Some(parameter_86_name) = &self.parameter_86_name {
-                format!("{parameter_86_name:?}")
+                format!("{:?}", parameter_86_name)
             } else {
                 String::new()
             },
             if let Some(parameter_86_value) = &self.parameter_86_value {
-                format!("{parameter_86_value:?}")
+                format!("{:?}", parameter_86_value)
             } else {
                 String::new()
             },
             if let Some(parameter_87_name) = &self.parameter_87_name {
-                format!("{parameter_87_name:?}")
+                format!("{:?}", parameter_87_name)
             } else {
                 String::new()
             },
             if let Some(parameter_87_value) = &self.parameter_87_value {
-                format!("{parameter_87_value:?}")
+                format!("{:?}", parameter_87_value)
             } else {
                 String::new()
             },
             if let Some(parameter_88_name) = &self.parameter_88_name {
-                format!("{parameter_88_name:?}")
+                format!("{:?}", parameter_88_name)
             } else {
                 String::new()
             },
             if let Some(parameter_88_value) = &self.parameter_88_value {
-                format!("{parameter_88_value:?}")
+                format!("{:?}", parameter_88_value)
             } else {
                 String::new()
             },
             if let Some(parameter_89_name) = &self.parameter_89_name {
-                format!("{parameter_89_name:?}")
+                format!("{:?}", parameter_89_name)
             } else {
                 String::new()
             },
             if let Some(parameter_89_value) = &self.parameter_89_value {
-                format!("{parameter_89_value:?}")
+                format!("{:?}", parameter_89_value)
             } else {
                 String::new()
             },
             if let Some(parameter_90_name) = &self.parameter_90_name {
-                format!("{parameter_90_name:?}")
+                format!("{:?}", parameter_90_name)
             } else {
                 String::new()
             },
             if let Some(parameter_90_value) = &self.parameter_90_value {
-                format!("{parameter_90_value:?}")
+                format!("{:?}", parameter_90_value)
             } else {
                 String::new()
             },
             if let Some(parameter_91_name) = &self.parameter_91_name {
-                format!("{parameter_91_name:?}")
+                format!("{:?}", parameter_91_name)
             } else {
                 String::new()
             },
             if let Some(parameter_91_value) = &self.parameter_91_value {
-                format!("{parameter_91_value:?}")
+                format!("{:?}", parameter_91_value)
             } else {
                 String::new()
             },
             if let Some(parameter_92_name) = &self.parameter_92_name {
-                format!("{parameter_92_name:?}")
+                format!("{:?}", parameter_92_name)
             } else {
                 String::new()
             },
             if let Some(parameter_92_value) = &self.parameter_92_value {
-                format!("{parameter_92_value:?}")
+                format!("{:?}", parameter_92_value)
             } else {
                 String::new()
             },
             if let Some(parameter_93_name) = &self.parameter_93_name {
-                format!("{parameter_93_name:?}")
+                format!("{:?}", parameter_93_name)
             } else {
                 String::new()
             },
             if let Some(parameter_93_value) = &self.parameter_93_value {
-                format!("{parameter_93_value:?}")
+                format!("{:?}", parameter_93_value)
             } else {
                 String::new()
             },
             if let Some(parameter_94_name) = &self.parameter_94_name {
-                format!("{parameter_94_name:?}")
+                format!("{:?}", parameter_94_name)
             } else {
                 String::new()
             },
             if let Some(parameter_94_value) = &self.parameter_94_value {
-                format!("{parameter_94_value:?}")
+                format!("{:?}", parameter_94_value)
             } else {
                 String::new()
             },
             if let Some(parameter_95_name) = &self.parameter_95_name {
-                format!("{parameter_95_name:?}")
+                format!("{:?}", parameter_95_name)
             } else {
                 String::new()
             },
             if let Some(parameter_95_value) = &self.parameter_95_value {
-                format!("{parameter_95_value:?}")
+                format!("{:?}", parameter_95_value)
             } else {
                 String::new()
             },
             if let Some(parameter_96_name) = &self.parameter_96_name {
-                format!("{parameter_96_name:?}")
+                format!("{:?}", parameter_96_name)
             } else {
                 String::new()
             },
             if let Some(parameter_96_value) = &self.parameter_96_value {
-                format!("{parameter_96_value:?}")
+                format!("{:?}", parameter_96_value)
             } else {
                 String::new()
             },
             if let Some(parameter_97_name) = &self.parameter_97_name {
-                format!("{parameter_97_name:?}")
+                format!("{:?}", parameter_97_name)
             } else {
                 String::new()
             },
             if let Some(parameter_97_value) = &self.parameter_97_value {
-                format!("{parameter_97_value:?}")
+                format!("{:?}", parameter_97_value)
             } else {
                 String::new()
             },
             if let Some(parameter_98_name) = &self.parameter_98_name {
-                format!("{parameter_98_name:?}")
+                format!("{:?}", parameter_98_name)
             } else {
                 String::new()
             },
             if let Some(parameter_98_value) = &self.parameter_98_value {
-                format!("{parameter_98_value:?}")
+                format!("{:?}", parameter_98_value)
             } else {
                 String::new()
             },
             if let Some(parameter_99_name) = &self.parameter_99_name {
-                format!("{parameter_99_name:?}")
+                format!("{:?}", parameter_99_name)
             } else {
                 String::new()
             },
             if let Some(parameter_99_value) = &self.parameter_99_value {
-                format!("{parameter_99_value:?}")
+                format!("{:?}", parameter_99_value)
             } else {
                 String::new()
             },
@@ -39875,1012 +39859,1012 @@ impl tabled::Tabled for CreateStreamRequest {
         vec![
             self.url.clone(),
             if let Some(name) = &self.name {
-                format!("{name:?}")
+                format!("{:?}", name)
             } else {
                 String::new()
             },
             if let Some(track) = &self.track {
-                format!("{track:?}")
+                format!("{:?}", track)
             } else {
                 String::new()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{status_callback:?}")
+                format!("{:?}", status_callback)
             } else {
                 String::new()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{status_callback_method:?}")
+                format!("{:?}", status_callback_method)
             } else {
                 String::new()
             },
             if let Some(parameter_1_name) = &self.parameter_1_name {
-                format!("{parameter_1_name:?}")
+                format!("{:?}", parameter_1_name)
             } else {
                 String::new()
             },
             if let Some(parameter_1_value) = &self.parameter_1_value {
-                format!("{parameter_1_value:?}")
+                format!("{:?}", parameter_1_value)
             } else {
                 String::new()
             },
             if let Some(parameter_2_name) = &self.parameter_2_name {
-                format!("{parameter_2_name:?}")
+                format!("{:?}", parameter_2_name)
             } else {
                 String::new()
             },
             if let Some(parameter_2_value) = &self.parameter_2_value {
-                format!("{parameter_2_value:?}")
+                format!("{:?}", parameter_2_value)
             } else {
                 String::new()
             },
             if let Some(parameter_3_name) = &self.parameter_3_name {
-                format!("{parameter_3_name:?}")
+                format!("{:?}", parameter_3_name)
             } else {
                 String::new()
             },
             if let Some(parameter_3_value) = &self.parameter_3_value {
-                format!("{parameter_3_value:?}")
+                format!("{:?}", parameter_3_value)
             } else {
                 String::new()
             },
             if let Some(parameter_4_name) = &self.parameter_4_name {
-                format!("{parameter_4_name:?}")
+                format!("{:?}", parameter_4_name)
             } else {
                 String::new()
             },
             if let Some(parameter_4_value) = &self.parameter_4_value {
-                format!("{parameter_4_value:?}")
+                format!("{:?}", parameter_4_value)
             } else {
                 String::new()
             },
             if let Some(parameter_5_name) = &self.parameter_5_name {
-                format!("{parameter_5_name:?}")
+                format!("{:?}", parameter_5_name)
             } else {
                 String::new()
             },
             if let Some(parameter_5_value) = &self.parameter_5_value {
-                format!("{parameter_5_value:?}")
+                format!("{:?}", parameter_5_value)
             } else {
                 String::new()
             },
             if let Some(parameter_6_name) = &self.parameter_6_name {
-                format!("{parameter_6_name:?}")
+                format!("{:?}", parameter_6_name)
             } else {
                 String::new()
             },
             if let Some(parameter_6_value) = &self.parameter_6_value {
-                format!("{parameter_6_value:?}")
+                format!("{:?}", parameter_6_value)
             } else {
                 String::new()
             },
             if let Some(parameter_7_name) = &self.parameter_7_name {
-                format!("{parameter_7_name:?}")
+                format!("{:?}", parameter_7_name)
             } else {
                 String::new()
             },
             if let Some(parameter_7_value) = &self.parameter_7_value {
-                format!("{parameter_7_value:?}")
+                format!("{:?}", parameter_7_value)
             } else {
                 String::new()
             },
             if let Some(parameter_8_name) = &self.parameter_8_name {
-                format!("{parameter_8_name:?}")
+                format!("{:?}", parameter_8_name)
             } else {
                 String::new()
             },
             if let Some(parameter_8_value) = &self.parameter_8_value {
-                format!("{parameter_8_value:?}")
+                format!("{:?}", parameter_8_value)
             } else {
                 String::new()
             },
             if let Some(parameter_9_name) = &self.parameter_9_name {
-                format!("{parameter_9_name:?}")
+                format!("{:?}", parameter_9_name)
             } else {
                 String::new()
             },
             if let Some(parameter_9_value) = &self.parameter_9_value {
-                format!("{parameter_9_value:?}")
+                format!("{:?}", parameter_9_value)
             } else {
                 String::new()
             },
             if let Some(parameter_10_name) = &self.parameter_10_name {
-                format!("{parameter_10_name:?}")
+                format!("{:?}", parameter_10_name)
             } else {
                 String::new()
             },
             if let Some(parameter_10_value) = &self.parameter_10_value {
-                format!("{parameter_10_value:?}")
+                format!("{:?}", parameter_10_value)
             } else {
                 String::new()
             },
             if let Some(parameter_11_name) = &self.parameter_11_name {
-                format!("{parameter_11_name:?}")
+                format!("{:?}", parameter_11_name)
             } else {
                 String::new()
             },
             if let Some(parameter_11_value) = &self.parameter_11_value {
-                format!("{parameter_11_value:?}")
+                format!("{:?}", parameter_11_value)
             } else {
                 String::new()
             },
             if let Some(parameter_12_name) = &self.parameter_12_name {
-                format!("{parameter_12_name:?}")
+                format!("{:?}", parameter_12_name)
             } else {
                 String::new()
             },
             if let Some(parameter_12_value) = &self.parameter_12_value {
-                format!("{parameter_12_value:?}")
+                format!("{:?}", parameter_12_value)
             } else {
                 String::new()
             },
             if let Some(parameter_13_name) = &self.parameter_13_name {
-                format!("{parameter_13_name:?}")
+                format!("{:?}", parameter_13_name)
             } else {
                 String::new()
             },
             if let Some(parameter_13_value) = &self.parameter_13_value {
-                format!("{parameter_13_value:?}")
+                format!("{:?}", parameter_13_value)
             } else {
                 String::new()
             },
             if let Some(parameter_14_name) = &self.parameter_14_name {
-                format!("{parameter_14_name:?}")
+                format!("{:?}", parameter_14_name)
             } else {
                 String::new()
             },
             if let Some(parameter_14_value) = &self.parameter_14_value {
-                format!("{parameter_14_value:?}")
+                format!("{:?}", parameter_14_value)
             } else {
                 String::new()
             },
             if let Some(parameter_15_name) = &self.parameter_15_name {
-                format!("{parameter_15_name:?}")
+                format!("{:?}", parameter_15_name)
             } else {
                 String::new()
             },
             if let Some(parameter_15_value) = &self.parameter_15_value {
-                format!("{parameter_15_value:?}")
+                format!("{:?}", parameter_15_value)
             } else {
                 String::new()
             },
             if let Some(parameter_16_name) = &self.parameter_16_name {
-                format!("{parameter_16_name:?}")
+                format!("{:?}", parameter_16_name)
             } else {
                 String::new()
             },
             if let Some(parameter_16_value) = &self.parameter_16_value {
-                format!("{parameter_16_value:?}")
+                format!("{:?}", parameter_16_value)
             } else {
                 String::new()
             },
             if let Some(parameter_17_name) = &self.parameter_17_name {
-                format!("{parameter_17_name:?}")
+                format!("{:?}", parameter_17_name)
             } else {
                 String::new()
             },
             if let Some(parameter_17_value) = &self.parameter_17_value {
-                format!("{parameter_17_value:?}")
+                format!("{:?}", parameter_17_value)
             } else {
                 String::new()
             },
             if let Some(parameter_18_name) = &self.parameter_18_name {
-                format!("{parameter_18_name:?}")
+                format!("{:?}", parameter_18_name)
             } else {
                 String::new()
             },
             if let Some(parameter_18_value) = &self.parameter_18_value {
-                format!("{parameter_18_value:?}")
+                format!("{:?}", parameter_18_value)
             } else {
                 String::new()
             },
             if let Some(parameter_19_name) = &self.parameter_19_name {
-                format!("{parameter_19_name:?}")
+                format!("{:?}", parameter_19_name)
             } else {
                 String::new()
             },
             if let Some(parameter_19_value) = &self.parameter_19_value {
-                format!("{parameter_19_value:?}")
+                format!("{:?}", parameter_19_value)
             } else {
                 String::new()
             },
             if let Some(parameter_20_name) = &self.parameter_20_name {
-                format!("{parameter_20_name:?}")
+                format!("{:?}", parameter_20_name)
             } else {
                 String::new()
             },
             if let Some(parameter_20_value) = &self.parameter_20_value {
-                format!("{parameter_20_value:?}")
+                format!("{:?}", parameter_20_value)
             } else {
                 String::new()
             },
             if let Some(parameter_21_name) = &self.parameter_21_name {
-                format!("{parameter_21_name:?}")
+                format!("{:?}", parameter_21_name)
             } else {
                 String::new()
             },
             if let Some(parameter_21_value) = &self.parameter_21_value {
-                format!("{parameter_21_value:?}")
+                format!("{:?}", parameter_21_value)
             } else {
                 String::new()
             },
             if let Some(parameter_22_name) = &self.parameter_22_name {
-                format!("{parameter_22_name:?}")
+                format!("{:?}", parameter_22_name)
             } else {
                 String::new()
             },
             if let Some(parameter_22_value) = &self.parameter_22_value {
-                format!("{parameter_22_value:?}")
+                format!("{:?}", parameter_22_value)
             } else {
                 String::new()
             },
             if let Some(parameter_23_name) = &self.parameter_23_name {
-                format!("{parameter_23_name:?}")
+                format!("{:?}", parameter_23_name)
             } else {
                 String::new()
             },
             if let Some(parameter_23_value) = &self.parameter_23_value {
-                format!("{parameter_23_value:?}")
+                format!("{:?}", parameter_23_value)
             } else {
                 String::new()
             },
             if let Some(parameter_24_name) = &self.parameter_24_name {
-                format!("{parameter_24_name:?}")
+                format!("{:?}", parameter_24_name)
             } else {
                 String::new()
             },
             if let Some(parameter_24_value) = &self.parameter_24_value {
-                format!("{parameter_24_value:?}")
+                format!("{:?}", parameter_24_value)
             } else {
                 String::new()
             },
             if let Some(parameter_25_name) = &self.parameter_25_name {
-                format!("{parameter_25_name:?}")
+                format!("{:?}", parameter_25_name)
             } else {
                 String::new()
             },
             if let Some(parameter_25_value) = &self.parameter_25_value {
-                format!("{parameter_25_value:?}")
+                format!("{:?}", parameter_25_value)
             } else {
                 String::new()
             },
             if let Some(parameter_26_name) = &self.parameter_26_name {
-                format!("{parameter_26_name:?}")
+                format!("{:?}", parameter_26_name)
             } else {
                 String::new()
             },
             if let Some(parameter_26_value) = &self.parameter_26_value {
-                format!("{parameter_26_value:?}")
+                format!("{:?}", parameter_26_value)
             } else {
                 String::new()
             },
             if let Some(parameter_27_name) = &self.parameter_27_name {
-                format!("{parameter_27_name:?}")
+                format!("{:?}", parameter_27_name)
             } else {
                 String::new()
             },
             if let Some(parameter_27_value) = &self.parameter_27_value {
-                format!("{parameter_27_value:?}")
+                format!("{:?}", parameter_27_value)
             } else {
                 String::new()
             },
             if let Some(parameter_28_name) = &self.parameter_28_name {
-                format!("{parameter_28_name:?}")
+                format!("{:?}", parameter_28_name)
             } else {
                 String::new()
             },
             if let Some(parameter_28_value) = &self.parameter_28_value {
-                format!("{parameter_28_value:?}")
+                format!("{:?}", parameter_28_value)
             } else {
                 String::new()
             },
             if let Some(parameter_29_name) = &self.parameter_29_name {
-                format!("{parameter_29_name:?}")
+                format!("{:?}", parameter_29_name)
             } else {
                 String::new()
             },
             if let Some(parameter_29_value) = &self.parameter_29_value {
-                format!("{parameter_29_value:?}")
+                format!("{:?}", parameter_29_value)
             } else {
                 String::new()
             },
             if let Some(parameter_30_name) = &self.parameter_30_name {
-                format!("{parameter_30_name:?}")
+                format!("{:?}", parameter_30_name)
             } else {
                 String::new()
             },
             if let Some(parameter_30_value) = &self.parameter_30_value {
-                format!("{parameter_30_value:?}")
+                format!("{:?}", parameter_30_value)
             } else {
                 String::new()
             },
             if let Some(parameter_31_name) = &self.parameter_31_name {
-                format!("{parameter_31_name:?}")
+                format!("{:?}", parameter_31_name)
             } else {
                 String::new()
             },
             if let Some(parameter_31_value) = &self.parameter_31_value {
-                format!("{parameter_31_value:?}")
+                format!("{:?}", parameter_31_value)
             } else {
                 String::new()
             },
             if let Some(parameter_32_name) = &self.parameter_32_name {
-                format!("{parameter_32_name:?}")
+                format!("{:?}", parameter_32_name)
             } else {
                 String::new()
             },
             if let Some(parameter_32_value) = &self.parameter_32_value {
-                format!("{parameter_32_value:?}")
+                format!("{:?}", parameter_32_value)
             } else {
                 String::new()
             },
             if let Some(parameter_33_name) = &self.parameter_33_name {
-                format!("{parameter_33_name:?}")
+                format!("{:?}", parameter_33_name)
             } else {
                 String::new()
             },
             if let Some(parameter_33_value) = &self.parameter_33_value {
-                format!("{parameter_33_value:?}")
+                format!("{:?}", parameter_33_value)
             } else {
                 String::new()
             },
             if let Some(parameter_34_name) = &self.parameter_34_name {
-                format!("{parameter_34_name:?}")
+                format!("{:?}", parameter_34_name)
             } else {
                 String::new()
             },
             if let Some(parameter_34_value) = &self.parameter_34_value {
-                format!("{parameter_34_value:?}")
+                format!("{:?}", parameter_34_value)
             } else {
                 String::new()
             },
             if let Some(parameter_35_name) = &self.parameter_35_name {
-                format!("{parameter_35_name:?}")
+                format!("{:?}", parameter_35_name)
             } else {
                 String::new()
             },
             if let Some(parameter_35_value) = &self.parameter_35_value {
-                format!("{parameter_35_value:?}")
+                format!("{:?}", parameter_35_value)
             } else {
                 String::new()
             },
             if let Some(parameter_36_name) = &self.parameter_36_name {
-                format!("{parameter_36_name:?}")
+                format!("{:?}", parameter_36_name)
             } else {
                 String::new()
             },
             if let Some(parameter_36_value) = &self.parameter_36_value {
-                format!("{parameter_36_value:?}")
+                format!("{:?}", parameter_36_value)
             } else {
                 String::new()
             },
             if let Some(parameter_37_name) = &self.parameter_37_name {
-                format!("{parameter_37_name:?}")
+                format!("{:?}", parameter_37_name)
             } else {
                 String::new()
             },
             if let Some(parameter_37_value) = &self.parameter_37_value {
-                format!("{parameter_37_value:?}")
+                format!("{:?}", parameter_37_value)
             } else {
                 String::new()
             },
             if let Some(parameter_38_name) = &self.parameter_38_name {
-                format!("{parameter_38_name:?}")
+                format!("{:?}", parameter_38_name)
             } else {
                 String::new()
             },
             if let Some(parameter_38_value) = &self.parameter_38_value {
-                format!("{parameter_38_value:?}")
+                format!("{:?}", parameter_38_value)
             } else {
                 String::new()
             },
             if let Some(parameter_39_name) = &self.parameter_39_name {
-                format!("{parameter_39_name:?}")
+                format!("{:?}", parameter_39_name)
             } else {
                 String::new()
             },
             if let Some(parameter_39_value) = &self.parameter_39_value {
-                format!("{parameter_39_value:?}")
+                format!("{:?}", parameter_39_value)
             } else {
                 String::new()
             },
             if let Some(parameter_40_name) = &self.parameter_40_name {
-                format!("{parameter_40_name:?}")
+                format!("{:?}", parameter_40_name)
             } else {
                 String::new()
             },
             if let Some(parameter_40_value) = &self.parameter_40_value {
-                format!("{parameter_40_value:?}")
+                format!("{:?}", parameter_40_value)
             } else {
                 String::new()
             },
             if let Some(parameter_41_name) = &self.parameter_41_name {
-                format!("{parameter_41_name:?}")
+                format!("{:?}", parameter_41_name)
             } else {
                 String::new()
             },
             if let Some(parameter_41_value) = &self.parameter_41_value {
-                format!("{parameter_41_value:?}")
+                format!("{:?}", parameter_41_value)
             } else {
                 String::new()
             },
             if let Some(parameter_42_name) = &self.parameter_42_name {
-                format!("{parameter_42_name:?}")
+                format!("{:?}", parameter_42_name)
             } else {
                 String::new()
             },
             if let Some(parameter_42_value) = &self.parameter_42_value {
-                format!("{parameter_42_value:?}")
+                format!("{:?}", parameter_42_value)
             } else {
                 String::new()
             },
             if let Some(parameter_43_name) = &self.parameter_43_name {
-                format!("{parameter_43_name:?}")
+                format!("{:?}", parameter_43_name)
             } else {
                 String::new()
             },
             if let Some(parameter_43_value) = &self.parameter_43_value {
-                format!("{parameter_43_value:?}")
+                format!("{:?}", parameter_43_value)
             } else {
                 String::new()
             },
             if let Some(parameter_44_name) = &self.parameter_44_name {
-                format!("{parameter_44_name:?}")
+                format!("{:?}", parameter_44_name)
             } else {
                 String::new()
             },
             if let Some(parameter_44_value) = &self.parameter_44_value {
-                format!("{parameter_44_value:?}")
+                format!("{:?}", parameter_44_value)
             } else {
                 String::new()
             },
             if let Some(parameter_45_name) = &self.parameter_45_name {
-                format!("{parameter_45_name:?}")
+                format!("{:?}", parameter_45_name)
             } else {
                 String::new()
             },
             if let Some(parameter_45_value) = &self.parameter_45_value {
-                format!("{parameter_45_value:?}")
+                format!("{:?}", parameter_45_value)
             } else {
                 String::new()
             },
             if let Some(parameter_46_name) = &self.parameter_46_name {
-                format!("{parameter_46_name:?}")
+                format!("{:?}", parameter_46_name)
             } else {
                 String::new()
             },
             if let Some(parameter_46_value) = &self.parameter_46_value {
-                format!("{parameter_46_value:?}")
+                format!("{:?}", parameter_46_value)
             } else {
                 String::new()
             },
             if let Some(parameter_47_name) = &self.parameter_47_name {
-                format!("{parameter_47_name:?}")
+                format!("{:?}", parameter_47_name)
             } else {
                 String::new()
             },
             if let Some(parameter_47_value) = &self.parameter_47_value {
-                format!("{parameter_47_value:?}")
+                format!("{:?}", parameter_47_value)
             } else {
                 String::new()
             },
             if let Some(parameter_48_name) = &self.parameter_48_name {
-                format!("{parameter_48_name:?}")
+                format!("{:?}", parameter_48_name)
             } else {
                 String::new()
             },
             if let Some(parameter_48_value) = &self.parameter_48_value {
-                format!("{parameter_48_value:?}")
+                format!("{:?}", parameter_48_value)
             } else {
                 String::new()
             },
             if let Some(parameter_49_name) = &self.parameter_49_name {
-                format!("{parameter_49_name:?}")
+                format!("{:?}", parameter_49_name)
             } else {
                 String::new()
             },
             if let Some(parameter_49_value) = &self.parameter_49_value {
-                format!("{parameter_49_value:?}")
+                format!("{:?}", parameter_49_value)
             } else {
                 String::new()
             },
             if let Some(parameter_50_name) = &self.parameter_50_name {
-                format!("{parameter_50_name:?}")
+                format!("{:?}", parameter_50_name)
             } else {
                 String::new()
             },
             if let Some(parameter_50_value) = &self.parameter_50_value {
-                format!("{parameter_50_value:?}")
+                format!("{:?}", parameter_50_value)
             } else {
                 String::new()
             },
             if let Some(parameter_51_name) = &self.parameter_51_name {
-                format!("{parameter_51_name:?}")
+                format!("{:?}", parameter_51_name)
             } else {
                 String::new()
             },
             if let Some(parameter_51_value) = &self.parameter_51_value {
-                format!("{parameter_51_value:?}")
+                format!("{:?}", parameter_51_value)
             } else {
                 String::new()
             },
             if let Some(parameter_52_name) = &self.parameter_52_name {
-                format!("{parameter_52_name:?}")
+                format!("{:?}", parameter_52_name)
             } else {
                 String::new()
             },
             if let Some(parameter_52_value) = &self.parameter_52_value {
-                format!("{parameter_52_value:?}")
+                format!("{:?}", parameter_52_value)
             } else {
                 String::new()
             },
             if let Some(parameter_53_name) = &self.parameter_53_name {
-                format!("{parameter_53_name:?}")
+                format!("{:?}", parameter_53_name)
             } else {
                 String::new()
             },
             if let Some(parameter_53_value) = &self.parameter_53_value {
-                format!("{parameter_53_value:?}")
+                format!("{:?}", parameter_53_value)
             } else {
                 String::new()
             },
             if let Some(parameter_54_name) = &self.parameter_54_name {
-                format!("{parameter_54_name:?}")
+                format!("{:?}", parameter_54_name)
             } else {
                 String::new()
             },
             if let Some(parameter_54_value) = &self.parameter_54_value {
-                format!("{parameter_54_value:?}")
+                format!("{:?}", parameter_54_value)
             } else {
                 String::new()
             },
             if let Some(parameter_55_name) = &self.parameter_55_name {
-                format!("{parameter_55_name:?}")
+                format!("{:?}", parameter_55_name)
             } else {
                 String::new()
             },
             if let Some(parameter_55_value) = &self.parameter_55_value {
-                format!("{parameter_55_value:?}")
+                format!("{:?}", parameter_55_value)
             } else {
                 String::new()
             },
             if let Some(parameter_56_name) = &self.parameter_56_name {
-                format!("{parameter_56_name:?}")
+                format!("{:?}", parameter_56_name)
             } else {
                 String::new()
             },
             if let Some(parameter_56_value) = &self.parameter_56_value {
-                format!("{parameter_56_value:?}")
+                format!("{:?}", parameter_56_value)
             } else {
                 String::new()
             },
             if let Some(parameter_57_name) = &self.parameter_57_name {
-                format!("{parameter_57_name:?}")
+                format!("{:?}", parameter_57_name)
             } else {
                 String::new()
             },
             if let Some(parameter_57_value) = &self.parameter_57_value {
-                format!("{parameter_57_value:?}")
+                format!("{:?}", parameter_57_value)
             } else {
                 String::new()
             },
             if let Some(parameter_58_name) = &self.parameter_58_name {
-                format!("{parameter_58_name:?}")
+                format!("{:?}", parameter_58_name)
             } else {
                 String::new()
             },
             if let Some(parameter_58_value) = &self.parameter_58_value {
-                format!("{parameter_58_value:?}")
+                format!("{:?}", parameter_58_value)
             } else {
                 String::new()
             },
             if let Some(parameter_59_name) = &self.parameter_59_name {
-                format!("{parameter_59_name:?}")
+                format!("{:?}", parameter_59_name)
             } else {
                 String::new()
             },
             if let Some(parameter_59_value) = &self.parameter_59_value {
-                format!("{parameter_59_value:?}")
+                format!("{:?}", parameter_59_value)
             } else {
                 String::new()
             },
             if let Some(parameter_60_name) = &self.parameter_60_name {
-                format!("{parameter_60_name:?}")
+                format!("{:?}", parameter_60_name)
             } else {
                 String::new()
             },
             if let Some(parameter_60_value) = &self.parameter_60_value {
-                format!("{parameter_60_value:?}")
+                format!("{:?}", parameter_60_value)
             } else {
                 String::new()
             },
             if let Some(parameter_61_name) = &self.parameter_61_name {
-                format!("{parameter_61_name:?}")
+                format!("{:?}", parameter_61_name)
             } else {
                 String::new()
             },
             if let Some(parameter_61_value) = &self.parameter_61_value {
-                format!("{parameter_61_value:?}")
+                format!("{:?}", parameter_61_value)
             } else {
                 String::new()
             },
             if let Some(parameter_62_name) = &self.parameter_62_name {
-                format!("{parameter_62_name:?}")
+                format!("{:?}", parameter_62_name)
             } else {
                 String::new()
             },
             if let Some(parameter_62_value) = &self.parameter_62_value {
-                format!("{parameter_62_value:?}")
+                format!("{:?}", parameter_62_value)
             } else {
                 String::new()
             },
             if let Some(parameter_63_name) = &self.parameter_63_name {
-                format!("{parameter_63_name:?}")
+                format!("{:?}", parameter_63_name)
             } else {
                 String::new()
             },
             if let Some(parameter_63_value) = &self.parameter_63_value {
-                format!("{parameter_63_value:?}")
+                format!("{:?}", parameter_63_value)
             } else {
                 String::new()
             },
             if let Some(parameter_64_name) = &self.parameter_64_name {
-                format!("{parameter_64_name:?}")
+                format!("{:?}", parameter_64_name)
             } else {
                 String::new()
             },
             if let Some(parameter_64_value) = &self.parameter_64_value {
-                format!("{parameter_64_value:?}")
+                format!("{:?}", parameter_64_value)
             } else {
                 String::new()
             },
             if let Some(parameter_65_name) = &self.parameter_65_name {
-                format!("{parameter_65_name:?}")
+                format!("{:?}", parameter_65_name)
             } else {
                 String::new()
             },
             if let Some(parameter_65_value) = &self.parameter_65_value {
-                format!("{parameter_65_value:?}")
+                format!("{:?}", parameter_65_value)
             } else {
                 String::new()
             },
             if let Some(parameter_66_name) = &self.parameter_66_name {
-                format!("{parameter_66_name:?}")
+                format!("{:?}", parameter_66_name)
             } else {
                 String::new()
             },
             if let Some(parameter_66_value) = &self.parameter_66_value {
-                format!("{parameter_66_value:?}")
+                format!("{:?}", parameter_66_value)
             } else {
                 String::new()
             },
             if let Some(parameter_67_name) = &self.parameter_67_name {
-                format!("{parameter_67_name:?}")
+                format!("{:?}", parameter_67_name)
             } else {
                 String::new()
             },
             if let Some(parameter_67_value) = &self.parameter_67_value {
-                format!("{parameter_67_value:?}")
+                format!("{:?}", parameter_67_value)
             } else {
                 String::new()
             },
             if let Some(parameter_68_name) = &self.parameter_68_name {
-                format!("{parameter_68_name:?}")
+                format!("{:?}", parameter_68_name)
             } else {
                 String::new()
             },
             if let Some(parameter_68_value) = &self.parameter_68_value {
-                format!("{parameter_68_value:?}")
+                format!("{:?}", parameter_68_value)
             } else {
                 String::new()
             },
             if let Some(parameter_69_name) = &self.parameter_69_name {
-                format!("{parameter_69_name:?}")
+                format!("{:?}", parameter_69_name)
             } else {
                 String::new()
             },
             if let Some(parameter_69_value) = &self.parameter_69_value {
-                format!("{parameter_69_value:?}")
+                format!("{:?}", parameter_69_value)
             } else {
                 String::new()
             },
             if let Some(parameter_70_name) = &self.parameter_70_name {
-                format!("{parameter_70_name:?}")
+                format!("{:?}", parameter_70_name)
             } else {
                 String::new()
             },
             if let Some(parameter_70_value) = &self.parameter_70_value {
-                format!("{parameter_70_value:?}")
+                format!("{:?}", parameter_70_value)
             } else {
                 String::new()
             },
             if let Some(parameter_71_name) = &self.parameter_71_name {
-                format!("{parameter_71_name:?}")
+                format!("{:?}", parameter_71_name)
             } else {
                 String::new()
             },
             if let Some(parameter_71_value) = &self.parameter_71_value {
-                format!("{parameter_71_value:?}")
+                format!("{:?}", parameter_71_value)
             } else {
                 String::new()
             },
             if let Some(parameter_72_name) = &self.parameter_72_name {
-                format!("{parameter_72_name:?}")
+                format!("{:?}", parameter_72_name)
             } else {
                 String::new()
             },
             if let Some(parameter_72_value) = &self.parameter_72_value {
-                format!("{parameter_72_value:?}")
+                format!("{:?}", parameter_72_value)
             } else {
                 String::new()
             },
             if let Some(parameter_73_name) = &self.parameter_73_name {
-                format!("{parameter_73_name:?}")
+                format!("{:?}", parameter_73_name)
             } else {
                 String::new()
             },
             if let Some(parameter_73_value) = &self.parameter_73_value {
-                format!("{parameter_73_value:?}")
+                format!("{:?}", parameter_73_value)
             } else {
                 String::new()
             },
             if let Some(parameter_74_name) = &self.parameter_74_name {
-                format!("{parameter_74_name:?}")
+                format!("{:?}", parameter_74_name)
             } else {
                 String::new()
             },
             if let Some(parameter_74_value) = &self.parameter_74_value {
-                format!("{parameter_74_value:?}")
+                format!("{:?}", parameter_74_value)
             } else {
                 String::new()
             },
             if let Some(parameter_75_name) = &self.parameter_75_name {
-                format!("{parameter_75_name:?}")
+                format!("{:?}", parameter_75_name)
             } else {
                 String::new()
             },
             if let Some(parameter_75_value) = &self.parameter_75_value {
-                format!("{parameter_75_value:?}")
+                format!("{:?}", parameter_75_value)
             } else {
                 String::new()
             },
             if let Some(parameter_76_name) = &self.parameter_76_name {
-                format!("{parameter_76_name:?}")
+                format!("{:?}", parameter_76_name)
             } else {
                 String::new()
             },
             if let Some(parameter_76_value) = &self.parameter_76_value {
-                format!("{parameter_76_value:?}")
+                format!("{:?}", parameter_76_value)
             } else {
                 String::new()
             },
             if let Some(parameter_77_name) = &self.parameter_77_name {
-                format!("{parameter_77_name:?}")
+                format!("{:?}", parameter_77_name)
             } else {
                 String::new()
             },
             if let Some(parameter_77_value) = &self.parameter_77_value {
-                format!("{parameter_77_value:?}")
+                format!("{:?}", parameter_77_value)
             } else {
                 String::new()
             },
             if let Some(parameter_78_name) = &self.parameter_78_name {
-                format!("{parameter_78_name:?}")
+                format!("{:?}", parameter_78_name)
             } else {
                 String::new()
             },
             if let Some(parameter_78_value) = &self.parameter_78_value {
-                format!("{parameter_78_value:?}")
+                format!("{:?}", parameter_78_value)
             } else {
                 String::new()
             },
             if let Some(parameter_79_name) = &self.parameter_79_name {
-                format!("{parameter_79_name:?}")
+                format!("{:?}", parameter_79_name)
             } else {
                 String::new()
             },
             if let Some(parameter_79_value) = &self.parameter_79_value {
-                format!("{parameter_79_value:?}")
+                format!("{:?}", parameter_79_value)
             } else {
                 String::new()
             },
             if let Some(parameter_80_name) = &self.parameter_80_name {
-                format!("{parameter_80_name:?}")
+                format!("{:?}", parameter_80_name)
             } else {
                 String::new()
             },
             if let Some(parameter_80_value) = &self.parameter_80_value {
-                format!("{parameter_80_value:?}")
+                format!("{:?}", parameter_80_value)
             } else {
                 String::new()
             },
             if let Some(parameter_81_name) = &self.parameter_81_name {
-                format!("{parameter_81_name:?}")
+                format!("{:?}", parameter_81_name)
             } else {
                 String::new()
             },
             if let Some(parameter_81_value) = &self.parameter_81_value {
-                format!("{parameter_81_value:?}")
+                format!("{:?}", parameter_81_value)
             } else {
                 String::new()
             },
             if let Some(parameter_82_name) = &self.parameter_82_name {
-                format!("{parameter_82_name:?}")
+                format!("{:?}", parameter_82_name)
             } else {
                 String::new()
             },
             if let Some(parameter_82_value) = &self.parameter_82_value {
-                format!("{parameter_82_value:?}")
+                format!("{:?}", parameter_82_value)
             } else {
                 String::new()
             },
             if let Some(parameter_83_name) = &self.parameter_83_name {
-                format!("{parameter_83_name:?}")
+                format!("{:?}", parameter_83_name)
             } else {
                 String::new()
             },
             if let Some(parameter_83_value) = &self.parameter_83_value {
-                format!("{parameter_83_value:?}")
+                format!("{:?}", parameter_83_value)
             } else {
                 String::new()
             },
             if let Some(parameter_84_name) = &self.parameter_84_name {
-                format!("{parameter_84_name:?}")
+                format!("{:?}", parameter_84_name)
             } else {
                 String::new()
             },
             if let Some(parameter_84_value) = &self.parameter_84_value {
-                format!("{parameter_84_value:?}")
+                format!("{:?}", parameter_84_value)
             } else {
                 String::new()
             },
             if let Some(parameter_85_name) = &self.parameter_85_name {
-                format!("{parameter_85_name:?}")
+                format!("{:?}", parameter_85_name)
             } else {
                 String::new()
             },
             if let Some(parameter_85_value) = &self.parameter_85_value {
-                format!("{parameter_85_value:?}")
+                format!("{:?}", parameter_85_value)
             } else {
                 String::new()
             },
             if let Some(parameter_86_name) = &self.parameter_86_name {
-                format!("{parameter_86_name:?}")
+                format!("{:?}", parameter_86_name)
             } else {
                 String::new()
             },
             if let Some(parameter_86_value) = &self.parameter_86_value {
-                format!("{parameter_86_value:?}")
+                format!("{:?}", parameter_86_value)
             } else {
                 String::new()
             },
             if let Some(parameter_87_name) = &self.parameter_87_name {
-                format!("{parameter_87_name:?}")
+                format!("{:?}", parameter_87_name)
             } else {
                 String::new()
             },
             if let Some(parameter_87_value) = &self.parameter_87_value {
-                format!("{parameter_87_value:?}")
+                format!("{:?}", parameter_87_value)
             } else {
                 String::new()
             },
             if let Some(parameter_88_name) = &self.parameter_88_name {
-                format!("{parameter_88_name:?}")
+                format!("{:?}", parameter_88_name)
             } else {
                 String::new()
             },
             if let Some(parameter_88_value) = &self.parameter_88_value {
-                format!("{parameter_88_value:?}")
+                format!("{:?}", parameter_88_value)
             } else {
                 String::new()
             },
             if let Some(parameter_89_name) = &self.parameter_89_name {
-                format!("{parameter_89_name:?}")
+                format!("{:?}", parameter_89_name)
             } else {
                 String::new()
             },
             if let Some(parameter_89_value) = &self.parameter_89_value {
-                format!("{parameter_89_value:?}")
+                format!("{:?}", parameter_89_value)
             } else {
                 String::new()
             },
             if let Some(parameter_90_name) = &self.parameter_90_name {
-                format!("{parameter_90_name:?}")
+                format!("{:?}", parameter_90_name)
             } else {
                 String::new()
             },
             if let Some(parameter_90_value) = &self.parameter_90_value {
-                format!("{parameter_90_value:?}")
+                format!("{:?}", parameter_90_value)
             } else {
                 String::new()
             },
             if let Some(parameter_91_name) = &self.parameter_91_name {
-                format!("{parameter_91_name:?}")
+                format!("{:?}", parameter_91_name)
             } else {
                 String::new()
             },
             if let Some(parameter_91_value) = &self.parameter_91_value {
-                format!("{parameter_91_value:?}")
+                format!("{:?}", parameter_91_value)
             } else {
                 String::new()
             },
             if let Some(parameter_92_name) = &self.parameter_92_name {
-                format!("{parameter_92_name:?}")
+                format!("{:?}", parameter_92_name)
             } else {
                 String::new()
             },
             if let Some(parameter_92_value) = &self.parameter_92_value {
-                format!("{parameter_92_value:?}")
+                format!("{:?}", parameter_92_value)
             } else {
                 String::new()
             },
             if let Some(parameter_93_name) = &self.parameter_93_name {
-                format!("{parameter_93_name:?}")
+                format!("{:?}", parameter_93_name)
             } else {
                 String::new()
             },
             if let Some(parameter_93_value) = &self.parameter_93_value {
-                format!("{parameter_93_value:?}")
+                format!("{:?}", parameter_93_value)
             } else {
                 String::new()
             },
             if let Some(parameter_94_name) = &self.parameter_94_name {
-                format!("{parameter_94_name:?}")
+                format!("{:?}", parameter_94_name)
             } else {
                 String::new()
             },
             if let Some(parameter_94_value) = &self.parameter_94_value {
-                format!("{parameter_94_value:?}")
+                format!("{:?}", parameter_94_value)
             } else {
                 String::new()
             },
             if let Some(parameter_95_name) = &self.parameter_95_name {
-                format!("{parameter_95_name:?}")
+                format!("{:?}", parameter_95_name)
             } else {
                 String::new()
             },
             if let Some(parameter_95_value) = &self.parameter_95_value {
-                format!("{parameter_95_value:?}")
+                format!("{:?}", parameter_95_value)
             } else {
                 String::new()
             },
             if let Some(parameter_96_name) = &self.parameter_96_name {
-                format!("{parameter_96_name:?}")
+                format!("{:?}", parameter_96_name)
             } else {
                 String::new()
             },
             if let Some(parameter_96_value) = &self.parameter_96_value {
-                format!("{parameter_96_value:?}")
+                format!("{:?}", parameter_96_value)
             } else {
                 String::new()
             },
             if let Some(parameter_97_name) = &self.parameter_97_name {
-                format!("{parameter_97_name:?}")
+                format!("{:?}", parameter_97_name)
             } else {
                 String::new()
             },
             if let Some(parameter_97_value) = &self.parameter_97_value {
-                format!("{parameter_97_value:?}")
+                format!("{:?}", parameter_97_value)
             } else {
                 String::new()
             },
             if let Some(parameter_98_name) = &self.parameter_98_name {
-                format!("{parameter_98_name:?}")
+                format!("{:?}", parameter_98_name)
             } else {
                 String::new()
             },
             if let Some(parameter_98_value) = &self.parameter_98_value {
-                format!("{parameter_98_value:?}")
+                format!("{:?}", parameter_98_value)
             } else {
                 String::new()
             },
             if let Some(parameter_99_name) = &self.parameter_99_name {
-                format!("{parameter_99_name:?}")
+                format!("{:?}", parameter_99_name)
             } else {
                 String::new()
             },
             if let Some(parameter_99_value) = &self.parameter_99_value {
-                format!("{parameter_99_value:?}")
+                format!("{:?}", parameter_99_value)
             } else {
                 String::new()
             },
@@ -41149,7 +41133,7 @@ impl tabled::Tabled for CreateTokenRequest {
     const LENGTH: usize = 1;
     fn fields(&self) -> Vec<String> {
         vec![if let Some(ttl) = &self.ttl {
-            format!("{ttl:?}")
+            format!("{:?}", ttl)
         } else {
             String::new()
         }]
@@ -41199,47 +41183,47 @@ impl tabled::Tabled for ListTranscriptionResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(transcriptions) = &self.transcriptions {
-                format!("{transcriptions:?}")
+                format!("{:?}", transcriptions)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41300,47 +41284,47 @@ impl tabled::Tabled for ListUsageRecordResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41401,47 +41385,47 @@ impl tabled::Tabled for ListUsageRecordAllTimeResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41502,47 +41486,47 @@ impl tabled::Tabled for ListUsageRecordDailyResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41603,47 +41587,47 @@ impl tabled::Tabled for ListUsageRecordLastMonthResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41704,47 +41688,47 @@ impl tabled::Tabled for ListUsageRecordMonthlyResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41805,47 +41789,47 @@ impl tabled::Tabled for ListUsageRecordThisMonthResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -41906,47 +41890,47 @@ impl tabled::Tabled for ListUsageRecordTodayResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -42007,47 +41991,47 @@ impl tabled::Tabled for ListUsageRecordYearlyResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -42108,47 +42092,47 @@ impl tabled::Tabled for ListUsageRecordYesterdayResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{usage_records:?}")
+                format!("{:?}", usage_records)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -42250,17 +42234,17 @@ impl tabled::Tabled for UpdateUsageTriggerRequest {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(callback_method) = &self.callback_method {
-                format!("{callback_method:?}")
+                format!("{:?}", callback_method)
             } else {
                 String::new()
             },
             if let Some(callback_url) = &self.callback_url {
-                format!("{callback_url:?}")
+                format!("{:?}", callback_url)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
@@ -42315,47 +42299,47 @@ impl tabled::Tabled for ListUsageTriggerResponse {
     fn fields(&self) -> Vec<String> {
         vec![
             if let Some(usage_triggers) = &self.usage_triggers {
-                format!("{usage_triggers:?}")
+                format!("{:?}", usage_triggers)
             } else {
                 String::new()
             },
             if let Some(end) = &self.end {
-                format!("{end:?}")
+                format!("{:?}", end)
             } else {
                 String::new()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{first_page_uri:?}")
+                format!("{:?}", first_page_uri)
             } else {
                 String::new()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{next_page_uri:?}")
+                format!("{:?}", next_page_uri)
             } else {
                 String::new()
             },
             if let Some(page) = &self.page {
-                format!("{page:?}")
+                format!("{:?}", page)
             } else {
                 String::new()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{page_size:?}")
+                format!("{:?}", page_size)
             } else {
                 String::new()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{previous_page_uri:?}")
+                format!("{:?}", previous_page_uri)
             } else {
                 String::new()
             },
             if let Some(start) = &self.start {
-                format!("{start:?}")
+                format!("{:?}", start)
             } else {
                 String::new()
             },
             if let Some(uri) = &self.uri {
-                format!("{uri:?}")
+                format!("{:?}", uri)
             } else {
                 String::new()
             },
@@ -42467,22 +42451,22 @@ impl tabled::Tabled for CreateUsageTriggerRequest {
             self.trigger_value.clone(),
             format!("{:?}", self.usage_category),
             if let Some(callback_method) = &self.callback_method {
-                format!("{callback_method:?}")
+                format!("{:?}", callback_method)
             } else {
                 String::new()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{friendly_name:?}")
+                format!("{:?}", friendly_name)
             } else {
                 String::new()
             },
             if let Some(recurring) = &self.recurring {
-                format!("{recurring:?}")
+                format!("{:?}", recurring)
             } else {
                 String::new()
             },
             if let Some(trigger_by) = &self.trigger_by {
-                format!("{trigger_by:?}")
+                format!("{:?}", trigger_by)
             } else {
                 String::new()
             },
@@ -42535,7 +42519,7 @@ impl tabled::Tabled for CreateUserDefinedMessageRequest {
         vec![
             self.content.clone(),
             if let Some(idempotency_key) = &self.idempotency_key {
-                format!("{idempotency_key:?}")
+                format!("{:?}", idempotency_key)
             } else {
                 String::new()
             },
@@ -42621,12 +42605,12 @@ impl tabled::Tabled for CreateUserDefinedMessageSubscriptionRequest {
         vec![
             self.callback.clone(),
             if let Some(idempotency_key) = &self.idempotency_key {
-                format!("{idempotency_key:?}")
+                format!("{:?}", idempotency_key)
             } else {
                 String::new()
             },
             if let Some(method) = &self.method {
-                format!("{method:?}")
+                format!("{:?}", method)
             } else {
                 String::new()
             },

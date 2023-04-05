@@ -22,7 +22,7 @@ impl Payroll {
     ) -> Result<Vec<crate::types::PayPeriod>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/pay_periods"
@@ -55,7 +55,7 @@ impl Payroll {
         }
     }
 
-    #[doc = "Get all payrolls for a company\n\nReturns all payrolls, current and past for a company.\n\nNotes:\n* Hour and dollar amounts are returned as string representations of numeric decimals.\n* Hours are represented to the thousands place; dollar amounts are represented to the cent.\n* Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to “0.00” (for fixed amounts) or “0.000” (for hours ).\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n- `end_date: Option<chrono::NaiveDate>`: Return payrolls whose pay period is before the end date\n- `include: Option<Vec<crate::types::GetCompaniesCompanyIdPayrollsInclude>>`: Include the requested attribute in the employee_compensations attribute in the response\n- `include_off_cycle: Option<bool>`: Whether to include off cycle payrolls in the response\n- `processed: Option<bool>`: Whether to return processed or unprocessed payrolls\n- `start_date: Option<chrono::NaiveDate>`: Return payrolls whose pay period is after the start date\n\n```rust,no_run\nasync fn example_payroll_get_companies_company_id_payrolls() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: Vec<gusto_api::types::Payroll> = client\n        .payroll()\n        .get_companies_company_id_payrolls(\n            \"some-string\",\n            Some(chrono::Utc::now().date().naive_utc()),\n            Some(vec![\n                gusto_api::types::GetCompaniesCompanyIdPayrollsInclude::Benefits,\n            ]),\n            Some(false),\n            Some(false),\n            Some(chrono::Utc::now().date().naive_utc()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Get all payrolls for a company\n\nReturns all payrolls, current and past for a company.\n\nNotes:\n* Hour and dollar amounts are returned as string representations of numeric decimals.\n* Hours are represented to the thousands place; dollar amounts are represented to the cent.\n* Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to “0.00” (for fixed amounts) or “0.000” (for hours ).\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n- `end_date: Option<chrono::NaiveDate>`: Return payrolls whose pay period is before the end date\n- `include: Option<Vec<crate::types::GetCompaniesCompanyIdPayrollsInclude>>`: Include the requested attribute in the employee_compensations attribute in the response\n- `include_off_cycle: Option<bool>`: Whether to include off cycle payrolls in the response\n- `processed: Option<bool>`: Whether to return processed or unprocessed payrolls\n- `start_date: Option<chrono::NaiveDate>`: Return payrolls whose pay period is after the start date\n\n```rust,no_run\nasync fn example_payroll_get_companies_company_id_payrolls() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: Vec<gusto_api::types::Payroll> = client\n        .payroll()\n        .get_companies_company_id_payrolls(\n            \"some-string\",\n            Some(chrono::Utc::now().date().naive_utc()),\n            Some(vec![\n                gusto_api::types::GetCompaniesCompanyIdPayrollsInclude::Taxes,\n            ]),\n            Some(false),\n            Some(true),\n            Some(chrono::Utc::now().date().naive_utc()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_companies_company_id_payrolls<'a>(
         &'a self,
@@ -68,7 +68,7 @@ impl Payroll {
     ) -> Result<Vec<crate::types::Payroll>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payrolls"
@@ -113,7 +113,7 @@ impl Payroll {
         }
     }
 
-    #[doc = "Create an Off-Cycle Payroll (Beta)\n\nThis endpoint is in beta and intended for **[Gusto Embedded Payroll](https://gusto.com/embedded-payroll)** customers. Please [apply for early access](https://gusto-embedded-payroll.typeform.com/to/iomAQIj3?utm_source=docs) if you’d like to learn more and use it for production. Note, this endpoint will require you to enter a different agreement with Gusto.\n\nCreates a new, unprocessed, off-cycle payroll.\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n\n```rust,no_run\nasync fn example_payroll_post_companies_company_id_payrolls() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Payroll = client\n        .payroll()\n        .post_companies_company_id_payrolls(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdPayrollsRequestBody {\n                off_cycle: \"some-string\".to_string(),\n                off_cycle_reason: Some(gusto_api::types::OffCycleReason::Bonus),\n                start_date: Some(chrono::Utc::now().date().naive_utc()),\n                end_date: Some(chrono::Utc::now().date().naive_utc()),\n                employee_ids: Some(vec![4 as i64]),\n                check_date: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create an Off-Cycle Payroll (Beta)\n\nThis endpoint is in beta and intended for **[Gusto Embedded Payroll](https://gusto.com/embedded-payroll)** customers. Please [apply for early access](https://gusto-embedded-payroll.typeform.com/to/iomAQIj3?utm_source=docs) if you’d like to learn more and use it for production. Note, this endpoint will require you to enter a different agreement with Gusto.\n\nCreates a new, unprocessed, off-cycle payroll.\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n\n```rust,no_run\nasync fn example_payroll_post_companies_company_id_payrolls() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Payroll = client\n        .payroll()\n        .post_companies_company_id_payrolls(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdPayrollsRequestBody {\n                off_cycle: \"some-string\".to_string(),\n                off_cycle_reason: Some(gusto_api::types::OffCycleReason::Correction),\n                start_date: Some(chrono::Utc::now().date().naive_utc()),\n                end_date: Some(chrono::Utc::now().date().naive_utc()),\n                employee_ids: Some(vec![4 as i64]),\n                check_date: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_companies_company_id_payrolls<'a>(
         &'a self,
@@ -122,7 +122,7 @@ impl Payroll {
     ) -> Result<crate::types::Payroll, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payrolls"
@@ -157,7 +157,7 @@ impl Payroll {
     ) -> Result<crate::types::Payroll, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payrolls/{payroll_id_or_uuid}"
@@ -201,7 +201,7 @@ impl Payroll {
     ) -> Result<crate::types::Payroll, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payrolls/{payroll_id_or_uuid}"
@@ -237,7 +237,7 @@ impl Payroll {
     ) -> Result<crate::types::Payroll, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payrolls/{pay_period_start_date}/\
@@ -276,7 +276,7 @@ impl Payroll {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/payrolls/{payroll_id}/calculate"
@@ -303,7 +303,7 @@ impl Payroll {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/payrolls/{payroll_Id}/submit"
@@ -330,7 +330,7 @@ impl Payroll {
     ) -> Result<crate::types::Payroll, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/payrolls/{payroll_id}/cancel"
@@ -365,7 +365,7 @@ impl Payroll {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/payroll_reversals"

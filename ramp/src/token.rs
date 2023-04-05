@@ -21,7 +21,7 @@ impl Token {
     pub async fn post<'a>(&'a self) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/token/"),
+            format!("{}/{}", self.client.base_url, "developer/v1/token/"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -42,7 +42,7 @@ impl Token {
     pub async fn post_pkce<'a>(&'a self) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/token/pkce"),
+            format!("{}/{}", self.client.base_url, "developer/v1/token/pkce"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -63,7 +63,7 @@ impl Token {
     pub async fn post_revoke<'a>(&'a self) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/token/revoke"),
+            format!("{}/{}", self.client.base_url, "developer/v1/token/revoke"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;

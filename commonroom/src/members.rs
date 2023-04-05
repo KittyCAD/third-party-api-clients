@@ -12,7 +12,7 @@ impl Members {
         Self { client }
     }
 
-    #[doc = "Create or update Community Member\n\nCreate or Update a Community Member\n\n\n```rust,no_run\nasync fn example_members_create_or_update_community() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .members()\n        .create_or_update_community(&commonroom_api::types::CreateOrUpdateCommunityMemberRequestBody {\n            source: \"some-string\".to_string(),\n            full_name: Some(\"some-string\".to_string()),\n            avatar_url: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            socials: Some(vec![\n                commonroom_api::types::CreateOrUpdateCommunityMemberRequestBodySocials::Email(\n                    commonroom_api::types::Email {\n                        type_: Some(commonroom_api::types::EmailType::Email),\n                        value: Some(\"some-string\".to_string()),\n                    },\n                ),\n            ]),\n            segment: Some(3.14 as f64),\n            company: Some(\"some-string\".to_string()),\n            domain: Some(\"some-string\".to_string()),\n            title: Some(\"some-string\".to_string()),\n            role: Some(\"some-string\".to_string()),\n            location: Some(commonroom_api::types::Location {\n                city: Some(\"some-string\".to_string()),\n                region: Some(\"some-string\".to_string()),\n                country: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Create or update Community Member\n\nCreate or Update a Community Member\n\n\n```rust,no_run\nasync fn example_members_create_or_update_community() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    client\n        .members()\n        .create_or_update_community(&commonroom_api::types::CreateOrUpdateCommunityMemberRequestBody {\n            source: \"some-string\".to_string(),\n            full_name: Some(\"some-string\".to_string()),\n            avatar_url: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            socials: Some(vec![commonroom_api::types::Socials::Email(commonroom_api::types::Email {\n                type_: Some(commonroom_api::types::EmailType::Email),\n                value: Some(\"some-string\".to_string()),\n            })]),\n            segment: Some(3.14 as f64),\n            company: Some(\"some-string\".to_string()),\n            domain: Some(\"some-string\".to_string()),\n            title: Some(\"some-string\".to_string()),\n            role: Some(\"some-string\".to_string()),\n            location: Some(commonroom_api::types::Location {\n                city: Some(\"some-string\".to_string()),\n                region: Some(\"some-string\".to_string()),\n                country: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_or_update_community<'a>(
         &'a self,
@@ -20,7 +20,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "members/"),
+            format!("{}/{}", self.client.base_url, "members/"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -48,7 +48,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "members/note"),
+            format!("{}/{}", self.client.base_url, "members/note"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -73,7 +73,7 @@ impl Members {
     ) -> Result<Vec<crate::types::GetMemberCustomFieldsResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "members/customFields"),
+            format!("{}/{}", self.client.base_url, "members/customFields"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -99,7 +99,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "members/customFields"),
+            format!("{}/{}", self.client.base_url, "members/customFields"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -127,7 +127,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "members/tags"),
+            format!("{}/{}", self.client.base_url, "members/tags"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -154,7 +154,7 @@ impl Members {
     ) -> Result<Vec<crate::types::CommunityMember>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "user/{email}".replace("{email}", email)
@@ -191,7 +191,7 @@ impl Members {
     ) -> Result<String, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "user/{email}".replace("{email}", email)
@@ -219,7 +219,7 @@ impl Members {
     ) -> Result<Vec<crate::types::GetMemberBySocialsResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "members"),
+            format!("{}/{}", self.client.base_url, "members"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];

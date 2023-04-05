@@ -20,12 +20,12 @@ impl ReceiptIntegrations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/receipt-integrations/opt-out/{mailbox_opted_out_email_uuid}".replace(
                     "{mailbox_opted_out_email_uuid}",
-                    &mailbox_opted_out_email_uuid
+                    mailbox_opted_out_email_uuid
                 )
             ),
         );
@@ -60,7 +60,7 @@ impl ReceiptIntegrations {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/receipt-integrations/opt-out"
             ),
@@ -76,7 +76,6 @@ impl ReceiptIntegrations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
@@ -92,7 +91,7 @@ impl ReceiptIntegrations {
     {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/receipt-integrations/opt-out"
             ),
@@ -108,7 +107,6 @@ impl ReceiptIntegrations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             Err(crate::types::error::Error::UnexpectedResponse(resp))
