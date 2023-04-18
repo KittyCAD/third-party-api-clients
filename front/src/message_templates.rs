@@ -342,12 +342,7 @@ impl MessageTemplates {
              anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
              result: front_api::types::MessageTemplateResponse = client\n        \
              .message_templates()\n        .update(\n            \"some-string\",\n            \
-             &front_api::types::UpdateMessageTemplate {\n                name: \
-             Some(\"some-string\".to_string()),\n                subject: \
-             Some(\"some-string\".to_string()),\n                body: \
-             Some(\"some-string\".to_string()),\n                folder_id: \
-             Some(\"some-string\".to_string()),\n                inbox_ids: \
-             Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(

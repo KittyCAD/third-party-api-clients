@@ -126,7 +126,7 @@ impl Signatures {
              \"some-string\".to_string(),\n                sender_info: \
              Some(\"some-string\".to_string()),\n                body: \
              \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: \
-             Some(false),\n                is_default: Some(true),\n                channel_ids: \
+             Some(true),\n                is_default: Some(false),\n                channel_ids: \
              Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]

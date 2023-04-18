@@ -63,6 +63,7 @@ pub mod sandbox;
 mod tests;
 pub mod time_off;
 pub mod types;
+#[doc(hidden)]
 pub mod utils;
 
 use std::env;

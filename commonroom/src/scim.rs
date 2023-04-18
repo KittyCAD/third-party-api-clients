@@ -55,7 +55,7 @@ impl Scim {
         }
     }
 
-    #[doc = "Creates the community member with specific role\n\nCreates the community member with owner role\n\n**Parameters:**\n\n- `count: Option<i64>`\n- `filter: Option<String>`\n- `start_index: Option<i64>`\n\n```rust,no_run\nasync fn example_scim_create_community_member_with_specific_role() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User = client\n        .scim()\n        .create_community_member_with_specific_role(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            &commonroom_api::types::CreateCommunityMemberWithSpecificRoleRequestBody {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                user_name: Some(\"some-string\".to_string()),\n                name: Some(commonroom_api::types::Name {\n                    given_name: Some(\"some-string\".to_string()),\n                    family_name: Some(\"some-string\".to_string()),\n                }),\n                emails: Some(vec![commonroom_api::types::Emails {\n                    value: Some(\"some-string\".to_string()),\n                    primary: Some(false),\n                    type_: Some(\"some-string\".to_string()),\n                }]),\n                active: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Creates the community member with specific role\n\nCreates the community member with owner role\n\n**Parameters:**\n\n- `count: Option<i64>`\n- `filter: Option<String>`\n- `start_index: Option<i64>`\n\n```rust,no_run\nasync fn example_scim_create_community_member_with_specific_role() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User = client\n        .scim()\n        .create_community_member_with_specific_role(\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            &commonroom_api::types::CreateCommunityMemberWithSpecificRoleRequestBody {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                user_name: Some(\"some-string\".to_string()),\n                name: Some(commonroom_api::types::Name {\n                    given_name: Some(\"some-string\".to_string()),\n                    family_name: Some(\"some-string\".to_string()),\n                }),\n                emails: Some(vec![\n                    commonroom_api::types::CreateCommunityMemberWithSpecificRoleRequestBodyEmails {\n                        value: Some(\"some-string\".to_string()),\n                        primary: Some(false),\n                        type_: Some(\"some-string\".to_string()),\n                    },\n                ]),\n                active: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_community_member_with_specific_role<'a>(
         &'a self,
@@ -134,18 +134,7 @@ impl Scim {
         }
     }
 
-    #[doc = "Updates an user account\n\nUpdates the user account specified in the \
-             query\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn \
-             example_scim_update_user_account() -> anyhow::Result<()> {\n    let client = \
-             commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User \
-             = client\n        .scim()\n        .update_user_account(\n            \
-             \"some-string\",\n            &commonroom_api::types::UpdateUserAccountRequestBody \
-             {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                \
-             operations: Some(vec![commonroom_api::types::Operations {\n                    op: \
-             Some(\"some-string\".to_string()),\n                    value: \
-             Some(commonroom_api::types::OperationsValue {\n                        active: \
-             Some(false),\n                    }),\n                }]),\n            },\n        \
-             )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Updates an user account\n\nUpdates the user account specified in the query\n\n**Parameters:**\n\n- `email: &'astr` (required)\n\n```rust,no_run\nasync fn example_scim_update_user_account() -> anyhow::Result<()> {\n    let client = commonroom_api::Client::new_from_env();\n    let result: commonroom_api::types::User = client\n        .scim()\n        .update_user_account(\n            \"some-string\",\n            &commonroom_api::types::UpdateUserAccountRequestBody {\n                schemas: Some(vec![\"some-string\".to_string()]),\n                operations: Some(vec![commonroom_api::types::UpdateUserAccountRequestBodyOperations {\n                    op: Some(\"some-string\".to_string()),\n                    value: Some(commonroom_api::types::UpdateUserAccountRequestBodyOperationsValue {\n                        active: Some(false),\n                    }),\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_user_account<'a>(
         &'a self,

@@ -5,7 +5,7 @@ commonroom:
 	pwd
 	$(openapitor_exe) \
 		--input specs/commonroom.json \
-		--version 0.1.0 \
+		--target-version 0.1.0 \
 		--output ./commonroom \
 		--name commonroom-api \
 		--description "A fully generated & opinionated API client for the Common Room API." \
@@ -16,7 +16,7 @@ commonroom:
 front:
 	$(openapitor_exe) \
 		--input specs/front.json \
-		--version 0.0.3 \
+		--target-version 0.0.3 \
 		--output ./front \
 		--name front-api \
 		--base-url https://api2.frontapp.com \
@@ -26,7 +26,7 @@ front:
 gusto:
 	$(openapitor_exe) \
 		--input specs/gusto.v1.yaml \
-		--version 2.1.17 \
+		--target-version 2.1.17 \
 		--output ./gusto \
 		--name gusto-api \
 		--base-url https://api.gusto.com \
@@ -39,7 +39,7 @@ gusto:
 mailchimp:
 	$(openapitor_exe) \
 		--input specs/mailchimp.json \
-		--version 0.0.2 \
+		--target-version 0.0.2 \
 		--output ./mailchimp \
 		--name mailchimp-api \
 		--base-url https://us1.api.mailchimp.com \
@@ -51,7 +51,7 @@ mailchimp:
 ramp:
 	$(openapitor_exe) \
 		--input specs/ramp.json \
-		--version 0.0.2 \
+		--target-version 0.0.2 \
 		--output ./ramp \
 		--name ramp-api \
 		--base-url https://api.ramp.com \
@@ -63,7 +63,7 @@ ramp:
 remote:
 	$(openapitor_exe) \
 		--input specs/remote.json \
-		--version 0.1.0 \
+		--target-version 0.1.0 \
 		--output ./remote \
 		--name remote-api \
 		--description "A fully generated & opinionated API client for the Remote API." \
@@ -75,7 +75,7 @@ remote:
 twilio:
 	$(openapitor_exe) \
 		--input specs/twilio.json \
-		--version 0.1.0 \
+		--target-version 0.1.0 \
 		--output ./twilio \
 		--name twilio-api \
 		--description "A fully generated & opinionated API client for the Twilio API." \

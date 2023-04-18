@@ -54,7 +54,7 @@ impl Conversations {
         }
     }
 
-    #[doc = "Create conversation\n\nCreate a conversation.\n> ⚠\u{fe0f} Currently, only discussions can be created with this endpoint.\n\n\n```rust,no_run\nasync fn example_conversations_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse = client\n        .conversations()\n        .create(&front_api::types::CreateConversation {\n            type_: front_api::types::CreateConversationType::Discussion,\n            inbox_id: Some(\"some-string\".to_string()),\n            teammate_ids: Some(vec![\"some-string\".to_string()]),\n            subject: \"some-string\".to_string(),\n            comment: front_api::types::Comment {\n                author_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create conversation\n\nCreate a conversation.\n> ⚠\u{fe0f} Currently, only discussions can be created with this endpoint.\n\n\n```rust,no_run\nasync fn example_conversations_create() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ConversationResponse = client\n        .conversations()\n        .create(&serde_json::Value::String(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
@@ -124,11 +124,7 @@ impl Conversations {
              example_conversations_update() -> anyhow::Result<()> {\n    let client = \
              front_api::Client::new_from_env();\n    client\n        .conversations()\n        \
              .update(\n            \"some-string\",\n            \
-             &front_api::types::UpdateConversation {\n                assignee_id: \
-             Some(\"some-string\".to_string()),\n                inbox_id: \
-             Some(\"some-string\".to_string()),\n                status: \
-             Some(front_api::types::Status::Spam),\n                tag_ids: \
-             Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
              .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
@@ -155,7 +151,14 @@ impl Conversations {
         }
     }
 
-    #[doc = "Update conversation assignee\n\nAssign or unassign a conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_conversations_update_assignee() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .conversations()\n        .update_assignee(\n            \"some-string\",\n            &front_api::types::UpdateConversationAssignee {\n                assignee_id: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update conversation assignee\n\nAssign or unassign a \
+             conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID \
+             (required)\n\n```rust,no_run\nasync fn example_conversations_update_assignee() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    \
+             client\n        .conversations()\n        .update_assignee(\n            \
+             \"some-string\",\n            \
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_assignee<'a>(
         &'a self,
@@ -546,10 +549,8 @@ impl Conversations {
              example_conversations_update_reminders() -> anyhow::Result<()> {\n    let client = \
              front_api::Client::new_from_env();\n    client\n        .conversations()\n        \
              .update_reminders(\n            \"some-string\",\n            \
-             &front_api::types::UpdateConversationReminders {\n                teammate_id: \
-             \"some-string\".to_string(),\n                scheduled_at: \
-             \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    \
-             Ok(())\n}\n```"]
+             &serde_json::Value::String(\"some-string\".to_string()),\n        )\n        \
+             .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_reminders<'a>(
         &'a self,

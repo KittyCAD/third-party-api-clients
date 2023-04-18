@@ -87,18 +87,7 @@ impl Countries {
         }
     }
 
-    #[doc = "Show form schema\n\nReturns the json schema of a supported form. Possible form names \
-             are:\n\n- address_details\n- administrative_details\n- bank_account_details\n- \
-             billing_address_details\n- contract_details\n- emergency_contact_details\n- \
-             employment_document_details\n- personal_details\n- \
-             pricing_plan_details\n\n\n\n**Parameters:**\n\n- `country_code: &'astr`: Country code \
-             according to ISO 3-digit alphabetic codes (required)\n- `form: &'astr`: Name of the \
-             desired form (required)\n\n```rust,no_run\nasync fn \
-             example_countries_get_show_form_country() -> anyhow::Result<()> {\n    let client = \
-             remote_api::Client::new_from_env();\n    let result: \
-             remote_api::types::CountryFormResponse = client\n        .countries()\n        \
-             .get_show_form_country(\"some-string\", \"some-string\")\n        .await?;\n    \
-             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Show form schema\n\nReturns the json schema of a supported form. Possible form names are:\n\n    - address_details\n    - administrative_details\n    - bank_account_details\n    - billing_address_details\n    - contract_details\n    - emergency_contact_details\n    - employment_document_details\n    - personal_details\n    - pricing_plan_details\n\n    \n\n**Parameters:**\n\n- `country_code: &'astr`: Country code according to ISO 3-digit alphabetic codes (required)\n- `form: &'astr`: Name of the desired form (required)\n\n```rust,no_run\nasync fn example_countries_get_show_form_country() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::CountryFormResponse = client\n        .countries()\n        .get_show_form_country(\"some-string\", \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_show_form_country<'a>(
         &'a self,

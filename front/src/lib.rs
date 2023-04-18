@@ -59,6 +59,7 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[doc(hidden)]
 pub mod accounts;
 pub mod analytics;
 pub mod attachments;
