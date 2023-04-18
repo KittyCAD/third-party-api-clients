@@ -127,7 +127,7 @@ impl Conversations {
              &front_api::types::UpdateConversation {\n                assignee_id: \
              Some(\"some-string\".to_string()),\n                inbox_id: \
              Some(\"some-string\".to_string()),\n                status: \
-             Some(front_api::types::Status::Spam),\n                tag_ids: \
+             Some(front_api::types::Status::Open),\n                tag_ids: \
              Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
              .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
