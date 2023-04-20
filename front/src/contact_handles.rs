@@ -12,7 +12,7 @@ impl ContactHandles {
         Self { client }
     }
 
-    #[doc = "Add contact handle\n\nAdds a new handle to a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contact_handles_add() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .add(\n            \"some-string\",\n            &front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Custom,\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Add contact handle\n\nAdds a new handle to a contact.\n\n**Parameters:**\n\n- `contact_id: &'astr`: The contact ID (required)\n\n```rust,no_run\nasync fn example_contact_handles_add() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .contact_handles()\n        .add(\n            \"some-string\",\n            &front_api::types::ContactHandle {\n                handle: \"some-string\".to_string(),\n                source: front_api::types::Source::Email,\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn add<'a>(
         &'a self,
@@ -45,7 +45,7 @@ impl ContactHandles {
              .delete(\n            \"some-string\",\n            \
              &front_api::types::DeleteContactHandle {\n                handle: \
              \"some-string\".to_string(),\n                source: \
-             front_api::types::Source::Custom,\n                force: Some(false),\n            \
+             front_api::types::Source::Email,\n                force: Some(true),\n            \
              },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(
