@@ -219,7 +219,7 @@ impl Channels {
              settings: Some(front_api::types::CreateChannelSettings {\n                    \
              undo_send_time: Some(4 as i64),\n                    all_teammates_can_reply: \
              Some(true),\n                }),\n                type_: \
-             front_api::types::CreateChannelType::Custom,\n                send_as: \
+             front_api::types::CreateChannelType::Twilio,\n                send_as: \
              Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
              Ok(())\n}\n```"]
     #[tracing::instrument]
