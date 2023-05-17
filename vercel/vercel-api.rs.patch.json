@@ -1,0 +1,10 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = vercel-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `VERCEL_API_TOKEN`.\nlet client = vercel_api::Client::new_from_env();",
+      "install": "[dependencies]\nvercel-api = \"0.1.0\""
+    }
+  }
+]

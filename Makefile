@@ -83,6 +83,17 @@ twilio:
 		--basic-auth \
 		--date-time-format "%a, %d %b %Y %H:%M:%S %z" $(EXTRA_ARGS)
 
+.PHONY: vercel
+vercel:
+	$(openapitor_exe) \
+		--input specs/vercel.json \
+		--target-version 0.1.0 \
+		--output ./vercel \
+		--name vercel-api \
+		--description "A fully generated & opinionated API client for the Vercel API." \
+		--base-url "https://api.vercel.com"  $(EXTRA_ARGS)
+
+
 .PHONY: openapitor
 openapitor:
 	cd kittycad.rs/openapitor && cargo build
