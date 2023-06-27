@@ -1,4 +1,5 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
@@ -428,14 +429,15 @@ impl std::fmt::Display for ShiftInterval {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftInterval {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.start.clone(), self.end.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.start.clone().into(), self.end.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["start".into(), "end".into()]
     }
 }
 
@@ -469,57 +471,58 @@ impl std::fmt::Display for ShiftIntervals {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftIntervals {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mon) = &self.mon {
-                format!("{:?}", mon)
+                format!("{:?}", mon).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tue) = &self.tue {
-                format!("{:?}", tue)
+                format!("{:?}", tue).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wed) = &self.wed {
-                format!("{:?}", wed)
+                format!("{:?}", wed).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(thu) = &self.thu {
-                format!("{:?}", thu)
+                format!("{:?}", thu).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fri) = &self.fri {
-                format!("{:?}", fri)
+                format!("{:?}", fri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sat) = &self.sat {
-                format!("{:?}", sat)
+                format!("{:?}", sat).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sun) = &self.sun {
-                format!("{:?}", sun)
+                format!("{:?}", sun).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "mon".to_string(),
-            "tue".to_string(),
-            "wed".to_string(),
-            "thu".to_string(),
-            "fri".to_string(),
-            "sat".to_string(),
-            "sun".to_string(),
+            "mon".into(),
+            "tue".into(),
+            "wed".into(),
+            "thu".into(),
+            "fri".into(),
+            "sat".into(),
+            "sun".into(),
         ]
     }
 }
@@ -541,14 +544,15 @@ impl std::fmt::Display for TagIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TagIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.tag_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.tag_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["tag_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["tag_ids".into()]
     }
 }
 
@@ -569,14 +573,15 @@ impl std::fmt::Display for TeammateIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeammateIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.teammate_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.teammate_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["teammate_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["teammate_ids".into()]
     }
 }
 
@@ -597,14 +602,15 @@ impl std::fmt::Display for ChannelIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ChannelIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.channel_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.channel_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["channel_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["channel_ids".into()]
     }
 }
 
@@ -625,14 +631,15 @@ impl std::fmt::Display for InboxIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InboxIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.inbox_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.inbox_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["inbox_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["inbox_ids".into()]
     }
 }
 
@@ -653,14 +660,15 @@ impl std::fmt::Display for TeamIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeamIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.team_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.team_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["team_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["team_ids".into()]
     }
 }
 
@@ -681,14 +689,15 @@ impl std::fmt::Display for ContactIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.contact_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.contact_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["contact_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contact_ids".into()]
     }
 }
 
@@ -709,14 +718,15 @@ impl std::fmt::Display for AccountIds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AccountIds {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.account_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.account_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["account_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["account_ids".into()]
     }
 }
 
@@ -750,45 +760,46 @@ impl std::fmt::Display for Account {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Account {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domains) = &self.domains {
-                format!("{:?}", domains)
+                format!("{:?}", domains).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{:?}", external_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "description".to_string(),
-            "domains".to_string(),
-            "external_id".to_string(),
-            "custom_fields".to_string(),
+            "name".into(),
+            "description".into(),
+            "domains".into(),
+            "external_id".into(),
+            "custom_fields".into(),
         ]
     }
 }
@@ -822,51 +833,52 @@ impl std::fmt::Display for AnalyticsFilters {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsFilters {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{:?}", tag_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{:?}", teammate_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{:?}", channel_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{:?}", inbox_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(team_ids) = &self.team_ids {
-                format!("{:?}", team_ids)
+                format!("{:?}", team_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_ids) = &self.account_ids {
-                format!("{:?}", account_ids)
+                format!("{:?}", account_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tag_ids".to_string(),
-            "teammate_ids".to_string(),
-            "channel_ids".to_string(),
-            "inbox_ids".to_string(),
-            "team_ids".to_string(),
-            "account_ids".to_string(),
+            "tag_ids".into(),
+            "teammate_ids".into(),
+            "channel_ids".into(),
+            "inbox_ids".into(),
+            "team_ids".into(),
+            "account_ids".into(),
         ]
     }
 }
@@ -902,33 +914,34 @@ impl std::fmt::Display for AnalyticsReportRequest2 {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsReportRequest2 {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.start),
-            format!("{:?}", self.end),
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{:?}", timezone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{:?}", filters).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.metrics),
+            format!("{:?}", self.metrics).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "start".to_string(),
-            "end".to_string(),
-            "timezone".to_string(),
-            "filters".to_string(),
-            "metrics".to_string(),
+            "start".into(),
+            "end".into(),
+            "timezone".into(),
+            "filters".into(),
+            "metrics".into(),
         ]
     }
 }
@@ -941,11 +954,11 @@ impl tabled::Tabled for AnalyticsReportRequest2 {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Type {
     #[serde(rename = "events")]
     #[display("events")]
@@ -986,33 +999,34 @@ impl std::fmt::Display for AnalyticsExportRequest2 {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsExportRequest2 {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.start),
-            format!("{:?}", self.end),
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{:?}", timezone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{:?}", filters).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.type_),
+            format!("{:?}", self.type_).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "start".to_string(),
-            "end".to_string(),
-            "timezone".to_string(),
-            "filters".to_string(),
-            "type_".to_string(),
+            "start".into(),
+            "end".into(),
+            "timezone".into(),
+            "filters".into(),
+            "type_".into(),
         ]
     }
 }
@@ -1025,11 +1039,11 @@ impl tabled::Tabled for AnalyticsExportRequest2 {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AnalyticsMetricId {
     #[serde(rename = "avg_csat_survey_response")]
     #[display("avg_csat_survey_response")]
@@ -1112,14 +1126,15 @@ impl std::fmt::Display for CreateMessageTemplateFolderAsChild {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateMessageTemplateFolderAsChild {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -1146,21 +1161,22 @@ impl std::fmt::Display for CreateMessageTemplateFolder {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateMessageTemplateFolder {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{:?}", parent_folder_id)
+                format!("{:?}", parent_folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "parent_folder_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "parent_folder_id".into()]
     }
 }
 
@@ -1188,25 +1204,26 @@ impl std::fmt::Display for UpdateMessageTemplateFolder {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateMessageTemplateFolder {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parent_folder_id) = &self.parent_folder_id {
-                format!("{:?}", parent_folder_id)
+                format!("{:?}", parent_folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "parent_folder_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "parent_folder_id".into()]
     }
 }
 
@@ -1241,45 +1258,46 @@ impl std::fmt::Display for UpdateMessageTemplate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateMessageTemplate {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{:?}", folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{:?}", inbox_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "folder_id".to_string(),
-            "inbox_ids".to_string(),
+            "name".into(),
+            "subject".into(),
+            "body".into(),
+            "folder_id".into(),
+            "inbox_ids".into(),
         ]
     }
 }
@@ -1311,31 +1329,32 @@ impl std::fmt::Display for CreateMessageTemplateAsChild {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateMessageTemplateAsChild {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{:?}", inbox_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "inbox_ids".to_string(),
+            "name".into(),
+            "subject".into(),
+            "body".into(),
+            "inbox_ids".into(),
         ]
     }
 }
@@ -1368,31 +1387,32 @@ impl std::fmt::Display for CreatePrivateMessageTemplate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreatePrivateMessageTemplate {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{:?}", folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "folder_id".to_string(),
+            "name".into(),
+            "subject".into(),
+            "body".into(),
+            "folder_id".into(),
         ]
     }
 }
@@ -1427,37 +1447,38 @@ impl std::fmt::Display for CreateSharedMessageTemplate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSharedMessageTemplate {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(folder_id) = &self.folder_id {
-                format!("{:?}", folder_id)
+                format!("{:?}", folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{:?}", inbox_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "folder_id".to_string(),
-            "inbox_ids".to_string(),
+            "name".into(),
+            "subject".into(),
+            "body".into(),
+            "folder_id".into(),
+            "inbox_ids".into(),
         ]
     }
 }
@@ -1480,14 +1501,15 @@ impl std::fmt::Display for CreateContactGroup {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateContactGroup {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -1509,14 +1531,15 @@ impl std::fmt::Display for AddContactsToGroup {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddContactsToGroup {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.contact_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.contact_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["contact_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contact_ids".into()]
     }
 }
 
@@ -1530,11 +1553,11 @@ impl tabled::Tabled for AddContactsToGroup {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Source {
     #[serde(rename = "twitter")]
     #[display("twitter")]
@@ -1580,14 +1603,18 @@ impl std::fmt::Display for ContactHandle {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactHandle {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.handle.clone(), format!("{:?}", self.source)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.handle.clone().into(),
+            format!("{:?}", self.source).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["handle".to_string(), "source".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["handle".into(), "source".into()]
     }
 }
 
@@ -1634,63 +1661,64 @@ impl std::fmt::Display for CreateContact {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateContact {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{:?}", avatar)
+                format!("{:?}", avatar).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{:?}", is_spammer).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{:?}", links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{:?}", group_names)
+                format!("{:?}", group_names).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(handles) = &self.handles {
-                format!("{:?}", handles)
+                format!("{:?}", handles).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "description".to_string(),
-            "avatar".to_string(),
-            "is_spammer".to_string(),
-            "links".to_string(),
-            "group_names".to_string(),
-            "custom_fields".to_string(),
-            "handles".to_string(),
+            "name".into(),
+            "description".into(),
+            "avatar".into(),
+            "is_spammer".into(),
+            "links".into(),
+            "group_names".into(),
+            "custom_fields".into(),
+            "handles".into(),
         ]
     }
 }
@@ -1734,57 +1762,58 @@ impl std::fmt::Display for Contact {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Contact {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{:?}", avatar)
+                format!("{:?}", avatar).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{:?}", is_spammer).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{:?}", links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(group_names) = &self.group_names {
-                format!("{:?}", group_names)
+                format!("{:?}", group_names).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "description".to_string(),
-            "avatar".to_string(),
-            "is_spammer".to_string(),
-            "links".to_string(),
-            "group_names".to_string(),
-            "custom_fields".to_string(),
+            "name".into(),
+            "description".into(),
+            "avatar".into(),
+            "is_spammer".into(),
+            "links".into(),
+            "group_names".into(),
+            "custom_fields".into(),
         ]
     }
 }
@@ -1813,21 +1842,22 @@ impl std::fmt::Display for MergeContacts {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MergeContacts {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(target_contact_id) = &self.target_contact_id {
-                format!("{:?}", target_contact_id)
+                format!("{:?}", target_contact_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.contact_ids),
+            format!("{:?}", self.contact_ids).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["target_contact_id".to_string(), "contact_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["target_contact_id".into(), "contact_ids".into()]
     }
 }
 
@@ -1855,26 +1885,23 @@ impl std::fmt::Display for DeleteContactHandle {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeleteContactHandle {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.handle.clone(),
-            format!("{:?}", self.source),
+            self.handle.clone().into(),
+            format!("{:?}", self.source).into(),
             if let Some(force) = &self.force {
-                format!("{:?}", force)
+                format!("{:?}", force).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "handle".to_string(),
-            "source".to_string(),
-            "force".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["handle".into(), "source".into(), "force".into()]
     }
 }
 
@@ -1898,14 +1925,15 @@ impl std::fmt::Display for CreateContactNote {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateContactNote {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.author_id.clone(), self.body.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.author_id.clone().into(), self.body.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["author_id".to_string(), "body".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["author_id".into(), "body".into()]
     }
 }
 
@@ -1935,28 +1963,26 @@ impl std::fmt::Display for Settings {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Settings {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{:?}", undo_send_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{:?}", all_teammates_can_reply).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "undo_send_time".to_string(),
-            "all_teammates_can_reply".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["undo_send_time".into(), "all_teammates_can_reply".into()]
     }
 }
 
@@ -1984,25 +2010,26 @@ impl std::fmt::Display for UpdateChannel {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateChannel {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{:?}", settings).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "settings".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "settings".into()]
     }
 }
 
@@ -2031,28 +2058,26 @@ impl std::fmt::Display for CreateChannelSettings {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateChannelSettings {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{:?}", undo_send_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{:?}", all_teammates_can_reply).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "undo_send_time".to_string(),
-            "all_teammates_can_reply".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["undo_send_time".into(), "all_teammates_can_reply".into()]
     }
 }
 
@@ -2065,11 +2090,11 @@ impl tabled::Tabled for CreateChannelSettings {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateChannelType {
     #[serde(rename = "custom")]
     #[display("custom")]
@@ -2110,35 +2135,36 @@ impl std::fmt::Display for CreateChannel {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateChannel {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{:?}", settings).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.type_),
+            format!("{:?}", self.type_).into(),
             if let Some(send_as) = &self.send_as {
-                format!("{:?}", send_as)
+                format!("{:?}", send_as).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "settings".to_string(),
-            "type_".to_string(),
-            "send_as".to_string(),
+            "name".into(),
+            "settings".into(),
+            "type_".into(),
+            "send_as".into(),
         ]
     }
 }
@@ -2168,30 +2194,27 @@ impl std::fmt::Display for CreateComment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateComment {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{:?}", author_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "author_id".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["author_id".into(), "body".into(), "attachments".into()]
     }
 }
 
@@ -2204,11 +2227,11 @@ impl tabled::Tabled for CreateComment {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum CreateConversationType {
     #[serde(rename = "discussion")]
@@ -2245,30 +2268,27 @@ impl std::fmt::Display for Comment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Comment {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{:?}", author_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "author_id".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["author_id".into(), "body".into(), "attachments".into()]
     }
 }
 
@@ -2303,33 +2323,34 @@ impl std::fmt::Display for CreateConversation {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateConversation {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.type_),
+            format!("{:?}", self.type_).into(),
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{:?}", inbox_id)
+                format!("{:?}", inbox_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{:?}", teammate_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.subject.clone(),
-            format!("{:?}", self.comment),
+            self.subject.clone().into(),
+            format!("{:?}", self.comment).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "type_".to_string(),
-            "inbox_id".to_string(),
-            "teammate_ids".to_string(),
-            "subject".to_string(),
-            "comment".to_string(),
+            "type_".into(),
+            "inbox_id".into(),
+            "teammate_ids".into(),
+            "subject".into(),
+            "comment".into(),
         ]
     }
 }
@@ -2343,11 +2364,11 @@ impl tabled::Tabled for CreateConversation {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Status {
     #[serde(rename = "archived")]
     #[display("archived")]
@@ -2391,39 +2412,40 @@ impl std::fmt::Display for UpdateConversation {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConversation {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{:?}", assignee_id)
+                format!("{:?}", assignee_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inbox_id) = &self.inbox_id {
-                format!("{:?}", inbox_id)
+                format!("{:?}", inbox_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{:?}", tag_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "assignee_id".to_string(),
-            "inbox_id".to_string(),
-            "status".to_string(),
-            "tag_ids".to_string(),
+            "assignee_id".into(),
+            "inbox_id".into(),
+            "status".into(),
+            "tag_ids".into(),
         ]
     }
 }
@@ -2446,14 +2468,15 @@ impl std::fmt::Display for UpdateConversationAssignee {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConversationAssignee {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.assignee_id.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.assignee_id.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["assignee_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["assignee_id".into()]
     }
 }
 
@@ -2479,14 +2502,18 @@ impl std::fmt::Display for UpdateConversationReminders {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConversationReminders {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.teammate_id.clone(), self.scheduled_at.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.teammate_id.clone().into(),
+            self.scheduled_at.clone().into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["teammate_id".to_string(), "scheduled_at".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["teammate_id".into(), "scheduled_at".into()]
     }
 }
 
@@ -2512,25 +2539,26 @@ impl std::fmt::Display for UpdateCustomField {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateCustomField {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "description".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "description".into()]
     }
 }
 
@@ -2544,11 +2572,11 @@ impl tabled::Tabled for UpdateCustomField {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum Mode {
     #[serde(rename = "private")]
@@ -2605,67 +2633,68 @@ impl std::fmt::Display for CreateDraft {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateDraft {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.author_id.clone(),
+            self.author_id.clone().into(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{:?}", mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{:?}", signature_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{:?}", should_add_default_signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "author_id".to_string(),
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-            "mode".to_string(),
-            "signature_id".to_string(),
-            "should_add_default_signature".to_string(),
+            "author_id".into(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "subject".into(),
+            "body".into(),
+            "attachments".into(),
+            "mode".into(),
+            "signature_id".into(),
+            "should_add_default_signature".into(),
         ]
     }
 }
@@ -2716,73 +2745,74 @@ impl std::fmt::Display for ReplyDraft {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ReplyDraft {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.author_id.clone(),
+            self.author_id.clone().into(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{:?}", mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{:?}", signature_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{:?}", should_add_default_signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{:?}", channel_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "author_id".to_string(),
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-            "mode".to_string(),
-            "signature_id".to_string(),
-            "should_add_default_signature".to_string(),
-            "channel_id".to_string(),
+            "author_id".into(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "subject".into(),
+            "body".into(),
+            "attachments".into(),
+            "mode".into(),
+            "signature_id".into(),
+            "should_add_default_signature".into(),
+            "channel_id".into(),
         ]
     }
 }
@@ -2797,11 +2827,11 @@ impl tabled::Tabled for ReplyDraft {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum EditDraftMode {
     #[serde(rename = "shared")]
@@ -2861,79 +2891,80 @@ impl std::fmt::Display for EditDraft {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EditDraft {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.author_id.clone(),
+            self.author_id.clone().into(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(mode) = &self.mode {
-                format!("{:?}", mode)
+                format!("{:?}", mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{:?}", signature_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{:?}", should_add_default_signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{:?}", channel_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(version) = &self.version {
-                format!("{:?}", version)
+                format!("{:?}", version).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "author_id".to_string(),
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-            "mode".to_string(),
-            "signature_id".to_string(),
-            "should_add_default_signature".to_string(),
-            "channel_id".to_string(),
-            "version".to_string(),
+            "author_id".into(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "subject".into(),
+            "body".into(),
+            "attachments".into(),
+            "mode".into(),
+            "signature_id".into(),
+            "should_add_default_signature".into(),
+            "channel_id".into(),
+            "version".into(),
         ]
     }
 }
@@ -2956,14 +2987,15 @@ impl std::fmt::Display for DeleteDraft {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeleteDraft {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.version.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.version.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["version".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["version".into()]
     }
 }
 
@@ -2986,21 +3018,22 @@ impl std::fmt::Display for CreateInbox {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateInbox {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{:?}", teammate_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "teammate_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "teammate_ids".into()]
     }
 }
 
@@ -3025,25 +3058,26 @@ impl std::fmt::Display for Options {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Options {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{:?}", tag_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(archive) = &self.archive {
-                format!("{:?}", archive)
+                format!("{:?}", archive).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["tag_ids".to_string(), "archive".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["tag_ids".into(), "archive".into()]
     }
 }
 
@@ -3094,79 +3128,80 @@ impl std::fmt::Display for OutboundMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for OutboundMessage {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.to),
+            format!("{:?}", self.to).into(),
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{:?}", sender_name)
+                format!("{:?}", sender_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{:?}", author_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{:?}", text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(options) = &self.options {
-                format!("{:?}", options)
+                format!("{:?}", options).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{:?}", signature_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{:?}", should_add_default_signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "sender_name".to_string(),
-            "subject".to_string(),
-            "author_id".to_string(),
-            "body".to_string(),
-            "text".to_string(),
-            "options".to_string(),
-            "attachments".to_string(),
-            "signature_id".to_string(),
-            "should_add_default_signature".to_string(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "sender_name".into(),
+            "subject".into(),
+            "author_id".into(),
+            "body".into(),
+            "text".into(),
+            "options".into(),
+            "attachments".into(),
+            "signature_id".into(),
+            "should_add_default_signature".into(),
         ]
     }
 }
@@ -3192,25 +3227,26 @@ impl std::fmt::Display for OutboundReplyMessageOptions {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for OutboundReplyMessageOptions {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tag_ids) = &self.tag_ids {
-                format!("{:?}", tag_ids)
+                format!("{:?}", tag_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(archive) = &self.archive {
-                format!("{:?}", archive)
+                format!("{:?}", archive).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["tag_ids".to_string(), "archive".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["tag_ids".into(), "archive".into()]
     }
 }
 
@@ -3265,89 +3301,90 @@ impl std::fmt::Display for OutboundReplyMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for OutboundReplyMessage {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sender_name) = &self.sender_name {
-                format!("{:?}", sender_name)
+                format!("{:?}", sender_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{:?}", author_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id)
+                format!("{:?}", channel_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{:?}", text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(options) = &self.options {
-                format!("{:?}", options)
+                format!("{:?}", options).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id)
+                format!("{:?}", signature_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature)
+                format!("{:?}", should_add_default_signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "sender_name".to_string(),
-            "subject".to_string(),
-            "author_id".to_string(),
-            "channel_id".to_string(),
-            "body".to_string(),
-            "text".to_string(),
-            "options".to_string(),
-            "attachments".to_string(),
-            "signature_id".to_string(),
-            "should_add_default_signature".to_string(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "sender_name".into(),
+            "subject".into(),
+            "author_id".into(),
+            "channel_id".into(),
+            "body".into(),
+            "text".into(),
+            "options".into(),
+            "attachments".into(),
+            "signature_id".into(),
+            "should_add_default_signature".into(),
         ]
     }
 }
@@ -3377,30 +3414,27 @@ impl std::fmt::Display for Sender {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Sender {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(contact_id) = &self.contact_id {
-                format!("{:?}", contact_id)
+                format!("{:?}", contact_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.handle.clone(),
+            self.handle.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "contact_id".to_string(),
-            "name".to_string(),
-            "handle".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contact_id".into(), "name".into(), "handle".into()]
     }
 }
 
@@ -3413,11 +3447,11 @@ impl tabled::Tabled for Sender {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum BodyFormat {
     #[serde(rename = "html")]
@@ -3454,25 +3488,26 @@ impl std::fmt::Display for Metadata {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Metadata {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{:?}", thread_ref).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(headers) = &self.headers {
-                format!("{:?}", headers)
+                format!("{:?}", headers).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["thread_ref".to_string(), "headers".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["thread_ref".into(), "headers".into()]
     }
 }
 
@@ -3507,43 +3542,44 @@ impl std::fmt::Display for CustomMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomMessage {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.sender),
+            format!("{:?}", self.sender).into(),
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(body_format) = &self.body_format {
-                format!("{:?}", body_format)
+                format!("{:?}", body_format).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{:?}", metadata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sender".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "body_format".to_string(),
-            "metadata".to_string(),
-            "attachments".to_string(),
+            "sender".into(),
+            "subject".into(),
+            "body".into(),
+            "body_format".into(),
+            "metadata".into(),
+            "attachments".into(),
         ]
     }
 }
@@ -3574,30 +3610,27 @@ impl std::fmt::Display for ImportMessageSender {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ImportMessageSender {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(author_id) = &self.author_id {
-                format!("{:?}", author_id)
+                format!("{:?}", author_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.handle.clone(),
+            self.handle.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "author_id".to_string(),
-            "name".to_string(),
-            "handle".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["author_id".into(), "name".into(), "handle".into()]
     }
 }
 
@@ -3611,11 +3644,11 @@ impl tabled::Tabled for ImportMessageSender {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum ImportMessageBodyFormat {
     #[serde(rename = "html")]
@@ -3638,11 +3671,11 @@ pub enum ImportMessageBodyFormat {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum ImportMessageType {
     #[serde(rename = "email")]
@@ -3690,35 +3723,36 @@ impl std::fmt::Display for ImportMessageMetadata {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ImportMessageMetadata {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{:?}", thread_ref).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.is_inbound),
+            format!("{:?}", self.is_inbound).into(),
             if let Some(is_archived) = &self.is_archived {
-                format!("{:?}", is_archived)
+                format!("{:?}", is_archived).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(should_skip_rules) = &self.should_skip_rules {
-                format!("{:?}", should_skip_rules)
+                format!("{:?}", should_skip_rules).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "thread_ref".to_string(),
-            "is_inbound".to_string(),
-            "is_archived".to_string(),
-            "should_skip_rules".to_string(),
+            "thread_ref".into(),
+            "is_inbound".into(),
+            "is_archived".into(),
+            "should_skip_rules".into(),
         ]
     }
 }
@@ -3773,75 +3807,76 @@ impl std::fmt::Display for ImportMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ImportMessage {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.sender),
-            format!("{:?}", self.to),
+            format!("{:?}", self.sender).into(),
+            format!("{:?}", self.to).into(),
             if let Some(cc) = &self.cc {
-                format!("{:?}", cc)
+                format!("{:?}", cc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc)
+                format!("{:?}", bcc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(body_format) = &self.body_format {
-                format!("{:?}", body_format)
+                format!("{:?}", body_format).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.external_id.clone(),
-            format!("{:?}", self.created_at),
+            self.external_id.clone().into(),
+            format!("{:?}", self.created_at).into(),
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(assignee_id) = &self.assignee_id {
-                format!("{:?}", assignee_id)
+                format!("{:?}", assignee_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{:?}", tags).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.metadata),
+            format!("{:?}", self.metadata).into(),
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sender".to_string(),
-            "to".to_string(),
-            "cc".to_string(),
-            "bcc".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "body_format".to_string(),
-            "external_id".to_string(),
-            "created_at".to_string(),
-            "type_".to_string(),
-            "assignee_id".to_string(),
-            "tags".to_string(),
-            "metadata".to_string(),
-            "attachments".to_string(),
+            "sender".into(),
+            "to".into(),
+            "cc".into(),
+            "bcc".into(),
+            "subject".into(),
+            "body".into(),
+            "body_format".into(),
+            "external_id".into(),
+            "created_at".into(),
+            "type_".into(),
+            "assignee_id".into(),
+            "tags".into(),
+            "metadata".into(),
+            "attachments".into(),
         ]
     }
 }
@@ -3855,11 +3890,11 @@ impl tabled::Tabled for ImportMessage {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Color {
     #[serde(rename = "black")]
     #[display("black")]
@@ -3917,25 +3952,26 @@ impl std::fmt::Display for CreateShift {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateShift {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
-            format!("{:?}", self.color),
-            self.timezone.clone(),
-            format!("{:?}", self.times),
-            format!("{:?}", self.teammate_ids),
+            self.name.clone().into(),
+            format!("{:?}", self.color).into(),
+            self.timezone.clone().into(),
+            format!("{:?}", self.times).into(),
+            format!("{:?}", self.teammate_ids).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "color".to_string(),
-            "timezone".to_string(),
-            "times".to_string(),
-            "teammate_ids".to_string(),
+            "name".into(),
+            "color".into(),
+            "timezone".into(),
+            "times".into(),
+            "teammate_ids".into(),
         ]
     }
 }
@@ -3970,45 +4006,46 @@ impl std::fmt::Display for UpdateShift {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateShift {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(color) = &self.color {
-                format!("{:?}", color)
+                format!("{:?}", color).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{:?}", timezone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(times) = &self.times {
-                format!("{:?}", times)
+                format!("{:?}", times).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(teammate_ids) = &self.teammate_ids {
-                format!("{:?}", teammate_ids)
+                format!("{:?}", teammate_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "color".to_string(),
-            "timezone".to_string(),
-            "times".to_string(),
-            "teammate_ids".to_string(),
+            "name".into(),
+            "color".into(),
+            "timezone".into(),
+            "times".into(),
+            "teammate_ids".into(),
         ]
     }
 }
@@ -4042,37 +4079,38 @@ impl std::fmt::Display for CreatePrivateSignature {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreatePrivateSignature {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{:?}", sender_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{:?}", is_default).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{:?}", channel_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "sender_info".to_string(),
-            "body".to_string(),
-            "is_default".to_string(),
-            "channel_ids".to_string(),
+            "name".into(),
+            "sender_info".into(),
+            "body".into(),
+            "is_default".into(),
+            "channel_ids".into(),
         ]
     }
 }
@@ -4110,45 +4148,46 @@ impl std::fmt::Display for CreateSharedSignature {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSharedSignature {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{:?}", sender_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.body.clone(),
+            self.body.clone().into(),
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{:?}", is_visible_for_all_teammate_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{:?}", is_default).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{:?}", channel_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "sender_info".to_string(),
-            "body".to_string(),
-            "is_visible_for_all_teammate_channels".to_string(),
-            "is_default".to_string(),
-            "channel_ids".to_string(),
+            "name".into(),
+            "sender_info".into(),
+            "body".into(),
+            "is_visible_for_all_teammate_channels".into(),
+            "is_default".into(),
+            "channel_ids".into(),
         ]
     }
 }
@@ -4188,53 +4227,54 @@ impl std::fmt::Display for UpdateSignature {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSignature {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{:?}", sender_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{:?}", is_visible_for_all_teammate_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{:?}", is_default).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{:?}", channel_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "sender_info".to_string(),
-            "body".to_string(),
-            "is_visible_for_all_teammate_channels".to_string(),
-            "is_default".to_string(),
-            "channel_ids".to_string(),
+            "name".into(),
+            "sender_info".into(),
+            "body".into(),
+            "is_visible_for_all_teammate_channels".into(),
+            "is_default".into(),
+            "channel_ids".into(),
         ]
     }
 }
@@ -4248,11 +4288,11 @@ impl tabled::Tabled for UpdateSignature {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Highlight {
     #[serde(rename = "grey")]
     #[display("grey")]
@@ -4308,29 +4348,30 @@ impl std::fmt::Display for CreateTag {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateTag {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{:?}", highlight).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{:?}", is_visible_in_conversation_lists).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "highlight".to_string(),
-            "is_visible_in_conversation_lists".to_string(),
+            "name".into(),
+            "highlight".into(),
+            "is_visible_in_conversation_lists".into(),
         ]
     }
 }
@@ -4363,39 +4404,40 @@ impl std::fmt::Display for UpdateTag {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateTag {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{:?}", highlight).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parent_tag_id) = &self.parent_tag_id {
-                format!("{:?}", parent_tag_id)
+                format!("{:?}", parent_tag_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{:?}", is_visible_in_conversation_lists).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "highlight".to_string(),
-            "parent_tag_id".to_string(),
-            "is_visible_in_conversation_lists".to_string(),
+            "name".into(),
+            "highlight".into(),
+            "parent_tag_id".into(),
+            "is_visible_in_conversation_lists".into(),
         ]
     }
 }
@@ -4429,39 +4471,40 @@ impl std::fmt::Display for UpdateTeammate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateTeammate {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{:?}", username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{:?}", first_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{:?}", last_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{:?}", is_available)
+                format!("{:?}", is_available).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "username".to_string(),
-            "first_name".to_string(),
-            "last_name".to_string(),
-            "is_available".to_string(),
+            "username".into(),
+            "first_name".into(),
+            "last_name".into(),
+            "is_available".into(),
         ]
     }
 }
@@ -4488,21 +4531,22 @@ impl std::fmt::Display for CreateLink {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateLink {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.external_url.clone(),
+            self.external_url.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "external_url".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "external_url".into()]
     }
 }
 
@@ -4525,18 +4569,19 @@ impl std::fmt::Display for UpdateLink {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateLink {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(name) = &self.name {
-            format!("{:?}", name)
+            format!("{:?}", name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -4559,18 +4604,19 @@ impl std::fmt::Display for Related {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Related {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(contacts) = &self.contacts {
-            format!("{:?}", contacts)
+            format!("{:?}", contacts).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["contacts".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contacts".into()]
     }
 }
 
@@ -4595,25 +4641,26 @@ impl std::fmt::Display for UnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -4661,75 +4708,76 @@ impl std::fmt::Display for AccountResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AccountResponse {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(logo_url) = &self.logo_url {
-                format!("{:?}", logo_url)
+                format!("{:?}", logo_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domains) = &self.domains {
-                format!("{:?}", domains)
+                format!("{:?}", domains).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{:?}", external_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "logo_url".to_string(),
-            "description".to_string(),
-            "domains".to_string(),
-            "external_id".to_string(),
-            "custom_fields".to_string(),
-            "created_at".to_string(),
-            "updated_at".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "logo_url".into(),
+            "description".into(),
+            "domains".into(),
+            "external_id".into(),
+            "custom_fields".into(),
+            "created_at".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -4753,18 +4801,19 @@ impl std::fmt::Display for EventResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EventResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -4777,11 +4826,11 @@ impl tabled::Tabled for EventResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EventResponseType {
     #[serde(rename = "assign")]
     #[display("assign")]
@@ -4836,11 +4885,11 @@ pub enum EventResponseType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum MetaType {
     #[serde(rename = "teamate")]
     #[display("teamate")]
@@ -4879,31 +4928,27 @@ impl std::fmt::Display for Meta {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Meta {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(type_) = &self.type_ {
-            format!("{:?}", type_)
+            format!("{:?}", type_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into()]
     }
 }
 
 #[doc = "The resource which triggered the event"]
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Data {
     RuleResponse(RuleResponse),
     TeammateResponse(TeammateResponse),
@@ -4933,25 +4978,26 @@ impl std::fmt::Display for EventResponseSource {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EventResponseSource {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(meta) = &self.meta {
-                format!("{:?}", meta)
+                format!("{:?}", meta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{:?}", data).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["meta".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "data".into()]
     }
 }
 
@@ -4964,11 +5010,11 @@ impl tabled::Tabled for EventResponseSource {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TargetMetaType {
     #[serde(rename = "teamate")]
     #[display("teamate")]
@@ -4992,14 +5038,9 @@ pub enum TargetMetaType {
 
 #[doc = "The resource which received the event"]
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TargetMetaData {
     TeammateResponse(TeammateResponse),
     InboxResponse(InboxResponse),
@@ -5032,25 +5073,26 @@ impl std::fmt::Display for TargetMeta {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TargetMeta {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{:?}", data).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "data".into()]
     }
 }
 
@@ -5074,18 +5116,19 @@ impl std::fmt::Display for Target {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Target {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(meta) = &self.meta {
-            format!("{:?}", meta)
+            format!("{:?}", meta).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["meta".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into()]
     }
 }
 
@@ -5125,57 +5168,58 @@ impl std::fmt::Display for EventResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EventResponse {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emitted_at) = &self.emitted_at {
-                format!("{:?}", emitted_at)
+                format!("{:?}", emitted_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(source) = &self.source {
-                format!("{:?}", source)
+                format!("{:?}", source).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(target) = &self.target {
-                format!("{:?}", target)
+                format!("{:?}", target).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conversation) = &self.conversation {
-                format!("{:?}", conversation)
+                format!("{:?}", conversation).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "type_".to_string(),
-            "emitted_at".to_string(),
-            "source".to_string(),
-            "target".to_string(),
-            "conversation".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "type_".into(),
+            "emitted_at".into(),
+            "source".into(),
+            "target".into(),
+            "conversation".into(),
         ]
     }
 }
@@ -5199,18 +5243,19 @@ impl std::fmt::Display for IdentityResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for IdentityResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -5238,34 +5283,31 @@ impl std::fmt::Display for IdentityResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for IdentityResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "id".into(), "name".into()]
     }
 }
 
@@ -5288,18 +5330,19 @@ impl std::fmt::Display for AnalyticsExportResponse2UnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsExportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -5312,11 +5355,11 @@ impl tabled::Tabled for AnalyticsExportResponse2UnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AnalyticsExportResponse2Status {
     #[serde(rename = "running")]
     #[display("running")]
@@ -5366,57 +5409,58 @@ impl std::fmt::Display for AnalyticsExportResponse2 {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsExportResponse2 {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(progress) = &self.progress {
-                format!("{:?}", progress)
+                format!("{:?}", progress).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(size) = &self.size {
-                format!("{:?}", size)
+                format!("{:?}", size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(filters) = &self.filters {
-                format!("{:?}", filters)
+                format!("{:?}", filters).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "status".to_string(),
-            "progress".to_string(),
-            "url".to_string(),
-            "size".to_string(),
-            "created_at".to_string(),
-            "filters".to_string(),
+            "underscore_links".into(),
+            "status".into(),
+            "progress".into(),
+            "url".into(),
+            "size".into(),
+            "created_at".into(),
+            "filters".into(),
         ]
     }
 }
@@ -5440,18 +5484,19 @@ impl std::fmt::Display for AnalyticsReportResponse2UnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsReportResponse2UnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -5464,11 +5509,11 @@ impl tabled::Tabled for AnalyticsReportResponse2UnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AnalyticsReportResponse2Status {
     #[serde(rename = "running")]
     #[display("running")]
@@ -5509,39 +5554,40 @@ impl std::fmt::Display for AnalyticsReportResponse2 {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsReportResponse2 {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(progress) = &self.progress {
-                format!("{:?}", progress)
+                format!("{:?}", progress).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(metrics) = &self.metrics {
-                format!("{:?}", metrics)
+                format!("{:?}", metrics).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "status".to_string(),
-            "progress".to_string(),
-            "metrics".to_string(),
+            "underscore_links".into(),
+            "status".into(),
+            "progress".into(),
+            "metrics".into(),
         ]
     }
 }
@@ -5568,30 +5614,31 @@ impl std::fmt::Display for AnalyticsScalar2 {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsScalar2 {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "type_".into(), "value".into()]
     }
 }
 
@@ -5603,11 +5650,11 @@ impl tabled::Tabled for AnalyticsScalar2 {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AnalyticsScalarType {
     #[serde(rename = "number")]
     #[display("number")]
@@ -5642,18 +5689,19 @@ impl std::fmt::Display for ResourceUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ResourceUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -5677,25 +5725,26 @@ impl std::fmt::Display for Resource {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Resource {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "underscore_links".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "underscore_links".into()]
     }
 }
 
@@ -5719,38 +5768,34 @@ impl std::fmt::Display for ValueOneOf {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ValueOneOf {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(label) = &self.label {
-                format!("{:?}", label)
+                format!("{:?}", label).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(resource) = &self.resource {
-                format!("{:?}", resource)
+                format!("{:?}", resource).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["label".to_string(), "resource".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["label".into(), "resource".into()]
     }
 }
 
 #[doc = "The value of a scalar metric."]
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Value {
     I64(i64),
     String(String),
@@ -5780,30 +5825,31 @@ impl std::fmt::Display for AnalyticsScalarValue {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsScalarValue {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "type_".into(), "value".into()]
     }
 }
 
@@ -5830,25 +5876,26 @@ impl std::fmt::Display for AttachmentMetadata {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AttachmentMetadata {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(is_inline) = &self.is_inline {
-                format!("{:?}", is_inline)
+                format!("{:?}", is_inline).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cid) = &self.cid {
-                format!("{:?}", cid)
+                format!("{:?}", cid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["is_inline".to_string(), "cid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["is_inline".into(), "cid".into()]
     }
 }
 
@@ -5885,51 +5932,52 @@ impl std::fmt::Display for Attachment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Attachment {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(filename) = &self.filename {
-                format!("{:?}", filename)
+                format!("{:?}", filename).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{:?}", content_type)
+                format!("{:?}", content_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(size) = &self.size {
-                format!("{:?}", size)
+                format!("{:?}", size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{:?}", metadata).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "filename".to_string(),
-            "url".to_string(),
-            "content_type".to_string(),
-            "size".to_string(),
-            "metadata".to_string(),
+            "id".into(),
+            "filename".into(),
+            "url".into(),
+            "content_type".into(),
+            "size".into(),
+            "metadata".into(),
         ]
     }
 }
@@ -5953,18 +6001,19 @@ impl std::fmt::Display for MessageTemplateFolderResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -5989,25 +6038,26 @@ impl std::fmt::Display for MessageTemplateFolderResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateFolderResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -6035,34 +6085,31 @@ impl std::fmt::Display for MessageTemplateFolderResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateFolderResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "id".into(), "name".into()]
     }
 }
 
@@ -6085,18 +6132,19 @@ impl std::fmt::Display for MessageTemplateResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -6121,25 +6169,26 @@ impl std::fmt::Display for MessageTemplateResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -6181,63 +6230,64 @@ impl std::fmt::Display for MessageTemplateResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageTemplateResponse {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_available_for_all_inboxes) = &self.is_available_for_all_inboxes {
-                format!("{:?}", is_available_for_all_inboxes)
+                format!("{:?}", is_available_for_all_inboxes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inbox_ids) = &self.inbox_ids {
-                format!("{:?}", inbox_ids)
+                format!("{:?}", inbox_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "subject".to_string(),
-            "body".to_string(),
-            "attachments".to_string(),
-            "is_available_for_all_inboxes".to_string(),
-            "inbox_ids".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "subject".into(),
+            "body".into(),
+            "attachments".into(),
+            "is_available_for_all_inboxes".into(),
+            "inbox_ids".into(),
         ]
     }
 }
@@ -6264,25 +6314,26 @@ impl std::fmt::Display for ContactGroupResponsesUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactGroupResponsesUnderscoreLinksRelated {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(contacts) = &self.contacts {
-                format!("{:?}", contacts)
+                format!("{:?}", contacts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["contacts".to_string(), "owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contacts".into(), "owner".into()]
     }
 }
 
@@ -6307,25 +6358,26 @@ impl std::fmt::Display for ContactGroupResponsesUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactGroupResponsesUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -6356,39 +6408,40 @@ impl std::fmt::Display for ContactGroupResponses {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactGroupResponses {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "is_private".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "is_private".into(),
         ]
     }
 }
@@ -6418,34 +6471,31 @@ impl std::fmt::Display for ContactNoteResponses {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactNoteResponses {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{:?}", author).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "author".to_string(),
-            "body".to_string(),
-            "created_at".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["author".into(), "body".into(), "created_at".into()]
     }
 }
 
@@ -6471,25 +6521,26 @@ impl std::fmt::Display for ChannelResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ChannelResponseUnderscoreLinksRelated {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(inbox) = &self.inbox {
-                format!("{:?}", inbox)
+                format!("{:?}", inbox).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["inbox".to_string(), "owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["inbox".into(), "owner".into()]
     }
 }
 
@@ -6514,25 +6565,26 @@ impl std::fmt::Display for ChannelResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ChannelResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -6545,11 +6597,11 @@ impl tabled::Tabled for ChannelResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Types {
     #[serde(rename = "smtp")]
     #[display("smtp")]
@@ -6605,28 +6657,26 @@ impl std::fmt::Display for ChannelResponseSettings {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ChannelResponseSettings {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(undo_send_time) = &self.undo_send_time {
-                format!("{:?}", undo_send_time)
+                format!("{:?}", undo_send_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(all_teammates_can_reply) = &self.all_teammates_can_reply {
-                format!("{:?}", all_teammates_can_reply)
+                format!("{:?}", all_teammates_can_reply).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "undo_send_time".to_string(),
-            "all_teammates_can_reply".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["undo_send_time".into(), "all_teammates_can_reply".into()]
     }
 }
 
@@ -6669,63 +6719,64 @@ impl std::fmt::Display for ChannelResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ChannelResponse {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address) = &self.address {
-                format!("{:?}", address)
+                format!("{:?}", address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(types) = &self.types {
-                format!("{:?}", types)
+                format!("{:?}", types).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(send_as) = &self.send_as {
-                format!("{:?}", send_as)
+                format!("{:?}", send_as).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(settings) = &self.settings {
-                format!("{:?}", settings)
+                format!("{:?}", settings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_valid) = &self.is_valid {
-                format!("{:?}", is_valid)
+                format!("{:?}", is_valid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "address".to_string(),
-            "types".to_string(),
-            "send_as".to_string(),
-            "settings".to_string(),
-            "is_private".to_string(),
-            "is_valid".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "address".into(),
+            "types".into(),
+            "send_as".into(),
+            "settings".into(),
+            "is_private".into(),
+            "is_valid".into(),
         ]
     }
 }
@@ -6752,25 +6803,26 @@ impl std::fmt::Display for CommentResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CommentResponseUnderscoreLinksRelated {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{:?}", conversations).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(mentions) = &self.mentions {
-                format!("{:?}", mentions)
+                format!("{:?}", mentions).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["conversations".to_string(), "mentions".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["conversations".into(), "mentions".into()]
     }
 }
 
@@ -6795,25 +6847,26 @@ impl std::fmt::Display for CommentResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CommentResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -6850,51 +6903,52 @@ impl std::fmt::Display for CommentResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CommentResponse {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{:?}", author).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(posted_at) = &self.posted_at {
-                format!("{:?}", posted_at)
+                format!("{:?}", posted_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "author".to_string(),
-            "body".to_string(),
-            "posted_at".to_string(),
-            "attachments".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "author".into(),
+            "body".into(),
+            "posted_at".into(),
+            "attachments".into(),
         ]
     }
 }
@@ -6924,34 +6978,31 @@ impl std::fmt::Display for ContactResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactResponseUnderscoreLinksRelated {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(notes) = &self.notes {
-                format!("{:?}", notes)
+                format!("{:?}", notes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{:?}", conversations).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "notes".to_string(),
-            "conversations".to_string(),
-            "owner".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["notes".into(), "conversations".into(), "owner".into()]
     }
 }
 
@@ -6976,25 +7027,26 @@ impl std::fmt::Display for ContactResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -7046,81 +7098,82 @@ impl std::fmt::Display for ContactResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ContactResponse {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(avatar_url) = &self.avatar_url {
-                format!("{:?}", avatar_url)
+                format!("{:?}", avatar_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_spammer) = &self.is_spammer {
-                format!("{:?}", is_spammer)
+                format!("{:?}", is_spammer).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{:?}", links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(groups) = &self.groups {
-                format!("{:?}", groups)
+                format!("{:?}", groups).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(handles) = &self.handles {
-                format!("{:?}", handles)
+                format!("{:?}", handles).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "description".to_string(),
-            "avatar_url".to_string(),
-            "is_spammer".to_string(),
-            "links".to_string(),
-            "groups".to_string(),
-            "handles".to_string(),
-            "custom_fields".to_string(),
-            "is_private".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "description".into(),
+            "avatar_url".into(),
+            "is_spammer".into(),
+            "links".into(),
+            "groups".into(),
+            "handles".into(),
+            "custom_fields".into(),
+            "is_private".into(),
         ]
     }
 }
@@ -7159,51 +7212,52 @@ impl std::fmt::Display for ConversationResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConversationResponseUnderscoreLinksRelated {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(events) = &self.events {
-                format!("{:?}", events)
+                format!("{:?}", events).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(followers) = &self.followers {
-                format!("{:?}", followers)
+                format!("{:?}", followers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(messages) = &self.messages {
-                format!("{:?}", messages)
+                format!("{:?}", messages).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(comments) = &self.comments {
-                format!("{:?}", comments)
+                format!("{:?}", comments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{:?}", inboxes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_message) = &self.last_message {
-                format!("{:?}", last_message)
+                format!("{:?}", last_message).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "events".to_string(),
-            "followers".to_string(),
-            "messages".to_string(),
-            "comments".to_string(),
-            "inboxes".to_string(),
-            "last_message".to_string(),
+            "events".into(),
+            "followers".into(),
+            "messages".into(),
+            "comments".into(),
+            "inboxes".into(),
+            "last_message".into(),
         ]
     }
 }
@@ -7229,25 +7283,26 @@ impl std::fmt::Display for ConversationResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConversationResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -7260,11 +7315,11 @@ impl tabled::Tabled for ConversationResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConversationResponseStatus {
     #[serde(rename = "archived")]
     #[display("archived")]
@@ -7301,20 +7356,21 @@ impl std::fmt::Display for ConversationResponseMetadata {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConversationResponseMetadata {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(external_conversation_ids) = &self.external_conversation_ids {
-                format!("{:?}", external_conversation_ids)
+                format!("{:?}", external_conversation_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["external_conversation_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["external_conversation_ids".into()]
     }
 }
 
@@ -7368,87 +7424,88 @@ impl std::fmt::Display for ConversationResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConversationResponse {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(assignee) = &self.assignee {
-                format!("{:?}", assignee)
+                format!("{:?}", assignee).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recipient) = &self.recipient {
-                format!("{:?}", recipient)
+                format!("{:?}", recipient).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{:?}", tags).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(links) = &self.links {
-                format!("{:?}", links)
+                format!("{:?}", links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(scheduled_reminders) = &self.scheduled_reminders {
-                format!("{:?}", scheduled_reminders)
+                format!("{:?}", scheduled_reminders).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{:?}", metadata).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "subject".to_string(),
-            "status".to_string(),
-            "assignee".to_string(),
-            "recipient".to_string(),
-            "tags".to_string(),
-            "links".to_string(),
-            "created_at".to_string(),
-            "is_private".to_string(),
-            "scheduled_reminders".to_string(),
-            "metadata".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "subject".into(),
+            "status".into(),
+            "assignee".into(),
+            "recipient".into(),
+            "tags".into(),
+            "links".into(),
+            "created_at".into(),
+            "is_private".into(),
+            "scheduled_reminders".into(),
+            "metadata".into(),
         ]
     }
 }
@@ -7472,18 +7529,19 @@ impl std::fmt::Display for CustomFieldResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomFieldResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -7496,11 +7554,11 @@ impl tabled::Tabled for CustomFieldResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CustomFieldResponseType {
     #[serde(rename = "string")]
     #[display("string")]
@@ -7546,45 +7604,46 @@ impl std::fmt::Display for CustomFieldResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomFieldResponse {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "description".to_string(),
-            "type_".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "description".into(),
+            "type_".into(),
         ]
     }
 }
@@ -7617,39 +7676,40 @@ impl std::fmt::Display for InboxResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InboxResponseUnderscoreLinksRelated {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{:?}", teammates)
+                format!("{:?}", teammates).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{:?}", conversations).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channels) = &self.channels {
-                format!("{:?}", channels)
+                format!("{:?}", channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "teammates".to_string(),
-            "conversations".to_string(),
-            "channels".to_string(),
-            "owner".to_string(),
+            "teammates".into(),
+            "conversations".into(),
+            "channels".into(),
+            "owner".into(),
         ]
     }
 }
@@ -7675,25 +7735,26 @@ impl std::fmt::Display for InboxResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InboxResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -7724,39 +7785,40 @@ impl std::fmt::Display for InboxResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InboxResponse {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "is_private".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "is_private".into(),
         ]
     }
 }
@@ -7786,33 +7848,34 @@ impl std::fmt::Display for MessageResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageResponseUnderscoreLinksRelated {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(conversation) = &self.conversation {
-                format!("{:?}", conversation)
+                format!("{:?}", conversation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_replied_to) = &self.message_replied_to {
-                format!("{:?}", message_replied_to)
+                format!("{:?}", message_replied_to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_seen) = &self.message_seen {
-                format!("{:?}", message_seen)
+                format!("{:?}", message_seen).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "conversation".to_string(),
-            "message_replied_to".to_string(),
-            "message_seen".to_string(),
+            "conversation".into(),
+            "message_replied_to".into(),
+            "message_seen".into(),
         ]
     }
 }
@@ -7838,25 +7901,26 @@ impl std::fmt::Display for MessageResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -7869,11 +7933,11 @@ impl tabled::Tabled for MessageResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum MessageResponseType {
     #[serde(rename = "email")]
     #[display("email")]
@@ -7912,11 +7976,11 @@ pub enum MessageResponseType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum DraftMode {
     #[serde(rename = "shared")]
     #[display("shared")]
@@ -7976,75 +8040,76 @@ impl std::fmt::Display for MessageResponseMetadata {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageResponseMetadata {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(intercom_url) = &self.intercom_url {
-                format!("{:?}", intercom_url)
+                format!("{:?}", intercom_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(have_been_answered) = &self.have_been_answered {
-                format!("{:?}", have_been_answered)
+                format!("{:?}", have_been_answered).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{:?}", external_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(twitter_url) = &self.twitter_url {
-                format!("{:?}", twitter_url)
+                format!("{:?}", twitter_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_retweet) = &self.is_retweet {
-                format!("{:?}", is_retweet)
+                format!("{:?}", is_retweet).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(have_been_retweeted) = &self.have_been_retweeted {
-                format!("{:?}", have_been_retweeted)
+                format!("{:?}", have_been_retweeted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(have_been_favorited) = &self.have_been_favorited {
-                format!("{:?}", have_been_favorited)
+                format!("{:?}", have_been_favorited).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(thread_ref) = &self.thread_ref {
-                format!("{:?}", thread_ref)
+                format!("{:?}", thread_ref).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(headers) = &self.headers {
-                format!("{:?}", headers)
+                format!("{:?}", headers).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "intercom_url".to_string(),
-            "duration".to_string(),
-            "have_been_answered".to_string(),
-            "external_id".to_string(),
-            "twitter_url".to_string(),
-            "is_retweet".to_string(),
-            "have_been_retweeted".to_string(),
-            "have_been_favorited".to_string(),
-            "thread_ref".to_string(),
-            "headers".to_string(),
+            "intercom_url".into(),
+            "duration".into(),
+            "have_been_answered".into(),
+            "external_id".into(),
+            "twitter_url".into(),
+            "is_retweet".into(),
+            "have_been_retweeted".into(),
+            "have_been_favorited".into(),
+            "thread_ref".into(),
+            "headers".into(),
         ]
     }
 }
@@ -8115,117 +8180,118 @@ impl std::fmt::Display for MessageResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MessageResponse {
     const LENGTH: usize = 17;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_inbound) = &self.is_inbound {
-                format!("{:?}", is_inbound)
+                format!("{:?}", is_inbound).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(draft_mode) = &self.draft_mode {
-                format!("{:?}", draft_mode)
+                format!("{:?}", draft_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_type) = &self.error_type {
-                format!("{:?}", error_type)
+                format!("{:?}", error_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(version) = &self.version {
-                format!("{:?}", version)
+                format!("{:?}", version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subject) = &self.subject {
-                format!("{:?}", subject)
+                format!("{:?}", subject).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(blurb) = &self.blurb {
-                format!("{:?}", blurb)
+                format!("{:?}", blurb).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(author) = &self.author {
-                format!("{:?}", author)
+                format!("{:?}", author).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recipients) = &self.recipients {
-                format!("{:?}", recipients)
+                format!("{:?}", recipients).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(text) = &self.text {
-                format!("{:?}", text)
+                format!("{:?}", text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments)
+                format!("{:?}", attachments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(signature) = &self.signature {
-                format!("{:?}", signature)
+                format!("{:?}", signature).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(metadata) = &self.metadata {
-                format!("{:?}", metadata)
+                format!("{:?}", metadata).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "type_".to_string(),
-            "is_inbound".to_string(),
-            "draft_mode".to_string(),
-            "error_type".to_string(),
-            "version".to_string(),
-            "created_at".to_string(),
-            "subject".to_string(),
-            "blurb".to_string(),
-            "author".to_string(),
-            "recipients".to_string(),
-            "body".to_string(),
-            "text".to_string(),
-            "attachments".to_string(),
-            "signature".to_string(),
-            "metadata".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "type_".into(),
+            "is_inbound".into(),
+            "draft_mode".into(),
+            "error_type".into(),
+            "version".into(),
+            "created_at".into(),
+            "subject".into(),
+            "blurb".into(),
+            "author".into(),
+            "recipients".into(),
+            "body".into(),
+            "text".into(),
+            "attachments".into(),
+            "signature".into(),
+            "metadata".into(),
         ]
     }
 }
@@ -8249,18 +8315,19 @@ impl std::fmt::Display for RecipientResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RecipientResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(contact) = &self.contact {
-            format!("{:?}", contact)
+            format!("{:?}", contact).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["contact".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["contact".into()]
     }
 }
 
@@ -8282,18 +8349,19 @@ impl std::fmt::Display for RecipientResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RecipientResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{:?}", related).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["related".into()]
     }
 }
 
@@ -8306,11 +8374,11 @@ impl tabled::Tabled for RecipientResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Role {
     #[serde(rename = "from")]
     #[display("from")]
@@ -8353,39 +8421,40 @@ impl std::fmt::Display for RecipientResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RecipientResponse {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(handle) = &self.handle {
-                format!("{:?}", handle)
+                format!("{:?}", handle).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{:?}", role).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "name".to_string(),
-            "handle".to_string(),
-            "role".to_string(),
+            "underscore_links".into(),
+            "name".into(),
+            "handle".into(),
+            "role".into(),
         ]
     }
 }
@@ -8409,18 +8478,19 @@ impl std::fmt::Display for ReminderUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ReminderUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -8442,18 +8512,19 @@ impl std::fmt::Display for ReminderUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ReminderUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{:?}", related).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["related".into()]
     }
 }
 
@@ -8484,39 +8555,40 @@ impl std::fmt::Display for Reminder {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Reminder {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(scheduled_at) = &self.scheduled_at {
-                format!("{:?}", scheduled_at)
+                format!("{:?}", scheduled_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "created_at".to_string(),
-            "scheduled_at".to_string(),
-            "updated_at".to_string(),
+            "underscore_links".into(),
+            "created_at".into(),
+            "scheduled_at".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -8540,18 +8612,19 @@ impl std::fmt::Display for RoleResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RoleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -8573,18 +8646,19 @@ impl std::fmt::Display for RoleResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RoleResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(related) = &self.related {
-            format!("{:?}", related)
+            format!("{:?}", related).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["related".into()]
     }
 }
 
@@ -8612,34 +8686,31 @@ impl std::fmt::Display for RoleResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RoleResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "id".into(), "name".into()]
     }
 }
 
@@ -8662,18 +8733,19 @@ impl std::fmt::Display for RuleResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RuleResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -8698,25 +8770,26 @@ impl std::fmt::Display for RuleResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RuleResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -8750,45 +8823,46 @@ impl std::fmt::Display for RuleResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RuleResponse {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(actions) = &self.actions {
-                format!("{:?}", actions)
+                format!("{:?}", actions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "actions".to_string(),
-            "is_private".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "actions".into(),
+            "is_private".into(),
         ]
     }
 }
@@ -8812,18 +8886,19 @@ impl std::fmt::Display for SeenReceiptResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SeenReceiptResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{:?}", message).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -8848,25 +8923,26 @@ impl std::fmt::Display for SeenReceiptResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SeenReceiptResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -8893,33 +8969,34 @@ impl std::fmt::Display for SeenReceiptResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SeenReceiptResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_seen_at) = &self.first_seen_at {
-                format!("{:?}", first_seen_at)
+                format!("{:?}", first_seen_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(seen_by) = &self.seen_by {
-                format!("{:?}", seen_by)
+                format!("{:?}", seen_by).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "first_seen_at".to_string(),
-            "seen_by".to_string(),
+            "underscore_links".into(),
+            "first_seen_at".into(),
+            "seen_by".into(),
         ]
     }
 }
@@ -8946,25 +9023,26 @@ impl std::fmt::Display for ShiftResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftResponseUnderscoreLinksRelated {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(teammates) = &self.teammates {
-                format!("{:?}", teammates)
+                format!("{:?}", teammates).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["teammates".to_string(), "owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["teammates".into(), "owner".into()]
     }
 }
 
@@ -8989,25 +9067,26 @@ impl std::fmt::Display for ShiftResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -9020,11 +9099,11 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum ShiftResponseColor {
     #[serde(rename = "black")]
@@ -9071,63 +9150,64 @@ impl std::fmt::Display for ShiftResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftResponse {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(color) = &self.color {
-                format!("{:?}", color)
+                format!("{:?}", color).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{:?}", timezone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(times) = &self.times {
-                format!("{:?}", times)
+                format!("{:?}", times).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "color".to_string(),
-            "timezone".to_string(),
-            "times".to_string(),
-            "created_at".to_string(),
-            "updated_at".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "color".into(),
+            "timezone".into(),
+            "times".into(),
+            "created_at".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -9151,18 +9231,19 @@ impl std::fmt::Display for SignatureResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SignatureResponseUnderscoreLinksRelated {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(owner) = &self.owner {
-            format!("{:?}", owner)
+            format!("{:?}", owner).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["owner".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["owner".into()]
     }
 }
 
@@ -9187,25 +9268,26 @@ impl std::fmt::Display for SignatureResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SignatureResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -9247,65 +9329,66 @@ impl std::fmt::Display for SignatureResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SignatureResponse {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sender_info) = &self.sender_info {
-                format!("{:?}", sender_info)
+                format!("{:?}", sender_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_visible_for_all_teammate_channels) =
                 &self.is_visible_for_all_teammate_channels
             {
-                format!("{:?}", is_visible_for_all_teammate_channels)
+                format!("{:?}", is_visible_for_all_teammate_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{:?}", is_default).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channel_ids) = &self.channel_ids {
-                format!("{:?}", channel_ids)
+                format!("{:?}", channel_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "body".to_string(),
-            "sender_info".to_string(),
-            "is_visible_for_all_teammate_channels".to_string(),
-            "is_default".to_string(),
-            "channel_ids".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "body".into(),
+            "sender_info".into(),
+            "is_visible_for_all_teammate_channels".into(),
+            "is_default".into(),
+            "channel_ids".into(),
         ]
     }
 }
@@ -9335,34 +9418,31 @@ impl std::fmt::Display for TagResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TagResponseUnderscoreLinksRelated {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{:?}", conversations).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner) = &self.owner {
-                format!("{:?}", owner)
+                format!("{:?}", owner).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(children) = &self.children {
-                format!("{:?}", children)
+                format!("{:?}", children).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "conversations".to_string(),
-            "owner".to_string(),
-            "children".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["conversations".into(), "owner".into(), "children".into()]
     }
 }
 
@@ -9387,25 +9467,26 @@ impl std::fmt::Display for TagResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TagResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -9449,63 +9530,64 @@ impl std::fmt::Display for TagResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TagResponse {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(highlight) = &self.highlight {
-                format!("{:?}", highlight)
+                format!("{:?}", highlight).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private)
+                format!("{:?}", is_private).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists)
+                format!("{:?}", is_visible_in_conversation_lists).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "highlight".to_string(),
-            "is_private".to_string(),
-            "is_visible_in_conversation_lists".to_string(),
-            "created_at".to_string(),
-            "updated_at".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "highlight".into(),
+            "is_private".into(),
+            "is_visible_in_conversation_lists".into(),
+            "created_at".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -9529,18 +9611,19 @@ impl std::fmt::Display for TeamResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeamResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -9574,45 +9657,46 @@ impl std::fmt::Display for TeamResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeamResponse {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{:?}", inboxes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(members) = &self.members {
-                format!("{:?}", members)
+                format!("{:?}", members).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "inboxes".to_string(),
-            "members".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "inboxes".into(),
+            "members".into(),
         ]
     }
 }
@@ -9639,25 +9723,26 @@ impl std::fmt::Display for TeammateResponseUnderscoreLinksRelated {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeammateResponseUnderscoreLinksRelated {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(inboxes) = &self.inboxes {
-                format!("{:?}", inboxes)
+                format!("{:?}", inboxes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conversations) = &self.conversations {
-                format!("{:?}", conversations)
+                format!("{:?}", conversations).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["inboxes".to_string(), "conversations".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["inboxes".into(), "conversations".into()]
     }
 }
 
@@ -9682,25 +9767,26 @@ impl std::fmt::Display for TeammateResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeammateResponseUnderscoreLinks {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(self_) = &self.self_ {
-                format!("{:?}", self_)
+                format!("{:?}", self_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(related) = &self.related {
-                format!("{:?}", related)
+                format!("{:?}", related).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string(), "related".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into(), "related".into()]
     }
 }
 
@@ -9747,69 +9833,70 @@ impl std::fmt::Display for TeammateResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeammateResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{:?}", email).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{:?}", username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{:?}", first_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{:?}", last_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_admin) = &self.is_admin {
-                format!("{:?}", is_admin)
+                format!("{:?}", is_admin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_available) = &self.is_available {
-                format!("{:?}", is_available)
+                format!("{:?}", is_available).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_blocked) = &self.is_blocked {
-                format!("{:?}", is_blocked)
+                format!("{:?}", is_blocked).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "email".to_string(),
-            "username".to_string(),
-            "first_name".to_string(),
-            "last_name".to_string(),
-            "is_admin".to_string(),
-            "is_available".to_string(),
-            "is_blocked".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "email".into(),
+            "username".into(),
+            "first_name".into(),
+            "last_name".into(),
+            "is_admin".into(),
+            "is_available".into(),
+            "is_blocked".into(),
         ]
     }
 }
@@ -9833,18 +9920,19 @@ impl std::fmt::Display for LinkResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for LinkResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -9879,45 +9967,46 @@ impl std::fmt::Display for LinkResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for LinkResponse {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_url) = &self.external_url {
-                format!("{:?}", external_url)
+                format!("{:?}", external_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "underscore_links".to_string(),
-            "id".to_string(),
-            "name".to_string(),
-            "type_".to_string(),
-            "external_url".to_string(),
+            "underscore_links".into(),
+            "id".into(),
+            "name".into(),
+            "type_".into(),
+            "external_url".into(),
         ]
     }
 }
@@ -9930,11 +10019,11 @@ impl tabled::Tabled for LinkResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SortOrder {
     #[serde(rename = "asc")]
     #[display("asc")]
@@ -9963,18 +10052,19 @@ impl std::fmt::Display for Pagination {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Pagination {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(next) = &self.next {
-            format!("{:?}", next)
+            format!("{:?}", next).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["next".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["next".into()]
     }
 }
 
@@ -9997,18 +10087,19 @@ impl std::fmt::Display for ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCannedAnswersApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10038,33 +10129,34 @@ impl std::fmt::Display for ListOfCannedAnswersApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCannedAnswersApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -10088,18 +10180,19 @@ impl std::fmt::Display for ListOfCannedAnswerFoldersApplicationJsonUnderscoreLin
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10129,33 +10222,34 @@ impl std::fmt::Display for ListOfCannedAnswerFoldersApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCannedAnswerFoldersApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -10179,18 +10273,19 @@ impl std::fmt::Display for ListOfSignaturesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfSignaturesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10220,33 +10315,34 @@ impl std::fmt::Display for ListOfSignaturesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfSignaturesApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -10270,18 +10366,19 @@ impl std::fmt::Display for ListOfInboxesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfInboxesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10305,25 +10402,26 @@ impl std::fmt::Display for ListOfInboxesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfInboxesApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10346,18 +10444,19 @@ impl std::fmt::Display for ListOfCommentsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCommentsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10381,25 +10480,26 @@ impl std::fmt::Display for ListOfCommentsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCommentsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10422,18 +10522,19 @@ impl std::fmt::Display for ListOfTeamsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTeamsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10457,25 +10558,26 @@ impl std::fmt::Display for ListOfTeamsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTeamsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10498,18 +10600,19 @@ impl std::fmt::Display for ListOfTeammatesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTeammatesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10533,25 +10636,26 @@ impl std::fmt::Display for ListOfTeammatesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTeammatesApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10574,18 +10678,19 @@ impl std::fmt::Display for ListOfShiftsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfShiftsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10609,25 +10714,26 @@ impl std::fmt::Display for ListOfShiftsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfShiftsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10650,18 +10756,19 @@ impl std::fmt::Display for ListOfContactsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10691,33 +10798,34 @@ impl std::fmt::Display for ListOfContactsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -10741,18 +10849,19 @@ impl std::fmt::Display for ListOfAccountsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfAccountsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10782,33 +10891,34 @@ impl std::fmt::Display for ListOfAccountsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfAccountsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -10832,18 +10942,19 @@ impl std::fmt::Display for ListOfContactGroupsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactGroupsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10867,25 +10978,26 @@ impl std::fmt::Display for ListOfContactGroupsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactGroupsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10908,18 +11020,19 @@ impl std::fmt::Display for ListOfContactNotesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactNotesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -10943,25 +11056,26 @@ impl std::fmt::Display for ListOfContactNotesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfContactNotesApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -10984,18 +11098,19 @@ impl std::fmt::Display for ListOfMessagesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfMessagesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11025,33 +11140,34 @@ impl std::fmt::Display for ListOfMessagesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfMessagesApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -11075,18 +11191,19 @@ impl std::fmt::Display for ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfSeenReceiptsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11116,33 +11233,34 @@ impl std::fmt::Display for ListOfSeenReceiptsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfSeenReceiptsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -11166,18 +11284,19 @@ impl std::fmt::Display for ListOfConversationsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfConversationsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11207,33 +11326,34 @@ impl std::fmt::Display for ListOfConversationsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfConversationsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -11265,34 +11385,31 @@ impl std::fmt::Display for ListOfConversationSearchResultsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfConversationSearchResultsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total) = &self.total {
-                format!("{:?}", total)
+                format!("{:?}", total).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "pagination".to_string(),
-            "total".to_string(),
-            "results".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["pagination".into(), "total".into(), "results".into()]
     }
 }
 
@@ -11315,18 +11432,19 @@ impl std::fmt::Display for ListOfEventsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfEventsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11356,33 +11474,34 @@ impl std::fmt::Display for ListOfEventsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfEventsApplicationJson {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -11406,18 +11525,19 @@ impl std::fmt::Display for ListOfRolesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfRolesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11441,25 +11561,26 @@ impl std::fmt::Display for ListOfRolesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfRolesApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11482,18 +11603,19 @@ impl std::fmt::Display for ListOfRulesApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfRulesApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11517,25 +11639,26 @@ impl std::fmt::Display for ListOfRulesApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfRulesApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11558,18 +11681,19 @@ impl std::fmt::Display for ListOfTagsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTagsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11593,25 +11717,26 @@ impl std::fmt::Display for ListOfTagsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfTagsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11634,18 +11759,19 @@ impl std::fmt::Display for ListOfLinksApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfLinksApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11669,25 +11795,26 @@ impl std::fmt::Display for ListOfLinksApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfLinksApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11710,18 +11837,19 @@ impl std::fmt::Display for ListOfChannelsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfChannelsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11745,25 +11873,26 @@ impl std::fmt::Display for ListOfChannelsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfChannelsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11786,18 +11915,19 @@ impl std::fmt::Display for ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCustomFieldsApplicationJsonUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -11821,25 +11951,26 @@ impl std::fmt::Display for ListOfCustomFieldsApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOfCustomFieldsApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -11864,25 +11995,26 @@ impl std::fmt::Display for AcceptedMessageApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AcceptedMessageApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{:?}", message_uid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "message_uid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "message_uid".into()]
     }
 }
 
@@ -11907,28 +12039,26 @@ impl std::fmt::Display for AcceptedCannedAnswerFolderDeletionApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AcceptedCannedAnswerFolderDeletionApplicationJson {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{:?}", message_template_folder_id)
+                format!("{:?}", message_template_folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "status".to_string(),
-            "message_template_folder_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "message_template_folder_id".into()]
     }
 }
 
@@ -11950,18 +12080,19 @@ impl std::fmt::Display for AcceptedApplicationJson {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AcceptedApplicationJson {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(status) = &self.status {
-            format!("{:?}", status)
+            format!("{:?}", status).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into()]
     }
 }
 
@@ -11984,18 +12115,19 @@ impl std::fmt::Display for ListAccountsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAccountsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12025,33 +12157,34 @@ impl std::fmt::Display for ListAccountsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAccountsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12075,18 +12208,19 @@ impl std::fmt::Display for ListAccountContactsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAccountContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12116,33 +12250,34 @@ impl std::fmt::Display for ListAccountContactsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAccountContactsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12166,18 +12301,19 @@ impl std::fmt::Display for ListEventsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12207,33 +12343,34 @@ impl std::fmt::Display for ListEventsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListEventsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12257,18 +12394,19 @@ impl std::fmt::Display for ListFoldersResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12298,33 +12436,34 @@ impl std::fmt::Display for ListFoldersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListFoldersResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12348,18 +12487,19 @@ impl std::fmt::Display for ListTeamFoldersResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12389,33 +12529,34 @@ impl std::fmt::Display for ListTeamFoldersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamFoldersResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12439,18 +12580,19 @@ impl std::fmt::Display for ListTeammateFoldersResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12480,33 +12622,34 @@ impl std::fmt::Display for ListTeammateFoldersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateFoldersResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12530,18 +12673,19 @@ impl std::fmt::Display for GetChildFoldersResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetChildFoldersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12571,33 +12715,34 @@ impl std::fmt::Display for GetChildFoldersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetChildFoldersResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12621,18 +12766,19 @@ impl std::fmt::Display for GetChildTemplatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetChildTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12662,33 +12808,34 @@ impl std::fmt::Display for GetChildTemplatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetChildTemplatesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12714,28 +12861,26 @@ impl std::fmt::Display for DeleteFolderResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeleteFolderResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_template_folder_id) = &self.message_template_folder_id {
-                format!("{:?}", message_template_folder_id)
+                format!("{:?}", message_template_folder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "status".to_string(),
-            "message_template_folder_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "message_template_folder_id".into()]
     }
 }
 
@@ -12758,18 +12903,19 @@ impl std::fmt::Display for ListMessageTemplatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12799,33 +12945,34 @@ impl std::fmt::Display for ListMessageTemplatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListMessageTemplatesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12849,18 +12996,19 @@ impl std::fmt::Display for ListTeamMessageTemplatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12890,33 +13038,34 @@ impl std::fmt::Display for ListTeamMessageTemplatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamMessageTemplatesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -12940,18 +13089,19 @@ impl std::fmt::Display for ListTeammateMessageTemplatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateMessageTemplatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -12981,33 +13131,34 @@ impl std::fmt::Display for ListTeammateMessageTemplatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateMessageTemplatesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13031,18 +13182,19 @@ impl std::fmt::Display for ListGroupsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13066,25 +13218,26 @@ impl std::fmt::Display for ListGroupsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListGroupsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13107,18 +13260,19 @@ impl std::fmt::Display for ListTeamGroupsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13142,25 +13296,26 @@ impl std::fmt::Display for ListTeamGroupsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamGroupsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13183,18 +13338,19 @@ impl std::fmt::Display for ListTeammateGroupsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateGroupsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13218,25 +13374,26 @@ impl std::fmt::Display for ListTeammateGroupsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateGroupsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13259,18 +13416,19 @@ impl std::fmt::Display for ListGroupContactsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListGroupContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13300,33 +13458,34 @@ impl std::fmt::Display for ListGroupContactsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListGroupContactsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13350,18 +13509,19 @@ impl std::fmt::Display for ListContactsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13391,33 +13551,34 @@ impl std::fmt::Display for ListContactsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13441,18 +13602,19 @@ impl std::fmt::Display for ListTeamContactsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13482,33 +13644,34 @@ impl std::fmt::Display for ListTeamContactsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamContactsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13532,18 +13695,19 @@ impl std::fmt::Display for ListTeammateContactsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateContactsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13573,33 +13737,34 @@ impl std::fmt::Display for ListTeammateContactsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateContactsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13623,18 +13788,19 @@ impl std::fmt::Display for ListContactConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13664,33 +13830,34 @@ impl std::fmt::Display for ListContactConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -13714,18 +13881,19 @@ impl std::fmt::Display for ListNotesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListNotesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13749,25 +13917,26 @@ impl std::fmt::Display for ListNotesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListNotesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13790,18 +13959,19 @@ impl std::fmt::Display for ListChannelsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13825,25 +13995,26 @@ impl std::fmt::Display for ListChannelsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListChannelsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13866,18 +14037,19 @@ impl std::fmt::Display for ListTeamChannelsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13901,25 +14073,26 @@ impl std::fmt::Display for ListTeamChannelsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamChannelsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -13942,18 +14115,19 @@ impl std::fmt::Display for ListTeammateChannelsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -13977,25 +14151,26 @@ impl std::fmt::Display for ListTeammateChannelsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateChannelsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14017,18 +14192,19 @@ impl std::fmt::Display for ValidateChannelResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ValidateChannelResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(status) = &self.status {
-            format!("{:?}", status)
+            format!("{:?}", status).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into()]
     }
 }
 
@@ -14051,18 +14227,19 @@ impl std::fmt::Display for ListInboxChannelsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxChannelsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14086,25 +14263,26 @@ impl std::fmt::Display for ListInboxChannelsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxChannelsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14127,18 +14305,19 @@ impl std::fmt::Display for ListConversationCommentsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationCommentsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14162,25 +14341,26 @@ impl std::fmt::Display for ListConversationCommentsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationCommentsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14203,18 +14383,19 @@ impl std::fmt::Display for ListCommentMentionsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCommentMentionsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14238,25 +14419,26 @@ impl std::fmt::Display for ListCommentMentionsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCommentMentionsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14279,18 +14461,19 @@ impl std::fmt::Display for ListConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14320,33 +14503,34 @@ impl std::fmt::Display for ListConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -14374,25 +14558,26 @@ impl std::fmt::Display for AddConversationLinkRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddConversationLinkRequestBody {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(link_ids) = &self.link_ids {
-                format!("{:?}", link_ids)
+                format!("{:?}", link_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(link_external_urls) = &self.link_external_urls {
-                format!("{:?}", link_external_urls)
+                format!("{:?}", link_external_urls).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["link_ids".to_string(), "link_external_urls".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["link_ids".into(), "link_external_urls".into()]
     }
 }
 
@@ -14414,14 +14599,15 @@ impl std::fmt::Display for RemoveConversationLinkRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RemoveConversationLinkRequestBody {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.link_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.link_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["link_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["link_ids".into()]
     }
 }
 
@@ -14444,18 +14630,19 @@ impl std::fmt::Display for ListConversationInboxesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14479,25 +14666,26 @@ impl std::fmt::Display for ListConversationInboxesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationInboxesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14520,18 +14708,19 @@ impl std::fmt::Display for ListConversationFollowersResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationFollowersResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14555,25 +14744,26 @@ impl std::fmt::Display for ListConversationFollowersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationFollowersResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14595,14 +14785,15 @@ impl std::fmt::Display for AddConversationFollowersRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddConversationFollowersRequestBody {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.teammate_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.teammate_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["teammate_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["teammate_ids".into()]
     }
 }
 
@@ -14624,14 +14815,15 @@ impl std::fmt::Display for DeleteConversationFollowersRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeleteConversationFollowersRequestBody {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.teammate_ids)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.teammate_ids).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["teammate_ids".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["teammate_ids".into()]
     }
 }
 
@@ -14654,18 +14846,19 @@ impl std::fmt::Display for ListConversationMessagesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationMessagesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14695,33 +14888,34 @@ impl std::fmt::Display for ListConversationMessagesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationMessagesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -14745,18 +14939,19 @@ impl std::fmt::Display for ListConversationEventsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationEventsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14786,33 +14981,34 @@ impl std::fmt::Display for ListConversationEventsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationEventsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -14836,18 +15032,19 @@ impl std::fmt::Display for ListContactCustomFieldsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14871,25 +15068,26 @@ impl std::fmt::Display for ListContactCustomFieldsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListContactCustomFieldsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14912,18 +15110,19 @@ impl std::fmt::Display for ListCustomFieldsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCustomFieldsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -14947,25 +15146,26 @@ impl std::fmt::Display for ListCustomFieldsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCustomFieldsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -14988,18 +15188,19 @@ impl std::fmt::Display for ListConversationDraftsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationDraftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15029,33 +15230,34 @@ impl std::fmt::Display for ListConversationDraftsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConversationDraftsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -15079,18 +15281,19 @@ impl std::fmt::Display for ListInboxesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15114,25 +15317,26 @@ impl std::fmt::Display for ListInboxesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15155,18 +15359,19 @@ impl std::fmt::Display for ListTeamInboxesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15190,25 +15395,26 @@ impl std::fmt::Display for ListTeamInboxesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamInboxesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15231,18 +15437,19 @@ impl std::fmt::Display for ListInboxConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15272,33 +15479,34 @@ impl std::fmt::Display for ListInboxConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -15322,18 +15530,19 @@ impl std::fmt::Display for ListInboxTeammatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15357,25 +15566,26 @@ impl std::fmt::Display for ListInboxTeammatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListInboxTeammatesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15398,18 +15608,19 @@ impl std::fmt::Display for GetMessageSeenStatusResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetMessageSeenStatusResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15439,33 +15650,34 @@ impl std::fmt::Display for GetMessageSeenStatusResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetMessageSeenStatusResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -15485,13 +15697,14 @@ impl std::fmt::Display for MarkMessageSeenRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MarkMessageSeenRequestBody {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -15517,25 +15730,26 @@ impl std::fmt::Display for ReceiveCustomMessageResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ReceiveCustomMessageResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{:?}", message_uid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "message_uid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "message_uid".into()]
     }
 }
 
@@ -15560,25 +15774,26 @@ impl std::fmt::Display for ImportInboxMessageResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ImportInboxMessageResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_uid) = &self.message_uid {
-                format!("{:?}", message_uid)
+                format!("{:?}", message_uid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "message_uid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "message_uid".into()]
     }
 }
 
@@ -15601,18 +15816,19 @@ impl std::fmt::Display for ListRulesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15636,25 +15852,26 @@ impl std::fmt::Display for ListRulesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRulesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15677,18 +15894,19 @@ impl std::fmt::Display for ListTeamRulesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15712,25 +15930,26 @@ impl std::fmt::Display for ListTeamRulesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamRulesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15753,18 +15972,19 @@ impl std::fmt::Display for ListTeammateRulesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateRulesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15788,25 +16008,26 @@ impl std::fmt::Display for ListTeammateRulesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateRulesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15837,34 +16058,31 @@ impl std::fmt::Display for SearchConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SearchConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total) = &self.total {
-                format!("{:?}", total)
+                format!("{:?}", total).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "pagination".to_string(),
-            "total".to_string(),
-            "results".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["pagination".into(), "total".into(), "results".into()]
     }
 }
 
@@ -15887,18 +16105,19 @@ impl std::fmt::Display for ListShiftsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15922,25 +16141,26 @@ impl std::fmt::Display for ListShiftsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListShiftsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -15963,18 +16183,19 @@ impl std::fmt::Display for ListTeamShiftsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -15998,25 +16219,26 @@ impl std::fmt::Display for ListTeamShiftsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamShiftsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16039,18 +16261,19 @@ impl std::fmt::Display for ListTeammateShiftsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateShiftsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16074,25 +16297,26 @@ impl std::fmt::Display for ListTeammateShiftsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateShiftsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16115,18 +16339,19 @@ impl std::fmt::Display for ListShiftTeammatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListShiftTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16150,25 +16375,26 @@ impl std::fmt::Display for ListShiftTeammatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListShiftTeammatesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16191,18 +16417,19 @@ impl std::fmt::Display for ListTeammateSignaturesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16232,33 +16459,34 @@ impl std::fmt::Display for ListTeammateSignaturesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateSignaturesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -16282,18 +16510,19 @@ impl std::fmt::Display for ListTeamSignaturesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamSignaturesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16323,33 +16552,34 @@ impl std::fmt::Display for ListTeamSignaturesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamSignaturesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -16373,18 +16603,19 @@ impl std::fmt::Display for ListTagsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16408,25 +16639,26 @@ impl std::fmt::Display for ListTagsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTagsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16449,18 +16681,19 @@ impl std::fmt::Display for ListTeamTagsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16484,25 +16717,26 @@ impl std::fmt::Display for ListTeamTagsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamTagsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16525,18 +16759,19 @@ impl std::fmt::Display for ListTeammateTagsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateTagsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16560,25 +16795,26 @@ impl std::fmt::Display for ListTeammateTagsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateTagsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16601,18 +16837,19 @@ impl std::fmt::Display for ListTagChildrenResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTagChildrenResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16636,25 +16873,26 @@ impl std::fmt::Display for ListTagChildrenResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTagChildrenResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16677,18 +16915,19 @@ impl std::fmt::Display for ListTaggedConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTaggedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16718,33 +16957,34 @@ impl std::fmt::Display for ListTaggedConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTaggedConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -16768,18 +17008,19 @@ impl std::fmt::Display for ListTeamsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16803,25 +17044,26 @@ impl std::fmt::Display for ListTeamsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16844,18 +17086,19 @@ impl std::fmt::Display for ListTeammatesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammatesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16879,25 +17122,26 @@ impl std::fmt::Display for ListTeammatesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammatesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -16920,18 +17164,19 @@ impl std::fmt::Display for ListAssignedConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAssignedConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -16961,33 +17206,34 @@ impl std::fmt::Display for ListAssignedConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAssignedConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -17011,18 +17257,19 @@ impl std::fmt::Display for ListTeammateInboxesResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateInboxesResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -17046,25 +17293,26 @@ impl std::fmt::Display for ListTeammateInboxesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeammateInboxesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }
 
@@ -17087,18 +17335,19 @@ impl std::fmt::Display for ListLinkConversationsResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListLinkConversationsResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -17128,33 +17377,34 @@ impl std::fmt::Display for ListLinkConversationsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListLinkConversationsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(pagination) = &self.pagination {
-                format!("{:?}", pagination)
+                format!("{:?}", pagination).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pagination".to_string(),
-            "underscore_links".to_string(),
-            "results".to_string(),
+            "pagination".into(),
+            "underscore_links".into(),
+            "results".into(),
         ]
     }
 }
@@ -17178,18 +17428,19 @@ impl std::fmt::Display for ListLinksResponseUnderscoreLinks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListLinksResponseUnderscoreLinks {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(self_) = &self.self_ {
-            format!("{:?}", self_)
+            format!("{:?}", self_).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["self_".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["self_".into()]
     }
 }
 
@@ -17213,24 +17464,25 @@ impl std::fmt::Display for ListLinksResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListLinksResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(underscore_links) = &self.underscore_links {
-                format!("{:?}", underscore_links)
+                format!("{:?}", underscore_links).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(results) = &self.results {
-                format!("{:?}", results)
+                format!("{:?}", results).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["underscore_links".to_string(), "results".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["underscore_links".into(), "results".into()]
     }
 }

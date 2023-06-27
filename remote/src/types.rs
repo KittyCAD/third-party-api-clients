@@ -1,4 +1,5 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
@@ -417,11 +418,11 @@ pub mod error {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Status {
     #[serde(rename = "completed")]
     #[display("completed")]
@@ -453,25 +454,26 @@ impl std::fmt::Display for TaskDescription {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TaskDescription {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["description".to_string(), "status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["description".into(), "status".into()]
     }
 }
 
@@ -500,29 +502,30 @@ impl std::fmt::Display for File {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for File {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            format!("{:?}", self.inserted_at),
-            self.name.clone(),
+            self.id.clone().into(),
+            format!("{:?}", self.inserted_at).into(),
+            self.name.clone().into(),
             if let Some(sub_type) = &self.sub_type {
-                format!("{:?}", sub_type)
+                format!("{:?}", sub_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.type_.clone(),
+            self.type_.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "inserted_at".to_string(),
-            "name".to_string(),
-            "sub_type".to_string(),
-            "type_".to_string(),
+            "id".into(),
+            "inserted_at".into(),
+            "name".into(),
+            "sub_type".into(),
+            "type_".into(),
         ]
     }
 }
@@ -545,18 +548,19 @@ impl std::fmt::Display for ConflictResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConflictResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{:?}", message).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -568,11 +572,11 @@ impl tabled::Tabled for ConflictResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TimeoffType {
     #[serde(rename = "paid_time_off")]
     #[display("paid_time_off")]
@@ -630,18 +634,19 @@ impl std::fmt::Display for Creator {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Creator {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(name) = &self.name {
-            format!("{:?}", name)
+            format!("{:?}", name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -663,18 +668,19 @@ impl std::fmt::Display for LastEditor {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for LastEditor {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(name) = &self.name {
-            format!("{:?}", name)
+            format!("{:?}", name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -687,11 +693,11 @@ impl tabled::Tabled for LastEditor {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ProductType {
     #[serde(rename = "eor")]
     #[display("eor")]
@@ -710,11 +716,11 @@ pub enum ProductType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PayrollRunStatus {
     #[serde(rename = "preparing")]
     #[display("preparing")]
@@ -745,11 +751,11 @@ pub enum PayrollRunStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Type {
     #[serde(rename = "main")]
     #[display("main")]
@@ -813,93 +819,94 @@ impl std::fmt::Display for PayrollRun {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PayrollRun {
     const LENGTH: usize = 17;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(creator) = &self.creator {
-                format!("{:?}", creator)
+                format!("{:?}", creator).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(customer_inputs_reviewed) = &self.customer_inputs_reviewed {
-                format!("{:?}", customer_inputs_reviewed)
+                format!("{:?}", customer_inputs_reviewed).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(field_for_employment_matching) = &self.field_for_employment_matching {
-                format!("{:?}", field_for_employment_matching)
+                format!("{:?}", field_for_employment_matching).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(inserted_at) = &self.inserted_at {
-                format!("{:?}", inserted_at)
+                format!("{:?}", inserted_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_editor) = &self.last_editor {
-                format!("{:?}", last_editor)
+                format!("{:?}", last_editor).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.legal_entity),
+            format!("{:?}", self.legal_entity).into(),
             if let Some(mapping_rules) = &self.mapping_rules {
-                format!("{:?}", mapping_rules)
+                format!("{:?}", mapping_rules).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(net_pay_extraction_expression) = &self.net_pay_extraction_expression {
-                format!("{:?}", net_pay_extraction_expression)
+                format!("{:?}", net_pay_extraction_expression).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.period_end),
-            format!("{:?}", self.period_start),
+            format!("{:?}", self.period_end).into(),
+            format!("{:?}", self.period_start).into(),
             if let Some(product_type) = &self.product_type {
-                format!("{:?}", product_type)
+                format!("{:?}", product_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.slug.clone(),
-            format!("{:?}", self.status),
-            format!("{:?}", self.summarize_automatically),
+            self.slug.clone().into(),
+            format!("{:?}", self.status).into(),
+            format!("{:?}", self.summarize_automatically).into(),
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(validations) = &self.validations {
-                format!("{:?}", validations)
+                format!("{:?}", validations).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "creator".to_string(),
-            "customer_inputs_reviewed".to_string(),
-            "field_for_employment_matching".to_string(),
-            "inserted_at".to_string(),
-            "last_editor".to_string(),
-            "legal_entity".to_string(),
-            "mapping_rules".to_string(),
-            "name".to_string(),
-            "net_pay_extraction_expression".to_string(),
-            "period_end".to_string(),
-            "period_start".to_string(),
-            "product_type".to_string(),
-            "slug".to_string(),
-            "status".to_string(),
-            "summarize_automatically".to_string(),
-            "type_".to_string(),
-            "validations".to_string(),
+            "creator".into(),
+            "customer_inputs_reviewed".into(),
+            "field_for_employment_matching".into(),
+            "inserted_at".into(),
+            "last_editor".into(),
+            "legal_entity".into(),
+            "mapping_rules".into(),
+            "name".into(),
+            "net_pay_extraction_expression".into(),
+            "period_end".into(),
+            "period_start".into(),
+            "product_type".into(),
+            "slug".into(),
+            "status".into(),
+            "summarize_automatically".into(),
+            "type_".into(),
+            "validations".into(),
         ]
     }
 }
@@ -936,63 +943,64 @@ impl std::fmt::Display for Address {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Address {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(address) = &self.address {
-                format!("{:?}", address)
+                format!("{:?}", address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_line_2) = &self.address_line_2 {
-                format!("{:?}", address_line_2)
+                format!("{:?}", address_line_2).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(city) = &self.city {
-                format!("{:?}", city)
+                format!("{:?}", city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(country) = &self.country {
-                format!("{:?}", country)
+                format!("{:?}", country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(local_details) = &self.local_details {
-                format!("{:?}", local_details)
+                format!("{:?}", local_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(slug) = &self.slug {
-                format!("{:?}", slug)
+                format!("{:?}", slug).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state) = &self.state {
-                format!("{:?}", state)
+                format!("{:?}", state).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "address".to_string(),
-            "address_line_2".to_string(),
-            "city".to_string(),
-            "country".to_string(),
-            "local_details".to_string(),
-            "postal_code".to_string(),
-            "slug".to_string(),
-            "state".to_string(),
+            "address".into(),
+            "address_line_2".into(),
+            "city".into(),
+            "country".into(),
+            "local_details".into(),
+            "postal_code".into(),
+            "slug".into(),
+            "state".into(),
         ]
     }
 }
@@ -1005,11 +1013,11 @@ impl tabled::Tabled for Address {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EmploymentType {
     #[serde(rename = "employee")]
     #[display("employee")]
@@ -1081,77 +1089,78 @@ impl std::fmt::Display for Employment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Employment {
     const LENGTH: usize = 21;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.address_details),
-            format!("{:?}", self.administrative_details),
-            format!("{:?}", self.bank_account_details),
-            format!("{:?}", self.billing_address_details),
-            self.company_id.clone(),
-            format!("{:?}", self.contract_details),
+            format!("{:?}", self.address_details).into(),
+            format!("{:?}", self.administrative_details).into(),
+            format!("{:?}", self.bank_account_details).into(),
+            format!("{:?}", self.billing_address_details).into(),
+            self.company_id.clone().into(),
+            format!("{:?}", self.contract_details).into(),
             if let Some(country_code) = &self.country_code {
-                format!("{:?}", country_code)
+                format!("{:?}", country_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.created_at.clone(),
-            format!("{:?}", self.emergency_contact_details),
+            self.created_at.clone().into(),
+            format!("{:?}", self.emergency_contact_details).into(),
             if let Some(files) = &self.files {
-                format!("{:?}", files)
+                format!("{:?}", files).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.full_name.clone(),
-            self.id.clone(),
-            self.job_title.clone(),
+            self.full_name.clone().into(),
+            self.id.clone().into(),
+            self.job_title.clone().into(),
             if let Some(onboarding_tasks) = &self.onboarding_tasks {
-                format!("{:?}", onboarding_tasks)
+                format!("{:?}", onboarding_tasks).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.personal_details),
-            self.personal_email.clone(),
-            format!("{:?}", self.pricing_plan_details),
+            format!("{:?}", self.personal_details).into(),
+            self.personal_email.clone().into(),
+            format!("{:?}", self.pricing_plan_details).into(),
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{:?}", provisional_start_date)
+                format!("{:?}", provisional_start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.type_),
-            format!("{:?}", self.updated_at),
+            format!("{:?}", self.type_).into(),
+            format!("{:?}", self.updated_at).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "address_details".to_string(),
-            "administrative_details".to_string(),
-            "bank_account_details".to_string(),
-            "billing_address_details".to_string(),
-            "company_id".to_string(),
-            "contract_details".to_string(),
-            "country_code".to_string(),
-            "created_at".to_string(),
-            "emergency_contact_details".to_string(),
-            "files".to_string(),
-            "full_name".to_string(),
-            "id".to_string(),
-            "job_title".to_string(),
-            "onboarding_tasks".to_string(),
-            "personal_details".to_string(),
-            "personal_email".to_string(),
-            "pricing_plan_details".to_string(),
-            "provisional_start_date".to_string(),
-            "status".to_string(),
-            "type_".to_string(),
-            "updated_at".to_string(),
+            "address_details".into(),
+            "administrative_details".into(),
+            "bank_account_details".into(),
+            "billing_address_details".into(),
+            "company_id".into(),
+            "contract_details".into(),
+            "country_code".into(),
+            "created_at".into(),
+            "emergency_contact_details".into(),
+            "files".into(),
+            "full_name".into(),
+            "id".into(),
+            "job_title".into(),
+            "onboarding_tasks".into(),
+            "personal_details".into(),
+            "personal_email".into(),
+            "pricing_plan_details".into(),
+            "provisional_start_date".into(),
+            "status".into(),
+            "type_".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -1183,39 +1192,40 @@ impl std::fmt::Display for Data {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Data {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(current_page) = &self.current_page {
-                format!("{:?}", current_page)
+                format!("{:?}", current_page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(employments) = &self.employments {
-                format!("{:?}", employments)
+                format!("{:?}", employments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{:?}", total_count)
+                format!("{:?}", total_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{:?}", total_pages)
+                format!("{:?}", total_pages).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "current_page".to_string(),
-            "employments".to_string(),
-            "total_count".to_string(),
-            "total_pages".to_string(),
+            "current_page".into(),
+            "employments".into(),
+            "total_count".into(),
+            "total_pages".into(),
         ]
     }
 }
@@ -1239,18 +1249,19 @@ impl std::fmt::Display for ListEmploymentsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListEmploymentsResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -1271,14 +1282,15 @@ impl std::fmt::Display for TimeoffResponseData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TimeoffResponseData {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.timeoff)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.timeoff).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["timeoff".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["timeoff".into()]
     }
 }
 
@@ -1300,14 +1312,15 @@ impl std::fmt::Display for TimeoffResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TimeoffResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.data).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -1331,25 +1344,26 @@ impl std::fmt::Display for ListTimeoffTypesResponseData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTimeoffTypesResponseData {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["description".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["description".into(), "name".into()]
     }
 }
 
@@ -1372,18 +1386,19 @@ impl std::fmt::Display for ListTimeoffTypesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTimeoffTypesResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -1403,13 +1418,14 @@ impl std::fmt::Display for CreateApprovedTimeoffParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateApprovedTimeoffParams {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -1422,11 +1438,11 @@ impl tabled::Tabled for CreateApprovedTimeoffParams {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EmploymentBasicParamsType {
     #[serde(rename = "employee")]
     #[display("employee")]
@@ -1463,33 +1479,34 @@ impl std::fmt::Display for EmploymentBasicParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EmploymentBasicParams {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.company_id.clone(),
-            self.country_code.clone(),
-            self.full_name.clone(),
-            self.job_title.clone(),
-            self.personal_email.clone(),
+            self.company_id.clone().into(),
+            self.country_code.clone().into(),
+            self.full_name.clone().into(),
+            self.job_title.clone().into(),
+            self.personal_email.clone().into(),
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{:?}", provisional_start_date)
+                format!("{:?}", provisional_start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.type_),
+            format!("{:?}", self.type_).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "company_id".to_string(),
-            "country_code".to_string(),
-            "full_name".to_string(),
-            "job_title".to_string(),
-            "personal_email".to_string(),
-            "provisional_start_date".to_string(),
-            "type_".to_string(),
+            "company_id".into(),
+            "country_code".into(),
+            "full_name".into(),
+            "job_title".into(),
+            "personal_email".into(),
+            "provisional_start_date".into(),
+            "type_".into(),
         ]
     }
 }
@@ -1509,13 +1526,14 @@ impl std::fmt::Display for PayrollRunWithLegalEntity {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PayrollRunWithLegalEntity {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -1539,18 +1557,19 @@ impl std::fmt::Display for EmploymentResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EmploymentResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -1573,18 +1592,19 @@ impl std::fmt::Display for EmploymentData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EmploymentData {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(employment) = &self.employment {
-            format!("{:?}", employment)
+            format!("{:?}", employment).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["employment".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["employment".into()]
     }
 }
 
@@ -1596,11 +1616,11 @@ impl tabled::Tabled for EmploymentData {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApprovedTimeoffParamsStatus {
     #[serde(rename = "approved")]
     #[display("approved")]
@@ -1656,79 +1676,80 @@ impl std::fmt::Display for UpdateApprovedTimeoffParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateApprovedTimeoffParams {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(approved_at) = &self.approved_at {
-                format!("{:?}", approved_at)
+                format!("{:?}", approved_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(approver_id) = &self.approver_id {
-                format!("{:?}", approver_id)
+                format!("{:?}", approver_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.cancel_reason.clone(),
+            self.cancel_reason.clone().into(),
             if let Some(document) = &self.document {
-                format!("{:?}", document)
+                format!("{:?}", document).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.edit_reason.clone(),
+            self.edit_reason.clone().into(),
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(notes) = &self.notes {
-                format!("{:?}", notes)
+                format!("{:?}", notes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeoff_days) = &self.timeoff_days {
-                format!("{:?}", timeoff_days)
+                format!("{:?}", timeoff_days).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeoff_type) = &self.timeoff_type {
-                format!("{:?}", timeoff_type)
+                format!("{:?}", timeoff_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timezone) = &self.timezone {
-                format!("{:?}", timezone)
+                format!("{:?}", timezone).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "approved_at".to_string(),
-            "approver_id".to_string(),
-            "cancel_reason".to_string(),
-            "document".to_string(),
-            "edit_reason".to_string(),
-            "end_date".to_string(),
-            "notes".to_string(),
-            "start_date".to_string(),
-            "status".to_string(),
-            "timeoff_days".to_string(),
-            "timeoff_type".to_string(),
-            "timezone".to_string(),
+            "approved_at".into(),
+            "approver_id".into(),
+            "cancel_reason".into(),
+            "document".into(),
+            "edit_reason".into(),
+            "end_date".into(),
+            "notes".into(),
+            "start_date".into(),
+            "status".into(),
+            "timeoff_days".into(),
+            "timeoff_type".into(),
+            "timezone".into(),
         ]
     }
 }
@@ -1753,23 +1774,24 @@ impl std::fmt::Display for AddressCountry {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddressCountry {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.code.clone(),
-            format!("{:?}", self.features),
-            self.name.clone(),
-            self.slug.clone(),
+            self.code.clone().into(),
+            format!("{:?}", self.features).into(),
+            self.name.clone().into(),
+            self.slug.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "code".to_string(),
-            "features".to_string(),
-            "name".to_string(),
-            "slug".to_string(),
+            "code".into(),
+            "features".into(),
+            "name".into(),
+            "slug".into(),
         ]
     }
 }
@@ -1783,11 +1805,11 @@ impl tabled::Tabled for AddressCountry {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EmploymentStatus {
     #[serde(rename = "active")]
     #[display("active")]
@@ -1832,14 +1854,15 @@ impl std::fmt::Display for UnprocessableEntityErrorResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UnprocessableEntityErrorResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.errors)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.errors).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["errors".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["errors".into()]
     }
 }
 
@@ -1865,26 +1888,23 @@ impl std::fmt::Display for TimeoffDay {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TimeoffDay {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.day),
-            format!("{:?}", self.hours),
+            format!("{:?}", self.day).into(),
+            format!("{:?}", self.hours).into(),
             if let Some(payroll_run) = &self.payroll_run {
-                format!("{:?}", payroll_run)
+                format!("{:?}", payroll_run).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "day".to_string(),
-            "hours".to_string(),
-            "payroll_run".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["day".into(), "hours".into(), "payroll_run".into()]
     }
 }
 
@@ -1897,11 +1917,11 @@ impl tabled::Tabled for TimeoffDay {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TaskStatus {
     #[serde(rename = "completed")]
     #[display("completed")]
@@ -1930,18 +1950,19 @@ impl std::fmt::Display for HolidaysResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for HolidaysResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -1963,14 +1984,15 @@ impl std::fmt::Display for PricingPlanDetails {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PricingPlanDetails {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.frequency.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.frequency.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["frequency".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["frequency".into()]
     }
 }
 
@@ -1982,11 +2004,11 @@ impl tabled::Tabled for PricingPlanDetails {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TimeoffStatus {
     #[serde(rename = "approved")]
     #[display("approved")]
@@ -2050,67 +2072,68 @@ impl std::fmt::Display for Timeoff {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Timeoff {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(approved_at) = &self.approved_at {
-                format!("{:?}", approved_at)
+                format!("{:?}", approved_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(approver_id) = &self.approver_id {
-                format!("{:?}", approver_id)
+                format!("{:?}", approver_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cancel_reason) = &self.cancel_reason {
-                format!("{:?}", cancel_reason)
+                format!("{:?}", cancel_reason).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cancelled_at) = &self.cancelled_at {
-                format!("{:?}", cancelled_at)
+                format!("{:?}", cancelled_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(document) = &self.document {
-                format!("{:?}", document)
+                format!("{:?}", document).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.employment_id.clone(),
-            format!("{:?}", self.end_date),
-            self.id.clone(),
+            self.employment_id.clone().into(),
+            format!("{:?}", self.end_date).into(),
+            self.id.clone().into(),
             if let Some(notes) = &self.notes {
-                format!("{:?}", notes)
+                format!("{:?}", notes).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.start_date),
-            format!("{:?}", self.status),
-            format!("{:?}", self.timeoff_days),
-            format!("{:?}", self.timeoff_type),
-            self.timezone.clone(),
+            format!("{:?}", self.start_date).into(),
+            format!("{:?}", self.status).into(),
+            format!("{:?}", self.timeoff_days).into(),
+            format!("{:?}", self.timeoff_type).into(),
+            self.timezone.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "approved_at".to_string(),
-            "approver_id".to_string(),
-            "cancel_reason".to_string(),
-            "cancelled_at".to_string(),
-            "document".to_string(),
-            "employment_id".to_string(),
-            "end_date".to_string(),
-            "id".to_string(),
-            "notes".to_string(),
-            "start_date".to_string(),
-            "status".to_string(),
-            "timeoff_days".to_string(),
-            "timeoff_type".to_string(),
-            "timezone".to_string(),
+            "approved_at".into(),
+            "approver_id".into(),
+            "cancel_reason".into(),
+            "cancelled_at".into(),
+            "document".into(),
+            "employment_id".into(),
+            "end_date".into(),
+            "id".into(),
+            "notes".into(),
+            "start_date".into(),
+            "status".into(),
+            "timeoff_days".into(),
+            "timeoff_type".into(),
+            "timezone".into(),
         ]
     }
 }
@@ -2146,45 +2169,46 @@ impl std::fmt::Display for CompanyManager {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CompanyManager {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(company_id) = &self.company_id {
-                format!("{:?}", company_id)
+                format!("{:?}", company_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{:?}", role).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_email) = &self.user_email {
-                format!("{:?}", user_email)
+                format!("{:?}", user_email).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_id) = &self.user_id {
-                format!("{:?}", user_id)
+                format!("{:?}", user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_name) = &self.user_name {
-                format!("{:?}", user_name)
+                format!("{:?}", user_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "company_id".to_string(),
-            "role".to_string(),
-            "user_email".to_string(),
-            "user_id".to_string(),
-            "user_name".to_string(),
+            "company_id".into(),
+            "role".into(),
+            "user_email".into(),
+            "user_id".into(),
+            "user_name".into(),
         ]
     }
 }
@@ -2210,14 +2234,15 @@ impl std::fmt::Display for TimeoffDocumentParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TimeoffDocumentParams {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.content.clone(), self.name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.content.clone().into(), self.name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["content".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["content".into(), "name".into()]
     }
 }
 
@@ -2252,27 +2277,28 @@ impl std::fmt::Display for CompanyManagerParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CompanyManagerParams {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(company_id) = &self.company_id {
-                format!("{:?}", company_id)
+                format!("{:?}", company_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.email.clone(),
-            self.name.clone(),
-            self.role.clone(),
+            self.email.clone().into(),
+            self.name.clone().into(),
+            self.role.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "company_id".to_string(),
-            "email".to_string(),
-            "name".to_string(),
-            "role".to_string(),
+            "company_id".into(),
+            "email".into(),
+            "name".into(),
+            "role".into(),
         ]
     }
 }
@@ -2295,18 +2321,19 @@ impl std::fmt::Display for NotFoundResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for NotFoundResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{:?}", message).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -2331,26 +2358,23 @@ impl std::fmt::Display for Country {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Country {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.code.clone(),
+            self.code.clone().into(),
             if let Some(country_subdivisions) = &self.country_subdivisions {
-                format!("{:?}", country_subdivisions)
+                format!("{:?}", country_subdivisions).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.name.clone(),
+            self.name.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "code".to_string(),
-            "country_subdivisions".to_string(),
-            "name".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["code".into(), "country_subdivisions".into(), "name".into()]
     }
 }
 
@@ -2413,89 +2437,90 @@ impl std::fmt::Display for EmploymentFullParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EmploymentFullParams {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(address_details) = &self.address_details {
-                format!("{:?}", address_details)
+                format!("{:?}", address_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(administrative_details) = &self.administrative_details {
-                format!("{:?}", administrative_details)
+                format!("{:?}", administrative_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bank_account_details) = &self.bank_account_details {
-                format!("{:?}", bank_account_details)
+                format!("{:?}", bank_account_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(billing_address_details) = &self.billing_address_details {
-                format!("{:?}", billing_address_details)
+                format!("{:?}", billing_address_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.company_id.clone(),
+            self.company_id.clone().into(),
             if let Some(contract_details) = &self.contract_details {
-                format!("{:?}", contract_details)
+                format!("{:?}", contract_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(country) = &self.country {
-                format!("{:?}", country)
+                format!("{:?}", country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_contact_details) = &self.emergency_contact_details {
-                format!("{:?}", emergency_contact_details)
+                format!("{:?}", emergency_contact_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.full_name.clone(),
-            self.job_title.clone(),
+            self.full_name.clone().into(),
+            self.job_title.clone().into(),
             if let Some(manager_id) = &self.manager_id {
-                format!("{:?}", manager_id)
+                format!("{:?}", manager_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(personal_details) = &self.personal_details {
-                format!("{:?}", personal_details)
+                format!("{:?}", personal_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.personal_email.clone(),
+            self.personal_email.clone().into(),
             if let Some(pricing_plan_details) = &self.pricing_plan_details {
-                format!("{:?}", pricing_plan_details)
+                format!("{:?}", pricing_plan_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(provisional_start_date) = &self.provisional_start_date {
-                format!("{:?}", provisional_start_date)
+                format!("{:?}", provisional_start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "address_details".to_string(),
-            "administrative_details".to_string(),
-            "bank_account_details".to_string(),
-            "billing_address_details".to_string(),
-            "company_id".to_string(),
-            "contract_details".to_string(),
-            "country".to_string(),
-            "emergency_contact_details".to_string(),
-            "full_name".to_string(),
-            "job_title".to_string(),
-            "manager_id".to_string(),
-            "personal_details".to_string(),
-            "personal_email".to_string(),
-            "pricing_plan_details".to_string(),
-            "provisional_start_date".to_string(),
+            "address_details".into(),
+            "administrative_details".into(),
+            "bank_account_details".into(),
+            "billing_address_details".into(),
+            "company_id".into(),
+            "contract_details".into(),
+            "country".into(),
+            "emergency_contact_details".into(),
+            "full_name".into(),
+            "job_title".into(),
+            "manager_id".into(),
+            "personal_details".into(),
+            "personal_email".into(),
+            "pricing_plan_details".into(),
+            "provisional_start_date".into(),
         ]
     }
 }
@@ -2520,25 +2545,26 @@ impl std::fmt::Display for MaybeMinimalCompany {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MaybeMinimalCompany {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(slug) = &self.slug {
-                format!("{:?}", slug)
+                format!("{:?}", slug).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "slug".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "slug".into()]
     }
 }
 
@@ -2569,39 +2595,40 @@ impl std::fmt::Display for CompanyManagersResponseData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CompanyManagersResponseData {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(company_managers) = &self.company_managers {
-                format!("{:?}", company_managers)
+                format!("{:?}", company_managers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(current_page) = &self.current_page {
-                format!("{:?}", current_page)
+                format!("{:?}", current_page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{:?}", total_count)
+                format!("{:?}", total_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{:?}", total_pages)
+                format!("{:?}", total_pages).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "company_managers".to_string(),
-            "current_page".to_string(),
-            "total_count".to_string(),
-            "total_pages".to_string(),
+            "company_managers".into(),
+            "current_page".into(),
+            "total_count".into(),
+            "total_pages".into(),
         ]
     }
 }
@@ -2625,18 +2652,19 @@ impl std::fmt::Display for CompanyManagersResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CompanyManagersResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -2659,18 +2687,19 @@ impl std::fmt::Display for CountriesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CountriesResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -2692,18 +2721,19 @@ impl std::fmt::Display for CompanyManagerCreatedResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CompanyManagerCreatedResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(company_manager) = &self.company_manager {
-            format!("{:?}", company_manager)
+            format!("{:?}", company_manager).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["company_manager".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["company_manager".into()]
     }
 }
 
@@ -2731,29 +2761,30 @@ impl std::fmt::Display for RemoteEntity {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RemoteEntity {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.address),
-            format!("{:?}", self.company),
+            format!("{:?}", self.address).into(),
+            format!("{:?}", self.company).into(),
             if let Some(is_internal) = &self.is_internal {
-                format!("{:?}", is_internal)
+                format!("{:?}", is_internal).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.name.clone(),
-            self.slug.clone(),
+            self.name.clone().into(),
+            self.slug.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "address".to_string(),
-            "company".to_string(),
-            "is_internal".to_string(),
-            "name".to_string(),
-            "slug".to_string(),
+            "address".into(),
+            "company".into(),
+            "is_internal".into(),
+            "name".into(),
+            "slug".into(),
         ]
     }
 }
@@ -2777,18 +2808,19 @@ impl std::fmt::Display for CountryFormResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CountryFormResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -2810,14 +2842,15 @@ impl std::fmt::Display for MinimalCompany {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MinimalCompany {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), self.slug.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into(), self.slug.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "slug".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "slug".into()]
     }
 }
 
@@ -2836,13 +2869,14 @@ impl std::fmt::Display for UnprocessableEntityResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UnprocessableEntityResponse {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -2865,18 +2899,19 @@ impl std::fmt::Display for TooManyRequestsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TooManyRequestsResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{:?}", message).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -2900,22 +2935,23 @@ impl std::fmt::Display for Holiday {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Holiday {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.day),
-            self.name.clone(),
+            format!("{:?}", self.day).into(),
+            self.name.clone().into(),
             if let Some(note) = &self.note {
-                format!("{:?}", note)
+                format!("{:?}", note).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["day".to_string(), "name".to_string(), "note".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["day".into(), "name".into(), "note".into()]
     }
 }
 
@@ -2937,18 +2973,19 @@ impl std::fmt::Display for BadRequestResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for BadRequestResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(message) = &self.message {
-            format!("{:?}", message)
+            format!("{:?}", message).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -2969,14 +3006,15 @@ impl std::fmt::Display for UnauthorizedResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UnauthorizedResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.message.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.message.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["message".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["message".into()]
     }
 }
 
@@ -3002,30 +3040,27 @@ impl std::fmt::Display for CountrySubdivision {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CountrySubdivision {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(code) = &self.code {
-                format!("{:?}", code)
+                format!("{:?}", code).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.name.clone(),
+            self.name.clone().into(),
             if let Some(subdivision_type) = &self.subdivision_type {
-                format!("{:?}", subdivision_type)
+                format!("{:?}", subdivision_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "code".to_string(),
-            "name".to_string(),
-            "subdivision_type".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["code".into(), "name".into(), "subdivision_type".into()]
     }
 }
 
@@ -3059,39 +3094,40 @@ impl std::fmt::Display for CreateTimeoffParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateTimeoffParams {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(document) = &self.document {
-                format!("{:?}", document)
+                format!("{:?}", document).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.employment_id.clone(),
-            format!("{:?}", self.end_date),
+            self.employment_id.clone().into(),
+            format!("{:?}", self.end_date).into(),
             if let Some(notes) = &self.notes {
-                format!("{:?}", notes)
+                format!("{:?}", notes).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.start_date),
-            format!("{:?}", self.timeoff_days),
-            format!("{:?}", self.timeoff_type),
-            self.timezone.clone(),
+            format!("{:?}", self.start_date).into(),
+            format!("{:?}", self.timeoff_days).into(),
+            format!("{:?}", self.timeoff_type).into(),
+            self.timezone.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "document".to_string(),
-            "employment_id".to_string(),
-            "end_date".to_string(),
-            "notes".to_string(),
-            "start_date".to_string(),
-            "timeoff_days".to_string(),
-            "timeoff_type".to_string(),
-            "timezone".to_string(),
+            "document".into(),
+            "employment_id".into(),
+            "end_date".into(),
+            "notes".into(),
+            "start_date".into(),
+            "timeoff_days".into(),
+            "timeoff_type".into(),
+            "timezone".into(),
         ]
     }
 }
@@ -3118,25 +3154,26 @@ impl std::fmt::Display for TimeoffDaysParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TimeoffDaysParams {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(day) = &self.day {
-                format!("{:?}", day)
+                format!("{:?}", day).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(hours) = &self.hours {
-                format!("{:?}", hours)
+                format!("{:?}", hours).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["day".to_string(), "hours".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["day".into(), "hours".into()]
     }
 }
 
@@ -3184,33 +3221,34 @@ impl std::fmt::Display for OnboardingTasks {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for OnboardingTasks {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.address_details),
-            format!("{:?}", self.administrative_details),
-            format!("{:?}", self.bank_account_details),
-            format!("{:?}", self.billing_address_details),
-            format!("{:?}", self.contract_details),
-            format!("{:?}", self.emergency_contact_details),
-            format!("{:?}", self.employment_document_details),
-            format!("{:?}", self.personal_details),
-            format!("{:?}", self.pricing_plan_details),
+            format!("{:?}", self.address_details).into(),
+            format!("{:?}", self.administrative_details).into(),
+            format!("{:?}", self.bank_account_details).into(),
+            format!("{:?}", self.billing_address_details).into(),
+            format!("{:?}", self.contract_details).into(),
+            format!("{:?}", self.emergency_contact_details).into(),
+            format!("{:?}", self.employment_document_details).into(),
+            format!("{:?}", self.personal_details).into(),
+            format!("{:?}", self.pricing_plan_details).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "address_details".to_string(),
-            "administrative_details".to_string(),
-            "bank_account_details".to_string(),
-            "billing_address_details".to_string(),
-            "contract_details".to_string(),
-            "emergency_contact_details".to_string(),
-            "employment_document_details".to_string(),
-            "personal_details".to_string(),
-            "pricing_plan_details".to_string(),
+            "address_details".into(),
+            "administrative_details".into(),
+            "bank_account_details".into(),
+            "billing_address_details".into(),
+            "contract_details".into(),
+            "emergency_contact_details".into(),
+            "employment_document_details".into(),
+            "personal_details".into(),
+            "pricing_plan_details".into(),
         ]
     }
 }
@@ -3242,39 +3280,40 @@ impl std::fmt::Display for ListTimeoffResponseData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTimeoffResponseData {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(current_page) = &self.current_page {
-                format!("{:?}", current_page)
+                format!("{:?}", current_page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeoffs) = &self.timeoffs {
-                format!("{:?}", timeoffs)
+                format!("{:?}", timeoffs).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_count) = &self.total_count {
-                format!("{:?}", total_count)
+                format!("{:?}", total_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_pages) = &self.total_pages {
-                format!("{:?}", total_pages)
+                format!("{:?}", total_pages).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "current_page".to_string(),
-            "timeoffs".to_string(),
-            "total_count".to_string(),
-            "total_pages".to_string(),
+            "current_page".into(),
+            "timeoffs".into(),
+            "total_count".into(),
+            "total_pages".into(),
         ]
     }
 }
@@ -3298,18 +3337,19 @@ impl std::fmt::Display for ListTimeoffResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTimeoffResponse {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(data) = &self.data {
-            format!("{:?}", data)
+            format!("{:?}", data).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["data".into()]
     }
 }
 
@@ -3334,18 +3374,19 @@ impl std::fmt::Display for EmploymentUpdateParams {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EmploymentUpdateParams {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(status) = &self.status {
-            format!("{:?}", status)
+            format!("{:?}", status).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into()]
     }
 }
 
@@ -3373,25 +3414,26 @@ impl std::fmt::Display for MinimalEmployment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for MinimalEmployment {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.country),
-            self.full_name.clone(),
-            self.id.clone(),
-            self.job_title.clone(),
-            format!("{:?}", self.status),
+            format!("{:?}", self.country).into(),
+            self.full_name.clone().into(),
+            self.id.clone().into(),
+            self.job_title.clone().into(),
+            format!("{:?}", self.status).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "country".to_string(),
-            "full_name".to_string(),
-            "id".to_string(),
-            "job_title".to_string(),
-            "status".to_string(),
+            "country".into(),
+            "full_name".into(),
+            "id".into(),
+            "job_title".into(),
+            "status".into(),
         ]
     }
 }
@@ -3404,11 +3446,11 @@ impl tabled::Tabled for MinimalEmployment {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum OrderBy {
     #[serde(rename = "asc")]
     #[display("asc")]
@@ -3426,11 +3468,11 @@ pub enum OrderBy {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SortBy {
     #[serde(rename = "timeoff_type")]
     #[display("timeoff_type")]
@@ -3448,11 +3490,11 @@ pub enum SortBy {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum GetIndexTimeoffStatus {
     #[serde(rename = "approved")]
     #[display("approved")]

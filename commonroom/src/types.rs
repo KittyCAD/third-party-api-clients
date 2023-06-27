@@ -1,4 +1,5 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
@@ -438,34 +439,31 @@ impl std::fmt::Display for ApiToken {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiToken {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(jti) = &self.jti {
-                format!("{:?}", jti)
+                format!("{:?}", jti).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(community_name) = &self.community_name {
-                format!("{:?}", community_name)
+                format!("{:?}", community_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(community_id) = &self.community_id {
-                format!("{:?}", community_id)
+                format!("{:?}", community_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "jti".to_string(),
-            "community_name".to_string(),
-            "community_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["jti".into(), "community_name".into(), "community_id".into()]
     }
 }
 
@@ -487,18 +485,19 @@ impl std::fmt::Display for CommunityMember {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CommunityMember {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(id) = &self.id {
-            format!("{:?}", id)
+            format!("{:?}", id).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into()]
     }
 }
 
@@ -510,11 +509,11 @@ impl tabled::Tabled for CommunityMember {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum StatusStatus {
     #[serde(rename = "ok")]
     #[display("ok")]
@@ -549,34 +548,31 @@ impl std::fmt::Display for Status {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Status {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(reason) = &self.reason {
-                format!("{:?}", reason)
+                format!("{:?}", reason).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(errors) = &self.errors {
-                format!("{:?}", errors)
+                format!("{:?}", errors).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "status".to_string(),
-            "reason".to_string(),
-            "errors".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "reason".into(), "errors".into()]
     }
 }
 
@@ -604,25 +600,26 @@ impl std::fmt::Display for Name {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Name {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(given_name) = &self.given_name {
-                format!("{:?}", given_name)
+                format!("{:?}", given_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(family_name) = &self.family_name {
-                format!("{:?}", family_name)
+                format!("{:?}", family_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["given_name".to_string(), "family_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["given_name".into(), "family_name".into()]
     }
 }
 
@@ -648,34 +645,31 @@ impl std::fmt::Display for Emails {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Emails {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(primary) = &self.primary {
-                format!("{:?}", primary)
+                format!("{:?}", primary).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "value".to_string(),
-            "primary".to_string(),
-            "type_".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["value".into(), "primary".into(), "type_".into()]
     }
 }
 
@@ -709,51 +703,52 @@ impl std::fmt::Display for User {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for User {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_name) = &self.user_name {
-                format!("{:?}", user_name)
+                format!("{:?}", user_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emails) = &self.emails {
-                format!("{:?}", emails)
+                format!("{:?}", emails).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(active) = &self.active {
-                format!("{:?}", active)
+                format!("{:?}", active).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(schemas) = &self.schemas {
-                format!("{:?}", schemas)
+                format!("{:?}", schemas).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "user_name".to_string(),
-            "name".to_string(),
-            "emails".to_string(),
-            "active".to_string(),
-            "schemas".to_string(),
+            "id".into(),
+            "user_name".into(),
+            "name".into(),
+            "emails".into(),
+            "active".into(),
+            "schemas".into(),
         ]
     }
 }
@@ -766,11 +761,11 @@ impl tabled::Tabled for User {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Type {
     #[serde(rename = "github")]
     #[display("github")]
@@ -807,18 +802,19 @@ impl std::fmt::Display for Value {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Value {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(handle) = &self.handle {
-            format!("{:?}", handle)
+            format!("{:?}", handle).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["handle".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["handle".into()]
     }
 }
 
@@ -843,25 +839,26 @@ impl std::fmt::Display for Social {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Social {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "value".into()]
     }
 }
 
@@ -873,11 +870,11 @@ impl tabled::Tabled for Social {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum EmailType {
     #[serde(rename = "email")]
@@ -910,37 +907,33 @@ impl std::fmt::Display for Email {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Email {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "value".into()]
     }
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Socials {
     Social(Social),
     Email(Email),
@@ -972,34 +965,31 @@ impl std::fmt::Display for Location {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Location {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(city) = &self.city {
-                format!("{:?}", city)
+                format!("{:?}", city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(country) = &self.country {
-                format!("{:?}", country)
+                format!("{:?}", country).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "city".to_string(),
-            "region".to_string(),
-            "country".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["city".into(), "region".into(), "country".into()]
     }
 }
 
@@ -1048,77 +1038,78 @@ impl std::fmt::Display for CreateOrUpdateCommunityMemberRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateOrUpdateCommunityMemberRequestBody {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.source.clone(),
+            self.source.clone().into(),
             if let Some(full_name) = &self.full_name {
-                format!("{:?}", full_name)
+                format!("{:?}", full_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(avatar_url) = &self.avatar_url {
-                format!("{:?}", avatar_url)
+                format!("{:?}", avatar_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(socials) = &self.socials {
-                format!("{:?}", socials)
+                format!("{:?}", socials).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(segment) = &self.segment {
-                format!("{:?}", segment)
+                format!("{:?}", segment).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(company) = &self.company {
-                format!("{:?}", company)
+                format!("{:?}", company).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domain) = &self.domain {
-                format!("{:?}", domain)
+                format!("{:?}", domain).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(title) = &self.title {
-                format!("{:?}", title)
+                format!("{:?}", title).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{:?}", role).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location) = &self.location {
-                format!("{:?}", location)
+                format!("{:?}", location).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "source".to_string(),
-            "full_name".to_string(),
-            "avatar_url".to_string(),
-            "description".to_string(),
-            "socials".to_string(),
-            "segment".to_string(),
-            "company".to_string(),
-            "domain".to_string(),
-            "title".to_string(),
-            "role".to_string(),
-            "location".to_string(),
+            "source".into(),
+            "full_name".into(),
+            "avatar_url".into(),
+            "description".into(),
+            "socials".into(),
+            "segment".into(),
+            "company".into(),
+            "domain".into(),
+            "title".into(),
+            "role".into(),
+            "location".into(),
         ]
     }
 }
@@ -1152,34 +1143,31 @@ impl std::fmt::Display for AddNoteToMemberRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddNoteToMemberRequestBody {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(social_type) = &self.social_type {
-                format!("{:?}", social_type)
+                format!("{:?}", social_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(note) = &self.note {
-                format!("{:?}", note)
+                format!("{:?}", note).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "social_type".to_string(),
-            "value".to_string(),
-            "note".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["social_type".into(), "value".into(), "note".into()]
     }
 }
 
@@ -1207,34 +1195,31 @@ impl std::fmt::Display for GetMemberCustomFieldsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetMemberCustomFieldsResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(values) = &self.values {
-                format!("{:?}", values)
+                format!("{:?}", values).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "name".to_string(),
-            "type_".to_string(),
-            "values".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "type_".into(), "values".into()]
     }
 }
 
@@ -1260,25 +1245,26 @@ impl std::fmt::Display for CustomFieldValue {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomFieldValue {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "value".into()]
     }
 }
 
@@ -1321,39 +1307,40 @@ impl std::fmt::Display for SetMemberCustomFieldValueRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SetMemberCustomFieldValueRequestBody {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(social_type) = &self.social_type {
-                format!("{:?}", social_type)
+                format!("{:?}", social_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_field_id) = &self.custom_field_id {
-                format!("{:?}", custom_field_id)
+                format!("{:?}", custom_field_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_field_value) = &self.custom_field_value {
-                format!("{:?}", custom_field_value)
+                format!("{:?}", custom_field_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "social_type".to_string(),
-            "value".to_string(),
-            "custom_field_id".to_string(),
-            "custom_field_value".to_string(),
+            "social_type".into(),
+            "value".into(),
+            "custom_field_id".into(),
+            "custom_field_value".into(),
         ]
     }
 }
@@ -1387,34 +1374,31 @@ impl std::fmt::Display for AddTagsToMemberRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddTagsToMemberRequestBody {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(social_type) = &self.social_type {
-                format!("{:?}", social_type)
+                format!("{:?}", social_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{:?}", tags).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "social_type".to_string(),
-            "value".to_string(),
-            "tags".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["social_type".into(), "value".into(), "tags".into()]
     }
 }
 
@@ -1438,25 +1422,26 @@ impl std::fmt::Display for Segments {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Segments {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "name".into()]
     }
 }
 
@@ -1484,30 +1469,31 @@ impl std::fmt::Display for CustomFields {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomFields {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "type_".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "type_".into(), "value".into()]
     }
 }
 
@@ -1568,129 +1554,130 @@ impl std::fmt::Display for GetMemberBySocialsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetMemberBySocialsResponse {
     const LENGTH: usize = 19;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(full_name) = &self.full_name {
-                format!("{:?}", full_name)
+                format!("{:?}", full_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(activities_count) = &self.activities_count {
-                format!("{:?}", activities_count)
+                format!("{:?}", activities_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(avatar) = &self.avatar {
-                format!("{:?}", avatar)
+                format!("{:?}", avatar).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bio) = &self.bio {
-                format!("{:?}", bio)
+                format!("{:?}", bio).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(organization) = &self.organization {
-                format!("{:?}", organization)
+                format!("{:?}", organization).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(title) = &self.title {
-                format!("{:?}", title)
+                format!("{:?}", title).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_seen) = &self.first_seen {
-                format!("{:?}", first_seen)
+                format!("{:?}", first_seen).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_active) = &self.last_active {
-                format!("{:?}", last_active)
+                format!("{:?}", last_active).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location) = &self.location {
-                format!("{:?}", location)
+                format!("{:?}", location).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(member_tags) = &self.member_tags {
-                format!("{:?}", member_tags)
+                format!("{:?}", member_tags).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(segments) = &self.segments {
-                format!("{:?}", segments)
+                format!("{:?}", segments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(twitter) = &self.twitter {
-                format!("{:?}", twitter)
+                format!("{:?}", twitter).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(github) = &self.github {
-                format!("{:?}", github)
+                format!("{:?}", github).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(linkedin) = &self.linkedin {
-                format!("{:?}", linkedin)
+                format!("{:?}", linkedin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(discord) = &self.discord {
-                format!("{:?}", discord)
+                format!("{:?}", discord).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(youtube) = &self.youtube {
-                format!("{:?}", youtube)
+                format!("{:?}", youtube).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(common_room_member_url) = &self.common_room_member_url {
-                format!("{:?}", common_room_member_url)
+                format!("{:?}", common_room_member_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(custom_fields) = &self.custom_fields {
-                format!("{:?}", custom_fields)
+                format!("{:?}", custom_fields).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "full_name".to_string(),
-            "activities_count".to_string(),
-            "avatar".to_string(),
-            "bio".to_string(),
-            "organization".to_string(),
-            "title".to_string(),
-            "first_seen".to_string(),
-            "last_active".to_string(),
-            "location".to_string(),
-            "member_tags".to_string(),
-            "segments".to_string(),
-            "url".to_string(),
-            "twitter".to_string(),
-            "github".to_string(),
-            "linkedin".to_string(),
-            "discord".to_string(),
-            "youtube".to_string(),
-            "common_room_member_url".to_string(),
-            "custom_fields".to_string(),
+            "full_name".into(),
+            "activities_count".into(),
+            "avatar".into(),
+            "bio".into(),
+            "organization".into(),
+            "title".into(),
+            "first_seen".into(),
+            "last_active".into(),
+            "location".into(),
+            "member_tags".into(),
+            "segments".into(),
+            "url".into(),
+            "twitter".into(),
+            "github".into(),
+            "linkedin".into(),
+            "discord".into(),
+            "youtube".into(),
+            "common_room_member_url".into(),
+            "custom_fields".into(),
         ]
     }
 }
@@ -1736,45 +1723,46 @@ impl std::fmt::Display for ActiveCommunityMembersByRoleResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ActiveCommunityMembersByRoleResponse {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(schemas) = &self.schemas {
-                format!("{:?}", schemas)
+                format!("{:?}", schemas).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(resources) = &self.resources {
-                format!("{:?}", resources)
+                format!("{:?}", resources).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(total_results) = &self.total_results {
-                format!("{:?}", total_results)
+                format!("{:?}", total_results).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(items_per_page) = &self.items_per_page {
-                format!("{:?}", items_per_page)
+                format!("{:?}", items_per_page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_index) = &self.start_index {
-                format!("{:?}", start_index)
+                format!("{:?}", start_index).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "schemas".to_string(),
-            "resources".to_string(),
-            "total_results".to_string(),
-            "items_per_page".to_string(),
-            "start_index".to_string(),
+            "schemas".into(),
+            "resources".into(),
+            "total_results".into(),
+            "items_per_page".into(),
+            "start_index".into(),
         ]
     }
 }
@@ -1806,45 +1794,46 @@ impl std::fmt::Display for CreateCommunityMemberWithSpecificRoleRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateCommunityMemberWithSpecificRoleRequestBody {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(schemas) = &self.schemas {
-                format!("{:?}", schemas)
+                format!("{:?}", schemas).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_name) = &self.user_name {
-                format!("{:?}", user_name)
+                format!("{:?}", user_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emails) = &self.emails {
-                format!("{:?}", emails)
+                format!("{:?}", emails).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(active) = &self.active {
-                format!("{:?}", active)
+                format!("{:?}", active).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "schemas".to_string(),
-            "user_name".to_string(),
-            "name".to_string(),
-            "emails".to_string(),
-            "active".to_string(),
+            "schemas".into(),
+            "user_name".into(),
+            "name".into(),
+            "emails".into(),
+            "active".into(),
         ]
     }
 }
@@ -1869,18 +1858,19 @@ impl std::fmt::Display for OperationsValue {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for OperationsValue {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(active) = &self.active {
-            format!("{:?}", active)
+            format!("{:?}", active).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["active".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["active".into()]
     }
 }
 
@@ -1904,25 +1894,26 @@ impl std::fmt::Display for Operations {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Operations {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(op) = &self.op {
-                format!("{:?}", op)
+                format!("{:?}", op).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(value) = &self.value {
-                format!("{:?}", value)
+                format!("{:?}", value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["op".to_string(), "value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["op".into(), "value".into()]
     }
 }
 
@@ -1950,25 +1941,26 @@ impl std::fmt::Display for UpdateUserAccountRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateUserAccountRequestBody {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(schemas) = &self.schemas {
-                format!("{:?}", schemas)
+                format!("{:?}", schemas).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(operations) = &self.operations {
-                format!("{:?}", operations)
+                format!("{:?}", operations).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["schemas".to_string(), "operations".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["schemas".into(), "operations".into()]
     }
 }
 
@@ -2010,37 +2002,38 @@ impl std::fmt::Display for CreateUserInputActivityRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateUserInputActivityRequestBody {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.source.clone(),
-            self.social_type.clone(),
-            self.value.clone(),
-            self.activity_type.clone(),
-            self.activity_body.clone(),
+            self.source.clone().into(),
+            self.social_type.clone().into(),
+            self.value.clone().into(),
+            self.activity_type.clone().into(),
+            self.activity_body.clone().into(),
             if let Some(occurred_at) = &self.occurred_at {
-                format!("{:?}", occurred_at)
+                format!("{:?}", occurred_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tags) = &self.tags {
-                format!("{:?}", tags)
+                format!("{:?}", tags).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "source".to_string(),
-            "social_type".to_string(),
-            "value".to_string(),
-            "activity_type".to_string(),
-            "activity_body".to_string(),
-            "occurred_at".to_string(),
-            "tags".to_string(),
+            "source".into(),
+            "social_type".into(),
+            "value".into(),
+            "activity_type".into(),
+            "activity_body".into(),
+            "occurred_at".into(),
+            "tags".into(),
         ]
     }
 }
@@ -2071,34 +2064,31 @@ impl std::fmt::Display for GetActivityTypesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetActivityTypesResponse {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(display_name) = &self.display_name {
-                format!("{:?}", display_name)
+                format!("{:?}", display_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "id".to_string(),
-            "display_name".to_string(),
-            "name".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "display_name".into(), "name".into()]
     }
 }
 
@@ -2124,25 +2114,26 @@ impl std::fmt::Display for GetSegmentsResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetSegmentsResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "name".into()]
     }
 }
 
@@ -2168,25 +2159,26 @@ impl std::fmt::Display for GetSegmentStatusesResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for GetSegmentStatusesResponse {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "name".into()]
     }
 }
 
@@ -2213,26 +2205,23 @@ impl std::fmt::Display for AddMembersToSegmentRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddMembersToSegmentRequestBody {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.social_type.clone(),
-            self.value.clone(),
+            self.social_type.clone().into(),
+            self.value.clone().into(),
             if let Some(status_id) = &self.status_id {
-                format!("{:?}", status_id)
+                format!("{:?}", status_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "social_type".to_string(),
-            "value".to_string(),
-            "status_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["social_type".into(), "value".into(), "status_id".into()]
     }
 }
 
@@ -2257,24 +2246,25 @@ impl std::fmt::Display for AddNoteToSegmentRequestBody {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AddNoteToSegmentRequestBody {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(segment_id) = &self.segment_id {
-                format!("{:?}", segment_id)
+                format!("{:?}", segment_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(note) = &self.note {
-                format!("{:?}", note)
+                format!("{:?}", note).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["segment_id".to_string(), "note".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["segment_id".into(), "note".into()]
     }
 }

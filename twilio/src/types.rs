@@ -1,4 +1,5 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
@@ -423,13 +424,14 @@ impl std::fmt::Display for SubresourceUris {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SubresourceUris {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -489,75 +491,76 @@ impl std::fmt::Display for ApiV2010Account {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010Account {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(auth_token) = &self.auth_token {
-                format!("{:?}", auth_token)
+                format!("{:?}", auth_token).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(owner_account_sid) = &self.owner_account_sid {
-                format!("{:?}", owner_account_sid)
+                format!("{:?}", owner_account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "auth_token".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "owner_account_sid".to_string(),
-            "sid".to_string(),
-            "status".to_string(),
-            "subresource_uris".to_string(),
-            "type_".to_string(),
-            "uri".to_string(),
+            "auth_token".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "owner_account_sid".into(),
+            "sid".into(),
+            "status".into(),
+            "subresource_uris".into(),
+            "type_".into(),
+            "uri".into(),
         ]
     }
 }
@@ -570,11 +573,11 @@ impl tabled::Tabled for ApiV2010Account {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AccountEnumStatus {
     #[serde(rename = "active")]
     #[display("active")]
@@ -595,11 +598,11 @@ pub enum AccountEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AccountEnumType {
     Trial,
     Full,
@@ -685,111 +688,112 @@ impl std::fmt::Display for ApiV2010AccountAddress {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAddress {
     const LENGTH: usize = 16;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(city) = &self.city {
-                format!("{:?}", city)
+                format!("{:?}", city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(customer_name) = &self.customer_name {
-                format!("{:?}", customer_name)
+                format!("{:?}", customer_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(street) = &self.street {
-                format!("{:?}", street)
+                format!("{:?}", street).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{:?}", emergency_enabled)
+                format!("{:?}", emergency_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(validated) = &self.validated {
-                format!("{:?}", validated)
+                format!("{:?}", validated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(verified) = &self.verified {
-                format!("{:?}", verified)
+                format!("{:?}", verified).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{:?}", street_secondary)
+                format!("{:?}", street_secondary).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "city".to_string(),
-            "customer_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "iso_country".to_string(),
-            "postal_code".to_string(),
-            "region".to_string(),
-            "sid".to_string(),
-            "street".to_string(),
-            "uri".to_string(),
-            "emergency_enabled".to_string(),
-            "validated".to_string(),
-            "verified".to_string(),
-            "street_secondary".to_string(),
+            "account_sid".into(),
+            "city".into(),
+            "customer_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "iso_country".into(),
+            "postal_code".into(),
+            "region".into(),
+            "sid".into(),
+            "street".into(),
+            "uri".into(),
+            "emergency_enabled".into(),
+            "validated".into(),
+            "verified".into(),
+            "street_secondary".into(),
         ]
     }
 }
@@ -803,11 +807,11 @@ impl tabled::Tabled for ApiV2010AccountAddress {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -838,11 +842,11 @@ pub enum SmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -873,11 +877,11 @@ pub enum SmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum StatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -908,11 +912,11 @@ pub enum StatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum VoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -943,11 +947,11 @@ pub enum VoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum VoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -1064,143 +1068,144 @@ impl std::fmt::Display for ApiV2010AccountApplication {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountApplication {
     const LENGTH: usize = 21;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{:?}", message_status_callback)
+                format!("{:?}", message_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{:?}", sms_status_callback)
+                format!("{:?}", sms_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{:?}", public_application_connect_enabled)
+                format!("{:?}", public_application_connect_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "message_status_callback".to_string(),
-            "sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_status_callback".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "uri".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "public_application_connect_enabled".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "message_status_callback".into(),
+            "sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_status_callback".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "uri".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "public_application_connect_enabled".into(),
         ]
     }
 }
@@ -1261,75 +1266,76 @@ impl std::fmt::Display for ApiV2010AccountAuthorizedConnectApp {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAuthorizedConnectApp {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connect_app_company_name) = &self.connect_app_company_name {
-                format!("{:?}", connect_app_company_name)
+                format!("{:?}", connect_app_company_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connect_app_description) = &self.connect_app_description {
-                format!("{:?}", connect_app_description)
+                format!("{:?}", connect_app_description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connect_app_friendly_name) = &self.connect_app_friendly_name {
-                format!("{:?}", connect_app_friendly_name)
+                format!("{:?}", connect_app_friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connect_app_homepage_url) = &self.connect_app_homepage_url {
-                format!("{:?}", connect_app_homepage_url)
+                format!("{:?}", connect_app_homepage_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connect_app_sid) = &self.connect_app_sid {
-                format!("{:?}", connect_app_sid)
+                format!("{:?}", connect_app_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{:?}", permissions)
+                format!("{:?}", permissions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "connect_app_company_name".to_string(),
-            "connect_app_description".to_string(),
-            "connect_app_friendly_name".to_string(),
-            "connect_app_homepage_url".to_string(),
-            "connect_app_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "permissions".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "connect_app_company_name".into(),
+            "connect_app_description".into(),
+            "connect_app_friendly_name".into(),
+            "connect_app_homepage_url".into(),
+            "connect_app_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "permissions".into(),
+            "uri".into(),
         ]
     }
 }
@@ -1342,11 +1348,11 @@ impl tabled::Tabled for ApiV2010AccountAuthorizedConnectApp {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AuthorizedConnectAppEnumPermission {
     #[serde(rename = "get-all")]
     #[display("get-all")]
@@ -1390,45 +1396,46 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountry {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountry {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(country_code) = &self.country_code {
-                format!("{:?}", country_code)
+                format!("{:?}", country_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(country) = &self.country {
-                format!("{:?}", country)
+                format!("{:?}", country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "country_code".to_string(),
-            "country".to_string(),
-            "uri".to_string(),
-            "beta".to_string(),
-            "subresource_uris".to_string(),
+            "country_code".into(),
+            "country".into(),
+            "uri".into(),
+            "beta".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -1460,40 +1467,36 @@ impl std::fmt::Display for Capabilities {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Capabilities {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{:?}", mms)
+                format!("{:?}", mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms) = &self.sms {
-                format!("{:?}", sms)
+                format!("{:?}", sms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice) = &self.voice {
-                format!("{:?}", voice)
+                format!("{:?}", voice).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fax) = &self.fax {
-                format!("{:?}", fax)
+                format!("{:?}", fax).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "mms".to_string(),
-            "sms".to_string(),
-            "voice".to_string(),
-            "fax".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["mms".into(), "sms".into(), "voice".into(), "fax".into()]
     }
 }
 
@@ -1566,85 +1569,86 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountryAvailablePh
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberLocal {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -1720,87 +1724,88 @@ impl std::fmt::Display
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled
     for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberMachineToMachine
 {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -1874,85 +1879,86 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountryAvailablePh
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberMobile {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -2026,85 +2032,86 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountryAvailablePh
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberNational {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -2180,85 +2187,86 @@ impl std::fmt::Display
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberSharedCost {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -2332,85 +2340,86 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountryAvailablePh
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberTollFree {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -2484,85 +2493,86 @@ impl std::fmt::Display for ApiV2010AccountAvailablePhoneNumberCountryAvailablePh
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAvailablePhoneNumberCountryAvailablePhoneNumberVoip {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(lata) = &self.lata {
-                format!("{:?}", lata)
+                format!("{:?}", lata).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(locality) = &self.locality {
-                format!("{:?}", locality)
+                format!("{:?}", locality).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(rate_center) = &self.rate_center {
-                format!("{:?}", rate_center)
+                format!("{:?}", rate_center).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(latitude) = &self.latitude {
-                format!("{:?}", latitude)
+                format!("{:?}", latitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(longitude) = &self.longitude {
-                format!("{:?}", longitude)
+                format!("{:?}", longitude).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(iso_country) = &self.iso_country {
-                format!("{:?}", iso_country)
+                format!("{:?}", iso_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "lata".to_string(),
-            "locality".to_string(),
-            "rate_center".to_string(),
-            "latitude".to_string(),
-            "longitude".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "address_requirements".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "lata".into(),
+            "locality".into(),
+            "rate_center".into(),
+            "latitude".into(),
+            "longitude".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "address_requirements".into(),
+            "beta".into(),
+            "capabilities".into(),
         ]
     }
 }
@@ -2594,34 +2604,31 @@ impl std::fmt::Display for ApiV2010AccountBalance {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountBalance {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(balance) = &self.balance {
-                format!("{:?}", balance)
+                format!("{:?}", balance).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(currency) = &self.currency {
-                format!("{:?}", currency)
+                format!("{:?}", currency).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "account_sid".to_string(),
-            "balance".to_string(),
-            "currency".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["account_sid".into(), "balance".into(), "currency".into()]
     }
 }
 
@@ -2744,171 +2751,172 @@ impl std::fmt::Display for ApiV2010AccountCall {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCall {
     const LENGTH: usize = 26;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parent_call_sid) = &self.parent_call_sid {
-                format!("{:?}", parent_call_sid)
+                format!("{:?}", parent_call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(to_formatted) = &self.to_formatted {
-                format!("{:?}", to_formatted)
+                format!("{:?}", to_formatted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(from) = &self.from {
-                format!("{:?}", from)
+                format!("{:?}", from).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(from_formatted) = &self.from_formatted {
-                format!("{:?}", from_formatted)
+                format!("{:?}", from_formatted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(phone_number_sid) = &self.phone_number_sid {
-                format!("{:?}", phone_number_sid)
+                format!("{:?}", phone_number_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{:?}", start_time)
+                format!("{:?}", start_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_time) = &self.end_time {
-                format!("{:?}", end_time)
+                format!("{:?}", end_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(direction) = &self.direction {
-                format!("{:?}", direction)
+                format!("{:?}", direction).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(answered_by) = &self.answered_by {
-                format!("{:?}", answered_by)
+                format!("{:?}", answered_by).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(forwarded_from) = &self.forwarded_from {
-                format!("{:?}", forwarded_from)
+                format!("{:?}", forwarded_from).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(group_sid) = &self.group_sid {
-                format!("{:?}", group_sid)
+                format!("{:?}", group_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(caller_name) = &self.caller_name {
-                format!("{:?}", caller_name)
+                format!("{:?}", caller_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(queue_time) = &self.queue_time {
-                format!("{:?}", queue_time)
+                format!("{:?}", queue_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "parent_call_sid".to_string(),
-            "account_sid".to_string(),
-            "to".to_string(),
-            "to_formatted".to_string(),
-            "from".to_string(),
-            "from_formatted".to_string(),
-            "phone_number_sid".to_string(),
-            "status".to_string(),
-            "start_time".to_string(),
-            "end_time".to_string(),
-            "duration".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "direction".to_string(),
-            "answered_by".to_string(),
-            "api_version".to_string(),
-            "forwarded_from".to_string(),
-            "group_sid".to_string(),
-            "caller_name".to_string(),
-            "queue_time".to_string(),
-            "trunk_sid".to_string(),
-            "uri".to_string(),
-            "subresource_uris".to_string(),
+            "sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "parent_call_sid".into(),
+            "account_sid".into(),
+            "to".into(),
+            "to_formatted".into(),
+            "from".into(),
+            "from_formatted".into(),
+            "phone_number_sid".into(),
+            "status".into(),
+            "start_time".into(),
+            "end_time".into(),
+            "duration".into(),
+            "price".into(),
+            "price_unit".into(),
+            "direction".into(),
+            "answered_by".into(),
+            "api_version".into(),
+            "forwarded_from".into(),
+            "group_sid".into(),
+            "caller_name".into(),
+            "queue_time".into(),
+            "trunk_sid".into(),
+            "uri".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -2921,11 +2929,11 @@ impl tabled::Tabled for ApiV2010AccountCall {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallEnumEvent {
     #[serde(rename = "initiated")]
     #[display("initiated")]
@@ -2949,11 +2957,11 @@ pub enum CallEnumEvent {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallEnumStatus {
     #[serde(rename = "queued")]
     #[display("queued")]
@@ -2989,11 +2997,11 @@ pub enum CallEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallEnumUpdateStatus {
     #[serde(rename = "canceled")]
     #[display("canceled")]
@@ -3026,25 +3034,26 @@ impl std::fmt::Display for ApiV2010AccountCallCallEvent {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallEvent {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(request) = &self.request {
-                format!("{:?}", request)
+                format!("{:?}", request).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(response) = &self.response {
-                format!("{:?}", response)
+                format!("{:?}", response).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["request".to_string(), "response".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["request".into(), "response".into()]
     }
 }
 
@@ -3094,51 +3103,52 @@ impl std::fmt::Display for ApiV2010AccountCallCallFeedback {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallFeedback {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(issues) = &self.issues {
-                format!("{:?}", issues)
+                format!("{:?}", issues).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(quality_score) = &self.quality_score {
-                format!("{:?}", quality_score)
+                format!("{:?}", quality_score).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "issues".to_string(),
-            "quality_score".to_string(),
-            "sid".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "issues".into(),
+            "quality_score".into(),
+            "sid".into(),
         ]
     }
 }
@@ -3151,11 +3161,11 @@ impl tabled::Tabled for ApiV2010AccountCallCallFeedback {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallFeedbackEnumIssues {
     #[serde(rename = "audio-latency")]
     #[display("audio-latency")]
@@ -3254,99 +3264,100 @@ impl std::fmt::Display for ApiV2010AccountCallCallFeedbackSummary {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallFeedbackSummary {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_count) = &self.call_count {
-                format!("{:?}", call_count)
+                format!("{:?}", call_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_feedback_count) = &self.call_feedback_count {
-                format!("{:?}", call_feedback_count)
+                format!("{:?}", call_feedback_count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(include_subaccounts) = &self.include_subaccounts {
-                format!("{:?}", include_subaccounts)
+                format!("{:?}", include_subaccounts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(issues) = &self.issues {
-                format!("{:?}", issues)
+                format!("{:?}", issues).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(quality_score_average) = &self.quality_score_average {
-                format!("{:?}", quality_score_average)
+                format!("{:?}", quality_score_average).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(quality_score_median) = &self.quality_score_median {
-                format!("{:?}", quality_score_median)
+                format!("{:?}", quality_score_median).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(quality_score_standard_deviation) = &self.quality_score_standard_deviation {
-                format!("{:?}", quality_score_standard_deviation)
+                format!("{:?}", quality_score_standard_deviation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_count".to_string(),
-            "call_feedback_count".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "end_date".to_string(),
-            "include_subaccounts".to_string(),
-            "issues".to_string(),
-            "quality_score_average".to_string(),
-            "quality_score_median".to_string(),
-            "quality_score_standard_deviation".to_string(),
-            "sid".to_string(),
-            "start_date".to_string(),
-            "status".to_string(),
+            "account_sid".into(),
+            "call_count".into(),
+            "call_feedback_count".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "end_date".into(),
+            "include_subaccounts".into(),
+            "issues".into(),
+            "quality_score_average".into(),
+            "quality_score_median".into(),
+            "quality_score_standard_deviation".into(),
+            "sid".into(),
+            "start_date".into(),
+            "status".into(),
         ]
     }
 }
@@ -3359,11 +3370,11 @@ impl tabled::Tabled for ApiV2010AccountCallCallFeedbackSummary {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallFeedbackSummaryEnumStatus {
     #[serde(rename = "queued")]
     #[display("queued")]
@@ -3391,11 +3402,11 @@ pub enum CallFeedbackSummaryEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RequestMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -3496,99 +3507,100 @@ impl std::fmt::Display for ApiV2010AccountCallCallNotification {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallNotification {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(log) = &self.log {
-                format!("{:?}", log)
+                format!("{:?}", log).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{:?}", message_date)
+                format!("{:?}", message_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{:?}", message_text)
+                format!("{:?}", message_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{:?}", more_info)
+                format!("{:?}", more_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{:?}", request_method)
+                format!("{:?}", request_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{:?}", request_url)
+                format!("{:?}", request_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "error_code".to_string(),
-            "log".to_string(),
-            "message_date".to_string(),
-            "message_text".to_string(),
-            "more_info".to_string(),
-            "request_method".to_string(),
-            "request_url".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "error_code".into(),
+            "log".into(),
+            "message_date".into(),
+            "message_text".into(),
+            "more_info".into(),
+            "request_method".into(),
+            "request_url".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -3683,117 +3695,118 @@ impl std::fmt::Display for ApiV2010AccountCallCallNotificationInstance {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallNotificationInstance {
     const LENGTH: usize = 17;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(log) = &self.log {
-                format!("{:?}", log)
+                format!("{:?}", log).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{:?}", message_date)
+                format!("{:?}", message_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{:?}", message_text)
+                format!("{:?}", message_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{:?}", more_info)
+                format!("{:?}", more_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{:?}", request_method)
+                format!("{:?}", request_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{:?}", request_url)
+                format!("{:?}", request_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_variables) = &self.request_variables {
-                format!("{:?}", request_variables)
+                format!("{:?}", request_variables).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(response_body) = &self.response_body {
-                format!("{:?}", response_body)
+                format!("{:?}", response_body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(response_headers) = &self.response_headers {
-                format!("{:?}", response_headers)
+                format!("{:?}", response_headers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "error_code".to_string(),
-            "log".to_string(),
-            "message_date".to_string(),
-            "message_text".to_string(),
-            "more_info".to_string(),
-            "request_method".to_string(),
-            "request_url".to_string(),
-            "request_variables".to_string(),
-            "response_body".to_string(),
-            "response_headers".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "error_code".into(),
+            "log".into(),
+            "message_date".into(),
+            "message_text".into(),
+            "more_info".into(),
+            "request_method".into(),
+            "request_url".into(),
+            "request_variables".into(),
+            "response_body".into(),
+            "response_headers".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -3881,123 +3894,124 @@ impl std::fmt::Display for ApiV2010AccountCallCallRecording {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallCallRecording {
     const LENGTH: usize = 18;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{:?}", conference_sid)
+                format!("{:?}", conference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{:?}", start_time)
+                format!("{:?}", start_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{:?}", encryption_details)
+                format!("{:?}", encryption_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channels) = &self.channels {
-                format!("{:?}", channels)
+                format!("{:?}", channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(source) = &self.source {
-                format!("{:?}", source)
+                format!("{:?}", source).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(track) = &self.track {
-                format!("{:?}", track)
+                format!("{:?}", track).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "conference_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "start_time".to_string(),
-            "duration".to_string(),
-            "sid".to_string(),
-            "price".to_string(),
-            "uri".to_string(),
-            "encryption_details".to_string(),
-            "price_unit".to_string(),
-            "status".to_string(),
-            "channels".to_string(),
-            "source".to_string(),
-            "error_code".to_string(),
-            "track".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "conference_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "start_time".into(),
+            "duration".into(),
+            "sid".into(),
+            "price".into(),
+            "uri".into(),
+            "encryption_details".into(),
+            "price_unit".into(),
+            "status".into(),
+            "channels".into(),
+            "source".into(),
+            "error_code".into(),
+            "track".into(),
         ]
     }
 }
@@ -4010,11 +4024,11 @@ impl tabled::Tabled for ApiV2010AccountCallCallRecording {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallRecordingEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -4044,11 +4058,11 @@ pub enum CallRecordingEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallRecordingEnumSource {
     DialVerb,
     Conference,
@@ -4121,87 +4135,88 @@ impl std::fmt::Display for ApiV2010AccountConference {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountConference {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(reason_conference_ended) = &self.reason_conference_ended {
-                format!("{:?}", reason_conference_ended)
+                format!("{:?}", reason_conference_ended).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid_ending_conference) = &self.call_sid_ending_conference {
-                format!("{:?}", call_sid_ending_conference)
+                format!("{:?}", call_sid_ending_conference).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "region".to_string(),
-            "sid".to_string(),
-            "status".to_string(),
-            "uri".to_string(),
-            "subresource_uris".to_string(),
-            "reason_conference_ended".to_string(),
-            "call_sid_ending_conference".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "region".into(),
+            "sid".into(),
+            "status".into(),
+            "uri".into(),
+            "subresource_uris".into(),
+            "reason_conference_ended".into(),
+            "call_sid_ending_conference".into(),
         ]
     }
 }
@@ -4214,11 +4229,11 @@ impl tabled::Tabled for ApiV2010AccountConference {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceEnumStatus {
     #[serde(rename = "init")]
     #[display("init")]
@@ -4239,11 +4254,11 @@ pub enum ConferenceEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum ConferenceEnumUpdateStatus {
     #[serde(rename = "completed")]
@@ -4262,11 +4277,11 @@ pub enum ConferenceEnumUpdateStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceEnumReasonConferenceEnded {
     #[serde(rename = "conference-ended-via-api")]
     #[display("conference-ended-via-api")]
@@ -4364,117 +4379,118 @@ impl std::fmt::Display for ApiV2010AccountConferenceConferenceRecording {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountConferenceConferenceRecording {
     const LENGTH: usize = 17;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{:?}", conference_sid)
+                format!("{:?}", conference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{:?}", start_time)
+                format!("{:?}", start_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channels) = &self.channels {
-                format!("{:?}", channels)
+                format!("{:?}", channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(source) = &self.source {
-                format!("{:?}", source)
+                format!("{:?}", source).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{:?}", encryption_details)
+                format!("{:?}", encryption_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "conference_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "start_time".to_string(),
-            "duration".to_string(),
-            "sid".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "status".to_string(),
-            "channels".to_string(),
-            "source".to_string(),
-            "error_code".to_string(),
-            "encryption_details".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "conference_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "start_time".into(),
+            "duration".into(),
+            "sid".into(),
+            "price".into(),
+            "price_unit".into(),
+            "status".into(),
+            "channels".into(),
+            "source".into(),
+            "error_code".into(),
+            "encryption_details".into(),
+            "uri".into(),
         ]
     }
 }
@@ -4487,11 +4503,11 @@ impl tabled::Tabled for ApiV2010AccountConferenceConferenceRecording {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceRecordingEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -4521,11 +4537,11 @@ pub enum ConferenceRecordingEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceRecordingEnumSource {
     DialVerb,
     Conference,
@@ -4545,11 +4561,11 @@ pub enum ConferenceRecordingEnumSource {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum DeauthorizeCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -4623,81 +4639,82 @@ impl std::fmt::Display for ApiV2010AccountConnectApp {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountConnectApp {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(authorize_redirect_url) = &self.authorize_redirect_url {
-                format!("{:?}", authorize_redirect_url)
+                format!("{:?}", authorize_redirect_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(company_name) = &self.company_name {
-                format!("{:?}", company_name)
+                format!("{:?}", company_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(deauthorize_callback_method) = &self.deauthorize_callback_method {
-                format!("{:?}", deauthorize_callback_method)
+                format!("{:?}", deauthorize_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(deauthorize_callback_url) = &self.deauthorize_callback_url {
-                format!("{:?}", deauthorize_callback_url)
+                format!("{:?}", deauthorize_callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(homepage_url) = &self.homepage_url {
-                format!("{:?}", homepage_url)
+                format!("{:?}", homepage_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{:?}", permissions)
+                format!("{:?}", permissions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "authorize_redirect_url".to_string(),
-            "company_name".to_string(),
-            "deauthorize_callback_method".to_string(),
-            "deauthorize_callback_url".to_string(),
-            "description".to_string(),
-            "friendly_name".to_string(),
-            "homepage_url".to_string(),
-            "permissions".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "authorize_redirect_url".into(),
+            "company_name".into(),
+            "deauthorize_callback_method".into(),
+            "deauthorize_callback_url".into(),
+            "description".into(),
+            "friendly_name".into(),
+            "homepage_url".into(),
+            "permissions".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -4710,11 +4727,11 @@ impl tabled::Tabled for ApiV2010AccountConnectApp {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConnectAppEnumPermission {
     #[serde(rename = "get-all")]
     #[display("get-all")]
@@ -4842,163 +4859,164 @@ impl std::fmt::Display for ApiV2010AccountAddressDependentPhoneNumber {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountAddressDependentPhoneNumber {
     const LENGTH: usize = 26;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.friendly_name),
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.friendly_name).into(),
+            format!("{:?}", self.phone_number).into(),
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "voice_url".to_string(),
-            "voice_method".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "address_requirements".to_string(),
-            "capabilities".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "api_version".to_string(),
-            "sms_application_sid".to_string(),
-            "voice_application_sid".to_string(),
-            "trunk_sid".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "voice_url".into(),
+            "voice_method".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_caller_id_lookup".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "address_requirements".into(),
+            "capabilities".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "api_version".into(),
+            "sms_application_sid".into(),
+            "voice_application_sid".into(),
+            "trunk_sid".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -5011,11 +5029,11 @@ impl tabled::Tabled for ApiV2010AccountAddressDependentPhoneNumber {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum DependentPhoneNumberEnumAddressRequirement {
     #[serde(rename = "none")]
     #[display("none")]
@@ -5039,11 +5057,11 @@ pub enum DependentPhoneNumberEnumAddressRequirement {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum DependentPhoneNumberEnumEmergencyStatus {
     Active,
     Inactive,
@@ -5076,40 +5094,36 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberCapabilities {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberCapabilities {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{:?}", mms)
+                format!("{:?}", mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms) = &self.sms {
-                format!("{:?}", sms)
+                format!("{:?}", sms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice) = &self.voice {
-                format!("{:?}", voice)
+                format!("{:?}", voice).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fax) = &self.fax {
-                format!("{:?}", fax)
+                format!("{:?}", fax).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "mms".to_string(),
-            "sms".to_string(),
-            "voice".to_string(),
-            "fax".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["mms".into(), "sms".into(), "voice".into(), "fax".into()]
     }
 }
 
@@ -5255,215 +5269,216 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumber {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumber {
     const LENGTH: usize = 34;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(origin) = &self.origin {
-                format!("{:?}", origin)
+                format!("{:?}", origin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{:?}", emergency_address_status)
+                format!("{:?}", emergency_address_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "address_sid".to_string(),
-            "address_requirements".to_string(),
-            "api_version".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "identity_sid".to_string(),
-            "phone_number".to_string(),
-            "origin".to_string(),
-            "sid".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "trunk_sid".to_string(),
-            "uri".to_string(),
-            "voice_receive_mode".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "emergency_address_status".to_string(),
-            "bundle_sid".to_string(),
-            "status".to_string(),
+            "account_sid".into(),
+            "address_sid".into(),
+            "address_requirements".into(),
+            "api_version".into(),
+            "beta".into(),
+            "capabilities".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "identity_sid".into(),
+            "phone_number".into(),
+            "origin".into(),
+            "sid".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "trunk_sid".into(),
+            "uri".into(),
+            "voice_receive_mode".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "emergency_address_status".into(),
+            "bundle_sid".into(),
+            "status".into(),
         ]
     }
 }
@@ -5476,11 +5491,11 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumber {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberEnumAddressRequirement {
     #[serde(rename = "none")]
     #[display("none")]
@@ -5504,11 +5519,11 @@ pub enum IncomingPhoneNumberEnumAddressRequirement {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberEnumEmergencyStatus {
     Active,
     Inactive,
@@ -5522,11 +5537,11 @@ pub enum IncomingPhoneNumberEnumEmergencyStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberEnumEmergencyAddressStatus {
     #[serde(rename = "registered")]
     #[display("registered")]
@@ -5556,11 +5571,11 @@ pub enum IncomingPhoneNumberEnumEmergencyAddressStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberEnumVoiceReceiveMode {
     #[serde(rename = "voice")]
     #[display("voice")]
@@ -5629,81 +5644,82 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOn {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(resource_sid) = &self.resource_sid {
-                format!("{:?}", resource_sid)
+                format!("{:?}", resource_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(configuration) = &self.configuration {
-                format!("{:?}", configuration)
+                format!("{:?}", configuration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(unique_name) = &self.unique_name {
-                format!("{:?}", unique_name)
+                format!("{:?}", unique_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "resource_sid".to_string(),
-            "friendly_name".to_string(),
-            "description".to_string(),
-            "configuration".to_string(),
-            "unique_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
-            "subresource_uris".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "resource_sid".into(),
+            "friendly_name".into(),
+            "description".into(),
+            "configuration".into(),
+            "unique_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "uri".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -5746,7 +5762,8 @@ pub struct ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnInc
 
 impl std :: fmt :: Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { fn fmt (& self , f : & mut std :: fmt :: Formatter < '_ >) -> Result < () , std :: fmt :: Error > { write ! (f , "{}" , serde_json :: to_string_pretty (self) . map_err (| _ | std :: fmt :: Error) ?) } }
 
-impl tabled :: Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { const LENGTH : usize = 9 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (sid) = & self . sid { format ! ("{:?}" , sid) } else { String :: new () } , if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) } else { String :: new () } , if let Some (resource_sid) = & self . resource_sid { format ! ("{:?}" , resource_sid) } else { String :: new () } , if let Some (assigned_add_on_sid) = & self . assigned_add_on_sid { format ! ("{:?}" , assigned_add_on_sid) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) } else { String :: new () } , if let Some (product_name) = & self . product_name { format ! ("{:?}" , product_name) } else { String :: new () } , if let Some (unique_name) = & self . unique_name { format ! ("{:?}" , unique_name) } else { String :: new () } , if let Some (uri) = & self . uri { format ! ("{:?}" , uri) } else { String :: new () } , if let Some (enabled) = & self . enabled { format ! ("{:?}" , enabled) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["sid" . to_string () , "account_sid" . to_string () , "resource_sid" . to_string () , "assigned_add_on_sid" . to_string () , "friendly_name" . to_string () , "product_name" . to_string () , "unique_name" . to_string () , "uri" . to_string () , "enabled" . to_string ()] } }
+#[cfg(feature = "tabled")]
+impl tabled :: Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension { const LENGTH : usize = 9 ; fn fields (& self) -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! [if let Some (sid) = & self . sid { format ! ("{:?}" , sid) . into () } else { String :: new () . into () } , if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) . into () } else { String :: new () . into () } , if let Some (resource_sid) = & self . resource_sid { format ! ("{:?}" , resource_sid) . into () } else { String :: new () . into () } , if let Some (assigned_add_on_sid) = & self . assigned_add_on_sid { format ! ("{:?}" , assigned_add_on_sid) . into () } else { String :: new () . into () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) . into () } else { String :: new () . into () } , if let Some (product_name) = & self . product_name { format ! ("{:?}" , product_name) . into () } else { String :: new () . into () } , if let Some (unique_name) = & self . unique_name { format ! ("{:?}" , unique_name) . into () } else { String :: new () . into () } , if let Some (uri) = & self . uri { format ! ("{:?}" , uri) . into () } else { String :: new () . into () } , if let Some (enabled) = & self . enabled { format ! ("{:?}" , enabled) . into () } else { String :: new () . into () }] } fn headers () -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! ["sid" . into () , "account_sid" . into () , "resource_sid" . into () , "assigned_add_on_sid" . into () , "friendly_name" . into () , "product_name" . into () , "unique_name" . into () , "uri" . into () , "enabled" . into ()] } }
 
 #[doc = "The set of Boolean properties that indicate whether a phone number can receive calls or \
          messages.  Capabilities are  `Voice`, `SMS`, and `MMS` and each capability can be: `true` \
@@ -5775,40 +5792,36 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLocalCapabilities {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{:?}", mms)
+                format!("{:?}", mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms) = &self.sms {
-                format!("{:?}", sms)
+                format!("{:?}", sms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice) = &self.voice {
-                format!("{:?}", voice)
+                format!("{:?}", voice).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fax) = &self.fax {
-                format!("{:?}", fax)
+                format!("{:?}", fax).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "mms".to_string(),
-            "sms".to_string(),
-            "voice".to_string(),
-            "fax".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["mms".into(), "sms".into(), "voice".into(), "fax".into()]
     }
 }
 
@@ -5955,215 +5968,216 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLocal {
     const LENGTH: usize = 34;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(origin) = &self.origin {
-                format!("{:?}", origin)
+                format!("{:?}", origin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{:?}", emergency_address_status)
+                format!("{:?}", emergency_address_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "address_sid".to_string(),
-            "address_requirements".to_string(),
-            "api_version".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "identity_sid".to_string(),
-            "phone_number".to_string(),
-            "origin".to_string(),
-            "sid".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "trunk_sid".to_string(),
-            "uri".to_string(),
-            "voice_receive_mode".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "emergency_address_status".to_string(),
-            "bundle_sid".to_string(),
-            "status".to_string(),
+            "account_sid".into(),
+            "address_sid".into(),
+            "address_requirements".into(),
+            "api_version".into(),
+            "beta".into(),
+            "capabilities".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "identity_sid".into(),
+            "phone_number".into(),
+            "origin".into(),
+            "sid".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "trunk_sid".into(),
+            "uri".into(),
+            "voice_receive_mode".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "emergency_address_status".into(),
+            "bundle_sid".into(),
+            "status".into(),
         ]
     }
 }
@@ -6176,11 +6190,11 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberLoc
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberLocalEnumAddressRequirement {
     #[serde(rename = "none")]
     #[display("none")]
@@ -6204,11 +6218,11 @@ pub enum IncomingPhoneNumberLocalEnumAddressRequirement {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberLocalEnumEmergencyStatus {
     Active,
     Inactive,
@@ -6222,11 +6236,11 @@ pub enum IncomingPhoneNumberLocalEnumEmergencyStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberLocalEnumEmergencyAddressStatus {
     #[serde(rename = "registered")]
     #[display("registered")]
@@ -6256,11 +6270,11 @@ pub enum IncomingPhoneNumberLocalEnumEmergencyAddressStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberLocalEnumVoiceReceiveMode {
     #[serde(rename = "voice")]
     #[display("voice")]
@@ -6297,40 +6311,36 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMobileCapabilities {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{:?}", mms)
+                format!("{:?}", mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms) = &self.sms {
-                format!("{:?}", sms)
+                format!("{:?}", sms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice) = &self.voice {
-                format!("{:?}", voice)
+                format!("{:?}", voice).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fax) = &self.fax {
-                format!("{:?}", fax)
+                format!("{:?}", fax).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "mms".to_string(),
-            "sms".to_string(),
-            "voice".to_string(),
-            "fax".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["mms".into(), "sms".into(), "voice".into(), "fax".into()]
     }
 }
 
@@ -6477,215 +6487,216 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMobile {
     const LENGTH: usize = 34;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(origin) = &self.origin {
-                format!("{:?}", origin)
+                format!("{:?}", origin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{:?}", emergency_address_status)
+                format!("{:?}", emergency_address_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "address_sid".to_string(),
-            "address_requirements".to_string(),
-            "api_version".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "identity_sid".to_string(),
-            "phone_number".to_string(),
-            "origin".to_string(),
-            "sid".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "trunk_sid".to_string(),
-            "uri".to_string(),
-            "voice_receive_mode".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "emergency_address_status".to_string(),
-            "bundle_sid".to_string(),
-            "status".to_string(),
+            "account_sid".into(),
+            "address_sid".into(),
+            "address_requirements".into(),
+            "api_version".into(),
+            "beta".into(),
+            "capabilities".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "identity_sid".into(),
+            "phone_number".into(),
+            "origin".into(),
+            "sid".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "trunk_sid".into(),
+            "uri".into(),
+            "voice_receive_mode".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "emergency_address_status".into(),
+            "bundle_sid".into(),
+            "status".into(),
         ]
     }
 }
@@ -6698,11 +6709,11 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberMob
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberMobileEnumAddressRequirement {
     #[serde(rename = "none")]
     #[display("none")]
@@ -6726,11 +6737,11 @@ pub enum IncomingPhoneNumberMobileEnumAddressRequirement {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberMobileEnumEmergencyStatus {
     Active,
     Inactive,
@@ -6744,11 +6755,11 @@ pub enum IncomingPhoneNumberMobileEnumEmergencyStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberMobileEnumEmergencyAddressStatus {
     #[serde(rename = "registered")]
     #[display("registered")]
@@ -6778,11 +6789,11 @@ pub enum IncomingPhoneNumberMobileEnumEmergencyAddressStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberMobileEnumVoiceReceiveMode {
     #[serde(rename = "voice")]
     #[display("voice")]
@@ -6821,40 +6832,36 @@ impl std::fmt::Display
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFreeCapabilities {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(mms) = &self.mms {
-                format!("{:?}", mms)
+                format!("{:?}", mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms) = &self.sms {
-                format!("{:?}", sms)
+                format!("{:?}", sms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice) = &self.voice {
-                format!("{:?}", voice)
+                format!("{:?}", voice).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fax) = &self.fax {
-                format!("{:?}", fax)
+                format!("{:?}", fax).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "mms".to_string(),
-            "sms".to_string(),
-            "voice".to_string(),
-            "fax".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["mms".into(), "sms".into(), "voice".into(), "fax".into()]
     }
 }
 
@@ -7001,215 +7008,216 @@ impl std::fmt::Display for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumber
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFree {
     const LENGTH: usize = 34;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_requirements) = &self.address_requirements {
-                format!("{:?}", address_requirements)
+                format!("{:?}", address_requirements).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beta) = &self.beta {
-                format!("{:?}", beta)
+                format!("{:?}", beta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(capabilities) = &self.capabilities {
-                format!("{:?}", capabilities)
+                format!("{:?}", capabilities).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(origin) = &self.origin {
-                format!("{:?}", origin)
+                format!("{:?}", origin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_status) = &self.emergency_address_status {
-                format!("{:?}", emergency_address_status)
+                format!("{:?}", emergency_address_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "address_sid".to_string(),
-            "address_requirements".to_string(),
-            "api_version".to_string(),
-            "beta".to_string(),
-            "capabilities".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "identity_sid".to_string(),
-            "phone_number".to_string(),
-            "origin".to_string(),
-            "sid".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "trunk_sid".to_string(),
-            "uri".to_string(),
-            "voice_receive_mode".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "emergency_address_status".to_string(),
-            "bundle_sid".to_string(),
-            "status".to_string(),
+            "account_sid".into(),
+            "address_sid".into(),
+            "address_requirements".into(),
+            "api_version".into(),
+            "beta".into(),
+            "capabilities".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "identity_sid".into(),
+            "phone_number".into(),
+            "origin".into(),
+            "sid".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "trunk_sid".into(),
+            "uri".into(),
+            "voice_receive_mode".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "emergency_address_status".into(),
+            "bundle_sid".into(),
+            "status".into(),
         ]
     }
 }
@@ -7222,11 +7230,11 @@ impl tabled::Tabled for ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTol
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberTollFreeEnumAddressRequirement {
     #[serde(rename = "none")]
     #[display("none")]
@@ -7250,11 +7258,11 @@ pub enum IncomingPhoneNumberTollFreeEnumAddressRequirement {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberTollFreeEnumEmergencyStatus {
     Active,
     Inactive,
@@ -7268,11 +7276,11 @@ pub enum IncomingPhoneNumberTollFreeEnumEmergencyStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberTollFreeEnumEmergencyAddressStatus {
     #[serde(rename = "registered")]
     #[display("registered")]
@@ -7302,11 +7310,11 @@ pub enum IncomingPhoneNumberTollFreeEnumEmergencyAddressStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum IncomingPhoneNumberTollFreeEnumVoiceReceiveMode {
     #[serde(rename = "voice")]
     #[display("voice")]
@@ -7352,39 +7360,40 @@ impl std::fmt::Display for ApiV2010AccountKey {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountKey {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "friendly_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
+            "sid".into(),
+            "friendly_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
         ]
     }
 }
@@ -7436,57 +7445,58 @@ impl std::fmt::Display for ApiV2010AccountMessageMedia {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountMessageMedia {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{:?}", content_type)
+                format!("{:?}", content_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parent_sid) = &self.parent_sid {
-                format!("{:?}", parent_sid)
+                format!("{:?}", parent_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "content_type".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "parent_sid".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "content_type".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "parent_sid".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -7530,51 +7540,52 @@ impl std::fmt::Display for ApiV2010AccountQueueMember {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountQueueMember {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_enqueued) = &self.date_enqueued {
-                format!("{:?}", date_enqueued)
+                format!("{:?}", date_enqueued).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(position) = &self.position {
-                format!("{:?}", position)
+                format!("{:?}", position).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wait_time) = &self.wait_time {
-                format!("{:?}", wait_time)
+                format!("{:?}", wait_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(queue_sid) = &self.queue_sid {
-                format!("{:?}", queue_sid)
+                format!("{:?}", queue_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "call_sid".to_string(),
-            "date_enqueued".to_string(),
-            "position".to_string(),
-            "uri".to_string(),
-            "wait_time".to_string(),
-            "queue_sid".to_string(),
+            "call_sid".into(),
+            "date_enqueued".into(),
+            "position".into(),
+            "uri".into(),
+            "wait_time".into(),
+            "queue_sid".into(),
         ]
     }
 }
@@ -7679,131 +7690,132 @@ impl std::fmt::Display for ApiV2010AccountMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountMessage {
     const LENGTH: usize = 20;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(num_segments) = &self.num_segments {
-                format!("{:?}", num_segments)
+                format!("{:?}", num_segments).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(direction) = &self.direction {
-                format!("{:?}", direction)
+                format!("{:?}", direction).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.from),
+            format!("{:?}", self.from).into(),
             if let Some(to) = &self.to {
-                format!("{:?}", to)
+                format!("{:?}", to).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_message) = &self.error_message {
-                format!("{:?}", error_message)
+                format!("{:?}", error_message).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(num_media) = &self.num_media {
-                format!("{:?}", num_media)
+                format!("{:?}", num_media).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(messaging_service_sid) = &self.messaging_service_sid {
-                format!("{:?}", messaging_service_sid)
+                format!("{:?}", messaging_service_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_sent) = &self.date_sent {
-                format!("{:?}", date_sent)
+                format!("{:?}", date_sent).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "body".to_string(),
-            "num_segments".to_string(),
-            "direction".to_string(),
-            "from".to_string(),
-            "to".to_string(),
-            "date_updated".to_string(),
-            "price".to_string(),
-            "error_message".to_string(),
-            "uri".to_string(),
-            "account_sid".to_string(),
-            "num_media".to_string(),
-            "status".to_string(),
-            "messaging_service_sid".to_string(),
-            "sid".to_string(),
-            "date_sent".to_string(),
-            "date_created".to_string(),
-            "error_code".to_string(),
-            "price_unit".to_string(),
-            "api_version".to_string(),
-            "subresource_uris".to_string(),
+            "body".into(),
+            "num_segments".into(),
+            "direction".into(),
+            "from".into(),
+            "to".into(),
+            "date_updated".into(),
+            "price".into(),
+            "error_message".into(),
+            "uri".into(),
+            "account_sid".into(),
+            "num_media".into(),
+            "status".into(),
+            "messaging_service_sid".into(),
+            "sid".into(),
+            "date_sent".into(),
+            "date_created".into(),
+            "error_code".into(),
+            "price_unit".into(),
+            "api_version".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -7816,11 +7828,11 @@ impl tabled::Tabled for ApiV2010AccountMessage {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum MessageEnumStatus {
     #[serde(rename = "queued")]
     #[display("queued")]
@@ -7871,11 +7883,11 @@ pub enum MessageEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum MessageEnumUpdateStatus {
     #[serde(rename = "canceled")]
@@ -7894,11 +7906,11 @@ pub enum MessageEnumUpdateStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum MessageEnumDirection {
     #[serde(rename = "inbound")]
     #[display("inbound")]
@@ -7922,11 +7934,11 @@ pub enum MessageEnumDirection {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum MessageEnumContentRetention {
     #[serde(rename = "retain")]
@@ -7945,11 +7957,11 @@ pub enum MessageEnumContentRetention {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum MessageEnumAddressRetention {
     #[serde(rename = "retain")]
@@ -7968,11 +7980,11 @@ pub enum MessageEnumAddressRetention {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum MessageEnumTrafficType {
     #[serde(rename = "free")]
@@ -7991,11 +8003,11 @@ pub enum MessageEnumTrafficType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum MessageEnumScheduleType {
     #[serde(rename = "fixed")]
@@ -8048,51 +8060,52 @@ impl std::fmt::Display for ApiV2010AccountMessageMessageFeedback {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountMessageMessageFeedback {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_sid) = &self.message_sid {
-                format!("{:?}", message_sid)
+                format!("{:?}", message_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(outcome) = &self.outcome {
-                format!("{:?}", outcome)
+                format!("{:?}", outcome).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "message_sid".to_string(),
-            "outcome".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "message_sid".into(),
+            "outcome".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -8105,11 +8118,11 @@ impl tabled::Tabled for ApiV2010AccountMessageMessageFeedback {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum MessageFeedbackEnumOutcome {
     #[serde(rename = "confirmed")]
     #[display("confirmed")]
@@ -8161,45 +8174,46 @@ impl std::fmt::Display for ApiV2010AccountNewKey {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountNewKey {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(secret) = &self.secret {
-                format!("{:?}", secret)
+                format!("{:?}", secret).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "friendly_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "secret".to_string(),
+            "sid".into(),
+            "friendly_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "secret".into(),
         ]
     }
 }
@@ -8245,45 +8259,46 @@ impl std::fmt::Display for ApiV2010AccountNewSigningKey {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountNewSigningKey {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(secret) = &self.secret {
-                format!("{:?}", secret)
+                format!("{:?}", secret).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "friendly_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "secret".to_string(),
+            "sid".into(),
+            "friendly_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "secret".into(),
         ]
     }
 }
@@ -8368,99 +8383,100 @@ impl std::fmt::Display for ApiV2010AccountNotification {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountNotification {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(log) = &self.log {
-                format!("{:?}", log)
+                format!("{:?}", log).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{:?}", message_date)
+                format!("{:?}", message_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{:?}", message_text)
+                format!("{:?}", message_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{:?}", more_info)
+                format!("{:?}", more_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{:?}", request_method)
+                format!("{:?}", request_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{:?}", request_url)
+                format!("{:?}", request_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "error_code".to_string(),
-            "log".to_string(),
-            "message_date".to_string(),
-            "message_text".to_string(),
-            "more_info".to_string(),
-            "request_method".to_string(),
-            "request_url".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "error_code".into(),
+            "log".into(),
+            "message_date".into(),
+            "message_text".into(),
+            "more_info".into(),
+            "request_method".into(),
+            "request_url".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -8556,117 +8572,118 @@ impl std::fmt::Display for ApiV2010AccountNotificationInstance {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountNotificationInstance {
     const LENGTH: usize = 17;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(log) = &self.log {
-                format!("{:?}", log)
+                format!("{:?}", log).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_date) = &self.message_date {
-                format!("{:?}", message_date)
+                format!("{:?}", message_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_text) = &self.message_text {
-                format!("{:?}", message_text)
+                format!("{:?}", message_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(more_info) = &self.more_info {
-                format!("{:?}", more_info)
+                format!("{:?}", more_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_method) = &self.request_method {
-                format!("{:?}", request_method)
+                format!("{:?}", request_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_url) = &self.request_url {
-                format!("{:?}", request_url)
+                format!("{:?}", request_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(request_variables) = &self.request_variables {
-                format!("{:?}", request_variables)
+                format!("{:?}", request_variables).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(response_body) = &self.response_body {
-                format!("{:?}", response_body)
+                format!("{:?}", response_body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(response_headers) = &self.response_headers {
-                format!("{:?}", response_headers)
+                format!("{:?}", response_headers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "error_code".to_string(),
-            "log".to_string(),
-            "message_date".to_string(),
-            "message_text".to_string(),
-            "more_info".to_string(),
-            "request_method".to_string(),
-            "request_url".to_string(),
-            "request_variables".to_string(),
-            "response_body".to_string(),
-            "response_headers".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "error_code".into(),
+            "log".into(),
+            "message_date".into(),
+            "message_text".into(),
+            "more_info".into(),
+            "request_method".into(),
+            "request_url".into(),
+            "request_variables".into(),
+            "response_body".into(),
+            "response_headers".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -8718,53 +8735,54 @@ impl std::fmt::Display for ApiV2010AccountOutgoingCallerId {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountOutgoingCallerId {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "account_sid".to_string(),
-            "phone_number".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "account_sid".into(),
+            "phone_number".into(),
+            "uri".into(),
         ]
     }
 }
@@ -8845,99 +8863,100 @@ impl std::fmt::Display for ApiV2010AccountConferenceParticipant {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountConferenceParticipant {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(label) = &self.label {
-                format!("{:?}", label)
+                format!("{:?}", label).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{:?}", call_sid_to_coach)
+                format!("{:?}", call_sid_to_coach).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{:?}", coaching)
+                format!("{:?}", coaching).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{:?}", conference_sid)
+                format!("{:?}", conference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{:?}", end_conference_on_exit)
+                format!("{:?}", end_conference_on_exit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(muted) = &self.muted {
-                format!("{:?}", muted)
+                format!("{:?}", muted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(hold) = &self.hold {
-                format!("{:?}", hold)
+                format!("{:?}", hold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_conference_on_enter) = &self.start_conference_on_enter {
-                format!("{:?}", start_conference_on_enter)
+                format!("{:?}", start_conference_on_enter).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "label".to_string(),
-            "call_sid_to_coach".to_string(),
-            "coaching".to_string(),
-            "conference_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "end_conference_on_exit".to_string(),
-            "muted".to_string(),
-            "hold".to_string(),
-            "start_conference_on_enter".to_string(),
-            "status".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "label".into(),
+            "call_sid_to_coach".into(),
+            "coaching".into(),
+            "conference_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "end_conference_on_exit".into(),
+            "muted".into(),
+            "hold".into(),
+            "start_conference_on_enter".into(),
+            "status".into(),
+            "uri".into(),
         ]
     }
 }
@@ -8950,11 +8969,11 @@ impl tabled::Tabled for ApiV2010AccountConferenceParticipant {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ParticipantEnumStatus {
     #[serde(rename = "queued")]
     #[display("queued")]
@@ -9021,51 +9040,52 @@ impl std::fmt::Display for ApiV2010AccountCallPayments {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallPayments {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -9078,11 +9098,11 @@ impl tabled::Tabled for ApiV2010AccountCallPayments {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PaymentsEnumPaymentMethod {
     #[serde(rename = "credit-card")]
     #[display("credit-card")]
@@ -9100,11 +9120,11 @@ pub enum PaymentsEnumPaymentMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PaymentsEnumBankAccountType {
     #[serde(rename = "consumer-checking")]
     #[display("consumer-checking")]
@@ -9125,11 +9145,11 @@ pub enum PaymentsEnumBankAccountType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PaymentsEnumTokenType {
     #[serde(rename = "one-time")]
     #[display("one-time")]
@@ -9147,11 +9167,11 @@ pub enum PaymentsEnumTokenType {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PaymentsEnumCapture {
     #[serde(rename = "payment-card-number")]
     #[display("payment-card-number")]
@@ -9181,11 +9201,11 @@ pub enum PaymentsEnumCapture {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum PaymentsEnumStatus {
     #[serde(rename = "complete")]
     #[display("complete")]
@@ -9249,69 +9269,70 @@ impl std::fmt::Display for ApiV2010AccountQueue {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountQueue {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(current_size) = &self.current_size {
-                format!("{:?}", current_size)
+                format!("{:?}", current_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(average_wait_time) = &self.average_wait_time {
-                format!("{:?}", average_wait_time)
+                format!("{:?}", average_wait_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_size) = &self.max_size {
-                format!("{:?}", max_size)
+                format!("{:?}", max_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "date_updated".to_string(),
-            "current_size".to_string(),
-            "friendly_name".to_string(),
-            "uri".to_string(),
-            "account_sid".to_string(),
-            "average_wait_time".to_string(),
-            "sid".to_string(),
-            "date_created".to_string(),
-            "max_size".to_string(),
+            "date_updated".into(),
+            "current_size".into(),
+            "friendly_name".into(),
+            "uri".into(),
+            "account_sid".into(),
+            "average_wait_time".into(),
+            "sid".into(),
+            "date_created".into(),
+            "max_size".into(),
         ]
     }
 }
@@ -9404,129 +9425,130 @@ impl std::fmt::Display for ApiV2010AccountRecording {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountRecording {
     const LENGTH: usize = 19;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_sid) = &self.conference_sid {
-                format!("{:?}", conference_sid)
+                format!("{:?}", conference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_time) = &self.start_time {
-                format!("{:?}", start_time)
+                format!("{:?}", start_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(channels) = &self.channels {
-                format!("{:?}", channels)
+                format!("{:?}", channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(source) = &self.source {
-                format!("{:?}", source)
+                format!("{:?}", source).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error_code) = &self.error_code {
-                format!("{:?}", error_code)
+                format!("{:?}", error_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(encryption_details) = &self.encryption_details {
-                format!("{:?}", encryption_details)
+                format!("{:?}", encryption_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(media_url) = &self.media_url {
-                format!("{:?}", media_url)
+                format!("{:?}", media_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "call_sid".to_string(),
-            "conference_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "start_time".to_string(),
-            "duration".to_string(),
-            "sid".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "status".to_string(),
-            "channels".to_string(),
-            "source".to_string(),
-            "error_code".to_string(),
-            "uri".to_string(),
-            "encryption_details".to_string(),
-            "subresource_uris".to_string(),
-            "media_url".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "call_sid".into(),
+            "conference_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "start_time".into(),
+            "duration".into(),
+            "sid".into(),
+            "price".into(),
+            "price_unit".into(),
+            "status".into(),
+            "channels".into(),
+            "source".into(),
+            "error_code".into(),
+            "uri".into(),
+            "encryption_details".into(),
+            "subresource_uris".into(),
+            "media_url".into(),
         ]
     }
 }
@@ -9539,11 +9561,11 @@ impl tabled::Tabled for ApiV2010AccountRecording {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecordingEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -9576,11 +9598,11 @@ pub enum RecordingEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecordingEnumSource {
     DialVerb,
     Conference,
@@ -9650,75 +9672,76 @@ impl std::fmt::Display for ApiV2010AccountRecordingRecordingAddOnResult {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountRecordingRecordingAddOnResult {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(add_on_sid) = &self.add_on_sid {
-                format!("{:?}", add_on_sid)
+                format!("{:?}", add_on_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(add_on_configuration_sid) = &self.add_on_configuration_sid {
-                format!("{:?}", add_on_configuration_sid)
+                format!("{:?}", add_on_configuration_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_completed) = &self.date_completed {
-                format!("{:?}", date_completed)
+                format!("{:?}", date_completed).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(reference_sid) = &self.reference_sid {
-                format!("{:?}", reference_sid)
+                format!("{:?}", reference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "status".to_string(),
-            "add_on_sid".to_string(),
-            "add_on_configuration_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "date_completed".to_string(),
-            "reference_sid".to_string(),
-            "subresource_uris".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "status".into(),
+            "add_on_sid".into(),
+            "add_on_configuration_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "date_completed".into(),
+            "reference_sid".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -9731,11 +9754,11 @@ impl tabled::Tabled for ApiV2010AccountRecordingRecordingAddOnResult {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecordingAddOnResultEnumStatus {
     #[serde(rename = "canceled")]
     #[display("canceled")]
@@ -9823,81 +9846,82 @@ impl std::fmt::Display for ApiV2010AccountRecordingRecordingAddOnResultRecording
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPayload {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(add_on_result_sid) = &self.add_on_result_sid {
-                format!("{:?}", add_on_result_sid)
+                format!("{:?}", add_on_result_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(label) = &self.label {
-                format!("{:?}", label)
+                format!("{:?}", label).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(add_on_sid) = &self.add_on_sid {
-                format!("{:?}", add_on_sid)
+                format!("{:?}", add_on_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(add_on_configuration_sid) = &self.add_on_configuration_sid {
-                format!("{:?}", add_on_configuration_sid)
+                format!("{:?}", add_on_configuration_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{:?}", content_type)
+                format!("{:?}", content_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(reference_sid) = &self.reference_sid {
-                format!("{:?}", reference_sid)
+                format!("{:?}", reference_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "add_on_result_sid".to_string(),
-            "account_sid".to_string(),
-            "label".to_string(),
-            "add_on_sid".to_string(),
-            "add_on_configuration_sid".to_string(),
-            "content_type".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "reference_sid".to_string(),
-            "subresource_uris".to_string(),
+            "sid".into(),
+            "add_on_result_sid".into(),
+            "account_sid".into(),
+            "label".into(),
+            "add_on_sid".into(),
+            "add_on_configuration_sid".into(),
+            "content_type".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "reference_sid".into(),
+            "subresource_uris".into(),
         ]
     }
 }
@@ -9968,93 +9992,94 @@ impl std::fmt::Display for ApiV2010AccountRecordingRecordingTranscription {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountRecordingRecordingTranscription {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_sid) = &self.recording_sid {
-                format!("{:?}", recording_sid)
+                format!("{:?}", recording_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transcription_text) = &self.transcription_text {
-                format!("{:?}", transcription_text)
+                format!("{:?}", transcription_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "duration".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "recording_sid".to_string(),
-            "sid".to_string(),
-            "status".to_string(),
-            "transcription_text".to_string(),
-            "type_".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "duration".into(),
+            "price".into(),
+            "price_unit".into(),
+            "recording_sid".into(),
+            "sid".into(),
+            "status".into(),
+            "transcription_text".into(),
+            "type_".into(),
+            "uri".into(),
         ]
     }
 }
@@ -10067,11 +10092,11 @@ impl tabled::Tabled for ApiV2010AccountRecordingRecordingTranscription {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecordingTranscriptionEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -10093,11 +10118,11 @@ pub enum RecordingTranscriptionEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ApiV2010AccountShortCodeSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -10128,11 +10153,11 @@ pub enum ApiV2010AccountShortCodeSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ApiV2010AccountShortCodeSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -10218,87 +10243,88 @@ impl std::fmt::Display for ApiV2010AccountShortCode {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountShortCode {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(short_code) = &self.short_code {
-                format!("{:?}", short_code)
+                format!("{:?}", short_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "short_code".to_string(),
-            "sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "short_code".into(),
+            "sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "uri".into(),
         ]
     }
 }
@@ -10335,39 +10361,40 @@ impl std::fmt::Display for ApiV2010AccountSigningKey {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSigningKey {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "friendly_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
+            "sid".into(),
+            "friendly_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
         ]
     }
 }
@@ -10387,13 +10414,14 @@ impl std::fmt::Display for ApiV2010AccountSip {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSip {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -10413,13 +10441,14 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomainSipAuth {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomainSipAuth {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -10439,13 +10468,14 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomainSipAuthSipAuthCalls {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthCalls {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -10493,47 +10523,48 @@ impl std::fmt::Display
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled
     for ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping
 {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "sid".into(),
         ]
     }
 }
@@ -10581,47 +10612,48 @@ impl std::fmt::Display
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled
     for ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping
 {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "sid".into(),
         ]
     }
 }
@@ -10641,13 +10673,14 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistration
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrations {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -10686,7 +10719,8 @@ pub struct ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistra
 
 impl std :: fmt :: Display for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { fn fmt (& self , f : & mut std :: fmt :: Formatter < '_ >) -> Result < () , std :: fmt :: Error > { write ! (f , "{}" , serde_json :: to_string_pretty (self) . map_err (| _ | std :: fmt :: Error) ?) } }
 
-impl tabled :: Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { const LENGTH : usize = 5 ; fn fields (& self) -> Vec < String > { vec ! [if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) } else { String :: new () } , if let Some (date_created) = & self . date_created { format ! ("{:?}" , date_created) } else { String :: new () } , if let Some (date_updated) = & self . date_updated { format ! ("{:?}" , date_updated) } else { String :: new () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) } else { String :: new () } , if let Some (sid) = & self . sid { format ! ("{:?}" , sid) } else { String :: new () }] } fn headers () -> Vec < String > { vec ! ["account_sid" . to_string () , "date_created" . to_string () , "date_updated" . to_string () , "friendly_name" . to_string () , "sid" . to_string ()] } }
+#[cfg(feature = "tabled")]
+impl tabled :: Tabled for ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping { const LENGTH : usize = 5 ; fn fields (& self) -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! [if let Some (account_sid) = & self . account_sid { format ! ("{:?}" , account_sid) . into () } else { String :: new () . into () } , if let Some (date_created) = & self . date_created { format ! ("{:?}" , date_created) . into () } else { String :: new () . into () } , if let Some (date_updated) = & self . date_updated { format ! ("{:?}" , date_updated) . into () } else { String :: new () . into () } , if let Some (friendly_name) = & self . friendly_name { format ! ("{:?}" , friendly_name) . into () } else { String :: new () . into () } , if let Some (sid) = & self . sid { format ! ("{:?}" , sid) . into () } else { String :: new () . into () }] } fn headers () -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! ["account_sid" . into () , "date_created" . into () , "date_updated" . into () , "friendly_name" . into () , "sid" . into ()] } }
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -10733,57 +10767,58 @@ impl std::fmt::Display for ApiV2010AccountSipSipCredentialListSipCredential {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipCredentialListSipCredential {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(credential_list_sid) = &self.credential_list_sid {
-                format!("{:?}", credential_list_sid)
+                format!("{:?}", credential_list_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{:?}", username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "credential_list_sid".to_string(),
-            "username".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "credential_list_sid".into(),
+            "username".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -10835,57 +10870,58 @@ impl std::fmt::Display for ApiV2010AccountSipSipCredentialList {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipCredentialList {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "sid".into(),
+            "subresource_uris".into(),
+            "uri".into(),
         ]
     }
 }
@@ -10935,57 +10971,58 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomainSipCredentialListMapping {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomainSipCredentialListMapping {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domain_sid) = &self.domain_sid {
-                format!("{:?}", domain_sid)
+                format!("{:?}", domain_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "domain_sid".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "domain_sid".into(),
+            "friendly_name".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -10999,11 +11036,11 @@ impl tabled::Tabled for ApiV2010AccountSipSipDomainSipCredentialListMapping {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum VoiceStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -11124,141 +11161,142 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomain {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomain {
     const LENGTH: usize = 21;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(auth_type) = &self.auth_type {
-                format!("{:?}", auth_type)
+                format!("{:?}", auth_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domain_name) = &self.domain_name {
-                format!("{:?}", domain_name)
+                format!("{:?}", domain_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{:?}", voice_status_callback_method)
+                format!("{:?}", voice_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{:?}", voice_status_callback_url)
+                format!("{:?}", voice_status_callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{:?}", sip_registration)
+                format!("{:?}", sip_registration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{:?}", emergency_calling_enabled)
+                format!("{:?}", emergency_calling_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(secure) = &self.secure {
-                format!("{:?}", secure)
+                format!("{:?}", secure).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{:?}", byoc_trunk_sid)
+                format!("{:?}", byoc_trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{:?}", emergency_caller_sid)
+                format!("{:?}", emergency_caller_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "auth_type".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "domain_name".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_status_callback_method".to_string(),
-            "voice_status_callback_url".to_string(),
-            "voice_url".to_string(),
-            "subresource_uris".to_string(),
-            "sip_registration".to_string(),
-            "emergency_calling_enabled".to_string(),
-            "secure".to_string(),
-            "byoc_trunk_sid".to_string(),
-            "emergency_caller_sid".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "auth_type".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "domain_name".into(),
+            "friendly_name".into(),
+            "sid".into(),
+            "uri".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_status_callback_method".into(),
+            "voice_status_callback_url".into(),
+            "voice_url".into(),
+            "subresource_uris".into(),
+            "sip_registration".into(),
+            "emergency_calling_enabled".into(),
+            "secure".into(),
+            "byoc_trunk_sid".into(),
+            "emergency_caller_sid".into(),
         ]
     }
 }
@@ -11310,57 +11348,58 @@ impl std::fmt::Display for ApiV2010AccountSipSipIpAccessControlList {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipIpAccessControlList {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "friendly_name".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "friendly_name".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "subresource_uris".into(),
+            "uri".into(),
         ]
     }
 }
@@ -11410,57 +11449,58 @@ impl std::fmt::Display for ApiV2010AccountSipSipDomainSipIpAccessControlListMapp
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipDomainSipIpAccessControlListMapping {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domain_sid) = &self.domain_sid {
-                format!("{:?}", domain_sid)
+                format!("{:?}", domain_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "domain_sid".to_string(),
-            "friendly_name".to_string(),
-            "sid".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "domain_sid".into(),
+            "friendly_name".into(),
+            "sid".into(),
+            "uri".into(),
         ]
     }
 }
@@ -11519,69 +11559,70 @@ impl std::fmt::Display for ApiV2010AccountSipSipIpAccessControlListSipIpAddress 
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountSipSipIpAccessControlListSipIpAddress {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ip_address) = &self.ip_address {
-                format!("{:?}", ip_address)
+                format!("{:?}", ip_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{:?}", cidr_prefix_length)
+                format!("{:?}", cidr_prefix_length).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ip_access_control_list_sid) = &self.ip_access_control_list_sid {
-                format!("{:?}", ip_access_control_list_sid)
+                format!("{:?}", ip_access_control_list_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "friendly_name".to_string(),
-            "ip_address".to_string(),
-            "cidr_prefix_length".to_string(),
-            "ip_access_control_list_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "friendly_name".into(),
+            "ip_address".into(),
+            "cidr_prefix_length".into(),
+            "ip_access_control_list_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -11629,57 +11670,58 @@ impl std::fmt::Display for ApiV2010AccountCallSiprec {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallSiprec {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "name".to_string(),
-            "status".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "name".into(),
+            "status".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -11692,11 +11734,11 @@ impl tabled::Tabled for ApiV2010AccountCallSiprec {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SiprecEnumTrack {
     #[serde(rename = "inbound_track")]
     #[display("inbound_track")]
@@ -11717,11 +11759,11 @@ pub enum SiprecEnumTrack {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SiprecEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -11739,11 +11781,11 @@ pub enum SiprecEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum SiprecEnumUpdateStatus {
     #[serde(rename = "stopped")]
@@ -11797,57 +11839,58 @@ impl std::fmt::Display for ApiV2010AccountCallStream {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallStream {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sid".to_string(),
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "name".to_string(),
-            "status".to_string(),
-            "date_updated".to_string(),
-            "uri".to_string(),
+            "sid".into(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "name".into(),
+            "status".into(),
+            "date_updated".into(),
+            "uri".into(),
         ]
     }
 }
@@ -11860,11 +11903,11 @@ impl tabled::Tabled for ApiV2010AccountCallStream {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum StreamEnumTrack {
     #[serde(rename = "inbound_track")]
     #[display("inbound_track")]
@@ -11885,11 +11928,11 @@ pub enum StreamEnumTrack {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum StreamEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -11907,11 +11950,11 @@ pub enum StreamEnumStatus {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum StreamEnumUpdateStatus {
     #[serde(rename = "stopped")]
@@ -11946,39 +11989,40 @@ impl std::fmt::Display for IceServers {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for IceServers {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(credential) = &self.credential {
-                format!("{:?}", credential)
+                format!("{:?}", credential).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{:?}", username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(urls) = &self.urls {
-                format!("{:?}", urls)
+                format!("{:?}", urls).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "credential".to_string(),
-            "username".to_string(),
-            "url".to_string(),
-            "urls".to_string(),
+            "credential".into(),
+            "username".into(),
+            "url".into(),
+            "urls".into(),
         ]
     }
 }
@@ -12029,57 +12073,58 @@ impl std::fmt::Display for ApiV2010AccountToken {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountToken {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ice_servers) = &self.ice_servers {
-                format!("{:?}", ice_servers)
+                format!("{:?}", ice_servers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(password) = &self.password {
-                format!("{:?}", password)
+                format!("{:?}", password).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ttl) = &self.ttl {
-                format!("{:?}", ttl)
+                format!("{:?}", ttl).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(username) = &self.username {
-                format!("{:?}", username)
+                format!("{:?}", username).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "ice_servers".to_string(),
-            "password".to_string(),
-            "ttl".to_string(),
-            "username".to_string(),
+            "account_sid".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "ice_servers".into(),
+            "password".into(),
+            "ttl".into(),
+            "username".into(),
         ]
     }
 }
@@ -12150,93 +12195,94 @@ impl std::fmt::Display for ApiV2010AccountTranscription {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountTranscription {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(duration) = &self.duration {
-                format!("{:?}", duration)
+                format!("{:?}", duration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_sid) = &self.recording_sid {
-                format!("{:?}", recording_sid)
+                format!("{:?}", recording_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transcription_text) = &self.transcription_text {
-                format!("{:?}", transcription_text)
+                format!("{:?}", transcription_text).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "date_created".to_string(),
-            "date_updated".to_string(),
-            "duration".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "recording_sid".to_string(),
-            "sid".to_string(),
-            "status".to_string(),
-            "transcription_text".to_string(),
-            "type_".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "date_created".into(),
+            "date_updated".into(),
+            "duration".into(),
+            "price".into(),
+            "price_unit".into(),
+            "recording_sid".into(),
+            "sid".into(),
+            "status".into(),
+            "transcription_text".into(),
+            "type_".into(),
+            "uri".into(),
         ]
     }
 }
@@ -12249,11 +12295,11 @@ impl tabled::Tabled for ApiV2010AccountTranscription {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TranscriptionEnumStatus {
     #[serde(rename = "in-progress")]
     #[display("in-progress")]
@@ -12281,13 +12327,14 @@ impl std::fmt::Display for ApiV2010AccountUsage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsage {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -12359,105 +12406,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecord {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecord {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -12470,11 +12518,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecord {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -13280,105 +13328,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordAllTime {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordAllTime {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -13391,11 +13440,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordAllTime {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordAllTimeEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -14201,105 +14250,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordDaily {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordDaily {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -14312,11 +14362,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordDaily {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordDailyEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -15122,105 +15172,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordLastMonth {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordLastMonth {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -15233,11 +15284,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordLastMonth {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordLastMonthEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -16043,105 +16094,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordMonthly {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordMonthly {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -16154,11 +16206,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordMonthly {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordMonthlyEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -16964,105 +17016,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordThisMonth {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordThisMonth {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -17075,11 +17128,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordThisMonth {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordThisMonthEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -17885,105 +17938,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordToday {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordToday {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -17996,11 +18050,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordToday {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordTodayEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -18806,105 +18860,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordYearly {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYearly {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -18917,11 +18972,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYearly {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordYearlyEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -19727,105 +19782,106 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageRecordUsageRecordYesterday {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYesterday {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(as_of) = &self.as_of {
-                format!("{:?}", as_of)
+                format!("{:?}", as_of).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category) = &self.category {
-                format!("{:?}", category)
+                format!("{:?}", category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count) = &self.count {
-                format!("{:?}", count)
+                format!("{:?}", count).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(count_unit) = &self.count_unit {
-                format!("{:?}", count_unit)
+                format!("{:?}", count_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_date) = &self.end_date {
-                format!("{:?}", end_date)
+                format!("{:?}", end_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price) = &self.price {
-                format!("{:?}", price)
+                format!("{:?}", price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(price_unit) = &self.price_unit {
-                format!("{:?}", price_unit)
+                format!("{:?}", price_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_date) = &self.start_date {
-                format!("{:?}", start_date)
+                format!("{:?}", start_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subresource_uris) = &self.subresource_uris {
-                format!("{:?}", subresource_uris)
+                format!("{:?}", subresource_uris).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage) = &self.usage {
-                format!("{:?}", usage)
+                format!("{:?}", usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_unit) = &self.usage_unit {
-                format!("{:?}", usage_unit)
+                format!("{:?}", usage_unit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "as_of".to_string(),
-            "category".to_string(),
-            "count".to_string(),
-            "count_unit".to_string(),
-            "description".to_string(),
-            "end_date".to_string(),
-            "price".to_string(),
-            "price_unit".to_string(),
-            "start_date".to_string(),
-            "subresource_uris".to_string(),
-            "uri".to_string(),
-            "usage".to_string(),
-            "usage_unit".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "as_of".into(),
+            "category".into(),
+            "count".into(),
+            "count_unit".into(),
+            "description".into(),
+            "end_date".into(),
+            "price".into(),
+            "price_unit".into(),
+            "start_date".into(),
+            "subresource_uris".into(),
+            "uri".into(),
+            "usage".into(),
+            "usage_unit".into(),
         ]
     }
 }
@@ -19838,11 +19894,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageRecordUsageRecordYesterday {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageRecordYesterdayEnumCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -20590,11 +20646,11 @@ pub enum UsageRecordYesterdayEnumCategory {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -20690,111 +20746,112 @@ impl std::fmt::Display for ApiV2010AccountUsageUsageTrigger {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountUsageUsageTrigger {
     const LENGTH: usize = 16;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(callback_method) = &self.callback_method {
-                format!("{:?}", callback_method)
+                format!("{:?}", callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(callback_url) = &self.callback_url {
-                format!("{:?}", callback_url)
+                format!("{:?}", callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(current_value) = &self.current_value {
-                format!("{:?}", current_value)
+                format!("{:?}", current_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_fired) = &self.date_fired {
-                format!("{:?}", date_fired)
+                format!("{:?}", date_fired).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_updated) = &self.date_updated {
-                format!("{:?}", date_updated)
+                format!("{:?}", date_updated).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recurring) = &self.recurring {
-                format!("{:?}", recurring)
+                format!("{:?}", recurring).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trigger_by) = &self.trigger_by {
-                format!("{:?}", trigger_by)
+                format!("{:?}", trigger_by).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trigger_value) = &self.trigger_value {
-                format!("{:?}", trigger_value)
+                format!("{:?}", trigger_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_category) = &self.usage_category {
-                format!("{:?}", usage_category)
+                format!("{:?}", usage_category).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(usage_record_uri) = &self.usage_record_uri {
-                format!("{:?}", usage_record_uri)
+                format!("{:?}", usage_record_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "callback_method".to_string(),
-            "callback_url".to_string(),
-            "current_value".to_string(),
-            "date_created".to_string(),
-            "date_fired".to_string(),
-            "date_updated".to_string(),
-            "friendly_name".to_string(),
-            "recurring".to_string(),
-            "sid".to_string(),
-            "trigger_by".to_string(),
-            "trigger_value".to_string(),
-            "uri".to_string(),
-            "usage_category".to_string(),
-            "usage_record_uri".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "callback_method".into(),
+            "callback_url".into(),
+            "current_value".into(),
+            "date_created".into(),
+            "date_fired".into(),
+            "date_updated".into(),
+            "friendly_name".into(),
+            "recurring".into(),
+            "sid".into(),
+            "trigger_by".into(),
+            "trigger_value".into(),
+            "uri".into(),
+            "usage_category".into(),
+            "usage_record_uri".into(),
         ]
     }
 }
@@ -20807,11 +20864,11 @@ impl tabled::Tabled for ApiV2010AccountUsageUsageTrigger {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageTriggerEnumUsageCategory {
     #[serde(rename = "a2p-registration-fees")]
     #[display("a2p-registration-fees")]
@@ -21558,11 +21615,11 @@ pub enum UsageTriggerEnumUsageCategory {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageTriggerEnumRecurring {
     #[serde(rename = "daily")]
     #[display("daily")]
@@ -21586,11 +21643,11 @@ pub enum UsageTriggerEnumRecurring {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UsageTriggerEnumTriggerField {
     #[serde(rename = "count")]
     #[display("count")]
@@ -21637,39 +21694,40 @@ impl std::fmt::Display for ApiV2010AccountCallUserDefinedMessage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallUserDefinedMessage {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "sid".to_string(),
-            "date_created".to_string(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "sid".into(),
+            "date_created".into(),
         ]
     }
 }
@@ -21713,45 +21771,46 @@ impl std::fmt::Display for ApiV2010AccountCallUserDefinedMessageSubscription {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountCallUserDefinedMessageSubscription {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sid) = &self.sid {
-                format!("{:?}", sid)
+                format!("{:?}", sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_created) = &self.date_created {
-                format!("{:?}", date_created)
+                format!("{:?}", date_created).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "sid".to_string(),
-            "date_created".to_string(),
-            "uri".to_string(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "sid".into(),
+            "date_created".into(),
+            "uri".into(),
         ]
     }
 }
@@ -21792,41 +21851,42 @@ impl std::fmt::Display for ApiV2010AccountValidationRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiV2010AccountValidationRequest {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid) = &self.call_sid {
-                format!("{:?}", call_sid)
+                format!("{:?}", call_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(validation_code) = &self.validation_code {
-                format!("{:?}", validation_code)
+                format!("{:?}", validation_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "call_sid".to_string(),
-            "friendly_name".to_string(),
-            "phone_number".to_string(),
-            "validation_code".to_string(),
+            "account_sid".into(),
+            "call_sid".into(),
+            "friendly_name".into(),
+            "phone_number".into(),
+            "validation_code".into(),
         ]
     }
 }
@@ -21865,69 +21925,70 @@ impl std::fmt::Display for ListAccountResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAccountResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounts) = &self.accounts {
-                format!("{:?}", accounts)
+                format!("{:?}", accounts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "accounts".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "accounts".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -21956,18 +22017,19 @@ impl std::fmt::Display for CreateAccountRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateAccountRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -21996,25 +22058,26 @@ impl std::fmt::Display for UpdateAccountRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateAccountRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string(), "status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into(), "status".into()]
     }
 }
 
@@ -22052,69 +22115,70 @@ impl std::fmt::Display for ListAddressResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAddressResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(addresses) = &self.addresses {
-                format!("{:?}", addresses)
+                format!("{:?}", addresses).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "addresses".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "addresses".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -22184,51 +22248,52 @@ impl std::fmt::Display for CreateAddressRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateAddressRequest {
     const LENGTH: usize = 10;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.customer_name.clone(),
-            self.street.clone(),
-            self.city.clone(),
-            self.region.clone(),
-            self.postal_code.clone(),
-            self.iso_country.clone(),
+            self.customer_name.clone().into(),
+            self.street.clone().into(),
+            self.city.clone().into(),
+            self.region.clone().into(),
+            self.postal_code.clone().into(),
+            self.iso_country.clone().into(),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{:?}", emergency_enabled)
+                format!("{:?}", emergency_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(auto_correct_address) = &self.auto_correct_address {
-                format!("{:?}", auto_correct_address)
+                format!("{:?}", auto_correct_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{:?}", street_secondary)
+                format!("{:?}", street_secondary).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "customer_name".to_string(),
-            "street".to_string(),
-            "city".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "iso_country".to_string(),
-            "friendly_name".to_string(),
-            "emergency_enabled".to_string(),
-            "auto_correct_address".to_string(),
-            "street_secondary".to_string(),
+            "customer_name".into(),
+            "street".into(),
+            "city".into(),
+            "region".into(),
+            "postal_code".into(),
+            "iso_country".into(),
+            "friendly_name".into(),
+            "emergency_enabled".into(),
+            "auto_correct_address".into(),
+            "street_secondary".into(),
         ]
     }
 }
@@ -22303,69 +22368,70 @@ impl std::fmt::Display for UpdateAddressRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateAddressRequest {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(customer_name) = &self.customer_name {
-                format!("{:?}", customer_name)
+                format!("{:?}", customer_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(street) = &self.street {
-                format!("{:?}", street)
+                format!("{:?}", street).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(city) = &self.city {
-                format!("{:?}", city)
+                format!("{:?}", city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_enabled) = &self.emergency_enabled {
-                format!("{:?}", emergency_enabled)
+                format!("{:?}", emergency_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(auto_correct_address) = &self.auto_correct_address {
-                format!("{:?}", auto_correct_address)
+                format!("{:?}", auto_correct_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(street_secondary) = &self.street_secondary {
-                format!("{:?}", street_secondary)
+                format!("{:?}", street_secondary).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "customer_name".to_string(),
-            "street".to_string(),
-            "city".to_string(),
-            "region".to_string(),
-            "postal_code".to_string(),
-            "emergency_enabled".to_string(),
-            "auto_correct_address".to_string(),
-            "street_secondary".to_string(),
+            "friendly_name".into(),
+            "customer_name".into(),
+            "street".into(),
+            "city".into(),
+            "region".into(),
+            "postal_code".into(),
+            "emergency_enabled".into(),
+            "auto_correct_address".into(),
+            "street_secondary".into(),
         ]
     }
 }
@@ -22404,69 +22470,70 @@ impl std::fmt::Display for ListApplicationResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListApplicationResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(applications) = &self.applications {
-                format!("{:?}", applications)
+                format!("{:?}", applications).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "applications".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "applications".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -22480,11 +22547,11 @@ impl tabled::Tabled for ListApplicationResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateApplicationRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22515,11 +22582,11 @@ pub enum CreateApplicationRequestVoiceMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateApplicationRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22550,11 +22617,11 @@ pub enum CreateApplicationRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateApplicationRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22585,11 +22652,11 @@ pub enum CreateApplicationRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateApplicationRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22620,11 +22687,11 @@ pub enum CreateApplicationRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateApplicationRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22772,113 +22839,114 @@ impl std::fmt::Display for CreateApplicationRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateApplicationRequest {
     const LENGTH: usize = 16;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{:?}", sms_status_callback)
+                format!("{:?}", sms_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{:?}", message_status_callback)
+                format!("{:?}", message_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{:?}", public_application_connect_enabled)
+                format!("{:?}", public_application_connect_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "api_version".to_string(),
-            "voice_url".to_string(),
-            "voice_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_fallback_method".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "sms_url".to_string(),
-            "sms_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_status_callback".to_string(),
-            "message_status_callback".to_string(),
-            "friendly_name".to_string(),
-            "public_application_connect_enabled".to_string(),
+            "api_version".into(),
+            "voice_url".into(),
+            "voice_method".into(),
+            "voice_fallback_url".into(),
+            "voice_fallback_method".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_caller_id_lookup".into(),
+            "sms_url".into(),
+            "sms_method".into(),
+            "sms_fallback_url".into(),
+            "sms_fallback_method".into(),
+            "sms_status_callback".into(),
+            "message_status_callback".into(),
+            "friendly_name".into(),
+            "public_application_connect_enabled".into(),
         ]
     }
 }
@@ -22892,11 +22960,11 @@ impl tabled::Tabled for CreateApplicationRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApplicationRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22927,11 +22995,11 @@ pub enum UpdateApplicationRequestVoiceMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApplicationRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22962,11 +23030,11 @@ pub enum UpdateApplicationRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApplicationRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -22997,11 +23065,11 @@ pub enum UpdateApplicationRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApplicationRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -23032,11 +23100,11 @@ pub enum UpdateApplicationRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateApplicationRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -23185,113 +23253,114 @@ impl std::fmt::Display for UpdateApplicationRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateApplicationRequest {
     const LENGTH: usize = 16;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_status_callback) = &self.sms_status_callback {
-                format!("{:?}", sms_status_callback)
+                format!("{:?}", sms_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(message_status_callback) = &self.message_status_callback {
-                format!("{:?}", message_status_callback)
+                format!("{:?}", message_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(public_application_connect_enabled) =
                 &self.public_application_connect_enabled
             {
-                format!("{:?}", public_application_connect_enabled)
+                format!("{:?}", public_application_connect_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "api_version".to_string(),
-            "voice_url".to_string(),
-            "voice_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_fallback_method".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "sms_url".to_string(),
-            "sms_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_status_callback".to_string(),
-            "message_status_callback".to_string(),
-            "public_application_connect_enabled".to_string(),
+            "friendly_name".into(),
+            "api_version".into(),
+            "voice_url".into(),
+            "voice_method".into(),
+            "voice_fallback_url".into(),
+            "voice_fallback_method".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_caller_id_lookup".into(),
+            "sms_url".into(),
+            "sms_method".into(),
+            "sms_fallback_url".into(),
+            "sms_fallback_method".into(),
+            "sms_status_callback".into(),
+            "message_status_callback".into(),
+            "public_application_connect_enabled".into(),
         ]
     }
 }
@@ -23330,69 +23399,70 @@ impl std::fmt::Display for ListAuthorizedConnectAppResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAuthorizedConnectAppResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(authorized_connect_apps) = &self.authorized_connect_apps {
-                format!("{:?}", authorized_connect_apps)
+                format!("{:?}", authorized_connect_apps).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "authorized_connect_apps".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "authorized_connect_apps".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23431,69 +23501,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberCountryResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberCountryResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(countries) = &self.countries {
-                format!("{:?}", countries)
+                format!("{:?}", countries).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "countries".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "countries".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23533,69 +23604,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberLocalResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberLocalResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23635,69 +23707,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberMachineToMachineResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberMachineToMachineResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23737,69 +23810,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberMobileResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberMobileResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23839,69 +23913,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberNationalResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberNationalResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -23941,69 +24016,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberSharedCostResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberSharedCostResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -24043,69 +24119,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberTollFreeResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberTollFreeResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -24145,69 +24222,70 @@ impl std::fmt::Display for ListAvailablePhoneNumberVoipResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListAvailablePhoneNumberVoipResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(available_phone_numbers) = &self.available_phone_numbers {
-                format!("{:?}", available_phone_numbers)
+                format!("{:?}", available_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "available_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "available_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -24246,69 +24324,70 @@ impl std::fmt::Display for ListCallResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCallResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(calls) = &self.calls {
-                format!("{:?}", calls)
+                format!("{:?}", calls).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "calls".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "calls".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -24324,11 +24403,11 @@ impl tabled::Tabled for ListCallResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Method {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -24361,11 +24440,11 @@ pub enum Method {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum FallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -24398,11 +24477,11 @@ pub enum FallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateCallRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -24434,11 +24513,11 @@ pub enum CreateCallRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecordingStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -24470,11 +24549,11 @@ pub enum RecordingStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AsyncAmdStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -24763,222 +24842,223 @@ impl std::fmt::Display for CreateCallRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateCallRequest {
     const LENGTH: usize = 35;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.to.clone(),
-            self.from.clone(),
+            self.to.clone().into(),
+            self.from.clone().into(),
             if let Some(method) = &self.method {
-                format!("{:?}", method)
+                format!("{:?}", method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fallback_url) = &self.fallback_url {
-                format!("{:?}", fallback_url)
+                format!("{:?}", fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fallback_method) = &self.fallback_method {
-                format!("{:?}", fallback_method)
+                format!("{:?}", fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_event) = &self.status_callback_event {
-                format!("{:?}", status_callback_event)
+                format!("{:?}", status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(send_digits) = &self.send_digits {
-                format!("{:?}", send_digits)
+                format!("{:?}", send_digits).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{:?}", timeout)
+                format!("{:?}", timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(record) = &self.record {
-                format!("{:?}", record)
+                format!("{:?}", record).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{:?}", recording_channels)
+                format!("{:?}", recording_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{:?}", recording_status_callback)
+                format!("{:?}", recording_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{:?}", recording_status_callback_method)
+                format!("{:?}", recording_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_auth_username) = &self.sip_auth_username {
-                format!("{:?}", sip_auth_username)
+                format!("{:?}", sip_auth_username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_auth_password) = &self.sip_auth_password {
-                format!("{:?}", sip_auth_password)
+                format!("{:?}", sip_auth_password).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection) = &self.machine_detection {
-                format!("{:?}", machine_detection)
+                format!("{:?}", machine_detection).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_timeout) = &self.machine_detection_timeout {
-                format!("{:?}", machine_detection_timeout)
+                format!("{:?}", machine_detection_timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{:?}", recording_status_callback_event)
+                format!("{:?}", recording_status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trim) = &self.trim {
-                format!("{:?}", trim)
+                format!("{:?}", trim).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(caller_id) = &self.caller_id {
-                format!("{:?}", caller_id)
+                format!("{:?}", caller_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_speech_threshold) =
                 &self.machine_detection_speech_threshold
             {
-                format!("{:?}", machine_detection_speech_threshold)
+                format!("{:?}", machine_detection_speech_threshold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_speech_end_threshold) =
                 &self.machine_detection_speech_end_threshold
             {
-                format!("{:?}", machine_detection_speech_end_threshold)
+                format!("{:?}", machine_detection_speech_end_threshold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_silence_timeout) = &self.machine_detection_silence_timeout
             {
-                format!("{:?}", machine_detection_silence_timeout)
+                format!("{:?}", machine_detection_silence_timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(async_amd) = &self.async_amd {
-                format!("{:?}", async_amd)
+                format!("{:?}", async_amd).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(async_amd_status_callback) = &self.async_amd_status_callback {
-                format!("{:?}", async_amd_status_callback)
+                format!("{:?}", async_amd_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(async_amd_status_callback_method) = &self.async_amd_status_callback_method {
-                format!("{:?}", async_amd_status_callback_method)
+                format!("{:?}", async_amd_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(byoc) = &self.byoc {
-                format!("{:?}", byoc)
+                format!("{:?}", byoc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_reason) = &self.call_reason {
-                format!("{:?}", call_reason)
+                format!("{:?}", call_reason).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_token) = &self.call_token {
-                format!("{:?}", call_token)
+                format!("{:?}", call_token).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{:?}", recording_track)
+                format!("{:?}", recording_track).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{:?}", time_limit)
+                format!("{:?}", time_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(twiml) = &self.twiml {
-                format!("{:?}", twiml)
+                format!("{:?}", twiml).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(application_sid) = &self.application_sid {
-                format!("{:?}", application_sid)
+                format!("{:?}", application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "to".to_string(),
-            "from".to_string(),
-            "method".to_string(),
-            "fallback_url".to_string(),
-            "fallback_method".to_string(),
-            "status_callback".to_string(),
-            "status_callback_event".to_string(),
-            "status_callback_method".to_string(),
-            "send_digits".to_string(),
-            "timeout".to_string(),
-            "record".to_string(),
-            "recording_channels".to_string(),
-            "recording_status_callback".to_string(),
-            "recording_status_callback_method".to_string(),
-            "sip_auth_username".to_string(),
-            "sip_auth_password".to_string(),
-            "machine_detection".to_string(),
-            "machine_detection_timeout".to_string(),
-            "recording_status_callback_event".to_string(),
-            "trim".to_string(),
-            "caller_id".to_string(),
-            "machine_detection_speech_threshold".to_string(),
-            "machine_detection_speech_end_threshold".to_string(),
-            "machine_detection_silence_timeout".to_string(),
-            "async_amd".to_string(),
-            "async_amd_status_callback".to_string(),
-            "async_amd_status_callback_method".to_string(),
-            "byoc".to_string(),
-            "call_reason".to_string(),
-            "call_token".to_string(),
-            "recording_track".to_string(),
-            "time_limit".to_string(),
-            "url".to_string(),
-            "twiml".to_string(),
-            "application_sid".to_string(),
+            "to".into(),
+            "from".into(),
+            "method".into(),
+            "fallback_url".into(),
+            "fallback_method".into(),
+            "status_callback".into(),
+            "status_callback_event".into(),
+            "status_callback_method".into(),
+            "send_digits".into(),
+            "timeout".into(),
+            "record".into(),
+            "recording_channels".into(),
+            "recording_status_callback".into(),
+            "recording_status_callback_method".into(),
+            "sip_auth_username".into(),
+            "sip_auth_password".into(),
+            "machine_detection".into(),
+            "machine_detection_timeout".into(),
+            "recording_status_callback_event".into(),
+            "trim".into(),
+            "caller_id".into(),
+            "machine_detection_speech_threshold".into(),
+            "machine_detection_speech_end_threshold".into(),
+            "machine_detection_silence_timeout".into(),
+            "async_amd".into(),
+            "async_amd_status_callback".into(),
+            "async_amd_status_callback_method".into(),
+            "byoc".into(),
+            "call_reason".into(),
+            "call_token".into(),
+            "recording_track".into(),
+            "time_limit".into(),
+            "url".into(),
+            "twiml".into(),
+            "application_sid".into(),
         ]
     }
 }
@@ -24994,11 +25074,11 @@ impl tabled::Tabled for CreateCallRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateCallRequestMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -25031,11 +25111,11 @@ pub enum UpdateCallRequestMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateCallRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -25128,69 +25208,70 @@ impl std::fmt::Display for UpdateCallRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateCallRequest {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(url) = &self.url {
-                format!("{:?}", url)
+                format!("{:?}", url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(method) = &self.method {
-                format!("{:?}", method)
+                format!("{:?}", method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fallback_url) = &self.fallback_url {
-                format!("{:?}", fallback_url)
+                format!("{:?}", fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fallback_method) = &self.fallback_method {
-                format!("{:?}", fallback_method)
+                format!("{:?}", fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(twiml) = &self.twiml {
-                format!("{:?}", twiml)
+                format!("{:?}", twiml).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{:?}", time_limit)
+                format!("{:?}", time_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "url".to_string(),
-            "method".to_string(),
-            "status".to_string(),
-            "fallback_url".to_string(),
-            "fallback_method".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "twiml".to_string(),
-            "time_limit".to_string(),
+            "url".into(),
+            "method".into(),
+            "status".into(),
+            "fallback_url".into(),
+            "fallback_method".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "twiml".into(),
+            "time_limit".into(),
         ]
     }
 }
@@ -25229,69 +25310,70 @@ impl std::fmt::Display for ListCallEventResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCallEventResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(events) = &self.events {
-                format!("{:?}", events)
+                format!("{:?}", events).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "events".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "events".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -25325,25 +25407,26 @@ impl std::fmt::Display for UpdateCallFeedbackRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateCallFeedbackRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(quality_score) = &self.quality_score {
-                format!("{:?}", quality_score)
+                format!("{:?}", quality_score).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(issue) = &self.issue {
-                format!("{:?}", issue)
+                format!("{:?}", issue).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["quality_score".to_string(), "issue".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["quality_score".into(), "issue".into()]
     }
 }
 
@@ -25356,11 +25439,11 @@ impl tabled::Tabled for UpdateCallFeedbackRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateCallFeedbackSummaryRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -25430,37 +25513,38 @@ impl std::fmt::Display for CreateCallFeedbackSummaryRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateCallFeedbackSummaryRequest {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.start_date),
-            format!("{:?}", self.end_date),
+            format!("{:?}", self.start_date).into(),
+            format!("{:?}", self.end_date).into(),
             if let Some(include_subaccounts) = &self.include_subaccounts {
-                format!("{:?}", include_subaccounts)
+                format!("{:?}", include_subaccounts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "start_date".to_string(),
-            "end_date".to_string(),
-            "include_subaccounts".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
+            "start_date".into(),
+            "end_date".into(),
+            "include_subaccounts".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
         ]
     }
 }
@@ -25499,69 +25583,70 @@ impl std::fmt::Display for ListCallNotificationResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCallNotificationResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(notifications) = &self.notifications {
-                format!("{:?}", notifications)
+                format!("{:?}", notifications).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "notifications".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "notifications".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -25600,69 +25685,70 @@ impl std::fmt::Display for ListCallRecordingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCallRecordingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{:?}", recordings)
+                format!("{:?}", recordings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "recordings".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "recordings".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -25677,11 +25763,11 @@ impl tabled::Tabled for ListCallRecordingResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateCallRecordingRequestRecordingStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -25769,51 +25855,52 @@ impl std::fmt::Display for CreateCallRecordingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateCallRecordingRequest {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{:?}", recording_status_callback_event)
+                format!("{:?}", recording_status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{:?}", recording_status_callback)
+                format!("{:?}", recording_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{:?}", recording_status_callback_method)
+                format!("{:?}", recording_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trim) = &self.trim {
-                format!("{:?}", trim)
+                format!("{:?}", trim).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{:?}", recording_channels)
+                format!("{:?}", recording_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{:?}", recording_track)
+                format!("{:?}", recording_track).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "recording_status_callback_event".to_string(),
-            "recording_status_callback".to_string(),
-            "recording_status_callback_method".to_string(),
-            "trim".to_string(),
-            "recording_channels".to_string(),
-            "recording_track".to_string(),
+            "recording_status_callback_event".into(),
+            "recording_status_callback".into(),
+            "recording_status_callback_method".into(),
+            "trim".into(),
+            "recording_channels".into(),
+            "recording_track".into(),
         ]
     }
 }
@@ -25846,21 +25933,22 @@ impl std::fmt::Display for UpdateCallRecordingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateCallRecordingRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.status),
+            format!("{:?}", self.status).into(),
             if let Some(pause_behavior) = &self.pause_behavior {
-                format!("{:?}", pause_behavior)
+                format!("{:?}", pause_behavior).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "pause_behavior".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "pause_behavior".into()]
     }
 }
 
@@ -25874,11 +25962,11 @@ impl tabled::Tabled for UpdateCallRecordingRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AnnounceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -25935,33 +26023,34 @@ impl std::fmt::Display for UpdateConferenceRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConferenceRequest {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(announce_url) = &self.announce_url {
-                format!("{:?}", announce_url)
+                format!("{:?}", announce_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(announce_method) = &self.announce_method {
-                format!("{:?}", announce_method)
+                format!("{:?}", announce_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "status".to_string(),
-            "announce_url".to_string(),
-            "announce_method".to_string(),
+            "status".into(),
+            "announce_url".into(),
+            "announce_method".into(),
         ]
     }
 }
@@ -26000,69 +26089,70 @@ impl std::fmt::Display for ListConferenceResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConferenceResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(conferences) = &self.conferences {
-                format!("{:?}", conferences)
+                format!("{:?}", conferences).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "conferences".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "conferences".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -26095,21 +26185,22 @@ impl std::fmt::Display for UpdateConferenceRecordingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConferenceRecordingRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.status),
+            format!("{:?}", self.status).into(),
             if let Some(pause_behavior) = &self.pause_behavior {
-                format!("{:?}", pause_behavior)
+                format!("{:?}", pause_behavior).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "pause_behavior".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "pause_behavior".into()]
     }
 }
 
@@ -26147,69 +26238,70 @@ impl std::fmt::Display for ListConferenceRecordingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConferenceRecordingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{:?}", recordings)
+                format!("{:?}", recordings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "recordings".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "recordings".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -26223,11 +26315,11 @@ impl tabled::Tabled for ListConferenceRecordingResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateConnectAppRequestDeauthorizeCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26325,63 +26417,64 @@ impl std::fmt::Display for UpdateConnectAppRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateConnectAppRequest {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(authorize_redirect_url) = &self.authorize_redirect_url {
-                format!("{:?}", authorize_redirect_url)
+                format!("{:?}", authorize_redirect_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(company_name) = &self.company_name {
-                format!("{:?}", company_name)
+                format!("{:?}", company_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(deauthorize_callback_method) = &self.deauthorize_callback_method {
-                format!("{:?}", deauthorize_callback_method)
+                format!("{:?}", deauthorize_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(deauthorize_callback_url) = &self.deauthorize_callback_url {
-                format!("{:?}", deauthorize_callback_url)
+                format!("{:?}", deauthorize_callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(homepage_url) = &self.homepage_url {
-                format!("{:?}", homepage_url)
+                format!("{:?}", homepage_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(permissions) = &self.permissions {
-                format!("{:?}", permissions)
+                format!("{:?}", permissions).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "authorize_redirect_url".to_string(),
-            "company_name".to_string(),
-            "deauthorize_callback_method".to_string(),
-            "deauthorize_callback_url".to_string(),
-            "description".to_string(),
-            "friendly_name".to_string(),
-            "homepage_url".to_string(),
-            "permissions".to_string(),
+            "authorize_redirect_url".into(),
+            "company_name".into(),
+            "deauthorize_callback_method".into(),
+            "deauthorize_callback_url".into(),
+            "description".into(),
+            "friendly_name".into(),
+            "homepage_url".into(),
+            "permissions".into(),
         ]
     }
 }
@@ -26420,69 +26513,70 @@ impl std::fmt::Display for ListConnectAppResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListConnectAppResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(connect_apps) = &self.connect_apps {
-                format!("{:?}", connect_apps)
+                format!("{:?}", connect_apps).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "connect_apps".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "connect_apps".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -26521,69 +26615,70 @@ impl std::fmt::Display for ListDependentPhoneNumberResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListDependentPhoneNumberResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(dependent_phone_numbers) = &self.dependent_phone_numbers {
-                format!("{:?}", dependent_phone_numbers)
+                format!("{:?}", dependent_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "dependent_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "dependent_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -26598,11 +26693,11 @@ impl tabled::Tabled for ListDependentPhoneNumberResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateIncomingPhoneNumberRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26634,11 +26729,11 @@ pub enum UpdateIncomingPhoneNumberRequestSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateIncomingPhoneNumberRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26670,11 +26765,11 @@ pub enum UpdateIncomingPhoneNumberRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateIncomingPhoneNumberRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26706,11 +26801,11 @@ pub enum UpdateIncomingPhoneNumberRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateIncomingPhoneNumberRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26742,11 +26837,11 @@ pub enum UpdateIncomingPhoneNumberRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateIncomingPhoneNumberRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -26947,153 +27042,154 @@ impl std::fmt::Display for UpdateIncomingPhoneNumberRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateIncomingPhoneNumberRequest {
     const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(account_sid) = &self.account_sid {
-                format!("{:?}", account_sid)
+                format!("{:?}", account_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "account_sid".to_string(),
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "trunk_sid".to_string(),
-            "voice_receive_mode".to_string(),
-            "identity_sid".to_string(),
-            "address_sid".to_string(),
-            "bundle_sid".to_string(),
+            "account_sid".into(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "trunk_sid".into(),
+            "voice_receive_mode".into(),
+            "identity_sid".into(),
+            "address_sid".into(),
+            "bundle_sid".into(),
         ]
     }
 }
@@ -27132,69 +27228,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{:?}", incoming_phone_numbers)
+                format!("{:?}", incoming_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "incoming_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "incoming_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -27209,11 +27306,11 @@ impl tabled::Tabled for ListIncomingPhoneNumberResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -27245,11 +27342,11 @@ pub enum CreateIncomingPhoneNumberRequestSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -27281,11 +27378,11 @@ pub enum CreateIncomingPhoneNumberRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -27317,11 +27414,11 @@ pub enum CreateIncomingPhoneNumberRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -27353,11 +27450,11 @@ pub enum CreateIncomingPhoneNumberRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -27565,155 +27662,156 @@ impl std::fmt::Display for CreateIncomingPhoneNumberRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateIncomingPhoneNumberRequest {
     const LENGTH: usize = 24;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(area_code) = &self.area_code {
-                format!("{:?}", area_code)
+                format!("{:?}", area_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "trunk_sid".to_string(),
-            "identity_sid".to_string(),
-            "address_sid".to_string(),
-            "voice_receive_mode".to_string(),
-            "bundle_sid".to_string(),
-            "phone_number".to_string(),
-            "area_code".to_string(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "trunk_sid".into(),
+            "identity_sid".into(),
+            "address_sid".into(),
+            "voice_receive_mode".into(),
+            "bundle_sid".into(),
+            "phone_number".into(),
+            "area_code".into(),
         ]
     }
 }
@@ -27753,69 +27851,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberAssignedAddOnResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberAssignedAddOnResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(assigned_add_ons) = &self.assigned_add_ons {
-                format!("{:?}", assigned_add_ons)
+                format!("{:?}", assigned_add_ons).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "assigned_add_ons".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "assigned_add_ons".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -27839,14 +27938,15 @@ impl std::fmt::Display for CreateIncomingPhoneNumberAssignedAddOnRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateIncomingPhoneNumberAssignedAddOnRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.installed_add_on_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.installed_add_on_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["installed_add_on_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["installed_add_on_sid".into()]
     }
 }
 
@@ -27865,69 +27965,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberAssignedAddOnExtensionResponse
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberAssignedAddOnExtensionResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(extensions) = &self.extensions {
-                format!("{:?}", extensions)
+                format!("{:?}", extensions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "extensions".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "extensions".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -27967,69 +28068,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberLocalResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberLocalResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{:?}", incoming_phone_numbers)
+                format!("{:?}", incoming_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "incoming_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "incoming_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -28044,11 +28146,11 @@ impl tabled::Tabled for ListIncomingPhoneNumberLocalResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberLocalRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28080,11 +28182,11 @@ pub enum CreateIncomingPhoneNumberLocalRequestSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberLocalRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28116,11 +28218,11 @@ pub enum CreateIncomingPhoneNumberLocalRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberLocalRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28152,11 +28254,11 @@ pub enum CreateIncomingPhoneNumberLocalRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberLocalRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28188,11 +28290,11 @@ pub enum CreateIncomingPhoneNumberLocalRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberLocalRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28393,149 +28495,150 @@ impl std::fmt::Display for CreateIncomingPhoneNumberLocalRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateIncomingPhoneNumberLocalRequest {
     const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone_number".to_string(),
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "identity_sid".to_string(),
-            "address_sid".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "trunk_sid".to_string(),
-            "voice_receive_mode".to_string(),
-            "bundle_sid".to_string(),
+            "phone_number".into(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "identity_sid".into(),
+            "address_sid".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "trunk_sid".into(),
+            "voice_receive_mode".into(),
+            "bundle_sid".into(),
         ]
     }
 }
@@ -28575,69 +28678,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberMobileResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberMobileResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{:?}", incoming_phone_numbers)
+                format!("{:?}", incoming_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "incoming_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "incoming_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -28652,11 +28756,11 @@ impl tabled::Tabled for ListIncomingPhoneNumberMobileResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberMobileRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28688,11 +28792,11 @@ pub enum CreateIncomingPhoneNumberMobileRequestSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberMobileRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28724,11 +28828,11 @@ pub enum CreateIncomingPhoneNumberMobileRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberMobileRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28760,11 +28864,11 @@ pub enum CreateIncomingPhoneNumberMobileRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberMobileRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -28796,11 +28900,11 @@ pub enum CreateIncomingPhoneNumberMobileRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberMobileRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29001,149 +29105,150 @@ impl std::fmt::Display for CreateIncomingPhoneNumberMobileRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateIncomingPhoneNumberMobileRequest {
     const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone_number".to_string(),
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "identity_sid".to_string(),
-            "address_sid".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "trunk_sid".to_string(),
-            "voice_receive_mode".to_string(),
-            "bundle_sid".to_string(),
+            "phone_number".into(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "identity_sid".into(),
+            "address_sid".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "trunk_sid".into(),
+            "voice_receive_mode".into(),
+            "bundle_sid".into(),
         ]
     }
 }
@@ -29183,69 +29288,70 @@ impl std::fmt::Display for ListIncomingPhoneNumberTollFreeResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListIncomingPhoneNumberTollFreeResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(incoming_phone_numbers) = &self.incoming_phone_numbers {
-                format!("{:?}", incoming_phone_numbers)
+                format!("{:?}", incoming_phone_numbers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "incoming_phone_numbers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "incoming_phone_numbers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -29260,11 +29366,11 @@ impl tabled::Tabled for ListIncomingPhoneNumberTollFreeResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberTollFreeRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29296,11 +29402,11 @@ pub enum CreateIncomingPhoneNumberTollFreeRequestSmsFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberTollFreeRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29332,11 +29438,11 @@ pub enum CreateIncomingPhoneNumberTollFreeRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberTollFreeRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29368,11 +29474,11 @@ pub enum CreateIncomingPhoneNumberTollFreeRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberTollFreeRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29404,11 +29510,11 @@ pub enum CreateIncomingPhoneNumberTollFreeRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateIncomingPhoneNumberTollFreeRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -29610,149 +29716,150 @@ impl std::fmt::Display for CreateIncomingPhoneNumberTollFreeRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateIncomingPhoneNumberTollFreeRequest {
     const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_application_sid) = &self.sms_application_sid {
-                format!("{:?}", sms_application_sid)
+                format!("{:?}", sms_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_application_sid) = &self.voice_application_sid {
-                format!("{:?}", voice_application_sid)
+                format!("{:?}", voice_application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_caller_id_lookup) = &self.voice_caller_id_lookup {
-                format!("{:?}", voice_caller_id_lookup)
+                format!("{:?}", voice_caller_id_lookup).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(identity_sid) = &self.identity_sid {
-                format!("{:?}", identity_sid)
+                format!("{:?}", identity_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_sid) = &self.address_sid {
-                format!("{:?}", address_sid)
+                format!("{:?}", address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_status) = &self.emergency_status {
-                format!("{:?}", emergency_status)
+                format!("{:?}", emergency_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_address_sid) = &self.emergency_address_sid {
-                format!("{:?}", emergency_address_sid)
+                format!("{:?}", emergency_address_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trunk_sid) = &self.trunk_sid {
-                format!("{:?}", trunk_sid)
+                format!("{:?}", trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_receive_mode) = &self.voice_receive_mode {
-                format!("{:?}", voice_receive_mode)
+                format!("{:?}", voice_receive_mode).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bundle_sid) = &self.bundle_sid {
-                format!("{:?}", bundle_sid)
+                format!("{:?}", bundle_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone_number".to_string(),
-            "api_version".to_string(),
-            "friendly_name".to_string(),
-            "sms_application_sid".to_string(),
-            "sms_fallback_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_method".to_string(),
-            "sms_url".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "voice_application_sid".to_string(),
-            "voice_caller_id_lookup".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_url".to_string(),
-            "identity_sid".to_string(),
-            "address_sid".to_string(),
-            "emergency_status".to_string(),
-            "emergency_address_sid".to_string(),
-            "trunk_sid".to_string(),
-            "voice_receive_mode".to_string(),
-            "bundle_sid".to_string(),
+            "phone_number".into(),
+            "api_version".into(),
+            "friendly_name".into(),
+            "sms_application_sid".into(),
+            "sms_fallback_method".into(),
+            "sms_fallback_url".into(),
+            "sms_method".into(),
+            "sms_url".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "voice_application_sid".into(),
+            "voice_caller_id_lookup".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_url".into(),
+            "identity_sid".into(),
+            "address_sid".into(),
+            "emergency_status".into(),
+            "emergency_address_sid".into(),
+            "trunk_sid".into(),
+            "voice_receive_mode".into(),
+            "bundle_sid".into(),
         ]
     }
 }
@@ -29781,18 +29888,19 @@ impl std::fmt::Display for UpdateKeyRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateKeyRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -29830,69 +29938,70 @@ impl std::fmt::Display for ListKeyResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListKeyResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(keys) = &self.keys {
-                format!("{:?}", keys)
+                format!("{:?}", keys).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "keys".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "keys".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -29921,18 +30030,19 @@ impl std::fmt::Display for CreateNewKeyRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateNewKeyRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -29970,69 +30080,70 @@ impl std::fmt::Display for ListMediaResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListMediaResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(media_list) = &self.media_list {
-                format!("{:?}", media_list)
+                format!("{:?}", media_list).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "media_list".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "media_list".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -30047,11 +30158,11 @@ impl tabled::Tabled for ListMediaResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateMemberRequestMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -30097,21 +30208,22 @@ impl std::fmt::Display for UpdateMemberRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateMemberRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.url.clone(),
+            self.url.clone().into(),
             if let Some(method) = &self.method {
-                format!("{:?}", method)
+                format!("{:?}", method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["url".to_string(), "method".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["url".into(), "method".into()]
     }
 }
 
@@ -30149,69 +30261,70 @@ impl std::fmt::Display for ListMemberResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListMemberResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(queue_members) = &self.queue_members {
-                format!("{:?}", queue_members)
+                format!("{:?}", queue_members).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "queue_members".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "queue_members".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -30250,69 +30363,70 @@ impl std::fmt::Display for ListMessageResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListMessageResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(messages) = &self.messages {
-                format!("{:?}", messages)
+                format!("{:?}", messages).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "messages".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "messages".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -30475,139 +30589,140 @@ impl std::fmt::Display for CreateMessageRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateMessageRequest {
     const LENGTH: usize = 22;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.to),
+            format!("{:?}", self.to).into(),
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(application_sid) = &self.application_sid {
-                format!("{:?}", application_sid)
+                format!("{:?}", application_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_price) = &self.max_price {
-                format!("{:?}", max_price)
+                format!("{:?}", max_price).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(provide_feedback) = &self.provide_feedback {
-                format!("{:?}", provide_feedback)
+                format!("{:?}", provide_feedback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(attempt) = &self.attempt {
-                format!("{:?}", attempt)
+                format!("{:?}", attempt).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(validity_period) = &self.validity_period {
-                format!("{:?}", validity_period)
+                format!("{:?}", validity_period).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(force_delivery) = &self.force_delivery {
-                format!("{:?}", force_delivery)
+                format!("{:?}", force_delivery).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_retention) = &self.content_retention {
-                format!("{:?}", content_retention)
+                format!("{:?}", content_retention).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_retention) = &self.address_retention {
-                format!("{:?}", address_retention)
+                format!("{:?}", address_retention).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(smart_encoded) = &self.smart_encoded {
-                format!("{:?}", smart_encoded)
+                format!("{:?}", smart_encoded).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(persistent_action) = &self.persistent_action {
-                format!("{:?}", persistent_action)
+                format!("{:?}", persistent_action).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(shorten_urls) = &self.shorten_urls {
-                format!("{:?}", shorten_urls)
+                format!("{:?}", shorten_urls).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(schedule_type) = &self.schedule_type {
-                format!("{:?}", schedule_type)
+                format!("{:?}", schedule_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(send_at) = &self.send_at {
-                format!("{:?}", send_at)
+                format!("{:?}", send_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(send_as_mms) = &self.send_as_mms {
-                format!("{:?}", send_as_mms)
+                format!("{:?}", send_as_mms).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_sid) = &self.content_sid {
-                format!("{:?}", content_sid)
+                format!("{:?}", content_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_variables) = &self.content_variables {
-                format!("{:?}", content_variables)
+                format!("{:?}", content_variables).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.from),
+            format!("{:?}", self.from).into(),
             if let Some(messaging_service_sid) = &self.messaging_service_sid {
-                format!("{:?}", messaging_service_sid)
+                format!("{:?}", messaging_service_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(media_url) = &self.media_url {
-                format!("{:?}", media_url)
+                format!("{:?}", media_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "to".to_string(),
-            "status_callback".to_string(),
-            "application_sid".to_string(),
-            "max_price".to_string(),
-            "provide_feedback".to_string(),
-            "attempt".to_string(),
-            "validity_period".to_string(),
-            "force_delivery".to_string(),
-            "content_retention".to_string(),
-            "address_retention".to_string(),
-            "smart_encoded".to_string(),
-            "persistent_action".to_string(),
-            "shorten_urls".to_string(),
-            "schedule_type".to_string(),
-            "send_at".to_string(),
-            "send_as_mms".to_string(),
-            "content_sid".to_string(),
-            "content_variables".to_string(),
-            "from".to_string(),
-            "messaging_service_sid".to_string(),
-            "body".to_string(),
-            "media_url".to_string(),
+            "to".into(),
+            "status_callback".into(),
+            "application_sid".into(),
+            "max_price".into(),
+            "provide_feedback".into(),
+            "attempt".into(),
+            "validity_period".into(),
+            "force_delivery".into(),
+            "content_retention".into(),
+            "address_retention".into(),
+            "smart_encoded".into(),
+            "persistent_action".into(),
+            "shorten_urls".into(),
+            "schedule_type".into(),
+            "send_at".into(),
+            "send_as_mms".into(),
+            "content_sid".into(),
+            "content_variables".into(),
+            "from".into(),
+            "messaging_service_sid".into(),
+            "body".into(),
+            "media_url".into(),
         ]
     }
 }
@@ -30633,25 +30748,26 @@ impl std::fmt::Display for UpdateMessageRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateMessageRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(body) = &self.body {
-                format!("{:?}", body)
+                format!("{:?}", body).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["body".to_string(), "status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["body".into(), "status".into()]
     }
 }
 
@@ -30673,18 +30789,19 @@ impl std::fmt::Display for CreateMessageFeedbackRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateMessageFeedbackRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(outcome) = &self.outcome {
-            format!("{:?}", outcome)
+            format!("{:?}", outcome).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["outcome".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["outcome".into()]
     }
 }
 
@@ -30722,69 +30839,70 @@ impl std::fmt::Display for ListSigningKeyResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSigningKeyResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(signing_keys) = &self.signing_keys {
-                format!("{:?}", signing_keys)
+                format!("{:?}", signing_keys).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "signing_keys".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "signing_keys".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -30813,18 +30931,19 @@ impl std::fmt::Display for CreateNewSigningKeyRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateNewSigningKeyRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -30862,69 +30981,70 @@ impl std::fmt::Display for ListNotificationResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListNotificationResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(notifications) = &self.notifications {
-                format!("{:?}", notifications)
+                format!("{:?}", notifications).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "notifications".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "notifications".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -30953,18 +31073,19 @@ impl std::fmt::Display for UpdateOutgoingCallerIdRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateOutgoingCallerIdRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -31002,69 +31123,70 @@ impl std::fmt::Display for ListOutgoingCallerIdResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListOutgoingCallerIdResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(outgoing_caller_ids) = &self.outgoing_caller_ids {
-                format!("{:?}", outgoing_caller_ids)
+                format!("{:?}", outgoing_caller_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "outgoing_caller_ids".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "outgoing_caller_ids".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -31079,11 +31201,11 @@ impl tabled::Tabled for ListOutgoingCallerIdResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateValidationRequestRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31162,47 +31284,48 @@ impl std::fmt::Display for CreateValidationRequestRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateValidationRequestRequest {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.phone_number),
+            format!("{:?}", self.phone_number).into(),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_delay) = &self.call_delay {
-                format!("{:?}", call_delay)
+                format!("{:?}", call_delay).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(extension) = &self.extension {
-                format!("{:?}", extension)
+                format!("{:?}", extension).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone_number".to_string(),
-            "friendly_name".to_string(),
-            "call_delay".to_string(),
-            "extension".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
+            "phone_number".into(),
+            "friendly_name".into(),
+            "call_delay".into(),
+            "extension".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
         ]
     }
 }
@@ -31217,11 +31340,11 @@ impl tabled::Tabled for CreateValidationRequestRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum HoldMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31253,11 +31376,11 @@ pub enum HoldMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateParticipantRequestAnnounceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31290,11 +31413,11 @@ pub enum UpdateParticipantRequestAnnounceMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum WaitMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31412,87 +31535,88 @@ impl std::fmt::Display for UpdateParticipantRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateParticipantRequest {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(muted) = &self.muted {
-                format!("{:?}", muted)
+                format!("{:?}", muted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(hold) = &self.hold {
-                format!("{:?}", hold)
+                format!("{:?}", hold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(hold_url) = &self.hold_url {
-                format!("{:?}", hold_url)
+                format!("{:?}", hold_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(hold_method) = &self.hold_method {
-                format!("{:?}", hold_method)
+                format!("{:?}", hold_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(announce_url) = &self.announce_url {
-                format!("{:?}", announce_url)
+                format!("{:?}", announce_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(announce_method) = &self.announce_method {
-                format!("{:?}", announce_method)
+                format!("{:?}", announce_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wait_url) = &self.wait_url {
-                format!("{:?}", wait_url)
+                format!("{:?}", wait_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wait_method) = &self.wait_method {
-                format!("{:?}", wait_method)
+                format!("{:?}", wait_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beep_on_exit) = &self.beep_on_exit {
-                format!("{:?}", beep_on_exit)
+                format!("{:?}", beep_on_exit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{:?}", end_conference_on_exit)
+                format!("{:?}", end_conference_on_exit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{:?}", coaching)
+                format!("{:?}", coaching).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{:?}", call_sid_to_coach)
+                format!("{:?}", call_sid_to_coach).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "muted".to_string(),
-            "hold".to_string(),
-            "hold_url".to_string(),
-            "hold_method".to_string(),
-            "announce_url".to_string(),
-            "announce_method".to_string(),
-            "wait_url".to_string(),
-            "wait_method".to_string(),
-            "beep_on_exit".to_string(),
-            "end_conference_on_exit".to_string(),
-            "coaching".to_string(),
-            "call_sid_to_coach".to_string(),
+            "muted".into(),
+            "hold".into(),
+            "hold_url".into(),
+            "hold_method".into(),
+            "announce_url".into(),
+            "announce_method".into(),
+            "wait_url".into(),
+            "wait_method".into(),
+            "beep_on_exit".into(),
+            "end_conference_on_exit".into(),
+            "coaching".into(),
+            "call_sid_to_coach".into(),
         ]
     }
 }
@@ -31531,69 +31655,70 @@ impl std::fmt::Display for ListParticipantResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListParticipantResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(participants) = &self.participants {
-                format!("{:?}", participants)
+                format!("{:?}", participants).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "participants".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "participants".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -31608,11 +31733,11 @@ impl tabled::Tabled for ListParticipantResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateParticipantRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31644,11 +31769,11 @@ pub enum CreateParticipantRequestStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31680,11 +31805,11 @@ pub enum ConferenceStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateParticipantRequestRecordingStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31716,11 +31841,11 @@ pub enum CreateParticipantRequestRecordingStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ConferenceRecordingStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -31752,11 +31877,11 @@ pub enum ConferenceRecordingStatusCallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum AmdStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -32126,295 +32251,296 @@ impl std::fmt::Display for CreateParticipantRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateParticipantRequest {
     const LENGTH: usize = 46;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.from.clone(),
-            self.to.clone(),
+            self.from.clone().into(),
+            self.to.clone().into(),
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_event) = &self.status_callback_event {
-                format!("{:?}", status_callback_event)
+                format!("{:?}", status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(label) = &self.label {
-                format!("{:?}", label)
+                format!("{:?}", label).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{:?}", timeout)
+                format!("{:?}", timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(record) = &self.record {
-                format!("{:?}", record)
+                format!("{:?}", record).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(muted) = &self.muted {
-                format!("{:?}", muted)
+                format!("{:?}", muted).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(beep) = &self.beep {
-                format!("{:?}", beep)
+                format!("{:?}", beep).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start_conference_on_enter) = &self.start_conference_on_enter {
-                format!("{:?}", start_conference_on_enter)
+                format!("{:?}", start_conference_on_enter).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end_conference_on_exit) = &self.end_conference_on_exit {
-                format!("{:?}", end_conference_on_exit)
+                format!("{:?}", end_conference_on_exit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wait_url) = &self.wait_url {
-                format!("{:?}", wait_url)
+                format!("{:?}", wait_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(wait_method) = &self.wait_method {
-                format!("{:?}", wait_method)
+                format!("{:?}", wait_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(early_media) = &self.early_media {
-                format!("{:?}", early_media)
+                format!("{:?}", early_media).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_participants) = &self.max_participants {
-                format!("{:?}", max_participants)
+                format!("{:?}", max_participants).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_record) = &self.conference_record {
-                format!("{:?}", conference_record)
+                format!("{:?}", conference_record).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_trim) = &self.conference_trim {
-                format!("{:?}", conference_trim)
+                format!("{:?}", conference_trim).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_status_callback) = &self.conference_status_callback {
-                format!("{:?}", conference_status_callback)
+                format!("{:?}", conference_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_status_callback_method) = &self.conference_status_callback_method
             {
-                format!("{:?}", conference_status_callback_method)
+                format!("{:?}", conference_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_status_callback_event) = &self.conference_status_callback_event {
-                format!("{:?}", conference_status_callback_event)
+                format!("{:?}", conference_status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_channels) = &self.recording_channels {
-                format!("{:?}", recording_channels)
+                format!("{:?}", recording_channels).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback) = &self.recording_status_callback {
-                format!("{:?}", recording_status_callback)
+                format!("{:?}", recording_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback_method) = &self.recording_status_callback_method {
-                format!("{:?}", recording_status_callback_method)
+                format!("{:?}", recording_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_auth_username) = &self.sip_auth_username {
-                format!("{:?}", sip_auth_username)
+                format!("{:?}", sip_auth_username).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_auth_password) = &self.sip_auth_password {
-                format!("{:?}", sip_auth_password)
+                format!("{:?}", sip_auth_password).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(region) = &self.region {
-                format!("{:?}", region)
+                format!("{:?}", region).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_recording_status_callback) =
                 &self.conference_recording_status_callback
             {
-                format!("{:?}", conference_recording_status_callback)
+                format!("{:?}", conference_recording_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_recording_status_callback_method) =
                 &self.conference_recording_status_callback_method
             {
-                format!("{:?}", conference_recording_status_callback_method)
+                format!("{:?}", conference_recording_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_status_callback_event) = &self.recording_status_callback_event {
-                format!("{:?}", recording_status_callback_event)
+                format!("{:?}", recording_status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(conference_recording_status_callback_event) =
                 &self.conference_recording_status_callback_event
             {
-                format!("{:?}", conference_recording_status_callback_event)
+                format!("{:?}", conference_recording_status_callback_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(coaching) = &self.coaching {
-                format!("{:?}", coaching)
+                format!("{:?}", coaching).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_sid_to_coach) = &self.call_sid_to_coach {
-                format!("{:?}", call_sid_to_coach)
+                format!("{:?}", call_sid_to_coach).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(jitter_buffer_size) = &self.jitter_buffer_size {
-                format!("{:?}", jitter_buffer_size)
+                format!("{:?}", jitter_buffer_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(byoc) = &self.byoc {
-                format!("{:?}", byoc)
+                format!("{:?}", byoc).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(caller_id) = &self.caller_id {
-                format!("{:?}", caller_id)
+                format!("{:?}", caller_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(call_reason) = &self.call_reason {
-                format!("{:?}", call_reason)
+                format!("{:?}", call_reason).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recording_track) = &self.recording_track {
-                format!("{:?}", recording_track)
+                format!("{:?}", recording_track).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(time_limit) = &self.time_limit {
-                format!("{:?}", time_limit)
+                format!("{:?}", time_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection) = &self.machine_detection {
-                format!("{:?}", machine_detection)
+                format!("{:?}", machine_detection).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_timeout) = &self.machine_detection_timeout {
-                format!("{:?}", machine_detection_timeout)
+                format!("{:?}", machine_detection_timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_speech_threshold) =
                 &self.machine_detection_speech_threshold
             {
-                format!("{:?}", machine_detection_speech_threshold)
+                format!("{:?}", machine_detection_speech_threshold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_speech_end_threshold) =
                 &self.machine_detection_speech_end_threshold
             {
-                format!("{:?}", machine_detection_speech_end_threshold)
+                format!("{:?}", machine_detection_speech_end_threshold).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(machine_detection_silence_timeout) = &self.machine_detection_silence_timeout
             {
-                format!("{:?}", machine_detection_silence_timeout)
+                format!("{:?}", machine_detection_silence_timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amd_status_callback) = &self.amd_status_callback {
-                format!("{:?}", amd_status_callback)
+                format!("{:?}", amd_status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amd_status_callback_method) = &self.amd_status_callback_method {
-                format!("{:?}", amd_status_callback_method)
+                format!("{:?}", amd_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "from".to_string(),
-            "to".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "status_callback_event".to_string(),
-            "label".to_string(),
-            "timeout".to_string(),
-            "record".to_string(),
-            "muted".to_string(),
-            "beep".to_string(),
-            "start_conference_on_enter".to_string(),
-            "end_conference_on_exit".to_string(),
-            "wait_url".to_string(),
-            "wait_method".to_string(),
-            "early_media".to_string(),
-            "max_participants".to_string(),
-            "conference_record".to_string(),
-            "conference_trim".to_string(),
-            "conference_status_callback".to_string(),
-            "conference_status_callback_method".to_string(),
-            "conference_status_callback_event".to_string(),
-            "recording_channels".to_string(),
-            "recording_status_callback".to_string(),
-            "recording_status_callback_method".to_string(),
-            "sip_auth_username".to_string(),
-            "sip_auth_password".to_string(),
-            "region".to_string(),
-            "conference_recording_status_callback".to_string(),
-            "conference_recording_status_callback_method".to_string(),
-            "recording_status_callback_event".to_string(),
-            "conference_recording_status_callback_event".to_string(),
-            "coaching".to_string(),
-            "call_sid_to_coach".to_string(),
-            "jitter_buffer_size".to_string(),
-            "byoc".to_string(),
-            "caller_id".to_string(),
-            "call_reason".to_string(),
-            "recording_track".to_string(),
-            "time_limit".to_string(),
-            "machine_detection".to_string(),
-            "machine_detection_timeout".to_string(),
-            "machine_detection_speech_threshold".to_string(),
-            "machine_detection_speech_end_threshold".to_string(),
-            "machine_detection_silence_timeout".to_string(),
-            "amd_status_callback".to_string(),
-            "amd_status_callback_method".to_string(),
+            "from".into(),
+            "to".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "status_callback_event".into(),
+            "label".into(),
+            "timeout".into(),
+            "record".into(),
+            "muted".into(),
+            "beep".into(),
+            "start_conference_on_enter".into(),
+            "end_conference_on_exit".into(),
+            "wait_url".into(),
+            "wait_method".into(),
+            "early_media".into(),
+            "max_participants".into(),
+            "conference_record".into(),
+            "conference_trim".into(),
+            "conference_status_callback".into(),
+            "conference_status_callback_method".into(),
+            "conference_status_callback_event".into(),
+            "recording_channels".into(),
+            "recording_status_callback".into(),
+            "recording_status_callback_method".into(),
+            "sip_auth_username".into(),
+            "sip_auth_password".into(),
+            "region".into(),
+            "conference_recording_status_callback".into(),
+            "conference_recording_status_callback_method".into(),
+            "recording_status_callback_event".into(),
+            "conference_recording_status_callback_event".into(),
+            "coaching".into(),
+            "call_sid_to_coach".into(),
+            "jitter_buffer_size".into(),
+            "byoc".into(),
+            "caller_id".into(),
+            "call_reason".into(),
+            "recording_track".into(),
+            "time_limit".into(),
+            "machine_detection".into(),
+            "machine_detection_timeout".into(),
+            "machine_detection_speech_threshold".into(),
+            "machine_detection_speech_end_threshold".into(),
+            "machine_detection_silence_timeout".into(),
+            "amd_status_callback".into(),
+            "amd_status_callback_method".into(),
         ]
     }
 }
@@ -32529,103 +32655,104 @@ impl std::fmt::Display for CreatePaymentsRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreatePaymentsRequest {
     const LENGTH: usize = 16;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.idempotency_key.clone(),
-            self.status_callback.clone(),
+            self.idempotency_key.clone().into(),
+            self.status_callback.clone().into(),
             if let Some(bank_account_type) = &self.bank_account_type {
-                format!("{:?}", bank_account_type)
+                format!("{:?}", bank_account_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(charge_amount) = &self.charge_amount {
-                format!("{:?}", charge_amount)
+                format!("{:?}", charge_amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(currency) = &self.currency {
-                format!("{:?}", currency)
+                format!("{:?}", currency).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(input) = &self.input {
-                format!("{:?}", input)
+                format!("{:?}", input).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(min_postal_code_length) = &self.min_postal_code_length {
-                format!("{:?}", min_postal_code_length)
+                format!("{:?}", min_postal_code_length).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter) = &self.parameter {
-                format!("{:?}", parameter)
+                format!("{:?}", parameter).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(payment_connector) = &self.payment_connector {
-                format!("{:?}", payment_connector)
+                format!("{:?}", payment_connector).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(payment_method) = &self.payment_method {
-                format!("{:?}", payment_method)
+                format!("{:?}", payment_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(security_code) = &self.security_code {
-                format!("{:?}", security_code)
+                format!("{:?}", security_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(timeout) = &self.timeout {
-                format!("{:?}", timeout)
+                format!("{:?}", timeout).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(token_type) = &self.token_type {
-                format!("{:?}", token_type)
+                format!("{:?}", token_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(valid_card_types) = &self.valid_card_types {
-                format!("{:?}", valid_card_types)
+                format!("{:?}", valid_card_types).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "idempotency_key".to_string(),
-            "status_callback".to_string(),
-            "bank_account_type".to_string(),
-            "charge_amount".to_string(),
-            "currency".to_string(),
-            "description".to_string(),
-            "input".to_string(),
-            "min_postal_code_length".to_string(),
-            "parameter".to_string(),
-            "payment_connector".to_string(),
-            "payment_method".to_string(),
-            "postal_code".to_string(),
-            "security_code".to_string(),
-            "timeout".to_string(),
-            "token_type".to_string(),
-            "valid_card_types".to_string(),
+            "idempotency_key".into(),
+            "status_callback".into(),
+            "bank_account_type".into(),
+            "charge_amount".into(),
+            "currency".into(),
+            "description".into(),
+            "input".into(),
+            "min_postal_code_length".into(),
+            "parameter".into(),
+            "payment_connector".into(),
+            "payment_method".into(),
+            "postal_code".into(),
+            "security_code".into(),
+            "timeout".into(),
+            "token_type".into(),
+            "valid_card_types".into(),
         ]
     }
 }
@@ -32658,31 +32785,32 @@ impl std::fmt::Display for UpdatePaymentsRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdatePaymentsRequest {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.idempotency_key.clone(),
-            self.status_callback.clone(),
+            self.idempotency_key.clone().into(),
+            self.status_callback.clone().into(),
             if let Some(capture) = &self.capture {
-                format!("{:?}", capture)
+                format!("{:?}", capture).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "idempotency_key".to_string(),
-            "status_callback".to_string(),
-            "capture".to_string(),
-            "status".to_string(),
+            "idempotency_key".into(),
+            "status_callback".into(),
+            "capture".into(),
+            "status".into(),
         ]
     }
 }
@@ -32715,25 +32843,26 @@ impl std::fmt::Display for UpdateQueueRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateQueueRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_size) = &self.max_size {
-                format!("{:?}", max_size)
+                format!("{:?}", max_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string(), "max_size".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into(), "max_size".into()]
     }
 }
 
@@ -32771,69 +32900,70 @@ impl std::fmt::Display for ListQueueResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListQueueResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(queues) = &self.queues {
-                format!("{:?}", queues)
+                format!("{:?}", queues).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "queues".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "queues".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -32862,21 +32992,22 @@ impl std::fmt::Display for CreateQueueRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateQueueRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.friendly_name.clone(),
+            self.friendly_name.clone().into(),
             if let Some(max_size) = &self.max_size {
-                format!("{:?}", max_size)
+                format!("{:?}", max_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string(), "max_size".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into(), "max_size".into()]
     }
 }
 
@@ -32914,69 +33045,70 @@ impl std::fmt::Display for ListRecordingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRecordingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(recordings) = &self.recordings {
-                format!("{:?}", recordings)
+                format!("{:?}", recordings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "recordings".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "recordings".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33015,69 +33147,70 @@ impl std::fmt::Display for ListRecordingAddOnResultResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRecordingAddOnResultResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(add_on_results) = &self.add_on_results {
-                format!("{:?}", add_on_results)
+                format!("{:?}", add_on_results).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "add_on_results".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "add_on_results".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33117,69 +33250,70 @@ impl std::fmt::Display for ListRecordingAddOnResultPayloadResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRecordingAddOnResultPayloadResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(payloads) = &self.payloads {
-                format!("{:?}", payloads)
+                format!("{:?}", payloads).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "payloads".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "payloads".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33218,69 +33352,70 @@ impl std::fmt::Display for ListRecordingTranscriptionResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListRecordingTranscriptionResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(transcriptions) = &self.transcriptions {
-                format!("{:?}", transcriptions)
+                format!("{:?}", transcriptions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "transcriptions".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "transcriptions".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33294,11 +33429,11 @@ impl tabled::Tabled for ListRecordingTranscriptionResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateShortCodeRequestSmsMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -33330,11 +33465,11 @@ pub enum UpdateShortCodeRequestSmsMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateShortCodeRequestSmsFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -33410,51 +33545,52 @@ impl std::fmt::Display for UpdateShortCodeRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateShortCodeRequest {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(api_version) = &self.api_version {
-                format!("{:?}", api_version)
+                format!("{:?}", api_version).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_url) = &self.sms_url {
-                format!("{:?}", sms_url)
+                format!("{:?}", sms_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_method) = &self.sms_method {
-                format!("{:?}", sms_method)
+                format!("{:?}", sms_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_url) = &self.sms_fallback_url {
-                format!("{:?}", sms_fallback_url)
+                format!("{:?}", sms_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sms_fallback_method) = &self.sms_fallback_method {
-                format!("{:?}", sms_fallback_method)
+                format!("{:?}", sms_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "api_version".to_string(),
-            "sms_url".to_string(),
-            "sms_method".to_string(),
-            "sms_fallback_url".to_string(),
-            "sms_fallback_method".to_string(),
+            "friendly_name".into(),
+            "api_version".into(),
+            "sms_url".into(),
+            "sms_method".into(),
+            "sms_fallback_url".into(),
+            "sms_fallback_method".into(),
         ]
     }
 }
@@ -33493,69 +33629,70 @@ impl std::fmt::Display for ListShortCodeResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListShortCodeResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(short_codes) = &self.short_codes {
-                format!("{:?}", short_codes)
+                format!("{:?}", short_codes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "short_codes".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "short_codes".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33583,18 +33720,19 @@ impl std::fmt::Display for UpdateSigningKeyRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSigningKeyRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(friendly_name) = &self.friendly_name {
-            format!("{:?}", friendly_name)
+            format!("{:?}", friendly_name).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -33634,69 +33772,70 @@ impl std::fmt::Display for ListSipAuthCallsCredentialListMappingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipAuthCallsCredentialListMappingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{:?}", contents)
+                format!("{:?}", contents).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "contents".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "contents".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33720,14 +33859,15 @@ impl std::fmt::Display for CreateSipAuthCallsCredentialListMappingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipAuthCallsCredentialListMappingRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.credential_list_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.credential_list_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["credential_list_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["credential_list_sid".into()]
     }
 }
 
@@ -33767,69 +33907,70 @@ impl std::fmt::Display for ListSipAuthCallsIpAccessControlListMappingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipAuthCallsIpAccessControlListMappingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{:?}", contents)
+                format!("{:?}", contents).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "contents".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "contents".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33853,14 +33994,15 @@ impl std::fmt::Display for CreateSipAuthCallsIpAccessControlListMappingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipAuthCallsIpAccessControlListMappingRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.ip_access_control_list_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.ip_access_control_list_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["ip_access_control_list_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["ip_access_control_list_sid".into()]
     }
 }
 
@@ -33879,69 +34021,70 @@ impl std::fmt::Display for ListSipAuthRegistrationsCredentialListMappingResponse
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipAuthRegistrationsCredentialListMappingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(contents) = &self.contents {
-                format!("{:?}", contents)
+                format!("{:?}", contents).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "contents".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "contents".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -33965,14 +34108,15 @@ impl std::fmt::Display for CreateSipAuthRegistrationsCredentialListMappingReques
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipAuthRegistrationsCredentialListMappingRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.credential_list_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.credential_list_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["credential_list_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["credential_list_sid".into()]
     }
 }
 
@@ -34010,69 +34154,70 @@ impl std::fmt::Display for ListSipCredentialResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipCredentialResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(credentials) = &self.credentials {
-                format!("{:?}", credentials)
+                format!("{:?}", credentials).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "credentials".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "credentials".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -34103,14 +34248,15 @@ impl std::fmt::Display for CreateSipCredentialRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipCredentialRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.username.clone(), self.password.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.username.clone().into(), self.password.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["username".to_string(), "password".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["username".into(), "password".into()]
     }
 }
 
@@ -34135,18 +34281,19 @@ impl std::fmt::Display for UpdateSipCredentialRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSipCredentialRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(password) = &self.password {
-            format!("{:?}", password)
+            format!("{:?}", password).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["password".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["password".into()]
     }
 }
 
@@ -34184,69 +34331,70 @@ impl std::fmt::Display for ListSipCredentialListResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipCredentialListResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(credential_lists) = &self.credential_lists {
-                format!("{:?}", credential_lists)
+                format!("{:?}", credential_lists).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "credential_lists".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "credential_lists".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -34271,14 +34419,15 @@ impl std::fmt::Display for CreateSipCredentialListRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipCredentialListRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.friendly_name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.friendly_name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -34301,14 +34450,15 @@ impl std::fmt::Display for UpdateSipCredentialListRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSipCredentialListRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.friendly_name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.friendly_name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -34346,69 +34496,70 @@ impl std::fmt::Display for ListSipCredentialListMappingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipCredentialListMappingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(credential_list_mappings) = &self.credential_list_mappings {
-                format!("{:?}", credential_list_mappings)
+                format!("{:?}", credential_list_mappings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "credential_list_mappings".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "credential_list_mappings".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -34433,14 +34584,15 @@ impl std::fmt::Display for CreateSipCredentialListMappingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipCredentialListMappingRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.credential_list_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.credential_list_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["credential_list_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["credential_list_sid".into()]
     }
 }
 
@@ -34478,69 +34630,70 @@ impl std::fmt::Display for ListSipDomainResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipDomainResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(domains) = &self.domains {
-                format!("{:?}", domains)
+                format!("{:?}", domains).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "domains".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "domains".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -34554,11 +34707,11 @@ impl tabled::Tabled for ListSipDomainResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateSipDomainRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -34589,11 +34742,11 @@ pub enum CreateSipDomainRequestVoiceMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateSipDomainRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -34625,11 +34778,11 @@ pub enum CreateSipDomainRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateSipDomainRequestVoiceStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -34757,89 +34910,90 @@ impl std::fmt::Display for CreateSipDomainRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipDomainRequest {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.domain_name.clone(),
+            self.domain_name.clone().into(),
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{:?}", voice_status_callback_url)
+                format!("{:?}", voice_status_callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{:?}", voice_status_callback_method)
+                format!("{:?}", voice_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{:?}", sip_registration)
+                format!("{:?}", sip_registration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{:?}", emergency_calling_enabled)
+                format!("{:?}", emergency_calling_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(secure) = &self.secure {
-                format!("{:?}", secure)
+                format!("{:?}", secure).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{:?}", byoc_trunk_sid)
+                format!("{:?}", byoc_trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{:?}", emergency_caller_sid)
+                format!("{:?}", emergency_caller_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "domain_name".to_string(),
-            "friendly_name".to_string(),
-            "voice_url".to_string(),
-            "voice_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_status_callback_url".to_string(),
-            "voice_status_callback_method".to_string(),
-            "sip_registration".to_string(),
-            "emergency_calling_enabled".to_string(),
-            "secure".to_string(),
-            "byoc_trunk_sid".to_string(),
-            "emergency_caller_sid".to_string(),
+            "domain_name".into(),
+            "friendly_name".into(),
+            "voice_url".into(),
+            "voice_method".into(),
+            "voice_fallback_url".into(),
+            "voice_fallback_method".into(),
+            "voice_status_callback_url".into(),
+            "voice_status_callback_method".into(),
+            "sip_registration".into(),
+            "emergency_calling_enabled".into(),
+            "secure".into(),
+            "byoc_trunk_sid".into(),
+            "emergency_caller_sid".into(),
         ]
     }
 }
@@ -34853,11 +35007,11 @@ impl tabled::Tabled for CreateSipDomainRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateSipDomainRequestVoiceFallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -34888,11 +35042,11 @@ pub enum UpdateSipDomainRequestVoiceFallbackMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateSipDomainRequestVoiceMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -34924,11 +35078,11 @@ pub enum UpdateSipDomainRequestVoiceMethod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateSipDomainRequestVoiceStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -35060,93 +35214,94 @@ impl std::fmt::Display for UpdateSipDomainRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSipDomainRequest {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_method) = &self.voice_fallback_method {
-                format!("{:?}", voice_fallback_method)
+                format!("{:?}", voice_fallback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_fallback_url) = &self.voice_fallback_url {
-                format!("{:?}", voice_fallback_url)
+                format!("{:?}", voice_fallback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_method) = &self.voice_method {
-                format!("{:?}", voice_method)
+                format!("{:?}", voice_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_method) = &self.voice_status_callback_method {
-                format!("{:?}", voice_status_callback_method)
+                format!("{:?}", voice_status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_status_callback_url) = &self.voice_status_callback_url {
-                format!("{:?}", voice_status_callback_url)
+                format!("{:?}", voice_status_callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(voice_url) = &self.voice_url {
-                format!("{:?}", voice_url)
+                format!("{:?}", voice_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sip_registration) = &self.sip_registration {
-                format!("{:?}", sip_registration)
+                format!("{:?}", sip_registration).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(domain_name) = &self.domain_name {
-                format!("{:?}", domain_name)
+                format!("{:?}", domain_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_calling_enabled) = &self.emergency_calling_enabled {
-                format!("{:?}", emergency_calling_enabled)
+                format!("{:?}", emergency_calling_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(secure) = &self.secure {
-                format!("{:?}", secure)
+                format!("{:?}", secure).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(byoc_trunk_sid) = &self.byoc_trunk_sid {
-                format!("{:?}", byoc_trunk_sid)
+                format!("{:?}", byoc_trunk_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(emergency_caller_sid) = &self.emergency_caller_sid {
-                format!("{:?}", emergency_caller_sid)
+                format!("{:?}", emergency_caller_sid).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "voice_fallback_method".to_string(),
-            "voice_fallback_url".to_string(),
-            "voice_method".to_string(),
-            "voice_status_callback_method".to_string(),
-            "voice_status_callback_url".to_string(),
-            "voice_url".to_string(),
-            "sip_registration".to_string(),
-            "domain_name".to_string(),
-            "emergency_calling_enabled".to_string(),
-            "secure".to_string(),
-            "byoc_trunk_sid".to_string(),
-            "emergency_caller_sid".to_string(),
+            "friendly_name".into(),
+            "voice_fallback_method".into(),
+            "voice_fallback_url".into(),
+            "voice_method".into(),
+            "voice_status_callback_method".into(),
+            "voice_status_callback_url".into(),
+            "voice_url".into(),
+            "sip_registration".into(),
+            "domain_name".into(),
+            "emergency_calling_enabled".into(),
+            "secure".into(),
+            "byoc_trunk_sid".into(),
+            "emergency_caller_sid".into(),
         ]
     }
 }
@@ -35185,69 +35340,70 @@ impl std::fmt::Display for ListSipIpAccessControlListResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipIpAccessControlListResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(ip_access_control_lists) = &self.ip_access_control_lists {
-                format!("{:?}", ip_access_control_lists)
+                format!("{:?}", ip_access_control_lists).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "ip_access_control_lists".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "ip_access_control_lists".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -35272,14 +35428,15 @@ impl std::fmt::Display for CreateSipIpAccessControlListRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipIpAccessControlListRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.friendly_name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.friendly_name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -35302,14 +35459,15 @@ impl std::fmt::Display for UpdateSipIpAccessControlListRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSipIpAccessControlListRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.friendly_name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.friendly_name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["friendly_name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["friendly_name".into()]
     }
 }
 
@@ -35348,69 +35506,70 @@ impl std::fmt::Display for ListSipIpAccessControlListMappingResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipIpAccessControlListMappingResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(ip_access_control_list_mappings) = &self.ip_access_control_list_mappings {
-                format!("{:?}", ip_access_control_list_mappings)
+                format!("{:?}", ip_access_control_list_mappings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "ip_access_control_list_mappings".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "ip_access_control_list_mappings".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -35434,14 +35593,15 @@ impl std::fmt::Display for CreateSipIpAccessControlListMappingRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipIpAccessControlListMappingRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.ip_access_control_list_sid.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.ip_access_control_list_sid.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["ip_access_control_list_sid".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["ip_access_control_list_sid".into()]
     }
 }
 
@@ -35479,69 +35639,70 @@ impl std::fmt::Display for ListSipIpAddressResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListSipIpAddressResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(ip_addresses) = &self.ip_addresses {
-                format!("{:?}", ip_addresses)
+                format!("{:?}", ip_addresses).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "ip_addresses".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "ip_addresses".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -35578,25 +35739,26 @@ impl std::fmt::Display for CreateSipIpAddressRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSipIpAddressRequest {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.friendly_name.clone(),
-            self.ip_address.clone(),
+            self.friendly_name.clone().into(),
+            self.ip_address.clone().into(),
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{:?}", cidr_prefix_length)
+                format!("{:?}", cidr_prefix_length).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "friendly_name".to_string(),
-            "ip_address".to_string(),
-            "cidr_prefix_length".to_string(),
+            "friendly_name".into(),
+            "ip_address".into(),
+            "cidr_prefix_length".into(),
         ]
     }
 }
@@ -35637,33 +35799,34 @@ impl std::fmt::Display for UpdateSipIpAddressRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSipIpAddressRequest {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(ip_address) = &self.ip_address {
-                format!("{:?}", ip_address)
+                format!("{:?}", ip_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cidr_prefix_length) = &self.cidr_prefix_length {
-                format!("{:?}", cidr_prefix_length)
+                format!("{:?}", cidr_prefix_length).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "ip_address".to_string(),
-            "friendly_name".to_string(),
-            "cidr_prefix_length".to_string(),
+            "ip_address".into(),
+            "friendly_name".into(),
+            "cidr_prefix_length".into(),
         ]
     }
 }
@@ -35677,11 +35840,11 @@ impl tabled::Tabled for UpdateSipIpAddressRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateSiprecRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -37132,1233 +37295,1234 @@ impl std::fmt::Display for CreateSiprecRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateSiprecRequest {
     const LENGTH: usize = 203;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(connector_name) = &self.connector_name {
-                format!("{:?}", connector_name)
+                format!("{:?}", connector_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(track) = &self.track {
-                format!("{:?}", track)
+                format!("{:?}", track).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_1_name) = &self.parameter_1_name {
-                format!("{:?}", parameter_1_name)
+                format!("{:?}", parameter_1_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_1_value) = &self.parameter_1_value {
-                format!("{:?}", parameter_1_value)
+                format!("{:?}", parameter_1_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_2_name) = &self.parameter_2_name {
-                format!("{:?}", parameter_2_name)
+                format!("{:?}", parameter_2_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_2_value) = &self.parameter_2_value {
-                format!("{:?}", parameter_2_value)
+                format!("{:?}", parameter_2_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_3_name) = &self.parameter_3_name {
-                format!("{:?}", parameter_3_name)
+                format!("{:?}", parameter_3_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_3_value) = &self.parameter_3_value {
-                format!("{:?}", parameter_3_value)
+                format!("{:?}", parameter_3_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_4_name) = &self.parameter_4_name {
-                format!("{:?}", parameter_4_name)
+                format!("{:?}", parameter_4_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_4_value) = &self.parameter_4_value {
-                format!("{:?}", parameter_4_value)
+                format!("{:?}", parameter_4_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_5_name) = &self.parameter_5_name {
-                format!("{:?}", parameter_5_name)
+                format!("{:?}", parameter_5_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_5_value) = &self.parameter_5_value {
-                format!("{:?}", parameter_5_value)
+                format!("{:?}", parameter_5_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_6_name) = &self.parameter_6_name {
-                format!("{:?}", parameter_6_name)
+                format!("{:?}", parameter_6_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_6_value) = &self.parameter_6_value {
-                format!("{:?}", parameter_6_value)
+                format!("{:?}", parameter_6_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_7_name) = &self.parameter_7_name {
-                format!("{:?}", parameter_7_name)
+                format!("{:?}", parameter_7_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_7_value) = &self.parameter_7_value {
-                format!("{:?}", parameter_7_value)
+                format!("{:?}", parameter_7_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_8_name) = &self.parameter_8_name {
-                format!("{:?}", parameter_8_name)
+                format!("{:?}", parameter_8_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_8_value) = &self.parameter_8_value {
-                format!("{:?}", parameter_8_value)
+                format!("{:?}", parameter_8_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_9_name) = &self.parameter_9_name {
-                format!("{:?}", parameter_9_name)
+                format!("{:?}", parameter_9_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_9_value) = &self.parameter_9_value {
-                format!("{:?}", parameter_9_value)
+                format!("{:?}", parameter_9_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_10_name) = &self.parameter_10_name {
-                format!("{:?}", parameter_10_name)
+                format!("{:?}", parameter_10_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_10_value) = &self.parameter_10_value {
-                format!("{:?}", parameter_10_value)
+                format!("{:?}", parameter_10_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_11_name) = &self.parameter_11_name {
-                format!("{:?}", parameter_11_name)
+                format!("{:?}", parameter_11_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_11_value) = &self.parameter_11_value {
-                format!("{:?}", parameter_11_value)
+                format!("{:?}", parameter_11_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_12_name) = &self.parameter_12_name {
-                format!("{:?}", parameter_12_name)
+                format!("{:?}", parameter_12_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_12_value) = &self.parameter_12_value {
-                format!("{:?}", parameter_12_value)
+                format!("{:?}", parameter_12_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_13_name) = &self.parameter_13_name {
-                format!("{:?}", parameter_13_name)
+                format!("{:?}", parameter_13_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_13_value) = &self.parameter_13_value {
-                format!("{:?}", parameter_13_value)
+                format!("{:?}", parameter_13_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_14_name) = &self.parameter_14_name {
-                format!("{:?}", parameter_14_name)
+                format!("{:?}", parameter_14_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_14_value) = &self.parameter_14_value {
-                format!("{:?}", parameter_14_value)
+                format!("{:?}", parameter_14_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_15_name) = &self.parameter_15_name {
-                format!("{:?}", parameter_15_name)
+                format!("{:?}", parameter_15_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_15_value) = &self.parameter_15_value {
-                format!("{:?}", parameter_15_value)
+                format!("{:?}", parameter_15_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_16_name) = &self.parameter_16_name {
-                format!("{:?}", parameter_16_name)
+                format!("{:?}", parameter_16_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_16_value) = &self.parameter_16_value {
-                format!("{:?}", parameter_16_value)
+                format!("{:?}", parameter_16_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_17_name) = &self.parameter_17_name {
-                format!("{:?}", parameter_17_name)
+                format!("{:?}", parameter_17_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_17_value) = &self.parameter_17_value {
-                format!("{:?}", parameter_17_value)
+                format!("{:?}", parameter_17_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_18_name) = &self.parameter_18_name {
-                format!("{:?}", parameter_18_name)
+                format!("{:?}", parameter_18_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_18_value) = &self.parameter_18_value {
-                format!("{:?}", parameter_18_value)
+                format!("{:?}", parameter_18_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_19_name) = &self.parameter_19_name {
-                format!("{:?}", parameter_19_name)
+                format!("{:?}", parameter_19_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_19_value) = &self.parameter_19_value {
-                format!("{:?}", parameter_19_value)
+                format!("{:?}", parameter_19_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_20_name) = &self.parameter_20_name {
-                format!("{:?}", parameter_20_name)
+                format!("{:?}", parameter_20_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_20_value) = &self.parameter_20_value {
-                format!("{:?}", parameter_20_value)
+                format!("{:?}", parameter_20_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_21_name) = &self.parameter_21_name {
-                format!("{:?}", parameter_21_name)
+                format!("{:?}", parameter_21_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_21_value) = &self.parameter_21_value {
-                format!("{:?}", parameter_21_value)
+                format!("{:?}", parameter_21_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_22_name) = &self.parameter_22_name {
-                format!("{:?}", parameter_22_name)
+                format!("{:?}", parameter_22_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_22_value) = &self.parameter_22_value {
-                format!("{:?}", parameter_22_value)
+                format!("{:?}", parameter_22_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_23_name) = &self.parameter_23_name {
-                format!("{:?}", parameter_23_name)
+                format!("{:?}", parameter_23_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_23_value) = &self.parameter_23_value {
-                format!("{:?}", parameter_23_value)
+                format!("{:?}", parameter_23_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_24_name) = &self.parameter_24_name {
-                format!("{:?}", parameter_24_name)
+                format!("{:?}", parameter_24_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_24_value) = &self.parameter_24_value {
-                format!("{:?}", parameter_24_value)
+                format!("{:?}", parameter_24_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_25_name) = &self.parameter_25_name {
-                format!("{:?}", parameter_25_name)
+                format!("{:?}", parameter_25_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_25_value) = &self.parameter_25_value {
-                format!("{:?}", parameter_25_value)
+                format!("{:?}", parameter_25_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_26_name) = &self.parameter_26_name {
-                format!("{:?}", parameter_26_name)
+                format!("{:?}", parameter_26_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_26_value) = &self.parameter_26_value {
-                format!("{:?}", parameter_26_value)
+                format!("{:?}", parameter_26_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_27_name) = &self.parameter_27_name {
-                format!("{:?}", parameter_27_name)
+                format!("{:?}", parameter_27_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_27_value) = &self.parameter_27_value {
-                format!("{:?}", parameter_27_value)
+                format!("{:?}", parameter_27_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_28_name) = &self.parameter_28_name {
-                format!("{:?}", parameter_28_name)
+                format!("{:?}", parameter_28_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_28_value) = &self.parameter_28_value {
-                format!("{:?}", parameter_28_value)
+                format!("{:?}", parameter_28_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_29_name) = &self.parameter_29_name {
-                format!("{:?}", parameter_29_name)
+                format!("{:?}", parameter_29_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_29_value) = &self.parameter_29_value {
-                format!("{:?}", parameter_29_value)
+                format!("{:?}", parameter_29_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_30_name) = &self.parameter_30_name {
-                format!("{:?}", parameter_30_name)
+                format!("{:?}", parameter_30_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_30_value) = &self.parameter_30_value {
-                format!("{:?}", parameter_30_value)
+                format!("{:?}", parameter_30_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_31_name) = &self.parameter_31_name {
-                format!("{:?}", parameter_31_name)
+                format!("{:?}", parameter_31_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_31_value) = &self.parameter_31_value {
-                format!("{:?}", parameter_31_value)
+                format!("{:?}", parameter_31_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_32_name) = &self.parameter_32_name {
-                format!("{:?}", parameter_32_name)
+                format!("{:?}", parameter_32_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_32_value) = &self.parameter_32_value {
-                format!("{:?}", parameter_32_value)
+                format!("{:?}", parameter_32_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_33_name) = &self.parameter_33_name {
-                format!("{:?}", parameter_33_name)
+                format!("{:?}", parameter_33_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_33_value) = &self.parameter_33_value {
-                format!("{:?}", parameter_33_value)
+                format!("{:?}", parameter_33_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_34_name) = &self.parameter_34_name {
-                format!("{:?}", parameter_34_name)
+                format!("{:?}", parameter_34_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_34_value) = &self.parameter_34_value {
-                format!("{:?}", parameter_34_value)
+                format!("{:?}", parameter_34_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_35_name) = &self.parameter_35_name {
-                format!("{:?}", parameter_35_name)
+                format!("{:?}", parameter_35_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_35_value) = &self.parameter_35_value {
-                format!("{:?}", parameter_35_value)
+                format!("{:?}", parameter_35_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_36_name) = &self.parameter_36_name {
-                format!("{:?}", parameter_36_name)
+                format!("{:?}", parameter_36_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_36_value) = &self.parameter_36_value {
-                format!("{:?}", parameter_36_value)
+                format!("{:?}", parameter_36_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_37_name) = &self.parameter_37_name {
-                format!("{:?}", parameter_37_name)
+                format!("{:?}", parameter_37_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_37_value) = &self.parameter_37_value {
-                format!("{:?}", parameter_37_value)
+                format!("{:?}", parameter_37_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_38_name) = &self.parameter_38_name {
-                format!("{:?}", parameter_38_name)
+                format!("{:?}", parameter_38_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_38_value) = &self.parameter_38_value {
-                format!("{:?}", parameter_38_value)
+                format!("{:?}", parameter_38_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_39_name) = &self.parameter_39_name {
-                format!("{:?}", parameter_39_name)
+                format!("{:?}", parameter_39_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_39_value) = &self.parameter_39_value {
-                format!("{:?}", parameter_39_value)
+                format!("{:?}", parameter_39_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_40_name) = &self.parameter_40_name {
-                format!("{:?}", parameter_40_name)
+                format!("{:?}", parameter_40_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_40_value) = &self.parameter_40_value {
-                format!("{:?}", parameter_40_value)
+                format!("{:?}", parameter_40_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_41_name) = &self.parameter_41_name {
-                format!("{:?}", parameter_41_name)
+                format!("{:?}", parameter_41_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_41_value) = &self.parameter_41_value {
-                format!("{:?}", parameter_41_value)
+                format!("{:?}", parameter_41_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_42_name) = &self.parameter_42_name {
-                format!("{:?}", parameter_42_name)
+                format!("{:?}", parameter_42_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_42_value) = &self.parameter_42_value {
-                format!("{:?}", parameter_42_value)
+                format!("{:?}", parameter_42_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_43_name) = &self.parameter_43_name {
-                format!("{:?}", parameter_43_name)
+                format!("{:?}", parameter_43_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_43_value) = &self.parameter_43_value {
-                format!("{:?}", parameter_43_value)
+                format!("{:?}", parameter_43_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_44_name) = &self.parameter_44_name {
-                format!("{:?}", parameter_44_name)
+                format!("{:?}", parameter_44_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_44_value) = &self.parameter_44_value {
-                format!("{:?}", parameter_44_value)
+                format!("{:?}", parameter_44_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_45_name) = &self.parameter_45_name {
-                format!("{:?}", parameter_45_name)
+                format!("{:?}", parameter_45_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_45_value) = &self.parameter_45_value {
-                format!("{:?}", parameter_45_value)
+                format!("{:?}", parameter_45_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_46_name) = &self.parameter_46_name {
-                format!("{:?}", parameter_46_name)
+                format!("{:?}", parameter_46_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_46_value) = &self.parameter_46_value {
-                format!("{:?}", parameter_46_value)
+                format!("{:?}", parameter_46_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_47_name) = &self.parameter_47_name {
-                format!("{:?}", parameter_47_name)
+                format!("{:?}", parameter_47_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_47_value) = &self.parameter_47_value {
-                format!("{:?}", parameter_47_value)
+                format!("{:?}", parameter_47_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_48_name) = &self.parameter_48_name {
-                format!("{:?}", parameter_48_name)
+                format!("{:?}", parameter_48_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_48_value) = &self.parameter_48_value {
-                format!("{:?}", parameter_48_value)
+                format!("{:?}", parameter_48_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_49_name) = &self.parameter_49_name {
-                format!("{:?}", parameter_49_name)
+                format!("{:?}", parameter_49_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_49_value) = &self.parameter_49_value {
-                format!("{:?}", parameter_49_value)
+                format!("{:?}", parameter_49_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_50_name) = &self.parameter_50_name {
-                format!("{:?}", parameter_50_name)
+                format!("{:?}", parameter_50_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_50_value) = &self.parameter_50_value {
-                format!("{:?}", parameter_50_value)
+                format!("{:?}", parameter_50_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_51_name) = &self.parameter_51_name {
-                format!("{:?}", parameter_51_name)
+                format!("{:?}", parameter_51_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_51_value) = &self.parameter_51_value {
-                format!("{:?}", parameter_51_value)
+                format!("{:?}", parameter_51_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_52_name) = &self.parameter_52_name {
-                format!("{:?}", parameter_52_name)
+                format!("{:?}", parameter_52_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_52_value) = &self.parameter_52_value {
-                format!("{:?}", parameter_52_value)
+                format!("{:?}", parameter_52_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_53_name) = &self.parameter_53_name {
-                format!("{:?}", parameter_53_name)
+                format!("{:?}", parameter_53_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_53_value) = &self.parameter_53_value {
-                format!("{:?}", parameter_53_value)
+                format!("{:?}", parameter_53_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_54_name) = &self.parameter_54_name {
-                format!("{:?}", parameter_54_name)
+                format!("{:?}", parameter_54_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_54_value) = &self.parameter_54_value {
-                format!("{:?}", parameter_54_value)
+                format!("{:?}", parameter_54_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_55_name) = &self.parameter_55_name {
-                format!("{:?}", parameter_55_name)
+                format!("{:?}", parameter_55_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_55_value) = &self.parameter_55_value {
-                format!("{:?}", parameter_55_value)
+                format!("{:?}", parameter_55_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_56_name) = &self.parameter_56_name {
-                format!("{:?}", parameter_56_name)
+                format!("{:?}", parameter_56_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_56_value) = &self.parameter_56_value {
-                format!("{:?}", parameter_56_value)
+                format!("{:?}", parameter_56_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_57_name) = &self.parameter_57_name {
-                format!("{:?}", parameter_57_name)
+                format!("{:?}", parameter_57_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_57_value) = &self.parameter_57_value {
-                format!("{:?}", parameter_57_value)
+                format!("{:?}", parameter_57_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_58_name) = &self.parameter_58_name {
-                format!("{:?}", parameter_58_name)
+                format!("{:?}", parameter_58_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_58_value) = &self.parameter_58_value {
-                format!("{:?}", parameter_58_value)
+                format!("{:?}", parameter_58_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_59_name) = &self.parameter_59_name {
-                format!("{:?}", parameter_59_name)
+                format!("{:?}", parameter_59_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_59_value) = &self.parameter_59_value {
-                format!("{:?}", parameter_59_value)
+                format!("{:?}", parameter_59_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_60_name) = &self.parameter_60_name {
-                format!("{:?}", parameter_60_name)
+                format!("{:?}", parameter_60_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_60_value) = &self.parameter_60_value {
-                format!("{:?}", parameter_60_value)
+                format!("{:?}", parameter_60_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_61_name) = &self.parameter_61_name {
-                format!("{:?}", parameter_61_name)
+                format!("{:?}", parameter_61_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_61_value) = &self.parameter_61_value {
-                format!("{:?}", parameter_61_value)
+                format!("{:?}", parameter_61_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_62_name) = &self.parameter_62_name {
-                format!("{:?}", parameter_62_name)
+                format!("{:?}", parameter_62_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_62_value) = &self.parameter_62_value {
-                format!("{:?}", parameter_62_value)
+                format!("{:?}", parameter_62_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_63_name) = &self.parameter_63_name {
-                format!("{:?}", parameter_63_name)
+                format!("{:?}", parameter_63_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_63_value) = &self.parameter_63_value {
-                format!("{:?}", parameter_63_value)
+                format!("{:?}", parameter_63_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_64_name) = &self.parameter_64_name {
-                format!("{:?}", parameter_64_name)
+                format!("{:?}", parameter_64_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_64_value) = &self.parameter_64_value {
-                format!("{:?}", parameter_64_value)
+                format!("{:?}", parameter_64_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_65_name) = &self.parameter_65_name {
-                format!("{:?}", parameter_65_name)
+                format!("{:?}", parameter_65_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_65_value) = &self.parameter_65_value {
-                format!("{:?}", parameter_65_value)
+                format!("{:?}", parameter_65_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_66_name) = &self.parameter_66_name {
-                format!("{:?}", parameter_66_name)
+                format!("{:?}", parameter_66_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_66_value) = &self.parameter_66_value {
-                format!("{:?}", parameter_66_value)
+                format!("{:?}", parameter_66_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_67_name) = &self.parameter_67_name {
-                format!("{:?}", parameter_67_name)
+                format!("{:?}", parameter_67_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_67_value) = &self.parameter_67_value {
-                format!("{:?}", parameter_67_value)
+                format!("{:?}", parameter_67_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_68_name) = &self.parameter_68_name {
-                format!("{:?}", parameter_68_name)
+                format!("{:?}", parameter_68_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_68_value) = &self.parameter_68_value {
-                format!("{:?}", parameter_68_value)
+                format!("{:?}", parameter_68_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_69_name) = &self.parameter_69_name {
-                format!("{:?}", parameter_69_name)
+                format!("{:?}", parameter_69_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_69_value) = &self.parameter_69_value {
-                format!("{:?}", parameter_69_value)
+                format!("{:?}", parameter_69_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_70_name) = &self.parameter_70_name {
-                format!("{:?}", parameter_70_name)
+                format!("{:?}", parameter_70_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_70_value) = &self.parameter_70_value {
-                format!("{:?}", parameter_70_value)
+                format!("{:?}", parameter_70_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_71_name) = &self.parameter_71_name {
-                format!("{:?}", parameter_71_name)
+                format!("{:?}", parameter_71_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_71_value) = &self.parameter_71_value {
-                format!("{:?}", parameter_71_value)
+                format!("{:?}", parameter_71_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_72_name) = &self.parameter_72_name {
-                format!("{:?}", parameter_72_name)
+                format!("{:?}", parameter_72_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_72_value) = &self.parameter_72_value {
-                format!("{:?}", parameter_72_value)
+                format!("{:?}", parameter_72_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_73_name) = &self.parameter_73_name {
-                format!("{:?}", parameter_73_name)
+                format!("{:?}", parameter_73_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_73_value) = &self.parameter_73_value {
-                format!("{:?}", parameter_73_value)
+                format!("{:?}", parameter_73_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_74_name) = &self.parameter_74_name {
-                format!("{:?}", parameter_74_name)
+                format!("{:?}", parameter_74_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_74_value) = &self.parameter_74_value {
-                format!("{:?}", parameter_74_value)
+                format!("{:?}", parameter_74_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_75_name) = &self.parameter_75_name {
-                format!("{:?}", parameter_75_name)
+                format!("{:?}", parameter_75_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_75_value) = &self.parameter_75_value {
-                format!("{:?}", parameter_75_value)
+                format!("{:?}", parameter_75_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_76_name) = &self.parameter_76_name {
-                format!("{:?}", parameter_76_name)
+                format!("{:?}", parameter_76_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_76_value) = &self.parameter_76_value {
-                format!("{:?}", parameter_76_value)
+                format!("{:?}", parameter_76_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_77_name) = &self.parameter_77_name {
-                format!("{:?}", parameter_77_name)
+                format!("{:?}", parameter_77_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_77_value) = &self.parameter_77_value {
-                format!("{:?}", parameter_77_value)
+                format!("{:?}", parameter_77_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_78_name) = &self.parameter_78_name {
-                format!("{:?}", parameter_78_name)
+                format!("{:?}", parameter_78_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_78_value) = &self.parameter_78_value {
-                format!("{:?}", parameter_78_value)
+                format!("{:?}", parameter_78_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_79_name) = &self.parameter_79_name {
-                format!("{:?}", parameter_79_name)
+                format!("{:?}", parameter_79_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_79_value) = &self.parameter_79_value {
-                format!("{:?}", parameter_79_value)
+                format!("{:?}", parameter_79_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_80_name) = &self.parameter_80_name {
-                format!("{:?}", parameter_80_name)
+                format!("{:?}", parameter_80_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_80_value) = &self.parameter_80_value {
-                format!("{:?}", parameter_80_value)
+                format!("{:?}", parameter_80_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_81_name) = &self.parameter_81_name {
-                format!("{:?}", parameter_81_name)
+                format!("{:?}", parameter_81_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_81_value) = &self.parameter_81_value {
-                format!("{:?}", parameter_81_value)
+                format!("{:?}", parameter_81_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_82_name) = &self.parameter_82_name {
-                format!("{:?}", parameter_82_name)
+                format!("{:?}", parameter_82_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_82_value) = &self.parameter_82_value {
-                format!("{:?}", parameter_82_value)
+                format!("{:?}", parameter_82_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_83_name) = &self.parameter_83_name {
-                format!("{:?}", parameter_83_name)
+                format!("{:?}", parameter_83_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_83_value) = &self.parameter_83_value {
-                format!("{:?}", parameter_83_value)
+                format!("{:?}", parameter_83_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_84_name) = &self.parameter_84_name {
-                format!("{:?}", parameter_84_name)
+                format!("{:?}", parameter_84_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_84_value) = &self.parameter_84_value {
-                format!("{:?}", parameter_84_value)
+                format!("{:?}", parameter_84_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_85_name) = &self.parameter_85_name {
-                format!("{:?}", parameter_85_name)
+                format!("{:?}", parameter_85_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_85_value) = &self.parameter_85_value {
-                format!("{:?}", parameter_85_value)
+                format!("{:?}", parameter_85_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_86_name) = &self.parameter_86_name {
-                format!("{:?}", parameter_86_name)
+                format!("{:?}", parameter_86_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_86_value) = &self.parameter_86_value {
-                format!("{:?}", parameter_86_value)
+                format!("{:?}", parameter_86_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_87_name) = &self.parameter_87_name {
-                format!("{:?}", parameter_87_name)
+                format!("{:?}", parameter_87_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_87_value) = &self.parameter_87_value {
-                format!("{:?}", parameter_87_value)
+                format!("{:?}", parameter_87_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_88_name) = &self.parameter_88_name {
-                format!("{:?}", parameter_88_name)
+                format!("{:?}", parameter_88_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_88_value) = &self.parameter_88_value {
-                format!("{:?}", parameter_88_value)
+                format!("{:?}", parameter_88_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_89_name) = &self.parameter_89_name {
-                format!("{:?}", parameter_89_name)
+                format!("{:?}", parameter_89_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_89_value) = &self.parameter_89_value {
-                format!("{:?}", parameter_89_value)
+                format!("{:?}", parameter_89_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_90_name) = &self.parameter_90_name {
-                format!("{:?}", parameter_90_name)
+                format!("{:?}", parameter_90_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_90_value) = &self.parameter_90_value {
-                format!("{:?}", parameter_90_value)
+                format!("{:?}", parameter_90_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_91_name) = &self.parameter_91_name {
-                format!("{:?}", parameter_91_name)
+                format!("{:?}", parameter_91_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_91_value) = &self.parameter_91_value {
-                format!("{:?}", parameter_91_value)
+                format!("{:?}", parameter_91_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_92_name) = &self.parameter_92_name {
-                format!("{:?}", parameter_92_name)
+                format!("{:?}", parameter_92_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_92_value) = &self.parameter_92_value {
-                format!("{:?}", parameter_92_value)
+                format!("{:?}", parameter_92_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_93_name) = &self.parameter_93_name {
-                format!("{:?}", parameter_93_name)
+                format!("{:?}", parameter_93_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_93_value) = &self.parameter_93_value {
-                format!("{:?}", parameter_93_value)
+                format!("{:?}", parameter_93_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_94_name) = &self.parameter_94_name {
-                format!("{:?}", parameter_94_name)
+                format!("{:?}", parameter_94_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_94_value) = &self.parameter_94_value {
-                format!("{:?}", parameter_94_value)
+                format!("{:?}", parameter_94_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_95_name) = &self.parameter_95_name {
-                format!("{:?}", parameter_95_name)
+                format!("{:?}", parameter_95_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_95_value) = &self.parameter_95_value {
-                format!("{:?}", parameter_95_value)
+                format!("{:?}", parameter_95_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_96_name) = &self.parameter_96_name {
-                format!("{:?}", parameter_96_name)
+                format!("{:?}", parameter_96_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_96_value) = &self.parameter_96_value {
-                format!("{:?}", parameter_96_value)
+                format!("{:?}", parameter_96_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_97_name) = &self.parameter_97_name {
-                format!("{:?}", parameter_97_name)
+                format!("{:?}", parameter_97_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_97_value) = &self.parameter_97_value {
-                format!("{:?}", parameter_97_value)
+                format!("{:?}", parameter_97_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_98_name) = &self.parameter_98_name {
-                format!("{:?}", parameter_98_name)
+                format!("{:?}", parameter_98_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_98_value) = &self.parameter_98_value {
-                format!("{:?}", parameter_98_value)
+                format!("{:?}", parameter_98_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_99_name) = &self.parameter_99_name {
-                format!("{:?}", parameter_99_name)
+                format!("{:?}", parameter_99_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_99_value) = &self.parameter_99_value {
-                format!("{:?}", parameter_99_value)
+                format!("{:?}", parameter_99_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "connector_name".to_string(),
-            "track".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "parameter_1_name".to_string(),
-            "parameter_1_value".to_string(),
-            "parameter_2_name".to_string(),
-            "parameter_2_value".to_string(),
-            "parameter_3_name".to_string(),
-            "parameter_3_value".to_string(),
-            "parameter_4_name".to_string(),
-            "parameter_4_value".to_string(),
-            "parameter_5_name".to_string(),
-            "parameter_5_value".to_string(),
-            "parameter_6_name".to_string(),
-            "parameter_6_value".to_string(),
-            "parameter_7_name".to_string(),
-            "parameter_7_value".to_string(),
-            "parameter_8_name".to_string(),
-            "parameter_8_value".to_string(),
-            "parameter_9_name".to_string(),
-            "parameter_9_value".to_string(),
-            "parameter_10_name".to_string(),
-            "parameter_10_value".to_string(),
-            "parameter_11_name".to_string(),
-            "parameter_11_value".to_string(),
-            "parameter_12_name".to_string(),
-            "parameter_12_value".to_string(),
-            "parameter_13_name".to_string(),
-            "parameter_13_value".to_string(),
-            "parameter_14_name".to_string(),
-            "parameter_14_value".to_string(),
-            "parameter_15_name".to_string(),
-            "parameter_15_value".to_string(),
-            "parameter_16_name".to_string(),
-            "parameter_16_value".to_string(),
-            "parameter_17_name".to_string(),
-            "parameter_17_value".to_string(),
-            "parameter_18_name".to_string(),
-            "parameter_18_value".to_string(),
-            "parameter_19_name".to_string(),
-            "parameter_19_value".to_string(),
-            "parameter_20_name".to_string(),
-            "parameter_20_value".to_string(),
-            "parameter_21_name".to_string(),
-            "parameter_21_value".to_string(),
-            "parameter_22_name".to_string(),
-            "parameter_22_value".to_string(),
-            "parameter_23_name".to_string(),
-            "parameter_23_value".to_string(),
-            "parameter_24_name".to_string(),
-            "parameter_24_value".to_string(),
-            "parameter_25_name".to_string(),
-            "parameter_25_value".to_string(),
-            "parameter_26_name".to_string(),
-            "parameter_26_value".to_string(),
-            "parameter_27_name".to_string(),
-            "parameter_27_value".to_string(),
-            "parameter_28_name".to_string(),
-            "parameter_28_value".to_string(),
-            "parameter_29_name".to_string(),
-            "parameter_29_value".to_string(),
-            "parameter_30_name".to_string(),
-            "parameter_30_value".to_string(),
-            "parameter_31_name".to_string(),
-            "parameter_31_value".to_string(),
-            "parameter_32_name".to_string(),
-            "parameter_32_value".to_string(),
-            "parameter_33_name".to_string(),
-            "parameter_33_value".to_string(),
-            "parameter_34_name".to_string(),
-            "parameter_34_value".to_string(),
-            "parameter_35_name".to_string(),
-            "parameter_35_value".to_string(),
-            "parameter_36_name".to_string(),
-            "parameter_36_value".to_string(),
-            "parameter_37_name".to_string(),
-            "parameter_37_value".to_string(),
-            "parameter_38_name".to_string(),
-            "parameter_38_value".to_string(),
-            "parameter_39_name".to_string(),
-            "parameter_39_value".to_string(),
-            "parameter_40_name".to_string(),
-            "parameter_40_value".to_string(),
-            "parameter_41_name".to_string(),
-            "parameter_41_value".to_string(),
-            "parameter_42_name".to_string(),
-            "parameter_42_value".to_string(),
-            "parameter_43_name".to_string(),
-            "parameter_43_value".to_string(),
-            "parameter_44_name".to_string(),
-            "parameter_44_value".to_string(),
-            "parameter_45_name".to_string(),
-            "parameter_45_value".to_string(),
-            "parameter_46_name".to_string(),
-            "parameter_46_value".to_string(),
-            "parameter_47_name".to_string(),
-            "parameter_47_value".to_string(),
-            "parameter_48_name".to_string(),
-            "parameter_48_value".to_string(),
-            "parameter_49_name".to_string(),
-            "parameter_49_value".to_string(),
-            "parameter_50_name".to_string(),
-            "parameter_50_value".to_string(),
-            "parameter_51_name".to_string(),
-            "parameter_51_value".to_string(),
-            "parameter_52_name".to_string(),
-            "parameter_52_value".to_string(),
-            "parameter_53_name".to_string(),
-            "parameter_53_value".to_string(),
-            "parameter_54_name".to_string(),
-            "parameter_54_value".to_string(),
-            "parameter_55_name".to_string(),
-            "parameter_55_value".to_string(),
-            "parameter_56_name".to_string(),
-            "parameter_56_value".to_string(),
-            "parameter_57_name".to_string(),
-            "parameter_57_value".to_string(),
-            "parameter_58_name".to_string(),
-            "parameter_58_value".to_string(),
-            "parameter_59_name".to_string(),
-            "parameter_59_value".to_string(),
-            "parameter_60_name".to_string(),
-            "parameter_60_value".to_string(),
-            "parameter_61_name".to_string(),
-            "parameter_61_value".to_string(),
-            "parameter_62_name".to_string(),
-            "parameter_62_value".to_string(),
-            "parameter_63_name".to_string(),
-            "parameter_63_value".to_string(),
-            "parameter_64_name".to_string(),
-            "parameter_64_value".to_string(),
-            "parameter_65_name".to_string(),
-            "parameter_65_value".to_string(),
-            "parameter_66_name".to_string(),
-            "parameter_66_value".to_string(),
-            "parameter_67_name".to_string(),
-            "parameter_67_value".to_string(),
-            "parameter_68_name".to_string(),
-            "parameter_68_value".to_string(),
-            "parameter_69_name".to_string(),
-            "parameter_69_value".to_string(),
-            "parameter_70_name".to_string(),
-            "parameter_70_value".to_string(),
-            "parameter_71_name".to_string(),
-            "parameter_71_value".to_string(),
-            "parameter_72_name".to_string(),
-            "parameter_72_value".to_string(),
-            "parameter_73_name".to_string(),
-            "parameter_73_value".to_string(),
-            "parameter_74_name".to_string(),
-            "parameter_74_value".to_string(),
-            "parameter_75_name".to_string(),
-            "parameter_75_value".to_string(),
-            "parameter_76_name".to_string(),
-            "parameter_76_value".to_string(),
-            "parameter_77_name".to_string(),
-            "parameter_77_value".to_string(),
-            "parameter_78_name".to_string(),
-            "parameter_78_value".to_string(),
-            "parameter_79_name".to_string(),
-            "parameter_79_value".to_string(),
-            "parameter_80_name".to_string(),
-            "parameter_80_value".to_string(),
-            "parameter_81_name".to_string(),
-            "parameter_81_value".to_string(),
-            "parameter_82_name".to_string(),
-            "parameter_82_value".to_string(),
-            "parameter_83_name".to_string(),
-            "parameter_83_value".to_string(),
-            "parameter_84_name".to_string(),
-            "parameter_84_value".to_string(),
-            "parameter_85_name".to_string(),
-            "parameter_85_value".to_string(),
-            "parameter_86_name".to_string(),
-            "parameter_86_value".to_string(),
-            "parameter_87_name".to_string(),
-            "parameter_87_value".to_string(),
-            "parameter_88_name".to_string(),
-            "parameter_88_value".to_string(),
-            "parameter_89_name".to_string(),
-            "parameter_89_value".to_string(),
-            "parameter_90_name".to_string(),
-            "parameter_90_value".to_string(),
-            "parameter_91_name".to_string(),
-            "parameter_91_value".to_string(),
-            "parameter_92_name".to_string(),
-            "parameter_92_value".to_string(),
-            "parameter_93_name".to_string(),
-            "parameter_93_value".to_string(),
-            "parameter_94_name".to_string(),
-            "parameter_94_value".to_string(),
-            "parameter_95_name".to_string(),
-            "parameter_95_value".to_string(),
-            "parameter_96_name".to_string(),
-            "parameter_96_value".to_string(),
-            "parameter_97_name".to_string(),
-            "parameter_97_value".to_string(),
-            "parameter_98_name".to_string(),
-            "parameter_98_value".to_string(),
-            "parameter_99_name".to_string(),
-            "parameter_99_value".to_string(),
+            "name".into(),
+            "connector_name".into(),
+            "track".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "parameter_1_name".into(),
+            "parameter_1_value".into(),
+            "parameter_2_name".into(),
+            "parameter_2_value".into(),
+            "parameter_3_name".into(),
+            "parameter_3_value".into(),
+            "parameter_4_name".into(),
+            "parameter_4_value".into(),
+            "parameter_5_name".into(),
+            "parameter_5_value".into(),
+            "parameter_6_name".into(),
+            "parameter_6_value".into(),
+            "parameter_7_name".into(),
+            "parameter_7_value".into(),
+            "parameter_8_name".into(),
+            "parameter_8_value".into(),
+            "parameter_9_name".into(),
+            "parameter_9_value".into(),
+            "parameter_10_name".into(),
+            "parameter_10_value".into(),
+            "parameter_11_name".into(),
+            "parameter_11_value".into(),
+            "parameter_12_name".into(),
+            "parameter_12_value".into(),
+            "parameter_13_name".into(),
+            "parameter_13_value".into(),
+            "parameter_14_name".into(),
+            "parameter_14_value".into(),
+            "parameter_15_name".into(),
+            "parameter_15_value".into(),
+            "parameter_16_name".into(),
+            "parameter_16_value".into(),
+            "parameter_17_name".into(),
+            "parameter_17_value".into(),
+            "parameter_18_name".into(),
+            "parameter_18_value".into(),
+            "parameter_19_name".into(),
+            "parameter_19_value".into(),
+            "parameter_20_name".into(),
+            "parameter_20_value".into(),
+            "parameter_21_name".into(),
+            "parameter_21_value".into(),
+            "parameter_22_name".into(),
+            "parameter_22_value".into(),
+            "parameter_23_name".into(),
+            "parameter_23_value".into(),
+            "parameter_24_name".into(),
+            "parameter_24_value".into(),
+            "parameter_25_name".into(),
+            "parameter_25_value".into(),
+            "parameter_26_name".into(),
+            "parameter_26_value".into(),
+            "parameter_27_name".into(),
+            "parameter_27_value".into(),
+            "parameter_28_name".into(),
+            "parameter_28_value".into(),
+            "parameter_29_name".into(),
+            "parameter_29_value".into(),
+            "parameter_30_name".into(),
+            "parameter_30_value".into(),
+            "parameter_31_name".into(),
+            "parameter_31_value".into(),
+            "parameter_32_name".into(),
+            "parameter_32_value".into(),
+            "parameter_33_name".into(),
+            "parameter_33_value".into(),
+            "parameter_34_name".into(),
+            "parameter_34_value".into(),
+            "parameter_35_name".into(),
+            "parameter_35_value".into(),
+            "parameter_36_name".into(),
+            "parameter_36_value".into(),
+            "parameter_37_name".into(),
+            "parameter_37_value".into(),
+            "parameter_38_name".into(),
+            "parameter_38_value".into(),
+            "parameter_39_name".into(),
+            "parameter_39_value".into(),
+            "parameter_40_name".into(),
+            "parameter_40_value".into(),
+            "parameter_41_name".into(),
+            "parameter_41_value".into(),
+            "parameter_42_name".into(),
+            "parameter_42_value".into(),
+            "parameter_43_name".into(),
+            "parameter_43_value".into(),
+            "parameter_44_name".into(),
+            "parameter_44_value".into(),
+            "parameter_45_name".into(),
+            "parameter_45_value".into(),
+            "parameter_46_name".into(),
+            "parameter_46_value".into(),
+            "parameter_47_name".into(),
+            "parameter_47_value".into(),
+            "parameter_48_name".into(),
+            "parameter_48_value".into(),
+            "parameter_49_name".into(),
+            "parameter_49_value".into(),
+            "parameter_50_name".into(),
+            "parameter_50_value".into(),
+            "parameter_51_name".into(),
+            "parameter_51_value".into(),
+            "parameter_52_name".into(),
+            "parameter_52_value".into(),
+            "parameter_53_name".into(),
+            "parameter_53_value".into(),
+            "parameter_54_name".into(),
+            "parameter_54_value".into(),
+            "parameter_55_name".into(),
+            "parameter_55_value".into(),
+            "parameter_56_name".into(),
+            "parameter_56_value".into(),
+            "parameter_57_name".into(),
+            "parameter_57_value".into(),
+            "parameter_58_name".into(),
+            "parameter_58_value".into(),
+            "parameter_59_name".into(),
+            "parameter_59_value".into(),
+            "parameter_60_name".into(),
+            "parameter_60_value".into(),
+            "parameter_61_name".into(),
+            "parameter_61_value".into(),
+            "parameter_62_name".into(),
+            "parameter_62_value".into(),
+            "parameter_63_name".into(),
+            "parameter_63_value".into(),
+            "parameter_64_name".into(),
+            "parameter_64_value".into(),
+            "parameter_65_name".into(),
+            "parameter_65_value".into(),
+            "parameter_66_name".into(),
+            "parameter_66_value".into(),
+            "parameter_67_name".into(),
+            "parameter_67_value".into(),
+            "parameter_68_name".into(),
+            "parameter_68_value".into(),
+            "parameter_69_name".into(),
+            "parameter_69_value".into(),
+            "parameter_70_name".into(),
+            "parameter_70_value".into(),
+            "parameter_71_name".into(),
+            "parameter_71_value".into(),
+            "parameter_72_name".into(),
+            "parameter_72_value".into(),
+            "parameter_73_name".into(),
+            "parameter_73_value".into(),
+            "parameter_74_name".into(),
+            "parameter_74_value".into(),
+            "parameter_75_name".into(),
+            "parameter_75_value".into(),
+            "parameter_76_name".into(),
+            "parameter_76_value".into(),
+            "parameter_77_name".into(),
+            "parameter_77_value".into(),
+            "parameter_78_name".into(),
+            "parameter_78_value".into(),
+            "parameter_79_name".into(),
+            "parameter_79_value".into(),
+            "parameter_80_name".into(),
+            "parameter_80_value".into(),
+            "parameter_81_name".into(),
+            "parameter_81_value".into(),
+            "parameter_82_name".into(),
+            "parameter_82_value".into(),
+            "parameter_83_name".into(),
+            "parameter_83_value".into(),
+            "parameter_84_name".into(),
+            "parameter_84_value".into(),
+            "parameter_85_name".into(),
+            "parameter_85_value".into(),
+            "parameter_86_name".into(),
+            "parameter_86_value".into(),
+            "parameter_87_name".into(),
+            "parameter_87_value".into(),
+            "parameter_88_name".into(),
+            "parameter_88_value".into(),
+            "parameter_89_name".into(),
+            "parameter_89_value".into(),
+            "parameter_90_name".into(),
+            "parameter_90_value".into(),
+            "parameter_91_name".into(),
+            "parameter_91_value".into(),
+            "parameter_92_name".into(),
+            "parameter_92_value".into(),
+            "parameter_93_name".into(),
+            "parameter_93_value".into(),
+            "parameter_94_name".into(),
+            "parameter_94_value".into(),
+            "parameter_95_name".into(),
+            "parameter_95_value".into(),
+            "parameter_96_name".into(),
+            "parameter_96_value".into(),
+            "parameter_97_name".into(),
+            "parameter_97_value".into(),
+            "parameter_98_name".into(),
+            "parameter_98_value".into(),
+            "parameter_99_name".into(),
+            "parameter_99_value".into(),
         ]
     }
 }
@@ -38381,14 +38545,15 @@ impl std::fmt::Display for UpdateSiprecRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateSiprecRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.status)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.status).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into()]
     }
 }
 
@@ -38401,11 +38566,11 @@ impl tabled::Tabled for UpdateSiprecRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateStreamRequestStatusCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -39852,1229 +40017,1230 @@ impl std::fmt::Display for CreateStreamRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateStreamRequest {
     const LENGTH: usize = 203;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.url.clone(),
+            self.url.clone().into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(track) = &self.track {
-                format!("{:?}", track)
+                format!("{:?}", track).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback) = &self.status_callback {
-                format!("{:?}", status_callback)
+                format!("{:?}", status_callback).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status_callback_method) = &self.status_callback_method {
-                format!("{:?}", status_callback_method)
+                format!("{:?}", status_callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_1_name) = &self.parameter_1_name {
-                format!("{:?}", parameter_1_name)
+                format!("{:?}", parameter_1_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_1_value) = &self.parameter_1_value {
-                format!("{:?}", parameter_1_value)
+                format!("{:?}", parameter_1_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_2_name) = &self.parameter_2_name {
-                format!("{:?}", parameter_2_name)
+                format!("{:?}", parameter_2_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_2_value) = &self.parameter_2_value {
-                format!("{:?}", parameter_2_value)
+                format!("{:?}", parameter_2_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_3_name) = &self.parameter_3_name {
-                format!("{:?}", parameter_3_name)
+                format!("{:?}", parameter_3_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_3_value) = &self.parameter_3_value {
-                format!("{:?}", parameter_3_value)
+                format!("{:?}", parameter_3_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_4_name) = &self.parameter_4_name {
-                format!("{:?}", parameter_4_name)
+                format!("{:?}", parameter_4_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_4_value) = &self.parameter_4_value {
-                format!("{:?}", parameter_4_value)
+                format!("{:?}", parameter_4_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_5_name) = &self.parameter_5_name {
-                format!("{:?}", parameter_5_name)
+                format!("{:?}", parameter_5_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_5_value) = &self.parameter_5_value {
-                format!("{:?}", parameter_5_value)
+                format!("{:?}", parameter_5_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_6_name) = &self.parameter_6_name {
-                format!("{:?}", parameter_6_name)
+                format!("{:?}", parameter_6_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_6_value) = &self.parameter_6_value {
-                format!("{:?}", parameter_6_value)
+                format!("{:?}", parameter_6_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_7_name) = &self.parameter_7_name {
-                format!("{:?}", parameter_7_name)
+                format!("{:?}", parameter_7_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_7_value) = &self.parameter_7_value {
-                format!("{:?}", parameter_7_value)
+                format!("{:?}", parameter_7_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_8_name) = &self.parameter_8_name {
-                format!("{:?}", parameter_8_name)
+                format!("{:?}", parameter_8_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_8_value) = &self.parameter_8_value {
-                format!("{:?}", parameter_8_value)
+                format!("{:?}", parameter_8_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_9_name) = &self.parameter_9_name {
-                format!("{:?}", parameter_9_name)
+                format!("{:?}", parameter_9_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_9_value) = &self.parameter_9_value {
-                format!("{:?}", parameter_9_value)
+                format!("{:?}", parameter_9_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_10_name) = &self.parameter_10_name {
-                format!("{:?}", parameter_10_name)
+                format!("{:?}", parameter_10_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_10_value) = &self.parameter_10_value {
-                format!("{:?}", parameter_10_value)
+                format!("{:?}", parameter_10_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_11_name) = &self.parameter_11_name {
-                format!("{:?}", parameter_11_name)
+                format!("{:?}", parameter_11_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_11_value) = &self.parameter_11_value {
-                format!("{:?}", parameter_11_value)
+                format!("{:?}", parameter_11_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_12_name) = &self.parameter_12_name {
-                format!("{:?}", parameter_12_name)
+                format!("{:?}", parameter_12_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_12_value) = &self.parameter_12_value {
-                format!("{:?}", parameter_12_value)
+                format!("{:?}", parameter_12_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_13_name) = &self.parameter_13_name {
-                format!("{:?}", parameter_13_name)
+                format!("{:?}", parameter_13_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_13_value) = &self.parameter_13_value {
-                format!("{:?}", parameter_13_value)
+                format!("{:?}", parameter_13_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_14_name) = &self.parameter_14_name {
-                format!("{:?}", parameter_14_name)
+                format!("{:?}", parameter_14_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_14_value) = &self.parameter_14_value {
-                format!("{:?}", parameter_14_value)
+                format!("{:?}", parameter_14_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_15_name) = &self.parameter_15_name {
-                format!("{:?}", parameter_15_name)
+                format!("{:?}", parameter_15_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_15_value) = &self.parameter_15_value {
-                format!("{:?}", parameter_15_value)
+                format!("{:?}", parameter_15_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_16_name) = &self.parameter_16_name {
-                format!("{:?}", parameter_16_name)
+                format!("{:?}", parameter_16_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_16_value) = &self.parameter_16_value {
-                format!("{:?}", parameter_16_value)
+                format!("{:?}", parameter_16_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_17_name) = &self.parameter_17_name {
-                format!("{:?}", parameter_17_name)
+                format!("{:?}", parameter_17_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_17_value) = &self.parameter_17_value {
-                format!("{:?}", parameter_17_value)
+                format!("{:?}", parameter_17_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_18_name) = &self.parameter_18_name {
-                format!("{:?}", parameter_18_name)
+                format!("{:?}", parameter_18_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_18_value) = &self.parameter_18_value {
-                format!("{:?}", parameter_18_value)
+                format!("{:?}", parameter_18_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_19_name) = &self.parameter_19_name {
-                format!("{:?}", parameter_19_name)
+                format!("{:?}", parameter_19_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_19_value) = &self.parameter_19_value {
-                format!("{:?}", parameter_19_value)
+                format!("{:?}", parameter_19_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_20_name) = &self.parameter_20_name {
-                format!("{:?}", parameter_20_name)
+                format!("{:?}", parameter_20_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_20_value) = &self.parameter_20_value {
-                format!("{:?}", parameter_20_value)
+                format!("{:?}", parameter_20_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_21_name) = &self.parameter_21_name {
-                format!("{:?}", parameter_21_name)
+                format!("{:?}", parameter_21_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_21_value) = &self.parameter_21_value {
-                format!("{:?}", parameter_21_value)
+                format!("{:?}", parameter_21_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_22_name) = &self.parameter_22_name {
-                format!("{:?}", parameter_22_name)
+                format!("{:?}", parameter_22_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_22_value) = &self.parameter_22_value {
-                format!("{:?}", parameter_22_value)
+                format!("{:?}", parameter_22_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_23_name) = &self.parameter_23_name {
-                format!("{:?}", parameter_23_name)
+                format!("{:?}", parameter_23_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_23_value) = &self.parameter_23_value {
-                format!("{:?}", parameter_23_value)
+                format!("{:?}", parameter_23_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_24_name) = &self.parameter_24_name {
-                format!("{:?}", parameter_24_name)
+                format!("{:?}", parameter_24_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_24_value) = &self.parameter_24_value {
-                format!("{:?}", parameter_24_value)
+                format!("{:?}", parameter_24_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_25_name) = &self.parameter_25_name {
-                format!("{:?}", parameter_25_name)
+                format!("{:?}", parameter_25_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_25_value) = &self.parameter_25_value {
-                format!("{:?}", parameter_25_value)
+                format!("{:?}", parameter_25_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_26_name) = &self.parameter_26_name {
-                format!("{:?}", parameter_26_name)
+                format!("{:?}", parameter_26_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_26_value) = &self.parameter_26_value {
-                format!("{:?}", parameter_26_value)
+                format!("{:?}", parameter_26_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_27_name) = &self.parameter_27_name {
-                format!("{:?}", parameter_27_name)
+                format!("{:?}", parameter_27_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_27_value) = &self.parameter_27_value {
-                format!("{:?}", parameter_27_value)
+                format!("{:?}", parameter_27_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_28_name) = &self.parameter_28_name {
-                format!("{:?}", parameter_28_name)
+                format!("{:?}", parameter_28_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_28_value) = &self.parameter_28_value {
-                format!("{:?}", parameter_28_value)
+                format!("{:?}", parameter_28_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_29_name) = &self.parameter_29_name {
-                format!("{:?}", parameter_29_name)
+                format!("{:?}", parameter_29_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_29_value) = &self.parameter_29_value {
-                format!("{:?}", parameter_29_value)
+                format!("{:?}", parameter_29_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_30_name) = &self.parameter_30_name {
-                format!("{:?}", parameter_30_name)
+                format!("{:?}", parameter_30_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_30_value) = &self.parameter_30_value {
-                format!("{:?}", parameter_30_value)
+                format!("{:?}", parameter_30_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_31_name) = &self.parameter_31_name {
-                format!("{:?}", parameter_31_name)
+                format!("{:?}", parameter_31_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_31_value) = &self.parameter_31_value {
-                format!("{:?}", parameter_31_value)
+                format!("{:?}", parameter_31_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_32_name) = &self.parameter_32_name {
-                format!("{:?}", parameter_32_name)
+                format!("{:?}", parameter_32_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_32_value) = &self.parameter_32_value {
-                format!("{:?}", parameter_32_value)
+                format!("{:?}", parameter_32_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_33_name) = &self.parameter_33_name {
-                format!("{:?}", parameter_33_name)
+                format!("{:?}", parameter_33_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_33_value) = &self.parameter_33_value {
-                format!("{:?}", parameter_33_value)
+                format!("{:?}", parameter_33_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_34_name) = &self.parameter_34_name {
-                format!("{:?}", parameter_34_name)
+                format!("{:?}", parameter_34_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_34_value) = &self.parameter_34_value {
-                format!("{:?}", parameter_34_value)
+                format!("{:?}", parameter_34_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_35_name) = &self.parameter_35_name {
-                format!("{:?}", parameter_35_name)
+                format!("{:?}", parameter_35_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_35_value) = &self.parameter_35_value {
-                format!("{:?}", parameter_35_value)
+                format!("{:?}", parameter_35_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_36_name) = &self.parameter_36_name {
-                format!("{:?}", parameter_36_name)
+                format!("{:?}", parameter_36_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_36_value) = &self.parameter_36_value {
-                format!("{:?}", parameter_36_value)
+                format!("{:?}", parameter_36_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_37_name) = &self.parameter_37_name {
-                format!("{:?}", parameter_37_name)
+                format!("{:?}", parameter_37_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_37_value) = &self.parameter_37_value {
-                format!("{:?}", parameter_37_value)
+                format!("{:?}", parameter_37_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_38_name) = &self.parameter_38_name {
-                format!("{:?}", parameter_38_name)
+                format!("{:?}", parameter_38_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_38_value) = &self.parameter_38_value {
-                format!("{:?}", parameter_38_value)
+                format!("{:?}", parameter_38_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_39_name) = &self.parameter_39_name {
-                format!("{:?}", parameter_39_name)
+                format!("{:?}", parameter_39_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_39_value) = &self.parameter_39_value {
-                format!("{:?}", parameter_39_value)
+                format!("{:?}", parameter_39_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_40_name) = &self.parameter_40_name {
-                format!("{:?}", parameter_40_name)
+                format!("{:?}", parameter_40_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_40_value) = &self.parameter_40_value {
-                format!("{:?}", parameter_40_value)
+                format!("{:?}", parameter_40_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_41_name) = &self.parameter_41_name {
-                format!("{:?}", parameter_41_name)
+                format!("{:?}", parameter_41_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_41_value) = &self.parameter_41_value {
-                format!("{:?}", parameter_41_value)
+                format!("{:?}", parameter_41_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_42_name) = &self.parameter_42_name {
-                format!("{:?}", parameter_42_name)
+                format!("{:?}", parameter_42_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_42_value) = &self.parameter_42_value {
-                format!("{:?}", parameter_42_value)
+                format!("{:?}", parameter_42_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_43_name) = &self.parameter_43_name {
-                format!("{:?}", parameter_43_name)
+                format!("{:?}", parameter_43_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_43_value) = &self.parameter_43_value {
-                format!("{:?}", parameter_43_value)
+                format!("{:?}", parameter_43_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_44_name) = &self.parameter_44_name {
-                format!("{:?}", parameter_44_name)
+                format!("{:?}", parameter_44_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_44_value) = &self.parameter_44_value {
-                format!("{:?}", parameter_44_value)
+                format!("{:?}", parameter_44_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_45_name) = &self.parameter_45_name {
-                format!("{:?}", parameter_45_name)
+                format!("{:?}", parameter_45_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_45_value) = &self.parameter_45_value {
-                format!("{:?}", parameter_45_value)
+                format!("{:?}", parameter_45_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_46_name) = &self.parameter_46_name {
-                format!("{:?}", parameter_46_name)
+                format!("{:?}", parameter_46_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_46_value) = &self.parameter_46_value {
-                format!("{:?}", parameter_46_value)
+                format!("{:?}", parameter_46_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_47_name) = &self.parameter_47_name {
-                format!("{:?}", parameter_47_name)
+                format!("{:?}", parameter_47_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_47_value) = &self.parameter_47_value {
-                format!("{:?}", parameter_47_value)
+                format!("{:?}", parameter_47_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_48_name) = &self.parameter_48_name {
-                format!("{:?}", parameter_48_name)
+                format!("{:?}", parameter_48_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_48_value) = &self.parameter_48_value {
-                format!("{:?}", parameter_48_value)
+                format!("{:?}", parameter_48_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_49_name) = &self.parameter_49_name {
-                format!("{:?}", parameter_49_name)
+                format!("{:?}", parameter_49_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_49_value) = &self.parameter_49_value {
-                format!("{:?}", parameter_49_value)
+                format!("{:?}", parameter_49_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_50_name) = &self.parameter_50_name {
-                format!("{:?}", parameter_50_name)
+                format!("{:?}", parameter_50_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_50_value) = &self.parameter_50_value {
-                format!("{:?}", parameter_50_value)
+                format!("{:?}", parameter_50_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_51_name) = &self.parameter_51_name {
-                format!("{:?}", parameter_51_name)
+                format!("{:?}", parameter_51_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_51_value) = &self.parameter_51_value {
-                format!("{:?}", parameter_51_value)
+                format!("{:?}", parameter_51_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_52_name) = &self.parameter_52_name {
-                format!("{:?}", parameter_52_name)
+                format!("{:?}", parameter_52_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_52_value) = &self.parameter_52_value {
-                format!("{:?}", parameter_52_value)
+                format!("{:?}", parameter_52_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_53_name) = &self.parameter_53_name {
-                format!("{:?}", parameter_53_name)
+                format!("{:?}", parameter_53_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_53_value) = &self.parameter_53_value {
-                format!("{:?}", parameter_53_value)
+                format!("{:?}", parameter_53_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_54_name) = &self.parameter_54_name {
-                format!("{:?}", parameter_54_name)
+                format!("{:?}", parameter_54_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_54_value) = &self.parameter_54_value {
-                format!("{:?}", parameter_54_value)
+                format!("{:?}", parameter_54_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_55_name) = &self.parameter_55_name {
-                format!("{:?}", parameter_55_name)
+                format!("{:?}", parameter_55_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_55_value) = &self.parameter_55_value {
-                format!("{:?}", parameter_55_value)
+                format!("{:?}", parameter_55_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_56_name) = &self.parameter_56_name {
-                format!("{:?}", parameter_56_name)
+                format!("{:?}", parameter_56_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_56_value) = &self.parameter_56_value {
-                format!("{:?}", parameter_56_value)
+                format!("{:?}", parameter_56_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_57_name) = &self.parameter_57_name {
-                format!("{:?}", parameter_57_name)
+                format!("{:?}", parameter_57_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_57_value) = &self.parameter_57_value {
-                format!("{:?}", parameter_57_value)
+                format!("{:?}", parameter_57_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_58_name) = &self.parameter_58_name {
-                format!("{:?}", parameter_58_name)
+                format!("{:?}", parameter_58_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_58_value) = &self.parameter_58_value {
-                format!("{:?}", parameter_58_value)
+                format!("{:?}", parameter_58_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_59_name) = &self.parameter_59_name {
-                format!("{:?}", parameter_59_name)
+                format!("{:?}", parameter_59_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_59_value) = &self.parameter_59_value {
-                format!("{:?}", parameter_59_value)
+                format!("{:?}", parameter_59_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_60_name) = &self.parameter_60_name {
-                format!("{:?}", parameter_60_name)
+                format!("{:?}", parameter_60_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_60_value) = &self.parameter_60_value {
-                format!("{:?}", parameter_60_value)
+                format!("{:?}", parameter_60_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_61_name) = &self.parameter_61_name {
-                format!("{:?}", parameter_61_name)
+                format!("{:?}", parameter_61_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_61_value) = &self.parameter_61_value {
-                format!("{:?}", parameter_61_value)
+                format!("{:?}", parameter_61_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_62_name) = &self.parameter_62_name {
-                format!("{:?}", parameter_62_name)
+                format!("{:?}", parameter_62_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_62_value) = &self.parameter_62_value {
-                format!("{:?}", parameter_62_value)
+                format!("{:?}", parameter_62_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_63_name) = &self.parameter_63_name {
-                format!("{:?}", parameter_63_name)
+                format!("{:?}", parameter_63_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_63_value) = &self.parameter_63_value {
-                format!("{:?}", parameter_63_value)
+                format!("{:?}", parameter_63_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_64_name) = &self.parameter_64_name {
-                format!("{:?}", parameter_64_name)
+                format!("{:?}", parameter_64_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_64_value) = &self.parameter_64_value {
-                format!("{:?}", parameter_64_value)
+                format!("{:?}", parameter_64_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_65_name) = &self.parameter_65_name {
-                format!("{:?}", parameter_65_name)
+                format!("{:?}", parameter_65_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_65_value) = &self.parameter_65_value {
-                format!("{:?}", parameter_65_value)
+                format!("{:?}", parameter_65_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_66_name) = &self.parameter_66_name {
-                format!("{:?}", parameter_66_name)
+                format!("{:?}", parameter_66_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_66_value) = &self.parameter_66_value {
-                format!("{:?}", parameter_66_value)
+                format!("{:?}", parameter_66_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_67_name) = &self.parameter_67_name {
-                format!("{:?}", parameter_67_name)
+                format!("{:?}", parameter_67_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_67_value) = &self.parameter_67_value {
-                format!("{:?}", parameter_67_value)
+                format!("{:?}", parameter_67_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_68_name) = &self.parameter_68_name {
-                format!("{:?}", parameter_68_name)
+                format!("{:?}", parameter_68_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_68_value) = &self.parameter_68_value {
-                format!("{:?}", parameter_68_value)
+                format!("{:?}", parameter_68_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_69_name) = &self.parameter_69_name {
-                format!("{:?}", parameter_69_name)
+                format!("{:?}", parameter_69_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_69_value) = &self.parameter_69_value {
-                format!("{:?}", parameter_69_value)
+                format!("{:?}", parameter_69_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_70_name) = &self.parameter_70_name {
-                format!("{:?}", parameter_70_name)
+                format!("{:?}", parameter_70_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_70_value) = &self.parameter_70_value {
-                format!("{:?}", parameter_70_value)
+                format!("{:?}", parameter_70_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_71_name) = &self.parameter_71_name {
-                format!("{:?}", parameter_71_name)
+                format!("{:?}", parameter_71_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_71_value) = &self.parameter_71_value {
-                format!("{:?}", parameter_71_value)
+                format!("{:?}", parameter_71_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_72_name) = &self.parameter_72_name {
-                format!("{:?}", parameter_72_name)
+                format!("{:?}", parameter_72_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_72_value) = &self.parameter_72_value {
-                format!("{:?}", parameter_72_value)
+                format!("{:?}", parameter_72_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_73_name) = &self.parameter_73_name {
-                format!("{:?}", parameter_73_name)
+                format!("{:?}", parameter_73_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_73_value) = &self.parameter_73_value {
-                format!("{:?}", parameter_73_value)
+                format!("{:?}", parameter_73_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_74_name) = &self.parameter_74_name {
-                format!("{:?}", parameter_74_name)
+                format!("{:?}", parameter_74_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_74_value) = &self.parameter_74_value {
-                format!("{:?}", parameter_74_value)
+                format!("{:?}", parameter_74_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_75_name) = &self.parameter_75_name {
-                format!("{:?}", parameter_75_name)
+                format!("{:?}", parameter_75_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_75_value) = &self.parameter_75_value {
-                format!("{:?}", parameter_75_value)
+                format!("{:?}", parameter_75_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_76_name) = &self.parameter_76_name {
-                format!("{:?}", parameter_76_name)
+                format!("{:?}", parameter_76_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_76_value) = &self.parameter_76_value {
-                format!("{:?}", parameter_76_value)
+                format!("{:?}", parameter_76_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_77_name) = &self.parameter_77_name {
-                format!("{:?}", parameter_77_name)
+                format!("{:?}", parameter_77_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_77_value) = &self.parameter_77_value {
-                format!("{:?}", parameter_77_value)
+                format!("{:?}", parameter_77_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_78_name) = &self.parameter_78_name {
-                format!("{:?}", parameter_78_name)
+                format!("{:?}", parameter_78_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_78_value) = &self.parameter_78_value {
-                format!("{:?}", parameter_78_value)
+                format!("{:?}", parameter_78_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_79_name) = &self.parameter_79_name {
-                format!("{:?}", parameter_79_name)
+                format!("{:?}", parameter_79_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_79_value) = &self.parameter_79_value {
-                format!("{:?}", parameter_79_value)
+                format!("{:?}", parameter_79_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_80_name) = &self.parameter_80_name {
-                format!("{:?}", parameter_80_name)
+                format!("{:?}", parameter_80_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_80_value) = &self.parameter_80_value {
-                format!("{:?}", parameter_80_value)
+                format!("{:?}", parameter_80_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_81_name) = &self.parameter_81_name {
-                format!("{:?}", parameter_81_name)
+                format!("{:?}", parameter_81_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_81_value) = &self.parameter_81_value {
-                format!("{:?}", parameter_81_value)
+                format!("{:?}", parameter_81_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_82_name) = &self.parameter_82_name {
-                format!("{:?}", parameter_82_name)
+                format!("{:?}", parameter_82_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_82_value) = &self.parameter_82_value {
-                format!("{:?}", parameter_82_value)
+                format!("{:?}", parameter_82_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_83_name) = &self.parameter_83_name {
-                format!("{:?}", parameter_83_name)
+                format!("{:?}", parameter_83_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_83_value) = &self.parameter_83_value {
-                format!("{:?}", parameter_83_value)
+                format!("{:?}", parameter_83_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_84_name) = &self.parameter_84_name {
-                format!("{:?}", parameter_84_name)
+                format!("{:?}", parameter_84_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_84_value) = &self.parameter_84_value {
-                format!("{:?}", parameter_84_value)
+                format!("{:?}", parameter_84_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_85_name) = &self.parameter_85_name {
-                format!("{:?}", parameter_85_name)
+                format!("{:?}", parameter_85_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_85_value) = &self.parameter_85_value {
-                format!("{:?}", parameter_85_value)
+                format!("{:?}", parameter_85_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_86_name) = &self.parameter_86_name {
-                format!("{:?}", parameter_86_name)
+                format!("{:?}", parameter_86_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_86_value) = &self.parameter_86_value {
-                format!("{:?}", parameter_86_value)
+                format!("{:?}", parameter_86_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_87_name) = &self.parameter_87_name {
-                format!("{:?}", parameter_87_name)
+                format!("{:?}", parameter_87_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_87_value) = &self.parameter_87_value {
-                format!("{:?}", parameter_87_value)
+                format!("{:?}", parameter_87_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_88_name) = &self.parameter_88_name {
-                format!("{:?}", parameter_88_name)
+                format!("{:?}", parameter_88_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_88_value) = &self.parameter_88_value {
-                format!("{:?}", parameter_88_value)
+                format!("{:?}", parameter_88_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_89_name) = &self.parameter_89_name {
-                format!("{:?}", parameter_89_name)
+                format!("{:?}", parameter_89_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_89_value) = &self.parameter_89_value {
-                format!("{:?}", parameter_89_value)
+                format!("{:?}", parameter_89_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_90_name) = &self.parameter_90_name {
-                format!("{:?}", parameter_90_name)
+                format!("{:?}", parameter_90_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_90_value) = &self.parameter_90_value {
-                format!("{:?}", parameter_90_value)
+                format!("{:?}", parameter_90_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_91_name) = &self.parameter_91_name {
-                format!("{:?}", parameter_91_name)
+                format!("{:?}", parameter_91_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_91_value) = &self.parameter_91_value {
-                format!("{:?}", parameter_91_value)
+                format!("{:?}", parameter_91_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_92_name) = &self.parameter_92_name {
-                format!("{:?}", parameter_92_name)
+                format!("{:?}", parameter_92_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_92_value) = &self.parameter_92_value {
-                format!("{:?}", parameter_92_value)
+                format!("{:?}", parameter_92_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_93_name) = &self.parameter_93_name {
-                format!("{:?}", parameter_93_name)
+                format!("{:?}", parameter_93_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_93_value) = &self.parameter_93_value {
-                format!("{:?}", parameter_93_value)
+                format!("{:?}", parameter_93_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_94_name) = &self.parameter_94_name {
-                format!("{:?}", parameter_94_name)
+                format!("{:?}", parameter_94_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_94_value) = &self.parameter_94_value {
-                format!("{:?}", parameter_94_value)
+                format!("{:?}", parameter_94_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_95_name) = &self.parameter_95_name {
-                format!("{:?}", parameter_95_name)
+                format!("{:?}", parameter_95_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_95_value) = &self.parameter_95_value {
-                format!("{:?}", parameter_95_value)
+                format!("{:?}", parameter_95_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_96_name) = &self.parameter_96_name {
-                format!("{:?}", parameter_96_name)
+                format!("{:?}", parameter_96_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_96_value) = &self.parameter_96_value {
-                format!("{:?}", parameter_96_value)
+                format!("{:?}", parameter_96_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_97_name) = &self.parameter_97_name {
-                format!("{:?}", parameter_97_name)
+                format!("{:?}", parameter_97_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_97_value) = &self.parameter_97_value {
-                format!("{:?}", parameter_97_value)
+                format!("{:?}", parameter_97_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_98_name) = &self.parameter_98_name {
-                format!("{:?}", parameter_98_name)
+                format!("{:?}", parameter_98_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_98_value) = &self.parameter_98_value {
-                format!("{:?}", parameter_98_value)
+                format!("{:?}", parameter_98_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_99_name) = &self.parameter_99_name {
-                format!("{:?}", parameter_99_name)
+                format!("{:?}", parameter_99_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(parameter_99_value) = &self.parameter_99_value {
-                format!("{:?}", parameter_99_value)
+                format!("{:?}", parameter_99_value).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "url".to_string(),
-            "name".to_string(),
-            "track".to_string(),
-            "status_callback".to_string(),
-            "status_callback_method".to_string(),
-            "parameter_1_name".to_string(),
-            "parameter_1_value".to_string(),
-            "parameter_2_name".to_string(),
-            "parameter_2_value".to_string(),
-            "parameter_3_name".to_string(),
-            "parameter_3_value".to_string(),
-            "parameter_4_name".to_string(),
-            "parameter_4_value".to_string(),
-            "parameter_5_name".to_string(),
-            "parameter_5_value".to_string(),
-            "parameter_6_name".to_string(),
-            "parameter_6_value".to_string(),
-            "parameter_7_name".to_string(),
-            "parameter_7_value".to_string(),
-            "parameter_8_name".to_string(),
-            "parameter_8_value".to_string(),
-            "parameter_9_name".to_string(),
-            "parameter_9_value".to_string(),
-            "parameter_10_name".to_string(),
-            "parameter_10_value".to_string(),
-            "parameter_11_name".to_string(),
-            "parameter_11_value".to_string(),
-            "parameter_12_name".to_string(),
-            "parameter_12_value".to_string(),
-            "parameter_13_name".to_string(),
-            "parameter_13_value".to_string(),
-            "parameter_14_name".to_string(),
-            "parameter_14_value".to_string(),
-            "parameter_15_name".to_string(),
-            "parameter_15_value".to_string(),
-            "parameter_16_name".to_string(),
-            "parameter_16_value".to_string(),
-            "parameter_17_name".to_string(),
-            "parameter_17_value".to_string(),
-            "parameter_18_name".to_string(),
-            "parameter_18_value".to_string(),
-            "parameter_19_name".to_string(),
-            "parameter_19_value".to_string(),
-            "parameter_20_name".to_string(),
-            "parameter_20_value".to_string(),
-            "parameter_21_name".to_string(),
-            "parameter_21_value".to_string(),
-            "parameter_22_name".to_string(),
-            "parameter_22_value".to_string(),
-            "parameter_23_name".to_string(),
-            "parameter_23_value".to_string(),
-            "parameter_24_name".to_string(),
-            "parameter_24_value".to_string(),
-            "parameter_25_name".to_string(),
-            "parameter_25_value".to_string(),
-            "parameter_26_name".to_string(),
-            "parameter_26_value".to_string(),
-            "parameter_27_name".to_string(),
-            "parameter_27_value".to_string(),
-            "parameter_28_name".to_string(),
-            "parameter_28_value".to_string(),
-            "parameter_29_name".to_string(),
-            "parameter_29_value".to_string(),
-            "parameter_30_name".to_string(),
-            "parameter_30_value".to_string(),
-            "parameter_31_name".to_string(),
-            "parameter_31_value".to_string(),
-            "parameter_32_name".to_string(),
-            "parameter_32_value".to_string(),
-            "parameter_33_name".to_string(),
-            "parameter_33_value".to_string(),
-            "parameter_34_name".to_string(),
-            "parameter_34_value".to_string(),
-            "parameter_35_name".to_string(),
-            "parameter_35_value".to_string(),
-            "parameter_36_name".to_string(),
-            "parameter_36_value".to_string(),
-            "parameter_37_name".to_string(),
-            "parameter_37_value".to_string(),
-            "parameter_38_name".to_string(),
-            "parameter_38_value".to_string(),
-            "parameter_39_name".to_string(),
-            "parameter_39_value".to_string(),
-            "parameter_40_name".to_string(),
-            "parameter_40_value".to_string(),
-            "parameter_41_name".to_string(),
-            "parameter_41_value".to_string(),
-            "parameter_42_name".to_string(),
-            "parameter_42_value".to_string(),
-            "parameter_43_name".to_string(),
-            "parameter_43_value".to_string(),
-            "parameter_44_name".to_string(),
-            "parameter_44_value".to_string(),
-            "parameter_45_name".to_string(),
-            "parameter_45_value".to_string(),
-            "parameter_46_name".to_string(),
-            "parameter_46_value".to_string(),
-            "parameter_47_name".to_string(),
-            "parameter_47_value".to_string(),
-            "parameter_48_name".to_string(),
-            "parameter_48_value".to_string(),
-            "parameter_49_name".to_string(),
-            "parameter_49_value".to_string(),
-            "parameter_50_name".to_string(),
-            "parameter_50_value".to_string(),
-            "parameter_51_name".to_string(),
-            "parameter_51_value".to_string(),
-            "parameter_52_name".to_string(),
-            "parameter_52_value".to_string(),
-            "parameter_53_name".to_string(),
-            "parameter_53_value".to_string(),
-            "parameter_54_name".to_string(),
-            "parameter_54_value".to_string(),
-            "parameter_55_name".to_string(),
-            "parameter_55_value".to_string(),
-            "parameter_56_name".to_string(),
-            "parameter_56_value".to_string(),
-            "parameter_57_name".to_string(),
-            "parameter_57_value".to_string(),
-            "parameter_58_name".to_string(),
-            "parameter_58_value".to_string(),
-            "parameter_59_name".to_string(),
-            "parameter_59_value".to_string(),
-            "parameter_60_name".to_string(),
-            "parameter_60_value".to_string(),
-            "parameter_61_name".to_string(),
-            "parameter_61_value".to_string(),
-            "parameter_62_name".to_string(),
-            "parameter_62_value".to_string(),
-            "parameter_63_name".to_string(),
-            "parameter_63_value".to_string(),
-            "parameter_64_name".to_string(),
-            "parameter_64_value".to_string(),
-            "parameter_65_name".to_string(),
-            "parameter_65_value".to_string(),
-            "parameter_66_name".to_string(),
-            "parameter_66_value".to_string(),
-            "parameter_67_name".to_string(),
-            "parameter_67_value".to_string(),
-            "parameter_68_name".to_string(),
-            "parameter_68_value".to_string(),
-            "parameter_69_name".to_string(),
-            "parameter_69_value".to_string(),
-            "parameter_70_name".to_string(),
-            "parameter_70_value".to_string(),
-            "parameter_71_name".to_string(),
-            "parameter_71_value".to_string(),
-            "parameter_72_name".to_string(),
-            "parameter_72_value".to_string(),
-            "parameter_73_name".to_string(),
-            "parameter_73_value".to_string(),
-            "parameter_74_name".to_string(),
-            "parameter_74_value".to_string(),
-            "parameter_75_name".to_string(),
-            "parameter_75_value".to_string(),
-            "parameter_76_name".to_string(),
-            "parameter_76_value".to_string(),
-            "parameter_77_name".to_string(),
-            "parameter_77_value".to_string(),
-            "parameter_78_name".to_string(),
-            "parameter_78_value".to_string(),
-            "parameter_79_name".to_string(),
-            "parameter_79_value".to_string(),
-            "parameter_80_name".to_string(),
-            "parameter_80_value".to_string(),
-            "parameter_81_name".to_string(),
-            "parameter_81_value".to_string(),
-            "parameter_82_name".to_string(),
-            "parameter_82_value".to_string(),
-            "parameter_83_name".to_string(),
-            "parameter_83_value".to_string(),
-            "parameter_84_name".to_string(),
-            "parameter_84_value".to_string(),
-            "parameter_85_name".to_string(),
-            "parameter_85_value".to_string(),
-            "parameter_86_name".to_string(),
-            "parameter_86_value".to_string(),
-            "parameter_87_name".to_string(),
-            "parameter_87_value".to_string(),
-            "parameter_88_name".to_string(),
-            "parameter_88_value".to_string(),
-            "parameter_89_name".to_string(),
-            "parameter_89_value".to_string(),
-            "parameter_90_name".to_string(),
-            "parameter_90_value".to_string(),
-            "parameter_91_name".to_string(),
-            "parameter_91_value".to_string(),
-            "parameter_92_name".to_string(),
-            "parameter_92_value".to_string(),
-            "parameter_93_name".to_string(),
-            "parameter_93_value".to_string(),
-            "parameter_94_name".to_string(),
-            "parameter_94_value".to_string(),
-            "parameter_95_name".to_string(),
-            "parameter_95_value".to_string(),
-            "parameter_96_name".to_string(),
-            "parameter_96_value".to_string(),
-            "parameter_97_name".to_string(),
-            "parameter_97_value".to_string(),
-            "parameter_98_name".to_string(),
-            "parameter_98_value".to_string(),
-            "parameter_99_name".to_string(),
-            "parameter_99_value".to_string(),
+            "url".into(),
+            "name".into(),
+            "track".into(),
+            "status_callback".into(),
+            "status_callback_method".into(),
+            "parameter_1_name".into(),
+            "parameter_1_value".into(),
+            "parameter_2_name".into(),
+            "parameter_2_value".into(),
+            "parameter_3_name".into(),
+            "parameter_3_value".into(),
+            "parameter_4_name".into(),
+            "parameter_4_value".into(),
+            "parameter_5_name".into(),
+            "parameter_5_value".into(),
+            "parameter_6_name".into(),
+            "parameter_6_value".into(),
+            "parameter_7_name".into(),
+            "parameter_7_value".into(),
+            "parameter_8_name".into(),
+            "parameter_8_value".into(),
+            "parameter_9_name".into(),
+            "parameter_9_value".into(),
+            "parameter_10_name".into(),
+            "parameter_10_value".into(),
+            "parameter_11_name".into(),
+            "parameter_11_value".into(),
+            "parameter_12_name".into(),
+            "parameter_12_value".into(),
+            "parameter_13_name".into(),
+            "parameter_13_value".into(),
+            "parameter_14_name".into(),
+            "parameter_14_value".into(),
+            "parameter_15_name".into(),
+            "parameter_15_value".into(),
+            "parameter_16_name".into(),
+            "parameter_16_value".into(),
+            "parameter_17_name".into(),
+            "parameter_17_value".into(),
+            "parameter_18_name".into(),
+            "parameter_18_value".into(),
+            "parameter_19_name".into(),
+            "parameter_19_value".into(),
+            "parameter_20_name".into(),
+            "parameter_20_value".into(),
+            "parameter_21_name".into(),
+            "parameter_21_value".into(),
+            "parameter_22_name".into(),
+            "parameter_22_value".into(),
+            "parameter_23_name".into(),
+            "parameter_23_value".into(),
+            "parameter_24_name".into(),
+            "parameter_24_value".into(),
+            "parameter_25_name".into(),
+            "parameter_25_value".into(),
+            "parameter_26_name".into(),
+            "parameter_26_value".into(),
+            "parameter_27_name".into(),
+            "parameter_27_value".into(),
+            "parameter_28_name".into(),
+            "parameter_28_value".into(),
+            "parameter_29_name".into(),
+            "parameter_29_value".into(),
+            "parameter_30_name".into(),
+            "parameter_30_value".into(),
+            "parameter_31_name".into(),
+            "parameter_31_value".into(),
+            "parameter_32_name".into(),
+            "parameter_32_value".into(),
+            "parameter_33_name".into(),
+            "parameter_33_value".into(),
+            "parameter_34_name".into(),
+            "parameter_34_value".into(),
+            "parameter_35_name".into(),
+            "parameter_35_value".into(),
+            "parameter_36_name".into(),
+            "parameter_36_value".into(),
+            "parameter_37_name".into(),
+            "parameter_37_value".into(),
+            "parameter_38_name".into(),
+            "parameter_38_value".into(),
+            "parameter_39_name".into(),
+            "parameter_39_value".into(),
+            "parameter_40_name".into(),
+            "parameter_40_value".into(),
+            "parameter_41_name".into(),
+            "parameter_41_value".into(),
+            "parameter_42_name".into(),
+            "parameter_42_value".into(),
+            "parameter_43_name".into(),
+            "parameter_43_value".into(),
+            "parameter_44_name".into(),
+            "parameter_44_value".into(),
+            "parameter_45_name".into(),
+            "parameter_45_value".into(),
+            "parameter_46_name".into(),
+            "parameter_46_value".into(),
+            "parameter_47_name".into(),
+            "parameter_47_value".into(),
+            "parameter_48_name".into(),
+            "parameter_48_value".into(),
+            "parameter_49_name".into(),
+            "parameter_49_value".into(),
+            "parameter_50_name".into(),
+            "parameter_50_value".into(),
+            "parameter_51_name".into(),
+            "parameter_51_value".into(),
+            "parameter_52_name".into(),
+            "parameter_52_value".into(),
+            "parameter_53_name".into(),
+            "parameter_53_value".into(),
+            "parameter_54_name".into(),
+            "parameter_54_value".into(),
+            "parameter_55_name".into(),
+            "parameter_55_value".into(),
+            "parameter_56_name".into(),
+            "parameter_56_value".into(),
+            "parameter_57_name".into(),
+            "parameter_57_value".into(),
+            "parameter_58_name".into(),
+            "parameter_58_value".into(),
+            "parameter_59_name".into(),
+            "parameter_59_value".into(),
+            "parameter_60_name".into(),
+            "parameter_60_value".into(),
+            "parameter_61_name".into(),
+            "parameter_61_value".into(),
+            "parameter_62_name".into(),
+            "parameter_62_value".into(),
+            "parameter_63_name".into(),
+            "parameter_63_value".into(),
+            "parameter_64_name".into(),
+            "parameter_64_value".into(),
+            "parameter_65_name".into(),
+            "parameter_65_value".into(),
+            "parameter_66_name".into(),
+            "parameter_66_value".into(),
+            "parameter_67_name".into(),
+            "parameter_67_value".into(),
+            "parameter_68_name".into(),
+            "parameter_68_value".into(),
+            "parameter_69_name".into(),
+            "parameter_69_value".into(),
+            "parameter_70_name".into(),
+            "parameter_70_value".into(),
+            "parameter_71_name".into(),
+            "parameter_71_value".into(),
+            "parameter_72_name".into(),
+            "parameter_72_value".into(),
+            "parameter_73_name".into(),
+            "parameter_73_value".into(),
+            "parameter_74_name".into(),
+            "parameter_74_value".into(),
+            "parameter_75_name".into(),
+            "parameter_75_value".into(),
+            "parameter_76_name".into(),
+            "parameter_76_value".into(),
+            "parameter_77_name".into(),
+            "parameter_77_value".into(),
+            "parameter_78_name".into(),
+            "parameter_78_value".into(),
+            "parameter_79_name".into(),
+            "parameter_79_value".into(),
+            "parameter_80_name".into(),
+            "parameter_80_value".into(),
+            "parameter_81_name".into(),
+            "parameter_81_value".into(),
+            "parameter_82_name".into(),
+            "parameter_82_value".into(),
+            "parameter_83_name".into(),
+            "parameter_83_value".into(),
+            "parameter_84_name".into(),
+            "parameter_84_value".into(),
+            "parameter_85_name".into(),
+            "parameter_85_value".into(),
+            "parameter_86_name".into(),
+            "parameter_86_value".into(),
+            "parameter_87_name".into(),
+            "parameter_87_value".into(),
+            "parameter_88_name".into(),
+            "parameter_88_value".into(),
+            "parameter_89_name".into(),
+            "parameter_89_value".into(),
+            "parameter_90_name".into(),
+            "parameter_90_value".into(),
+            "parameter_91_name".into(),
+            "parameter_91_value".into(),
+            "parameter_92_name".into(),
+            "parameter_92_value".into(),
+            "parameter_93_name".into(),
+            "parameter_93_value".into(),
+            "parameter_94_name".into(),
+            "parameter_94_value".into(),
+            "parameter_95_name".into(),
+            "parameter_95_value".into(),
+            "parameter_96_name".into(),
+            "parameter_96_value".into(),
+            "parameter_97_name".into(),
+            "parameter_97_value".into(),
+            "parameter_98_name".into(),
+            "parameter_98_value".into(),
+            "parameter_99_name".into(),
+            "parameter_99_value".into(),
         ]
     }
 }
@@ -41097,14 +41263,15 @@ impl std::fmt::Display for UpdateStreamRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateStreamRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.status)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.status).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into()]
     }
 }
 
@@ -41128,18 +41295,19 @@ impl std::fmt::Display for CreateTokenRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateTokenRequest {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(ttl) = &self.ttl {
-            format!("{:?}", ttl)
+            format!("{:?}", ttl).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["ttl".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["ttl".into()]
     }
 }
 
@@ -41177,69 +41345,70 @@ impl std::fmt::Display for ListTranscriptionResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTranscriptionResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(transcriptions) = &self.transcriptions {
-                format!("{:?}", transcriptions)
+                format!("{:?}", transcriptions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "transcriptions".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "transcriptions".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41278,69 +41447,70 @@ impl std::fmt::Display for ListUsageRecordResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41379,69 +41549,70 @@ impl std::fmt::Display for ListUsageRecordAllTimeResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordAllTimeResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41480,69 +41651,70 @@ impl std::fmt::Display for ListUsageRecordDailyResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordDailyResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41581,69 +41753,70 @@ impl std::fmt::Display for ListUsageRecordLastMonthResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordLastMonthResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41682,69 +41855,70 @@ impl std::fmt::Display for ListUsageRecordMonthlyResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordMonthlyResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41783,69 +41957,70 @@ impl std::fmt::Display for ListUsageRecordThisMonthResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordThisMonthResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41884,69 +42059,70 @@ impl std::fmt::Display for ListUsageRecordTodayResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordTodayResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -41985,69 +42161,70 @@ impl std::fmt::Display for ListUsageRecordYearlyResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordYearlyResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -42086,69 +42263,70 @@ impl std::fmt::Display for ListUsageRecordYesterdayResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageRecordYesterdayResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_records) = &self.usage_records {
-                format!("{:?}", usage_records)
+                format!("{:?}", usage_records).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_records".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_records".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -42163,11 +42341,11 @@ impl tabled::Tabled for ListUsageRecordYesterdayResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum UpdateUsageTriggerRequestCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -42228,33 +42406,34 @@ impl std::fmt::Display for UpdateUsageTriggerRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateUsageTriggerRequest {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(callback_method) = &self.callback_method {
-                format!("{:?}", callback_method)
+                format!("{:?}", callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(callback_url) = &self.callback_url {
-                format!("{:?}", callback_url)
+                format!("{:?}", callback_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "callback_method".to_string(),
-            "callback_url".to_string(),
-            "friendly_name".to_string(),
+            "callback_method".into(),
+            "callback_url".into(),
+            "friendly_name".into(),
         ]
     }
 }
@@ -42293,69 +42472,70 @@ impl std::fmt::Display for ListUsageTriggerResponse {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsageTriggerResponse {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(usage_triggers) = &self.usage_triggers {
-                format!("{:?}", usage_triggers)
+                format!("{:?}", usage_triggers).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(end) = &self.end {
-                format!("{:?}", end)
+                format!("{:?}", end).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_page_uri) = &self.first_page_uri {
-                format!("{:?}", first_page_uri)
+                format!("{:?}", first_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_page_uri) = &self.next_page_uri {
-                format!("{:?}", next_page_uri)
+                format!("{:?}", next_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page) = &self.page {
-                format!("{:?}", page)
+                format!("{:?}", page).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(page_size) = &self.page_size {
-                format!("{:?}", page_size)
+                format!("{:?}", page_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(previous_page_uri) = &self.previous_page_uri {
-                format!("{:?}", previous_page_uri)
+                format!("{:?}", previous_page_uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(start) = &self.start {
-                format!("{:?}", start)
+                format!("{:?}", start).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(uri) = &self.uri {
-                format!("{:?}", uri)
+                format!("{:?}", uri).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "usage_triggers".to_string(),
-            "end".to_string(),
-            "first_page_uri".to_string(),
-            "next_page_uri".to_string(),
-            "page".to_string(),
-            "page_size".to_string(),
-            "previous_page_uri".to_string(),
-            "start".to_string(),
-            "uri".to_string(),
+            "usage_triggers".into(),
+            "end".into(),
+            "first_page_uri".into(),
+            "next_page_uri".into(),
+            "page".into(),
+            "page_size".into(),
+            "previous_page_uri".into(),
+            "start".into(),
+            "uri".into(),
         ]
     }
 }
@@ -42370,11 +42550,11 @@ impl tabled::Tabled for ListUsageTriggerResponse {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateUsageTriggerRequestCallbackMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -42442,45 +42622,46 @@ impl std::fmt::Display for CreateUsageTriggerRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateUsageTriggerRequest {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.callback_url.clone(),
-            self.trigger_value.clone(),
-            format!("{:?}", self.usage_category),
+            self.callback_url.clone().into(),
+            self.trigger_value.clone().into(),
+            format!("{:?}", self.usage_category).into(),
             if let Some(callback_method) = &self.callback_method {
-                format!("{:?}", callback_method)
+                format!("{:?}", callback_method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(friendly_name) = &self.friendly_name {
-                format!("{:?}", friendly_name)
+                format!("{:?}", friendly_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recurring) = &self.recurring {
-                format!("{:?}", recurring)
+                format!("{:?}", recurring).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trigger_by) = &self.trigger_by {
-                format!("{:?}", trigger_by)
+                format!("{:?}", trigger_by).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "callback_url".to_string(),
-            "trigger_value".to_string(),
-            "usage_category".to_string(),
-            "callback_method".to_string(),
-            "friendly_name".to_string(),
-            "recurring".to_string(),
-            "trigger_by".to_string(),
+            "callback_url".into(),
+            "trigger_value".into(),
+            "usage_category".into(),
+            "callback_method".into(),
+            "friendly_name".into(),
+            "recurring".into(),
+            "trigger_by".into(),
         ]
     }
 }
@@ -42512,21 +42693,22 @@ impl std::fmt::Display for CreateUserDefinedMessageRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateUserDefinedMessageRequest {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.content.clone(),
+            self.content.clone().into(),
             if let Some(idempotency_key) = &self.idempotency_key {
-                format!("{:?}", idempotency_key)
+                format!("{:?}", idempotency_key).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["content".to_string(), "idempotency_key".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["content".into(), "idempotency_key".into()]
     }
 }
 
@@ -42540,11 +42722,11 @@ impl tabled::Tabled for CreateUserDefinedMessageRequest {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum CreateUserDefinedMessageSubscriptionRequestMethod {
     #[serde(rename = "HEAD")]
     #[display("HEAD")]
@@ -42598,29 +42780,26 @@ impl std::fmt::Display for CreateUserDefinedMessageSubscriptionRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateUserDefinedMessageSubscriptionRequest {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.callback.clone(),
+            self.callback.clone().into(),
             if let Some(idempotency_key) = &self.idempotency_key {
-                format!("{:?}", idempotency_key)
+                format!("{:?}", idempotency_key).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(method) = &self.method {
-                format!("{:?}", method)
+                format!("{:?}", method).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "callback".to_string(),
-            "idempotency_key".to_string(),
-            "method".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["callback".into(), "idempotency_key".into(), "method".into()]
     }
 }

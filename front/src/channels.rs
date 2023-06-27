@@ -148,7 +148,7 @@ impl Channels {
         }
     }
 
-    #[doc = "Update Channel\n\nUpdate a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The Channel ID (required)\n\n```rust,no_run\nasync fn example_channels_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .channels()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateChannel {\n                name: Some(\"some-string\".to_string()),\n                settings: Some(front_api::types::Settings {\n                    undo_send_time: Some(4 as i64),\n                    all_teammates_can_reply: Some(true),\n                }),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update Channel\n\nUpdate a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The Channel ID (required)\n\n```rust,no_run\nasync fn example_channels_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .channels()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateChannel {\n                name: Some(\"some-string\".to_string()),\n                settings: Some(front_api::types::Settings {\n                    undo_send_time: Some(4 as i64),\n                    all_teammates_can_reply: Some(false),\n                }),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -218,7 +218,7 @@ impl Channels {
              {\n                name: Some(\"some-string\".to_string()),\n                \
              settings: Some(front_api::types::CreateChannelSettings {\n                    \
              undo_send_time: Some(4 as i64),\n                    all_teammates_can_reply: \
-             Some(true),\n                }),\n                type_: \
+             Some(false),\n                }),\n                type_: \
              front_api::types::CreateChannelType::Twilio,\n                send_as: \
              Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
              Ok(())\n}\n```"]

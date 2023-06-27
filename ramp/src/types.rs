@@ -1,4 +1,5 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
@@ -426,14 +427,15 @@ impl std::fmt::Display for NestedPage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for NestedPage {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.next)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.next).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["next".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["next".into()]
     }
 }
 
@@ -479,93 +481,94 @@ impl std::fmt::Display for Business {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Business {
     const LENGTH: usize = 13;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(website) = &self.website {
-                format!("{:?}", website)
+                format!("{:?}", website).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_time) = &self.created_time {
-                format!("{:?}", created_time)
+                format!("{:?}", created_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(limit_locked) = &self.limit_locked {
-                format!("{:?}", limit_locked)
+                format!("{:?}", limit_locked).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(phone) = &self.phone {
-                format!("{:?}", phone)
+                format!("{:?}", phone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_on_card) = &self.business_name_on_card {
-                format!("{:?}", business_name_on_card)
+                format!("{:?}", business_name_on_card).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_integrated_with_slack) = &self.is_integrated_with_slack {
-                format!("{:?}", is_integrated_with_slack)
+                format!("{:?}", is_integrated_with_slack).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_reimbursements_enabled) = &self.is_reimbursements_enabled {
-                format!("{:?}", is_reimbursements_enabled)
+                format!("{:?}", is_reimbursements_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(initial_approved_limit) = &self.initial_approved_limit {
-                format!("{:?}", initial_approved_limit)
+                format!("{:?}", initial_approved_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_legal) = &self.business_name_legal {
-                format!("{:?}", business_name_legal)
+                format!("{:?}", business_name_legal).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(active) = &self.active {
-                format!("{:?}", active)
+                format!("{:?}", active).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(enforce_sso) = &self.enforce_sso {
-                format!("{:?}", enforce_sso)
+                format!("{:?}", enforce_sso).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(billing_address) = &self.billing_address {
-                format!("{:?}", billing_address)
+                format!("{:?}", billing_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "website".to_string(),
-            "created_time".to_string(),
-            "limit_locked".to_string(),
-            "phone".to_string(),
-            "business_name_on_card".to_string(),
-            "is_integrated_with_slack".to_string(),
-            "id".to_string(),
-            "is_reimbursements_enabled".to_string(),
-            "initial_approved_limit".to_string(),
-            "business_name_legal".to_string(),
-            "active".to_string(),
-            "enforce_sso".to_string(),
-            "billing_address".to_string(),
+            "website".into(),
+            "created_time".into(),
+            "limit_locked".into(),
+            "phone".into(),
+            "business_name_on_card".into(),
+            "is_integrated_with_slack".into(),
+            "id".into(),
+            "is_reimbursements_enabled".into(),
+            "initial_approved_limit".into(),
+            "business_name_legal".into(),
+            "active".into(),
+            "enforce_sso".into(),
+            "billing_address".into(),
         ]
     }
 }
@@ -614,99 +617,100 @@ impl std::fmt::Display for BusinessBalance {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for BusinessBalance {
     const LENGTH: usize = 14;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(card_balance_including_pending) = &self.card_balance_including_pending {
-                format!("{:?}", card_balance_including_pending)
+                format!("{:?}", card_balance_including_pending).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(balance_including_pending) = &self.balance_including_pending {
-                format!("{:?}", balance_including_pending)
+                format!("{:?}", balance_including_pending).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(statement_balance) = &self.statement_balance {
-                format!("{:?}", statement_balance)
+                format!("{:?}", statement_balance).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(available_flex_limit) = &self.available_flex_limit {
-                format!("{:?}", available_flex_limit)
+                format!("{:?}", available_flex_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(flex_balance) = &self.flex_balance {
-                format!("{:?}", flex_balance)
+                format!("{:?}", flex_balance).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_balance) = &self.max_balance {
-                format!("{:?}", max_balance)
+                format!("{:?}", max_balance).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(flex_limit) = &self.flex_limit {
-                format!("{:?}", flex_limit)
+                format!("{:?}", flex_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_limit) = &self.card_limit {
-                format!("{:?}", card_limit)
+                format!("{:?}", card_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(available_card_limit) = &self.available_card_limit {
-                format!("{:?}", available_card_limit)
+                format!("{:?}", available_card_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(next_billing_date) = &self.next_billing_date {
-                format!("{:?}", next_billing_date)
+                format!("{:?}", next_billing_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(float_balance_excluding_pending) = &self.float_balance_excluding_pending {
-                format!("{:?}", float_balance_excluding_pending)
+                format!("{:?}", float_balance_excluding_pending).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_balance_excluding_pending) = &self.card_balance_excluding_pending {
-                format!("{:?}", card_balance_excluding_pending)
+                format!("{:?}", card_balance_excluding_pending).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(prev_billing_date) = &self.prev_billing_date {
-                format!("{:?}", prev_billing_date)
+                format!("{:?}", prev_billing_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(global_limit) = &self.global_limit {
-                format!("{:?}", global_limit)
+                format!("{:?}", global_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "card_balance_including_pending".to_string(),
-            "balance_including_pending".to_string(),
-            "statement_balance".to_string(),
-            "available_flex_limit".to_string(),
-            "flex_balance".to_string(),
-            "max_balance".to_string(),
-            "flex_limit".to_string(),
-            "card_limit".to_string(),
-            "available_card_limit".to_string(),
-            "next_billing_date".to_string(),
-            "float_balance_excluding_pending".to_string(),
-            "card_balance_excluding_pending".to_string(),
-            "prev_billing_date".to_string(),
-            "global_limit".to_string(),
+            "card_balance_including_pending".into(),
+            "balance_including_pending".into(),
+            "statement_balance".into(),
+            "available_flex_limit".into(),
+            "flex_balance".into(),
+            "max_balance".into(),
+            "flex_limit".into(),
+            "card_limit".into(),
+            "available_card_limit".into(),
+            "next_billing_date".into(),
+            "float_balance_excluding_pending".into(),
+            "card_balance_excluding_pending".into(),
+            "prev_billing_date".into(),
+            "global_limit".into(),
         ]
     }
 }
@@ -740,45 +744,46 @@ impl std::fmt::Display for CardShippingAddress {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardShippingAddress {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.city.clone(),
+            self.city.clone().into(),
             if let Some(state) = &self.state {
-                format!("{:?}", state)
+                format!("{:?}", state).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(phone) = &self.phone {
-                format!("{:?}", phone)
+                format!("{:?}", phone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address_2) = &self.address_2 {
-                format!("{:?}", address_2)
+                format!("{:?}", address_2).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.postal_code.clone(),
-            self.country.clone(),
-            self.last_name.clone(),
-            self.address_1.clone(),
-            self.first_name.clone(),
+            self.postal_code.clone().into(),
+            self.country.clone().into(),
+            self.last_name.clone().into(),
+            self.address_1.clone().into(),
+            self.first_name.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "city".to_string(),
-            "state".to_string(),
-            "phone".to_string(),
-            "address_2".to_string(),
-            "postal_code".to_string(),
-            "country".to_string(),
-            "last_name".to_string(),
-            "address_1".to_string(),
-            "first_name".to_string(),
+            "city".into(),
+            "state".into(),
+            "phone".into(),
+            "address_2".into(),
+            "postal_code".into(),
+            "country".into(),
+            "last_name".into(),
+            "address_1".into(),
+            "first_name".into(),
         ]
     }
 }
@@ -791,11 +796,11 @@ impl tabled::Tabled for CardShippingAddress {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RecipientAddressVerificationState {
     #[serde(rename = "NOT_VERIFIED")]
     #[display("NOT_VERIFIED")]
@@ -832,41 +837,42 @@ impl std::fmt::Display for CardShipping {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardShipping {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(return_address) = &self.return_address {
-                format!("{:?}", return_address)
+                format!("{:?}", return_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(method) = &self.method {
-                format!("{:?}", method)
+                format!("{:?}", method).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recipient_address) = &self.recipient_address {
-                format!("{:?}", recipient_address)
+                format!("{:?}", recipient_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(recipient_address_verification_state) =
                 &self.recipient_address_verification_state
             {
-                format!("{:?}", recipient_address_verification_state)
+                format!("{:?}", recipient_address_verification_state).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "return_address".to_string(),
-            "method".to_string(),
-            "recipient_address".to_string(),
-            "recipient_address_verification_state".to_string(),
+            "return_address".into(),
+            "method".into(),
+            "recipient_address".into(),
+            "recipient_address_verification_state".into(),
         ]
     }
 }
@@ -889,18 +895,19 @@ impl std::fmt::Display for CardPersonalizationNameLine {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardPersonalizationNameLine {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(value) = &self.value {
-            format!("{:?}", value)
+            format!("{:?}", value).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["value".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["value".into()]
     }
 }
 
@@ -924,25 +931,26 @@ impl std::fmt::Display for CardPersonalizationText {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardPersonalizationText {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name_line_2) = &self.name_line_2 {
-                format!("{:?}", name_line_2)
+                format!("{:?}", name_line_2).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name_line_1) = &self.name_line_1 {
-                format!("{:?}", name_line_1)
+                format!("{:?}", name_line_1).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name_line_2".to_string(), "name_line_1".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name_line_2".into(), "name_line_1".into()]
     }
 }
 
@@ -964,18 +972,19 @@ impl std::fmt::Display for CardPersonalization {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardPersonalization {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(text) = &self.text {
-            format!("{:?}", text)
+            format!("{:?}", text).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["text".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["text".into()]
     }
 }
 
@@ -988,11 +997,11 @@ impl tabled::Tabled for CardPersonalization {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum FulfillmentStatus {
     #[serde(rename = "DELIVERED")]
     #[display("DELIVERED")]
@@ -1046,51 +1055,52 @@ impl std::fmt::Display for ApiCardFulfillment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardFulfillment {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(shipping_tracking_url) = &self.shipping_tracking_url {
-                format!("{:?}", shipping_tracking_url)
+                format!("{:?}", shipping_tracking_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(shipping_eta) = &self.shipping_eta {
-                format!("{:?}", shipping_eta)
+                format!("{:?}", shipping_eta).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(fulfillment_status) = &self.fulfillment_status {
-                format!("{:?}", fulfillment_status)
+                format!("{:?}", fulfillment_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(shipping) = &self.shipping {
-                format!("{:?}", shipping)
+                format!("{:?}", shipping).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_personalization) = &self.card_personalization {
-                format!("{:?}", card_personalization)
+                format!("{:?}", card_personalization).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(shipping_date) = &self.shipping_date {
-                format!("{:?}", shipping_date)
+                format!("{:?}", shipping_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "shipping_tracking_url".to_string(),
-            "shipping_eta".to_string(),
-            "fulfillment_status".to_string(),
-            "shipping".to_string(),
-            "card_personalization".to_string(),
-            "shipping_date".to_string(),
+            "shipping_tracking_url".into(),
+            "shipping_eta".into(),
+            "fulfillment_status".into(),
+            "shipping".into(),
+            "card_personalization".into(),
+            "shipping_date".into(),
         ]
     }
 }
@@ -1104,11 +1114,11 @@ impl tabled::Tabled for ApiCardFulfillment {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Interval {
     #[serde(rename = "ANNUAL")]
     #[display("ANNUAL")]
@@ -1172,57 +1182,58 @@ impl std::fmt::Display for ApiCardSpendingRestrictionsDump {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardSpendingRestrictionsDump {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(categories) = &self.categories {
-                format!("{:?}", categories)
+                format!("{:?}", categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(auto_lock_date) = &self.auto_lock_date {
-                format!("{:?}", auto_lock_date)
+                format!("{:?}", auto_lock_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(suspended) = &self.suspended {
-                format!("{:?}", suspended)
+                format!("{:?}", suspended).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_amount_limit) = &self.transaction_amount_limit {
-                format!("{:?}", transaction_amount_limit)
+                format!("{:?}", transaction_amount_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(interval) = &self.interval {
-                format!("{:?}", interval)
+                format!("{:?}", interval).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(blocked_categories) = &self.blocked_categories {
-                format!("{:?}", blocked_categories)
+                format!("{:?}", blocked_categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "categories".to_string(),
-            "auto_lock_date".to_string(),
-            "amount".to_string(),
-            "suspended".to_string(),
-            "transaction_amount_limit".to_string(),
-            "interval".to_string(),
-            "blocked_categories".to_string(),
+            "categories".into(),
+            "auto_lock_date".into(),
+            "amount".into(),
+            "suspended".into(),
+            "transaction_amount_limit".into(),
+            "interval".into(),
+            "blocked_categories".into(),
         ]
     }
 }
@@ -1236,11 +1247,11 @@ impl tabled::Tabled for ApiCardSpendingRestrictionsDump {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum State {
     #[serde(rename = "ACTIVE")]
     #[display("ACTIVE")]
@@ -1301,77 +1312,78 @@ impl std::fmt::Display for Card {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Card {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(fulfillment) = &self.fulfillment {
-                format!("{:?}", fulfillment)
+                format!("{:?}", fulfillment).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state) = &self.state {
-                format!("{:?}", state)
+                format!("{:?}", state).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cardholder_name) = &self.cardholder_name {
-                format!("{:?}", cardholder_name)
+                format!("{:?}", cardholder_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_program_id) = &self.card_program_id {
-                format!("{:?}", card_program_id)
+                format!("{:?}", card_program_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cardholder_id) = &self.cardholder_id {
-                format!("{:?}", cardholder_id)
+                format!("{:?}", cardholder_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(has_program_overridden) = &self.has_program_overridden {
-                format!("{:?}", has_program_overridden)
+                format!("{:?}", has_program_overridden).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_physical) = &self.is_physical {
-                format!("{:?}", is_physical)
+                format!("{:?}", is_physical).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(spending_restrictions) = &self.spending_restrictions {
-                format!("{:?}", spending_restrictions)
+                format!("{:?}", spending_restrictions).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.last_four.clone(),
+            self.last_four.clone().into(),
             if let Some(display_name) = &self.display_name {
-                format!("{:?}", display_name)
+                format!("{:?}", display_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "fulfillment".to_string(),
-            "state".to_string(),
-            "cardholder_name".to_string(),
-            "card_program_id".to_string(),
-            "id".to_string(),
-            "cardholder_id".to_string(),
-            "has_program_overridden".to_string(),
-            "is_physical".to_string(),
-            "spending_restrictions".to_string(),
-            "last_four".to_string(),
-            "display_name".to_string(),
+            "fulfillment".into(),
+            "state".into(),
+            "cardholder_name".into(),
+            "card_program_id".into(),
+            "id".into(),
+            "cardholder_id".into(),
+            "has_program_overridden".into(),
+            "is_physical".into(),
+            "spending_restrictions".into(),
+            "last_four".into(),
+            "display_name".into(),
         ]
     }
 }
@@ -1397,27 +1409,28 @@ impl std::fmt::Display for ApiCardAccountingRulesData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardAccountingRulesData {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounting_provider_access_uuid) = &self.accounting_provider_access_uuid {
-                format!("{:?}", accounting_provider_access_uuid)
+                format!("{:?}", accounting_provider_access_uuid).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.tracking_category_id),
-            format!("{:?}", self.tracking_category_option_id),
-            self.tracking_category_option_remote_name.clone(),
+            format!("{:?}", self.tracking_category_id).into(),
+            format!("{:?}", self.tracking_category_option_id).into(),
+            self.tracking_category_option_remote_name.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "accounting_provider_access_uuid".to_string(),
-            "tracking_category_id".to_string(),
-            "tracking_category_option_id".to_string(),
-            "tracking_category_option_remote_name".to_string(),
+            "accounting_provider_access_uuid".into(),
+            "tracking_category_id".into(),
+            "tracking_category_option_id".into(),
+            "tracking_category_option_remote_name".into(),
         ]
     }
 }
@@ -1468,87 +1481,88 @@ impl std::fmt::Display for ApiCardSpendingRestrictionsUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardSpendingRestrictionsUpdate {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(categories) = &self.categories {
-                format!("{:?}", categories)
+                format!("{:?}", categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(policy_id) = &self.policy_id {
-                format!("{:?}", policy_id)
+                format!("{:?}", policy_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(vendor_whitelist) = &self.vendor_whitelist {
-                format!("{:?}", vendor_whitelist)
+                format!("{:?}", vendor_whitelist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(blocked_mcc_codes) = &self.blocked_mcc_codes {
-                format!("{:?}", blocked_mcc_codes)
+                format!("{:?}", blocked_mcc_codes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(categories_blacklist) = &self.categories_blacklist {
-                format!("{:?}", categories_blacklist)
+                format!("{:?}", categories_blacklist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_accounting_rules) = &self.card_accounting_rules {
-                format!("{:?}", card_accounting_rules)
+                format!("{:?}", card_accounting_rules).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(vendor_blacklist) = &self.vendor_blacklist {
-                format!("{:?}", vendor_blacklist)
+                format!("{:?}", vendor_blacklist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(lock_date) = &self.lock_date {
-                format!("{:?}", lock_date)
+                format!("{:?}", lock_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(categories_whitelist) = &self.categories_whitelist {
-                format!("{:?}", categories_whitelist)
+                format!("{:?}", categories_whitelist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_amount_limit) = &self.transaction_amount_limit {
-                format!("{:?}", transaction_amount_limit)
+                format!("{:?}", transaction_amount_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(interval) = &self.interval {
-                format!("{:?}", interval)
+                format!("{:?}", interval).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "categories".to_string(),
-            "amount".to_string(),
-            "policy_id".to_string(),
-            "vendor_whitelist".to_string(),
-            "blocked_mcc_codes".to_string(),
-            "categories_blacklist".to_string(),
-            "card_accounting_rules".to_string(),
-            "vendor_blacklist".to_string(),
-            "lock_date".to_string(),
-            "categories_whitelist".to_string(),
-            "transaction_amount_limit".to_string(),
-            "interval".to_string(),
+            "categories".into(),
+            "amount".into(),
+            "policy_id".into(),
+            "vendor_whitelist".into(),
+            "blocked_mcc_codes".into(),
+            "categories_blacklist".into(),
+            "card_accounting_rules".into(),
+            "vendor_blacklist".into(),
+            "lock_date".into(),
+            "categories_whitelist".into(),
+            "transaction_amount_limit".into(),
+            "interval".into(),
         ]
     }
 }
@@ -1588,39 +1602,40 @@ impl std::fmt::Display for ApiCardUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardUpdate {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(card_program_id) = &self.card_program_id {
-                format!("{:?}", card_program_id)
+                format!("{:?}", card_program_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(display_name) = &self.display_name {
-                format!("{:?}", display_name)
+                format!("{:?}", display_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(has_notifications_enabled) = &self.has_notifications_enabled {
-                format!("{:?}", has_notifications_enabled)
+                format!("{:?}", has_notifications_enabled).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(spending_restrictions) = &self.spending_restrictions {
-                format!("{:?}", spending_restrictions)
+                format!("{:?}", spending_restrictions).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "card_program_id".to_string(),
-            "display_name".to_string(),
-            "has_notifications_enabled".to_string(),
-            "spending_restrictions".to_string(),
+            "card_program_id".into(),
+            "display_name".into(),
+            "has_notifications_enabled".into(),
+            "spending_restrictions".into(),
         ]
     }
 }
@@ -1643,14 +1658,15 @@ impl std::fmt::Display for DeferredTaskUUID {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeferredTaskUUID {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.id)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.id).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into()]
     }
 }
 
@@ -1674,14 +1690,15 @@ impl std::fmt::Display for ApiCardDeferredUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardDeferredUpdate {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.idempotency_key.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.idempotency_key.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["idempotency_key".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["idempotency_key".into()]
     }
 }
 
@@ -1704,14 +1721,15 @@ impl std::fmt::Display for DeveloperAPINestedPage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DeveloperAPINestedPage {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.next)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.next).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["next".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["next".into()]
     }
 }
 
@@ -1733,14 +1751,18 @@ impl std::fmt::Display for PaginatedResponseApiCardResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiCardResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -1764,25 +1786,26 @@ impl std::fmt::Display for CardFulfillment {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardFulfillment {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(shipping) = &self.shipping {
-                format!("{:?}", shipping)
+                format!("{:?}", shipping).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_personalization) = &self.card_personalization {
-                format!("{:?}", card_personalization)
+                format!("{:?}", card_personalization).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["shipping".to_string(), "card_personalization".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["shipping".into(), "card_personalization".into()]
     }
 }
 
@@ -1830,79 +1853,80 @@ impl std::fmt::Display for ApiCardSpendingRestrictionsLoad {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardSpendingRestrictionsLoad {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(categories) = &self.categories {
-                format!("{:?}", categories)
+                format!("{:?}", categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.amount),
+            format!("{:?}", self.amount).into(),
             if let Some(policy_id) = &self.policy_id {
-                format!("{:?}", policy_id)
+                format!("{:?}", policy_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(vendor_whitelist) = &self.vendor_whitelist {
-                format!("{:?}", vendor_whitelist)
+                format!("{:?}", vendor_whitelist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(blocked_mcc_codes) = &self.blocked_mcc_codes {
-                format!("{:?}", blocked_mcc_codes)
+                format!("{:?}", blocked_mcc_codes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(categories_blacklist) = &self.categories_blacklist {
-                format!("{:?}", categories_blacklist)
+                format!("{:?}", categories_blacklist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_accounting_rules) = &self.card_accounting_rules {
-                format!("{:?}", card_accounting_rules)
+                format!("{:?}", card_accounting_rules).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(vendor_blacklist) = &self.vendor_blacklist {
-                format!("{:?}", vendor_blacklist)
+                format!("{:?}", vendor_blacklist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(lock_date) = &self.lock_date {
-                format!("{:?}", lock_date)
+                format!("{:?}", lock_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(categories_whitelist) = &self.categories_whitelist {
-                format!("{:?}", categories_whitelist)
+                format!("{:?}", categories_whitelist).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_amount_limit) = &self.transaction_amount_limit {
-                format!("{:?}", transaction_amount_limit)
+                format!("{:?}", transaction_amount_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.interval),
+            format!("{:?}", self.interval).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "categories".to_string(),
-            "amount".to_string(),
-            "policy_id".to_string(),
-            "vendor_whitelist".to_string(),
-            "blocked_mcc_codes".to_string(),
-            "categories_blacklist".to_string(),
-            "card_accounting_rules".to_string(),
-            "vendor_blacklist".to_string(),
-            "lock_date".to_string(),
-            "categories_whitelist".to_string(),
-            "transaction_amount_limit".to_string(),
-            "interval".to_string(),
+            "categories".into(),
+            "amount".into(),
+            "policy_id".into(),
+            "vendor_whitelist".into(),
+            "blocked_mcc_codes".into(),
+            "categories_blacklist".into(),
+            "card_accounting_rules".into(),
+            "vendor_blacklist".into(),
+            "lock_date".into(),
+            "categories_whitelist".into(),
+            "transaction_amount_limit".into(),
+            "interval".into(),
         ]
     }
 }
@@ -1948,55 +1972,56 @@ impl std::fmt::Display for ApiCardRequest {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardRequest {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(fulfillment) = &self.fulfillment {
-                format!("{:?}", fulfillment)
+                format!("{:?}", fulfillment).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.user_id),
+            format!("{:?}", self.user_id).into(),
             if let Some(card_program_id) = &self.card_program_id {
-                format!("{:?}", card_program_id)
+                format!("{:?}", card_program_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.idempotency_key.clone(),
+            self.idempotency_key.clone().into(),
             if let Some(is_physical) = &self.is_physical {
-                format!("{:?}", is_physical)
+                format!("{:?}", is_physical).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(spending_restrictions) = &self.spending_restrictions {
-                format!("{:?}", spending_restrictions)
+                format!("{:?}", spending_restrictions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_temporary) = &self.is_temporary {
-                format!("{:?}", is_temporary)
+                format!("{:?}", is_temporary).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(display_name) = &self.display_name {
-                format!("{:?}", display_name)
+                format!("{:?}", display_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "fulfillment".to_string(),
-            "user_id".to_string(),
-            "card_program_id".to_string(),
-            "idempotency_key".to_string(),
-            "is_physical".to_string(),
-            "spending_restrictions".to_string(),
-            "is_temporary".to_string(),
-            "display_name".to_string(),
+            "fulfillment".into(),
+            "user_id".into(),
+            "card_program_id".into(),
+            "idempotency_key".into(),
+            "is_physical".into(),
+            "spending_restrictions".into(),
+            "is_temporary".into(),
+            "display_name".into(),
         ]
     }
 }
@@ -2023,25 +2048,26 @@ impl std::fmt::Display for ApiCardDeferredTaskData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardDeferredTaskData {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(card_id) = &self.card_id {
-                format!("{:?}", card_id)
+                format!("{:?}", card_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error) = &self.error {
-                format!("{:?}", error)
+                format!("{:?}", error).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["card_id".to_string(), "error".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["card_id".into(), "error".into()]
     }
 }
 
@@ -2071,30 +2097,31 @@ impl std::fmt::Display for CardDeferredTask {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CardDeferredTask {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{:?}", data).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "id".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "id".into(), "data".into()]
     }
 }
 
@@ -2129,45 +2156,46 @@ impl std::fmt::Display for ApiCardProgramSpendingRestrictions {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardProgramSpendingRestrictions {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(categories) = &self.categories {
-                format!("{:?}", categories)
+                format!("{:?}", categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(lock_date) = &self.lock_date {
-                format!("{:?}", lock_date)
+                format!("{:?}", lock_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_amount_limit) = &self.transaction_amount_limit {
-                format!("{:?}", transaction_amount_limit)
+                format!("{:?}", transaction_amount_limit).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(interval) = &self.interval {
-                format!("{:?}", interval)
+                format!("{:?}", interval).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "categories".to_string(),
-            "amount".to_string(),
-            "lock_date".to_string(),
-            "transaction_amount_limit".to_string(),
-            "interval".to_string(),
+            "categories".into(),
+            "amount".into(),
+            "lock_date".into(),
+            "transaction_amount_limit".into(),
+            "interval".into(),
         ]
     }
 }
@@ -2180,11 +2208,11 @@ impl tabled::Tabled for ApiCardProgramSpendingRestrictions {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Icon {
     AdvertisingIcon,
     CardIcon,
@@ -2234,57 +2262,58 @@ impl std::fmt::Display for ApiCardProgramResource {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardProgramResource {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default)
+                format!("{:?}", is_default).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_physical) = &self.is_physical {
-                format!("{:?}", is_physical)
+                format!("{:?}", is_physical).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(spending_restrictions) = &self.spending_restrictions {
-                format!("{:?}", spending_restrictions)
+                format!("{:?}", spending_restrictions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(display_name) = &self.display_name {
-                format!("{:?}", display_name)
+                format!("{:?}", display_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(description) = &self.description {
-                format!("{:?}", description)
+                format!("{:?}", description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(icon) = &self.icon {
-                format!("{:?}", icon)
+                format!("{:?}", icon).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "is_default".to_string(),
-            "is_physical".to_string(),
-            "spending_restrictions".to_string(),
-            "display_name".to_string(),
-            "description".to_string(),
-            "icon".to_string(),
+            "id".into(),
+            "is_default".into(),
+            "is_physical".into(),
+            "spending_restrictions".into(),
+            "display_name".into(),
+            "description".into(),
+            "icon".into(),
         ]
     }
 }
@@ -2307,14 +2336,18 @@ impl std::fmt::Display for PaginatedResponseApiCardProgramResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiCardProgramResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -2349,37 +2382,38 @@ impl std::fmt::Display for ApiCardProgramCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCardProgramCreate {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.acting_user_id),
-            format!("{:?}", self.business_id),
-            format!("{:?}", self.is_default),
-            format!("{:?}", self.is_physical),
-            format!("{:?}", self.spending_restrictions),
-            format!("{:?}", self.policy_id),
-            self.display_name.clone(),
-            self.description.clone(),
+            format!("{:?}", self.acting_user_id).into(),
+            format!("{:?}", self.business_id).into(),
+            format!("{:?}", self.is_default).into(),
+            format!("{:?}", self.is_physical).into(),
+            format!("{:?}", self.spending_restrictions).into(),
+            format!("{:?}", self.policy_id).into(),
+            self.display_name.clone().into(),
+            self.description.clone().into(),
             if let Some(icon) = &self.icon {
-                format!("{:?}", icon)
+                format!("{:?}", icon).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "acting_user_id".to_string(),
-            "business_id".to_string(),
-            "is_default".to_string(),
-            "is_physical".to_string(),
-            "spending_restrictions".to_string(),
-            "policy_id".to_string(),
-            "display_name".to_string(),
-            "description".to_string(),
-            "icon".to_string(),
+            "acting_user_id".into(),
+            "business_id".into(),
+            "is_default".into(),
+            "is_physical".into(),
+            "spending_restrictions".into(),
+            "policy_id".into(),
+            "display_name".into(),
+            "description".into(),
+            "icon".into(),
         ]
     }
 }
@@ -2402,18 +2436,19 @@ impl std::fmt::Display for CustomIdProvider {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomIdProvider {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(custom_id_provider) = &self.custom_id_provider {
-            format!("{:?}", custom_id_provider)
+            format!("{:?}", custom_id_provider).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["custom_id_provider".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["custom_id_provider".into()]
     }
 }
 
@@ -2434,14 +2469,15 @@ impl std::fmt::Display for ApiCustomIdProviderTokenCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCustomIdProviderTokenCreate {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.custom_id_provider)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.custom_id_provider).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["custom_id_provider".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["custom_id_provider".into()]
     }
 }
 
@@ -2463,18 +2499,19 @@ impl std::fmt::Display for RampId {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RampId {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(ramp_id) = &self.ramp_id {
-            format!("{:?}", ramp_id)
+            format!("{:?}", ramp_id).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["ramp_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["ramp_id".into()]
     }
 }
 
@@ -2496,18 +2533,19 @@ impl std::fmt::Display for CustomId {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomId {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(custom_id) = &self.custom_id {
-            format!("{:?}", custom_id)
+            format!("{:?}", custom_id).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["custom_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["custom_id".into()]
     }
 }
 
@@ -2519,11 +2557,11 @@ impl tabled::Tabled for CustomId {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ApiCustomIdMappingCustomId {
     #[serde(rename = "a")]
     #[display("a")]
@@ -2656,17 +2694,18 @@ impl std::fmt::Display for ApiCustomIdMapping {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiCustomIdMapping {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.custom_id),
-            format!("{:?}", self.ramp_id),
+            format!("{:?}", self.custom_id).into(),
+            format!("{:?}", self.ramp_id).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["custom_id".to_string(), "ramp_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["custom_id".into(), "ramp_id".into()]
     }
 }
 
@@ -2688,14 +2727,15 @@ impl std::fmt::Display for Department {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Department {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), format!("{:?}", self.id)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into(), format!("{:?}", self.id).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "id".into()]
     }
 }
 
@@ -2717,14 +2757,15 @@ impl std::fmt::Display for ApiDepartmentUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiDepartmentUpdate {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), format!("{:?}", self.id)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into(), format!("{:?}", self.id).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "id".into()]
     }
 }
 
@@ -2746,14 +2787,18 @@ impl std::fmt::Display for PaginatedResponseApiDepartmentResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiDepartmentResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -2775,14 +2820,18 @@ impl std::fmt::Display for ApiDepartmentCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiDepartmentCreate {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.business_id), self.name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.business_id).into(),
+            self.name.clone().into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["business_id".to_string(), "name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["business_id".into(), "name".into()]
     }
 }
 
@@ -2804,14 +2853,15 @@ impl std::fmt::Display for Location {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Location {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), format!("{:?}", self.id)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into(), format!("{:?}", self.id).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "id".into()]
     }
 }
 
@@ -2832,14 +2882,15 @@ impl std::fmt::Display for ApiLocationUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiLocationUpdate {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.name.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into()]
     }
 }
 
@@ -2861,14 +2912,18 @@ impl std::fmt::Display for PaginatedResponseApiLocationResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiLocationResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -2890,14 +2945,18 @@ impl std::fmt::Display for ApiLocationCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiLocationCreate {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), format!("{:?}", self.business_id)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.name.clone().into(),
+            format!("{:?}", self.business_id).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "business_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "business_id".into()]
     }
 }
 
@@ -2931,45 +2990,46 @@ impl std::fmt::Display for Receipt {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Receipt {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(user_id) = &self.user_id {
-                format!("{:?}", user_id)
+                format!("{:?}", user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_id) = &self.transaction_id {
-                format!("{:?}", transaction_id)
+                format!("{:?}", transaction_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(receipt_url) = &self.receipt_url {
-                format!("{:?}", receipt_url)
+                format!("{:?}", receipt_url).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "user_id".to_string(),
-            "transaction_id".to_string(),
-            "id".to_string(),
-            "receipt_url".to_string(),
-            "created_at".to_string(),
+            "user_id".into(),
+            "transaction_id".into(),
+            "id".into(),
+            "receipt_url".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -2992,14 +3052,18 @@ impl std::fmt::Display for PaginatedResponseApiReceiptResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiReceiptResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -3012,11 +3076,11 @@ impl tabled::Tabled for PaginatedResponseApiReceiptResourceSchema {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Type {
     #[serde(rename = "AMORTIZATION_TEMPLATE")]
     #[display("AMORTIZATION_TEMPLATE")]
@@ -3076,39 +3140,40 @@ impl std::fmt::Display for ApiReimbursementAccountingFieldSelection {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiReimbursementAccountingFieldSelection {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{:?}", external_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "name".to_string(),
-            "external_id".to_string(),
-            "type_".to_string(),
+            "id".into(),
+            "name".into(),
+            "external_id".into(),
+            "type_".into(),
         ]
     }
 }
@@ -3135,21 +3200,22 @@ impl std::fmt::Display for CurrencyAmount {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for CurrencyAmount {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(currency_code) = &self.currency_code {
-                format!("{:?}", currency_code)
+                format!("{:?}", currency_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.amount),
+            format!("{:?}", self.amount).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["currency_code".to_string(), "amount".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["currency_code".into(), "amount".into()]
     }
 }
 
@@ -3175,28 +3241,26 @@ impl std::fmt::Display for ApiReimbursementLineItem {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiReimbursementLineItem {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounting_field_selections) = &self.accounting_field_selections {
-                format!("{:?}", accounting_field_selections)
+                format!("{:?}", accounting_field_selections).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "accounting_field_selections".to_string(),
-            "amount".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["accounting_field_selections".into(), "amount".into()]
     }
 }
 
@@ -3210,11 +3274,11 @@ impl tabled::Tabled for ApiReimbursementLineItem {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Direction {
     #[serde(rename = "BUSINESS_TO_USER")]
     #[display("BUSINESS_TO_USER")]
@@ -3274,87 +3338,88 @@ impl std::fmt::Display for Reimbursement {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Reimbursement {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounting_field_selections) = &self.accounting_field_selections {
-                format!("{:?}", accounting_field_selections)
+                format!("{:?}", accounting_field_selections).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_id) = &self.user_id {
-                format!("{:?}", user_id)
+                format!("{:?}", user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(line_items) = &self.line_items {
-                format!("{:?}", line_items)
+                format!("{:?}", line_items).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(receipts) = &self.receipts {
-                format!("{:?}", receipts)
+                format!("{:?}", receipts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(currency) = &self.currency {
-                format!("{:?}", currency)
+                format!("{:?}", currency).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(transaction_date) = &self.transaction_date {
-                format!("{:?}", transaction_date)
+                format!("{:?}", transaction_date).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant) = &self.merchant {
-                format!("{:?}", merchant)
+                format!("{:?}", merchant).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(original_reimbursement_amount) = &self.original_reimbursement_amount {
-                format!("{:?}", original_reimbursement_amount)
+                format!("{:?}", original_reimbursement_amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(direction) = &self.direction {
-                format!("{:?}", direction)
+                format!("{:?}", direction).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "accounting_field_selections".to_string(),
-            "user_id".to_string(),
-            "amount".to_string(),
-            "line_items".to_string(),
-            "id".to_string(),
-            "receipts".to_string(),
-            "currency".to_string(),
-            "transaction_date".to_string(),
-            "merchant".to_string(),
-            "original_reimbursement_amount".to_string(),
-            "direction".to_string(),
-            "created_at".to_string(),
+            "accounting_field_selections".into(),
+            "user_id".into(),
+            "amount".into(),
+            "line_items".into(),
+            "id".into(),
+            "receipts".into(),
+            "currency".into(),
+            "transaction_date".into(),
+            "merchant".into(),
+            "original_reimbursement_amount".into(),
+            "direction".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -3377,14 +3442,18 @@ impl std::fmt::Display for PaginatedResponseApiReimbursementResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiReimbursementResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -3417,39 +3486,40 @@ impl std::fmt::Display for ApiTransactionAccountingFieldSelection {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionAccountingFieldSelection {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(external_id) = &self.external_id {
-                format!("{:?}", external_id)
+                format!("{:?}", external_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "name".to_string(),
-            "external_id".to_string(),
-            "type_".to_string(),
+            "id".into(),
+            "name".into(),
+            "external_id".into(),
+            "type_".into(),
         ]
     }
 }
@@ -3477,28 +3547,26 @@ impl std::fmt::Display for ApiTransactionLineItem {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionLineItem {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounting_field_selections) = &self.accounting_field_selections {
-                format!("{:?}", accounting_field_selections)
+                format!("{:?}", accounting_field_selections).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "accounting_field_selections".to_string(),
-            "amount".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["accounting_field_selections".into(), "amount".into()]
     }
 }
 
@@ -3530,39 +3598,40 @@ impl std::fmt::Display for ApiTransactionPolicyViolation {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionPolicyViolation {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(memo) = &self.memo {
-                format!("{:?}", memo)
+                format!("{:?}", memo).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "type_".to_string(),
-            "memo".to_string(),
-            "id".to_string(),
-            "created_at".to_string(),
+            "type_".into(),
+            "memo".into(),
+            "id".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -3596,39 +3665,40 @@ impl std::fmt::Display for ApiTransactionDispute {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionDispute {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(type_) = &self.type_ {
-                format!("{:?}", type_)
+                format!("{:?}", type_).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(memo) = &self.memo {
-                format!("{:?}", memo)
+                format!("{:?}", memo).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "type_".to_string(),
-            "memo".to_string(),
-            "id".to_string(),
-            "created_at".to_string(),
+            "type_".into(),
+            "memo".into(),
+            "id".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -3670,57 +3740,58 @@ impl std::fmt::Display for ApiTransactionCardHolder {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionCardHolder {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(user_id) = &self.user_id {
-                format!("{:?}", user_id)
+                format!("{:?}", user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(department_id) = &self.department_id {
-                format!("{:?}", department_id)
+                format!("{:?}", department_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location_id) = &self.location_id {
-                format!("{:?}", location_id)
+                format!("{:?}", location_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{:?}", last_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(department_name) = &self.department_name {
-                format!("{:?}", department_name)
+                format!("{:?}", department_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location_name) = &self.location_name {
-                format!("{:?}", location_name)
+                format!("{:?}", location_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{:?}", first_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "user_id".to_string(),
-            "department_id".to_string(),
-            "location_id".to_string(),
-            "last_name".to_string(),
-            "department_name".to_string(),
-            "location_name".to_string(),
-            "first_name".to_string(),
+            "user_id".into(),
+            "department_id".into(),
+            "location_id".into(),
+            "last_name".into(),
+            "department_name".into(),
+            "location_name".into(),
+            "first_name".into(),
         ]
     }
 }
@@ -3733,11 +3804,11 @@ impl tabled::Tabled for ApiTransactionCardHolder {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Reason {
     #[serde(rename = "AUTHORIZER")]
     #[display("AUTHORIZER")]
@@ -3878,25 +3949,26 @@ impl std::fmt::Display for ApiTransactionDeclineDetails {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiTransactionDeclineDetails {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(reason) = &self.reason {
-                format!("{:?}", reason)
+                format!("{:?}", reason).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["reason".to_string(), "amount".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["reason".into(), "amount".into()]
     }
 }
 
@@ -3928,45 +4000,46 @@ impl std::fmt::Display for ApiAccountingCategory {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiAccountingCategory {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tracking_category_remote_name) = &self.tracking_category_remote_name {
-                format!("{:?}", tracking_category_remote_name)
+                format!("{:?}", tracking_category_remote_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category_name) = &self.category_name {
-                format!("{:?}", category_name)
+                format!("{:?}", category_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(category_id) = &self.category_id {
-                format!("{:?}", category_id)
+                format!("{:?}", category_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tracking_category_remote_type) = &self.tracking_category_remote_type {
-                format!("{:?}", tracking_category_remote_type)
+                format!("{:?}", tracking_category_remote_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tracking_category_remote_id) = &self.tracking_category_remote_id {
-                format!("{:?}", tracking_category_remote_id)
+                format!("{:?}", tracking_category_remote_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tracking_category_remote_name".to_string(),
-            "category_name".to_string(),
-            "category_id".to_string(),
-            "tracking_category_remote_type".to_string(),
-            "tracking_category_remote_id".to_string(),
+            "tracking_category_remote_name".into(),
+            "category_name".into(),
+            "category_id".into(),
+            "tracking_category_remote_type".into(),
+            "tracking_category_remote_id".into(),
         ]
     }
 }
@@ -3980,11 +4053,11 @@ impl tabled::Tabled for ApiAccountingCategory {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum TransactionState {
     #[serde(rename = "ALL")]
     #[display("ALL")]
@@ -4091,155 +4164,156 @@ impl std::fmt::Display for Transaction {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Transaction {
     const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(accounting_field_selections) = &self.accounting_field_selections {
-                format!("{:?}", accounting_field_selections)
+                format!("{:?}", accounting_field_selections).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_name) = &self.merchant_name {
-                format!("{:?}", merchant_name)
+                format!("{:?}", merchant_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(line_items) = &self.line_items {
-                format!("{:?}", line_items)
+                format!("{:?}", line_items).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(policy_violations) = &self.policy_violations {
-                format!("{:?}", policy_violations)
+                format!("{:?}", policy_violations).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_category_code_description) =
                 &self.merchant_category_code_description
             {
-                format!("{:?}", merchant_category_code_description)
+                format!("{:?}", merchant_category_code_description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(disputes) = &self.disputes {
-                format!("{:?}", disputes)
+                format!("{:?}", disputes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(memo) = &self.memo {
-                format!("{:?}", memo)
+                format!("{:?}", memo).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sk_category_id) = &self.sk_category_id {
-                format!("{:?}", sk_category_id)
+                format!("{:?}", sk_category_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(receipts) = &self.receipts {
-                format!("{:?}", receipts)
+                format!("{:?}", receipts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_id) = &self.card_id {
-                format!("{:?}", card_id)
+                format!("{:?}", card_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(card_holder) = &self.card_holder {
-                format!("{:?}", card_holder)
+                format!("{:?}", card_holder).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_descriptor) = &self.merchant_descriptor {
-                format!("{:?}", merchant_descriptor)
+                format!("{:?}", merchant_descriptor).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(original_transaction_amount) = &self.original_transaction_amount {
-                format!("{:?}", original_transaction_amount)
+                format!("{:?}", original_transaction_amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state) = &self.state {
-                format!("{:?}", state)
+                format!("{:?}", state).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(user_transaction_time) = &self.user_transaction_time {
-                format!("{:?}", user_transaction_time)
+                format!("{:?}", user_transaction_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sk_category_name) = &self.sk_category_name {
-                format!("{:?}", sk_category_name)
+                format!("{:?}", sk_category_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(amount) = &self.amount {
-                format!("{:?}", amount)
+                format!("{:?}", amount).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(decline_details) = &self.decline_details {
-                format!("{:?}", decline_details)
+                format!("{:?}", decline_details).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(accounting_categories) = &self.accounting_categories {
-                format!("{:?}", accounting_categories)
+                format!("{:?}", accounting_categories).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_category_code) = &self.merchant_category_code {
-                format!("{:?}", merchant_category_code)
+                format!("{:?}", merchant_category_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_id) = &self.merchant_id {
-                format!("{:?}", merchant_id)
+                format!("{:?}", merchant_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(currency_code) = &self.currency_code {
-                format!("{:?}", currency_code)
+                format!("{:?}", currency_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "accounting_field_selections".to_string(),
-            "merchant_name".to_string(),
-            "line_items".to_string(),
-            "id".to_string(),
-            "policy_violations".to_string(),
-            "merchant_category_code_description".to_string(),
-            "disputes".to_string(),
-            "memo".to_string(),
-            "sk_category_id".to_string(),
-            "receipts".to_string(),
-            "card_id".to_string(),
-            "card_holder".to_string(),
-            "merchant_descriptor".to_string(),
-            "original_transaction_amount".to_string(),
-            "state".to_string(),
-            "user_transaction_time".to_string(),
-            "sk_category_name".to_string(),
-            "amount".to_string(),
-            "decline_details".to_string(),
-            "accounting_categories".to_string(),
-            "merchant_category_code".to_string(),
-            "merchant_id".to_string(),
-            "currency_code".to_string(),
+            "accounting_field_selections".into(),
+            "merchant_name".into(),
+            "line_items".into(),
+            "id".into(),
+            "policy_violations".into(),
+            "merchant_category_code_description".into(),
+            "disputes".into(),
+            "memo".into(),
+            "sk_category_id".into(),
+            "receipts".into(),
+            "card_id".into(),
+            "card_holder".into(),
+            "merchant_descriptor".into(),
+            "original_transaction_amount".into(),
+            "state".into(),
+            "user_transaction_time".into(),
+            "sk_category_name".into(),
+            "amount".into(),
+            "decline_details".into(),
+            "accounting_categories".into(),
+            "merchant_category_code".into(),
+            "merchant_id".into(),
+            "currency_code".into(),
         ]
     }
 }
@@ -4262,14 +4336,18 @@ impl std::fmt::Display for PaginatedResponseApiTransactionCanonicalSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiTransactionCanonicalSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -4283,11 +4361,11 @@ impl tabled::Tabled for PaginatedResponseApiTransactionCanonicalSchema {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Status {
     #[serde(rename = "INVITE_DELETED")]
     #[display("INVITE_DELETED")]
@@ -4363,87 +4441,88 @@ impl std::fmt::Display for User {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for User {
     const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{:?}", role).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(phone) = &self.phone {
-                format!("{:?}", phone)
+                format!("{:?}", phone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(department_id) = &self.department_id {
-                format!("{:?}", department_id)
+                format!("{:?}", department_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_id) = &self.business_id {
-                format!("{:?}", business_id)
+                format!("{:?}", business_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(manager_id) = &self.manager_id {
-                format!("{:?}", manager_id)
+                format!("{:?}", manager_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(is_manager) = &self.is_manager {
-                format!("{:?}", is_manager)
+                format!("{:?}", is_manager).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location_id) = &self.location_id {
-                format!("{:?}", location_id)
+                format!("{:?}", location_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{:?}", last_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{:?}", email).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{:?}", first_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "role".to_string(),
-            "phone".to_string(),
-            "department_id".to_string(),
-            "id".to_string(),
-            "business_id".to_string(),
-            "manager_id".to_string(),
-            "is_manager".to_string(),
-            "location_id".to_string(),
-            "last_name".to_string(),
-            "status".to_string(),
-            "email".to_string(),
-            "first_name".to_string(),
+            "role".into(),
+            "phone".into(),
+            "department_id".into(),
+            "id".into(),
+            "business_id".into(),
+            "manager_id".into(),
+            "is_manager".into(),
+            "location_id".into(),
+            "last_name".into(),
+            "status".into(),
+            "email".into(),
+            "first_name".into(),
         ]
     }
 }
@@ -4458,11 +4537,11 @@ impl tabled::Tabled for User {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Role {
     #[serde(rename = "BUSINESS_ADMIN")]
     #[display("BUSINESS_ADMIN")]
@@ -4504,39 +4583,40 @@ impl std::fmt::Display for ApiUserUpdate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiUserUpdate {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(role) = &self.role {
-                format!("{:?}", role)
+                format!("{:?}", role).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(direct_manager_id) = &self.direct_manager_id {
-                format!("{:?}", direct_manager_id)
+                format!("{:?}", direct_manager_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(department_id) = &self.department_id {
-                format!("{:?}", department_id)
+                format!("{:?}", department_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location_id) = &self.location_id {
-                format!("{:?}", location_id)
+                format!("{:?}", location_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "role".to_string(),
-            "direct_manager_id".to_string(),
-            "department_id".to_string(),
-            "location_id".to_string(),
+            "role".into(),
+            "direct_manager_id".into(),
+            "department_id".into(),
+            "location_id".into(),
         ]
     }
 }
@@ -4559,14 +4639,18 @@ impl std::fmt::Display for PaginatedResponseApiUserResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiUserResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -4580,11 +4664,11 @@ impl tabled::Tabled for PaginatedResponseApiUserResourceSchema {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ApiUserCreateRole {
     #[serde(rename = "BUSINESS_ADMIN")]
     #[display("BUSINESS_ADMIN")]
@@ -4638,49 +4722,50 @@ impl std::fmt::Display for ApiUserCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiUserCreate {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.role),
-            self.phone.clone(),
+            format!("{:?}", self.role).into(),
+            self.phone.clone().into(),
             if let Some(department_id) = &self.department_id {
-                format!("{:?}", department_id)
+                format!("{:?}", department_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(location_id) = &self.location_id {
-                format!("{:?}", location_id)
+                format!("{:?}", location_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(idempotency_key) = &self.idempotency_key {
-                format!("{:?}", idempotency_key)
+                format!("{:?}", idempotency_key).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.last_name.clone(),
-            self.email.clone(),
-            self.first_name.clone(),
+            self.last_name.clone().into(),
+            self.email.clone().into(),
+            self.first_name.clone().into(),
             if let Some(direct_manager_id) = &self.direct_manager_id {
-                format!("{:?}", direct_manager_id)
+                format!("{:?}", direct_manager_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "role".to_string(),
-            "phone".to_string(),
-            "department_id".to_string(),
-            "location_id".to_string(),
-            "idempotency_key".to_string(),
-            "last_name".to_string(),
-            "email".to_string(),
-            "first_name".to_string(),
-            "direct_manager_id".to_string(),
+            "role".into(),
+            "phone".into(),
+            "department_id".into(),
+            "location_id".into(),
+            "idempotency_key".into(),
+            "last_name".into(),
+            "email".into(),
+            "first_name".into(),
+            "direct_manager_id".into(),
         ]
     }
 }
@@ -4707,25 +4792,26 @@ impl std::fmt::Display for ApiUserDeferredTaskData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiUserDeferredTaskData {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(user_id) = &self.user_id {
-                format!("{:?}", user_id)
+                format!("{:?}", user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(error) = &self.error {
-                format!("{:?}", error)
+                format!("{:?}", error).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["user_id".to_string(), "error".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["user_id".into(), "error".into()]
     }
 }
 
@@ -4755,30 +4841,31 @@ impl std::fmt::Display for UserDeferredTask {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UserDeferredTask {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(data) = &self.data {
-                format!("{:?}", data)
+                format!("{:?}", data).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["status".to_string(), "id".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["status".into(), "id".into(), "data".into()]
     }
 }
 
@@ -4802,25 +4889,26 @@ impl std::fmt::Display for Memo {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Memo {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(memo) = &self.memo {
-                format!("{:?}", memo)
+                format!("{:?}", memo).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["memo".to_string(), "id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["memo".into(), "id".into()]
     }
 }
 
@@ -4842,14 +4930,18 @@ impl std::fmt::Display for PaginatedResponseApiMemoResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiMemoResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -4875,33 +4967,34 @@ impl std::fmt::Display for Merchant {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Merchant {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(sk_category_name) = &self.sk_category_name {
-                format!("{:?}", sk_category_name)
+                format!("{:?}", sk_category_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(merchant_name) = &self.merchant_name {
-                format!("{:?}", merchant_name)
+                format!("{:?}", merchant_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "sk_category_name".to_string(),
-            "id".to_string(),
-            "merchant_name".to_string(),
+            "sk_category_name".into(),
+            "id".into(),
+            "merchant_name".into(),
         ]
     }
 }
@@ -4924,14 +5017,18 @@ impl std::fmt::Display for PaginatedResponseApiMerchantResourceSchema {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PaginatedResponseApiMerchantResourceSchema {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.page), format!("{:?}", self.data)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.page).into(),
+            format!("{:?}", self.data).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["page".to_string(), "data".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["page".into(), "data".into()]
     }
 }
 
@@ -4963,51 +5060,52 @@ impl std::fmt::Display for ApiSalesLeadOfficeAddress {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiSalesLeadOfficeAddress {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(office_postal_code) = &self.office_postal_code {
-                format!("{:?}", office_postal_code)
+                format!("{:?}", office_postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_state) = &self.office_state {
-                format!("{:?}", office_state)
+                format!("{:?}", office_state).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_city) = &self.office_city {
-                format!("{:?}", office_city)
+                format!("{:?}", office_city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_street_address) = &self.office_street_address {
-                format!("{:?}", office_street_address)
+                format!("{:?}", office_street_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_apt_suite) = &self.office_apt_suite {
-                format!("{:?}", office_apt_suite)
+                format!("{:?}", office_apt_suite).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_country) = &self.office_country {
-                format!("{:?}", office_country)
+                format!("{:?}", office_country).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "office_postal_code".to_string(),
-            "office_state".to_string(),
-            "office_city".to_string(),
-            "office_street_address".to_string(),
-            "office_apt_suite".to_string(),
-            "office_country".to_string(),
+            "office_postal_code".into(),
+            "office_state".into(),
+            "office_city".into(),
+            "office_street_address".into(),
+            "office_apt_suite".into(),
+            "office_country".into(),
         ]
     }
 }
@@ -5021,11 +5119,11 @@ impl tabled::Tabled for ApiSalesLeadOfficeAddress {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EntityType {
     #[serde(rename = "COOPERATIVE")]
     #[display("COOPERATIVE")]
@@ -5108,105 +5206,106 @@ impl std::fmt::Display for ApiSalesLeadBusinessDump {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiSalesLeadBusinessDump {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(office_address) = &self.office_address {
-                format!("{:?}", office_address)
+                format!("{:?}", office_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_of_incorporation) = &self.date_of_incorporation {
-                format!("{:?}", date_of_incorporation)
+                format!("{:?}", date_of_incorporation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state_of_incorporation) = &self.state_of_incorporation {
-                format!("{:?}", state_of_incorporation)
+                format!("{:?}", state_of_incorporation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_description) = &self.business_description {
-                format!("{:?}", business_description)
+                format!("{:?}", business_description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ein_number) = &self.ein_number {
-                format!("{:?}", ein_number)
+                format!("{:?}", ein_number).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sector) = &self.sector {
-                format!("{:?}", sector)
+                format!("{:?}", sector).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_website) = &self.business_name_website {
-                format!("{:?}", business_name_website)
+                format!("{:?}", business_name_website).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(estimated_monthly_spend) = &self.estimated_monthly_spend {
-                format!("{:?}", estimated_monthly_spend)
+                format!("{:?}", estimated_monthly_spend).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_legal) = &self.business_name_legal {
-                format!("{:?}", business_name_legal)
+                format!("{:?}", business_name_legal).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(industry) = &self.industry {
-                format!("{:?}", industry)
+                format!("{:?}", industry).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_dba) = &self.business_name_dba {
-                format!("{:?}", business_name_dba)
+                format!("{:?}", business_name_dba).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(industry_group) = &self.industry_group {
-                format!("{:?}", industry_group)
+                format!("{:?}", industry_group).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_phone_number) = &self.office_phone_number {
-                format!("{:?}", office_phone_number)
+                format!("{:?}", office_phone_number).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(entity_type) = &self.entity_type {
-                format!("{:?}", entity_type)
+                format!("{:?}", entity_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sub_industry) = &self.sub_industry {
-                format!("{:?}", sub_industry)
+                format!("{:?}", sub_industry).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "office_address".to_string(),
-            "date_of_incorporation".to_string(),
-            "state_of_incorporation".to_string(),
-            "business_description".to_string(),
-            "ein_number".to_string(),
-            "sector".to_string(),
-            "business_name_website".to_string(),
-            "estimated_monthly_spend".to_string(),
-            "business_name_legal".to_string(),
-            "industry".to_string(),
-            "business_name_dba".to_string(),
-            "industry_group".to_string(),
-            "office_phone_number".to_string(),
-            "entity_type".to_string(),
-            "sub_industry".to_string(),
+            "office_address".into(),
+            "date_of_incorporation".into(),
+            "state_of_incorporation".into(),
+            "business_description".into(),
+            "ein_number".into(),
+            "sector".into(),
+            "business_name_website".into(),
+            "estimated_monthly_spend".into(),
+            "business_name_legal".into(),
+            "industry".into(),
+            "business_name_dba".into(),
+            "industry_group".into(),
+            "office_phone_number".into(),
+            "entity_type".into(),
+            "sub_industry".into(),
         ]
     }
 }
@@ -5219,11 +5318,11 @@ impl tabled::Tabled for ApiSalesLeadBusinessDump {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum Source {
     #[default]
@@ -5240,11 +5339,11 @@ pub enum Source {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum FinancingApplicationStatus {
     #[serde(rename = "ALLOY_COMPLETE")]
     #[display("ALLOY_COMPLETE")]
@@ -5306,73 +5405,74 @@ impl std::fmt::Display for Lead {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Lead {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(phone) = &self.phone {
-                format!("{:?}", phone)
+                format!("{:?}", phone).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.source),
+            format!("{:?}", self.source).into(),
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(financing_application_status) = &self.financing_application_status {
-                format!("{:?}", financing_application_status)
+                format!("{:?}", financing_application_status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(last_name) = &self.last_name {
-                format!("{:?}", last_name)
+                format!("{:?}", last_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{:?}", email).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(first_name) = &self.first_name {
-                format!("{:?}", first_name)
+                format!("{:?}", first_name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.external_id.clone(),
+            self.external_id.clone().into(),
             if let Some(business_info) = &self.business_info {
-                format!("{:?}", business_info)
+                format!("{:?}", business_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone".to_string(),
-            "updated_at".to_string(),
-            "id".to_string(),
-            "source".to_string(),
-            "created_at".to_string(),
-            "financing_application_status".to_string(),
-            "last_name".to_string(),
-            "email".to_string(),
-            "first_name".to_string(),
-            "external_id".to_string(),
-            "business_info".to_string(),
+            "phone".into(),
+            "updated_at".into(),
+            "id".into(),
+            "source".into(),
+            "created_at".into(),
+            "financing_application_status".into(),
+            "last_name".into(),
+            "email".into(),
+            "first_name".into(),
+            "external_id".into(),
+            "business_info".into(),
         ]
     }
 }
@@ -5436,97 +5536,98 @@ impl std::fmt::Display for ApiSalesLeadBusinessLoad {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiSalesLeadBusinessLoad {
     const LENGTH: usize = 15;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(office_address) = &self.office_address {
-                format!("{:?}", office_address)
+                format!("{:?}", office_address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(date_of_incorporation) = &self.date_of_incorporation {
-                format!("{:?}", date_of_incorporation)
+                format!("{:?}", date_of_incorporation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state_of_incorporation) = &self.state_of_incorporation {
-                format!("{:?}", state_of_incorporation)
+                format!("{:?}", state_of_incorporation).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_description) = &self.business_description {
-                format!("{:?}", business_description)
+                format!("{:?}", business_description).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(ein_number) = &self.ein_number {
-                format!("{:?}", ein_number)
+                format!("{:?}", ein_number).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sector) = &self.sector {
-                format!("{:?}", sector)
+                format!("{:?}", sector).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(business_name_website) = &self.business_name_website {
-                format!("{:?}", business_name_website)
+                format!("{:?}", business_name_website).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(estimated_monthly_spend) = &self.estimated_monthly_spend {
-                format!("{:?}", estimated_monthly_spend)
+                format!("{:?}", estimated_monthly_spend).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.business_name_legal.clone(),
+            self.business_name_legal.clone().into(),
             if let Some(industry) = &self.industry {
-                format!("{:?}", industry)
+                format!("{:?}", industry).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.business_name_dba.clone(),
+            self.business_name_dba.clone().into(),
             if let Some(industry_group) = &self.industry_group {
-                format!("{:?}", industry_group)
+                format!("{:?}", industry_group).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(office_phone_number) = &self.office_phone_number {
-                format!("{:?}", office_phone_number)
+                format!("{:?}", office_phone_number).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(entity_type) = &self.entity_type {
-                format!("{:?}", entity_type)
+                format!("{:?}", entity_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sub_industry) = &self.sub_industry {
-                format!("{:?}", sub_industry)
+                format!("{:?}", sub_industry).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "office_address".to_string(),
-            "date_of_incorporation".to_string(),
-            "state_of_incorporation".to_string(),
-            "business_description".to_string(),
-            "ein_number".to_string(),
-            "sector".to_string(),
-            "business_name_website".to_string(),
-            "estimated_monthly_spend".to_string(),
-            "business_name_legal".to_string(),
-            "industry".to_string(),
-            "business_name_dba".to_string(),
-            "industry_group".to_string(),
-            "office_phone_number".to_string(),
-            "entity_type".to_string(),
-            "sub_industry".to_string(),
+            "office_address".into(),
+            "date_of_incorporation".into(),
+            "state_of_incorporation".into(),
+            "business_description".into(),
+            "ein_number".into(),
+            "sector".into(),
+            "business_name_website".into(),
+            "estimated_monthly_spend".into(),
+            "business_name_legal".into(),
+            "industry".into(),
+            "business_name_dba".into(),
+            "industry_group".into(),
+            "office_phone_number".into(),
+            "entity_type".into(),
+            "sub_industry".into(),
         ]
     }
 }
@@ -5540,11 +5641,11 @@ impl tabled::Tabled for ApiSalesLeadBusinessLoad {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum ApiSalesLeadCreateSource {
     #[default]
@@ -5588,41 +5689,42 @@ impl std::fmt::Display for ApiSalesLeadCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiSalesLeadCreate {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(phone) = &self.phone {
-                format!("{:?}", phone)
+                format!("{:?}", phone).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.state.clone(),
-            format!("{:?}", self.source),
-            self.last_name.clone(),
-            self.redirect_uri.clone(),
-            self.email.clone(),
-            self.first_name.clone(),
-            self.external_id.clone(),
+            self.state.clone().into(),
+            format!("{:?}", self.source).into(),
+            self.last_name.clone().into(),
+            self.redirect_uri.clone().into(),
+            self.email.clone().into(),
+            self.first_name.clone().into(),
+            self.external_id.clone().into(),
             if let Some(business_info) = &self.business_info {
-                format!("{:?}", business_info)
+                format!("{:?}", business_info).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "phone".to_string(),
-            "state".to_string(),
-            "source".to_string(),
-            "last_name".to_string(),
-            "redirect_uri".to_string(),
-            "email".to_string(),
-            "first_name".to_string(),
-            "external_id".to_string(),
-            "business_info".to_string(),
+            "phone".into(),
+            "state".into(),
+            "source".into(),
+            "last_name".into(),
+            "redirect_uri".into(),
+            "email".into(),
+            "first_name".into(),
+            "external_id".into(),
+            "business_info".into(),
         ]
     }
 }
@@ -5651,39 +5753,40 @@ impl std::fmt::Display for Upload {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Upload {
     const LENGTH: usize = 4;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(updated_at) = &self.updated_at {
-                format!("{:?}", updated_at)
+                format!("{:?}", updated_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(document_type) = &self.document_type {
-                format!("{:?}", document_type)
+                format!("{:?}", document_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sales_lead_id) = &self.sales_lead_id {
-                format!("{:?}", sales_lead_id)
+                format!("{:?}", sales_lead_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "updated_at".to_string(),
-            "document_type".to_string(),
-            "sales_lead_id".to_string(),
-            "created_at".to_string(),
+            "updated_at".into(),
+            "document_type".into(),
+            "sales_lead_id".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -5708,25 +5811,26 @@ impl std::fmt::Display for ApiReceiptIntegrationOptedOutEmailResource {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiReceiptIntegrationOptedOutEmailResource {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
-                format!("{:?}", id)
+                format!("{:?}", id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{:?}", email).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "email".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "email".into()]
     }
 }
 
@@ -5748,14 +5852,18 @@ impl std::fmt::Display for ApiReceiptIntegrationOptedOutEmailCreate {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiReceiptIntegrationOptedOutEmailCreate {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.business_id), self.email.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.business_id).into(),
+            self.email.clone().into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["business_id".to_string(), "email".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["business_id".into(), "email".into()]
     }
 }
 
@@ -5767,11 +5875,11 @@ impl tabled::Tabled for ApiReceiptIntegrationOptedOutEmailCreate {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum GetTransactionsCanonicalListWithPaginationState {
     #[serde(rename = "ALL")]
     #[display("ALL")]
