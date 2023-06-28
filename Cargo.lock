@@ -311,7 +311,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
@@ -598,7 +598,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
@@ -753,7 +753,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
@@ -1220,7 +1220,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
- "parse-display 0.5.5",
+ "parse-display",
  "pretty_assertions",
  "reqwest",
  "reqwest-middleware 0.1.6",
@@ -1297,39 +1297,13 @@ dependencies = [
 
 [[package]]
 name = "parse-display"
-version = "0.5.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "813e91c6232dbeb2e9deba0eb0dc5c967bd6f380676fd34419f9ddd71411faa7"
-dependencies = [
- "once_cell",
- "parse-display-derive 0.5.5",
- "regex",
-]
-
-[[package]]
-name = "parse-display"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ddcac6cdc2aaa03a89780c6681ffb46ac5b4b7dbade8d2a20a6a501f6fd363a8"
 dependencies = [
  "once_cell",
- "parse-display-derive 0.8.1",
+ "parse-display-derive",
  "regex",
-]
-
-[[package]]
-name = "parse-display-derive"
-version = "0.5.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "007ed61a69cf7d9b95cc5dc18489dbb4f70d4adb0a0c100e2dd46f0be241711a"
-dependencies = [
- "once_cell",
- "proc-macro2",
- "quote",
- "regex",
- "regex-syntax",
- "structmeta 0.1.5",
- "syn 1.0.99",
 ]
 
 [[package]]
@@ -1343,7 +1317,7 @@ dependencies = [
  "quote",
  "regex",
  "regex-syntax",
- "structmeta 0.2.0",
+ "structmeta",
  "syn 2.0.15",
 ]
 
@@ -1494,7 +1468,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
@@ -1616,7 +1590,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
@@ -2055,37 +2029,14 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "structmeta"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bd9c2155aa89fb2c2cb87d99a610c689e7c47099b3e9f1c8a8f53faf4e3d2e3"
-dependencies = [
- "proc-macro2",
- "quote",
- "structmeta-derive 0.1.5",
- "syn 1.0.99",
-]
-
-[[package]]
-name = "structmeta"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ad9e09554f0456d67a69c1584c9798ba733a5b50349a6c0d0948710523922d"
 dependencies = [
  "proc-macro2",
  "quote",
- "structmeta-derive 0.2.0",
+ "structmeta-derive",
  "syn 2.0.15",
-]
-
-[[package]]
-name = "structmeta-derive"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bafede0d0a2f21910f36d47b1558caae3076ed80f6f3ad0fc85a91e6ba7e5938"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.99",
 ]
 
 [[package]]
@@ -2419,7 +2370,7 @@ dependencies = [
  "itertools",
  "log",
  "mime",
- "parse-display 0.8.1",
+ "parse-display",
  "percent-encoding",
  "phonenumber",
  "pretty_assertions",
