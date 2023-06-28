@@ -48,7 +48,7 @@ impl Signatures {
         }
     }
 
-    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(true),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -126,7 +126,7 @@ impl Signatures {
              \"some-string\".to_string(),\n                sender_info: \
              Some(\"some-string\".to_string()),\n                body: \
              \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: \
-             Some(false),\n                is_default: Some(true),\n                channel_ids: \
+             Some(false),\n                is_default: Some(false),\n                channel_ids: \
              Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]

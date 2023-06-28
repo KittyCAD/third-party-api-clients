@@ -76,7 +76,7 @@ impl Teammates {
         }
     }
 
-    #[doc = "Update teammate\n\nUpdate a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_teammates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teammates()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateTeammate {\n                username: Some(\"some-string\".to_string()),\n                first_name: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                is_available: Some(true),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Update teammate\n\nUpdate a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_teammates_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    client\n        .teammates()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateTeammate {\n                username: Some(\"some-string\".to_string()),\n                first_name: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                is_available: Some(false),\n            },\n        )\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
