@@ -2051,6 +2051,7 @@ pub struct GetActivityTypesResponse {
     )]
     pub display_name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[deprecated]
     pub name: Option<String>,
 }
 
