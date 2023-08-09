@@ -9,6 +9,7 @@ commonroom:
 		--output ./commonroom \
 		--name commonroom-api \
 		--description "A fully generated & opinionated API client for the Common Room API." \
+		--request-timeout-seconds 60 \
 		--base-url "https://api.commonroom.io/community/v1" $(EXTRA_ARGS)
 
 # Spec is from: https://github.com/frontapp/front-api-specs/blob/main/core-api/core-api.json
@@ -20,6 +21,7 @@ front:
 		--output ./front \
 		--name front-api \
 		--base-url https://api2.frontapp.com \
+		--request-timeout-seconds 60 \
 		--description "A fully generated & opinionated API client for the Front API."
 
 .PHONY: gusto
@@ -32,6 +34,7 @@ gusto:
 		--base-url https://api.gusto.com \
 		--description "A fully generated & opinionated API client for the Gusto API." \
 		--token-endpoint "https://api.gusto.com/oauth/token" \
+		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
 
 # Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
@@ -45,6 +48,7 @@ mailchimp:
 		--base-url https://us1.api.mailchimp.com \
 		--description "A fully generated & opinionated API client for the MailChimp API." \
 		--token-endpoint "https://login.mailchimp.com/oauth2/token" \
+		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://login.mailchimp.com/oauth2/authorize"
 
 .PHONY: ramp
@@ -57,6 +61,7 @@ ramp:
 		--base-url https://api.ramp.com \
 		--description "A fully generated & opinionated API client for the ramp API." \
 		--token-endpoint "https://api.ramp.com/v1/public/customer/token" \
+		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://app.ramp.com/v1/authorize"
 
 .PHONY: remote
@@ -68,6 +73,7 @@ remote:
 		--name remote-api \
 		--description "A fully generated & opinionated API client for the Remote API." \
 		--base-url "https://gateway.remote.com" \
+		--request-timeout-seconds 60 \
 		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
 
 # Spec is from https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
@@ -81,6 +87,7 @@ twilio:
 		--description "A fully generated & opinionated API client for the Twilio API." \
 		--base-url "https://api.twilio.com" \
 		--basic-auth \
+		--request-timeout-seconds 60 \
 		--date-time-format "%a, %d %b %Y %H:%M:%S %z" $(EXTRA_ARGS)
 
 .PHONY: openapitor

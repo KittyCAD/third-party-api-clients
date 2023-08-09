@@ -21,6 +21,8 @@ async fn test_remote_employments() {
     let first_manager = managers.first().unwrap();
     let company_id = first_manager.company_id.as_ref().unwrap().clone();
 
+    let todays_date = chrono::Utc::now().date_naive();
+    let start_date = todays_date + chrono::Duration::days(7);
     let new_employee_response = client
         .employments()
         .post_create(&crate::types::EmploymentBasicParams {
@@ -29,11 +31,20 @@ async fn test_remote_employments() {
             full_name: "Bob Bobson".to_string(),
             job_title: "Weebler of Bobs".to_string(),
             personal_email: test_email.to_string(),
-            provisional_start_date: Some(chrono::NaiveDate::from_ymd_opt(2022, 12, 1).unwrap()), //Option<chrono::NaiveDate>,
+            provisional_start_date: Some(start_date),
             type_: crate::types::EmploymentBasicParamsType::Employee,
         })
-        .await
-        .expect("Employee failed to create");
+        .await;
+    let new_employee_response = match new_employee_response {
+        Ok(x) => x,
+        Err(e) => match e {
+            crate::types::error::Error::UnexpectedResponse(resp) => {
+                let t = resp.text().await.unwrap();
+                panic!("{}", t);
+            }
+            e => panic!("{:?}", e),
+        },
+    };
     let new_employment_data = new_employee_response.data.expect("Has data");
     let new_employment = new_employment_data
         .employment

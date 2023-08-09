@@ -4952,7 +4952,6 @@ impl tabled::Tabled for Meta {
 pub enum Data {
     RuleResponse(RuleResponse),
     TeammateResponse(TeammateResponse),
-    InboxResponse(Vec<InboxResponse>),
 }
 
 #[doc = "Event source"]
@@ -5751,14 +5750,14 @@ impl tabled::Tabled for Resource {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct ValueOneOf {
+pub struct ValueLabel {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource: Option<Resource>,
 }
 
-impl std::fmt::Display for ValueOneOf {
+impl std::fmt::Display for ValueLabel {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -5769,7 +5768,7 @@ impl std::fmt::Display for ValueOneOf {
 }
 
 #[cfg(feature = "tabled")]
-impl tabled::Tabled for ValueOneOf {
+impl tabled::Tabled for ValueLabel {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
@@ -5799,7 +5798,7 @@ impl tabled::Tabled for ValueOneOf {
 pub enum Value {
     I64(i64),
     String(String),
-    ValueOneOf(ValueOneOf),
+    ValueLabel(ValueLabel),
 }
 
 #[derive(
