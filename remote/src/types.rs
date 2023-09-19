@@ -1049,6 +1049,9 @@ pub struct Employment {
     pub contract_details: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub country_code: Option<String>,
+    #[doc = "A supported country on Remote"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country: Option<Country>,
     pub created_at: String,
     #[doc = "Emergency contact information. Its properties may vary depending on the country."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1091,7 +1094,7 @@ impl std::fmt::Display for Employment {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for Employment {
-    const LENGTH: usize = 21;
+    const LENGTH: usize = 22;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.address_details).into(),
@@ -1102,6 +1105,11 @@ impl tabled::Tabled for Employment {
             format!("{:?}", self.contract_details).into(),
             if let Some(country_code) = &self.country_code {
                 format!("{:?}", country_code).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(country) = &self.country {
+                format!("{:?}", country).into()
             } else {
                 String::new().into()
             },
@@ -1147,6 +1155,7 @@ impl tabled::Tabled for Employment {
             "company_id".into(),
             "contract_details".into(),
             "country_code".into(),
+            "country".into(),
             "created_at".into(),
             "emergency_contact_details".into(),
             "files".into(),

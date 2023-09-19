@@ -568,6 +568,10 @@
             "x-struct": null,
             "x-validate": null
           },
+          "country": {
+            "nullable": true,
+            "$ref": "#/components/schemas/Country"
+          },
           "created_at": {
             "type": "string",
             "x-struct": null,
