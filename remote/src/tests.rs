@@ -27,7 +27,7 @@ async fn test_remote_employments() {
         .employments()
         .post_create(&crate::types::EmploymentBasicParams {
             company_id: company_id.clone(),
-            country_code: "AUS".to_string(),
+            country_code: Some("AUS".to_string()),
             full_name: "Bob Bobson".to_string(),
             job_title: "Weebler of Bobs".to_string(),
             personal_email: test_email.to_string(),

@@ -1458,7 +1458,8 @@ pub enum EmploymentBasicParamsType {
 )]
 pub struct EmploymentBasicParams {
     pub company_id: String,
-    pub country_code: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country_code: Option<String>,
     pub full_name: String,
     pub job_title: String,
     pub personal_email: String,
@@ -1485,7 +1486,7 @@ impl tabled::Tabled for EmploymentBasicParams {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.company_id.clone().into(),
-            self.country_code.clone().into(),
+            format!("{:?}", self.country_code).into(),
             self.full_name.clone().into(),
             self.job_title.clone().into(),
             self.personal_email.clone().into(),

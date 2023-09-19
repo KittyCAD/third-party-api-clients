@@ -564,6 +564,7 @@
           },
           "country_code": {
             "type": "string",
+            "nullable": true,
             "x-struct": null,
             "x-validate": null
           },
@@ -868,6 +869,7 @@
           },
           "country_code": {
             "type": "string",
+            "nullable": true,
             "x-struct": null,
             "x-validate": null
           },
