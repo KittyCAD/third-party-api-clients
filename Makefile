@@ -1,7 +1,7 @@
 openapitor_exe = kittycad.rs/target/debug/openapitor
 
 .PHONY: commonroom
-commonroom:
+commonroom: openapitor
 	pwd
 	$(openapitor_exe) \
 		--input specs/commonroom.json \
@@ -14,7 +14,7 @@ commonroom:
 
 # Spec is from: https://github.com/frontapp/front-api-specs/blob/main/core-api/core-api.json
 .PHONY: front
-front:
+front: openapitor
 	$(openapitor_exe) \
 		--input specs/front.json \
 		--target-version 0.0.3 \
@@ -25,7 +25,7 @@ front:
 		--description "A fully generated & opinionated API client for the Front API."
 
 .PHONY: gusto
-gusto:
+gusto: openapitor
 	$(openapitor_exe) \
 		--input specs/gusto.v1.yaml \
 		--target-version 2.1.17 \
@@ -39,7 +39,7 @@ gusto:
 
 # Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
 .PHONY: mailchimp
-mailchimp:
+mailchimp: openapitor
 	$(openapitor_exe) \
 		--input specs/mailchimp.json \
 		--target-version 0.0.2 \
@@ -52,7 +52,7 @@ mailchimp:
 		--user-consent-endpoint "https://login.mailchimp.com/oauth2/authorize"
 
 .PHONY: ramp
-ramp:
+ramp: openapitor
 	$(openapitor_exe) \
 		--input specs/ramp.json \
 		--target-version 0.0.2 \
@@ -65,7 +65,7 @@ ramp:
 		--user-consent-endpoint "https://app.ramp.com/v1/authorize"
 
 .PHONY: remote
-remote:
+remote: openapitor
 	$(openapitor_exe) \
 		--input specs/remote.json \
 		--target-version 0.1.0 \
@@ -78,7 +78,7 @@ remote:
 
 # Spec is from https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
 .PHONY: twilio
-twilio:
+twilio: openapitor
 	$(openapitor_exe) \
 		--input specs/twilio.json \
 		--target-version 0.1.0 \
