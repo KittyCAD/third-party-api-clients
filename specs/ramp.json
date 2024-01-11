@@ -4895,6 +4895,11 @@
                         "format": "uuid",
                         "description": "Unique identifier of the employee's department"
                     },
+                    "is_manager": {
+                        "type": "boolean",
+                        "description": "Whether the employee is a manager",
+                        "nullable": true
+                    },
                     "location_id": {
                         "type": "string",
                         "format": "uuid",

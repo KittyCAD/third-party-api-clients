@@ -4568,6 +4568,9 @@ pub struct ApiUserUpdate {
     #[doc = "Unique identifier of the employee's department"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub department_id: Option<uuid::Uuid>,
+    #[doc = "Whether the employee is a manager"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub is_manager: Option<bool>,
     #[doc = "Unique identifier of the employee's location"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location_id: Option<uuid::Uuid>,
@@ -4585,7 +4588,7 @@ impl std::fmt::Display for ApiUserUpdate {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ApiUserUpdate {
-    const LENGTH: usize = 4;
+    const LENGTH: usize = 5;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(role) = &self.role {
@@ -4603,6 +4606,11 @@ impl tabled::Tabled for ApiUserUpdate {
             } else {
                 String::new().into()
             },
+            if let Some(is_manager) = &self.is_manager {
+                format!("{:?}", is_manager).into()
+            } else {
+                String::new().into()
+            },
             if let Some(location_id) = &self.location_id {
                 format!("{:?}", location_id).into()
             } else {
@@ -4616,6 +4624,7 @@ impl tabled::Tabled for ApiUserUpdate {
             "role".into(),
             "direct_manager_id".into(),
             "department_id".into(),
+            "is_manager".into(),
             "location_id".into(),
         ]
     }
