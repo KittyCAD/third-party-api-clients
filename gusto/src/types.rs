@@ -2916,6 +2916,9 @@ pub enum Status {
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum RequestType {
+    #[serde(rename = "parental_leave")]
+    #[display("parental_leave")]
+    ParentalLeave,
     #[serde(rename = "vacation")]
     #[display("vacation")]
     Vacation,

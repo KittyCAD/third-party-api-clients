@@ -4636,6 +4636,7 @@ components:
           type: string
           description: The type of time off request.
           enum:
+            - parental_leave
             - vacation
             - sick
           readOnly: true
