@@ -7,4 +7,5 @@ members = [
 	"ramp",
 	"remote",
 	"twilio",
+	"vercel",
 ]
