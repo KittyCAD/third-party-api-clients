@@ -461,7 +461,7 @@ impl Client {
             reqwest::header::CONTENT_TYPE,
             reqwest::header::HeaderValue::from_static("application/json"),
         );
-        req = req.header("X-Gusto-API-Version", "v1.0.0");
+        req = req.header("X-Gusto-API-Version", "2023-09-01");
 
         if let Some(body) = body {
             req = req.body(body);
