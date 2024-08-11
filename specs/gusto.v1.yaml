@@ -4395,6 +4395,11 @@ components:
           type: string
           nullable: true
           description: The contractor’s middle initial. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors.
+        start_date:
+          type: string
+          format: date
+          description: |
+            The day when the contractor started working for the company.
         business_name:
           type: string
           nullable: true

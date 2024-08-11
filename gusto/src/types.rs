@@ -2475,6 +2475,9 @@ pub struct Contractor {
              contractors and will be ignored for “Business” contractors."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub middle_initial: Option<String>,
+    #[doc = "The day when the contractor started working for the company.\n"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<chrono::NaiveDate>,
     #[doc = "The name of the contractor business. This attribute is required for “Business” \
              contractors and will be ignored for “Individual” contractors."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2509,7 +2512,7 @@ impl std::fmt::Display for Contractor {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for Contractor {
-    const LENGTH: usize = 15;
+    const LENGTH: usize = 16;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
@@ -2558,6 +2561,11 @@ impl tabled::Tabled for Contractor {
             } else {
                 String::new().into()
             },
+            if let Some(start_date) = &self.start_date {
+                format!("{:?}", start_date).into()
+            } else {
+                String::new().into()
+            },
             if let Some(business_name) = &self.business_name {
                 format!("{:?}", business_name).into()
             } else {
@@ -2598,6 +2606,7 @@ impl tabled::Tabled for Contractor {
             "first_name".into(),
             "last_name".into(),
             "middle_initial".into(),
+            "start_date".into(),
             "business_name".into(),
             "ein".into(),
             "email".into(),
