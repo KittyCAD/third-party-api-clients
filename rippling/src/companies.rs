@@ -12,7 +12,7 @@ impl Companies {
         Self { client }
     }
 
-    #[doc = "List companies\n\nA List of companies\n- Requires: `API Tier 1`\n- Expandable fields: `parent_legal_entity`, `legal_entities`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `expand: Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nasync fn example_companies_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCompaniesResponse = client\n        .companies()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List companies\n\nA List of companies\n- Requires: `API Tier 1`\n- Expandable fields: `legal_entities`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `expand: Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nasync fn example_companies_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCompaniesResponse = client\n        .companies()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -43,7 +43,6 @@ impl Companies {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();

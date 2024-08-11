@@ -1,0 +1,138 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = rippling-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `RIPPLING_API_TOKEN`.\nlet client = rippling_api::Client::new_from_env();",
+      "install": "[dependencies]\nrippling-api = \"0.1.0\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1companies/get/x-rust",
+    "value": {
+      "example": "/// List companies\n/// \n/// A List of companies\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `legal_entities`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_companies_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCompaniesResponse = client\n        .companies()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/companies/struct.Companies.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-fields/get/x-rust",
+    "value": {
+      "example": "/// List custom fields\n/// \n/// A List of custom fields\n/// - Requires: `API Tier 1`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `order_by: Option<String>`\nasync fn example_custom_fields_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCustomFieldsResponse = client\n        .custom_fields()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_fields/struct.CustomFields.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1departments/get/x-rust",
+    "value": {
+      "example": "/// List departments\n/// \n/// A List of departments\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `parent`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_departments_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListDepartmentsResponse = client\n        .departments()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/departments/struct.Departments.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1departments~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific department\n/// \n/// Retrieve a specific department\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_departments_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetDepartmentsResponse = client\n        .departments()\n        .get(\n            Some(\"some-string\".to_string()),\n            uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/departments/struct.Departments.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1employment-types/get/x-rust",
+    "value": {
+      "example": "/// List employment types\n/// \n/// A List of employment types\n/// - Requires: `API Tier 1`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `order_by: Option<String>`\nasync fn example_employment_types_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListEmploymentTypesResponse = client\n        .employment_types()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/employment_types/struct.EmploymentTypes.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1employment-types~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific employment type\n/// \n/// Retrieve a specific employment type\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_employment_types_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetEmploymentTypesResponse = client\n        .employment_types()\n        .get(uuid::Uuid::from_str(\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )?)\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/employment_types/struct.EmploymentTypes.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1entitlements/get/x-rust",
+    "value": {
+      "example": "/// List entitlements\n/// \n/// A List of entitlements\n/// - Requires: `API Tier 1`\nasync fn example_entitlements_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListEntitlementsResponse = client.entitlements().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/entitlements/struct.Entitlements.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1sso-me/get/x-rust",
+    "value": {
+      "example": "/// Retrieve my SSO information\n/// \n/// SSO information of the current user\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `company`\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\nasync fn example_me_list_sso() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Ssome = client\n        .me()\n        .list_sso(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/me/struct.Me.html#method.list_sso"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams/get/x-rust",
+    "value": {
+      "example": "/// List teams\n/// \n/// A List of teams\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `parent`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_teams_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListTeamsResponse = client\n        .teams()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/teams/struct.Teams.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1teams~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific team\n/// \n/// Retrieve a specific team\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_teams_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetTeamsResponse = client\n        .teams()\n        .get(\n            Some(\"some-string\".to_string()),\n            uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/teams/struct.Teams.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users/get/x-rust",
+    "value": {
+      "example": "/// List users\n/// \n/// A List of users\n/// - Requires: `API Tier 1`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `order_by: Option<String>`\nasync fn example_users_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListUsersResponse =\n        client.users().list(Some(\"some-string\".to_string())).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/users/struct.Users.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific user\n/// \n/// Retrieve a specific user\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_users_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetUsersResponse = client\n        .users()\n        .get(uuid::Uuid::from_str(\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )?)\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/users/struct.Users.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1work-locations/get/x-rust",
+    "value": {
+      "example": "/// List work locations\n/// \n/// A List of work locations\n/// - Requires: `API Tier 1`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `order_by: Option<String>`\nasync fn example_work_locations_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListWorkLocationsResponse = client\n        .work_locations()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/work_locations/struct.WorkLocations.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1work-locations~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific work location\n/// \n/// Retrieve a specific work location\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_work_locations_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetWorkLocationsResponse = client\n        .work_locations()\n        .get(uuid::Uuid::from_str(\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )?)\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/work_locations/struct.WorkLocations.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1workers/get/x-rust",
+    "value": {
+      "example": "/// List workers\n/// \n/// A List of workers\n/// - Requires: `API Tier 1`\n/// - Filterable fields: `status`, `work_email`\n/// - Expandable fields: `user`, `legal_entity`, `employment_type`, `compensation`, `department`, `teams`, `level`, `custom_fields`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `filter: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_workers_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListWorkersResponse = client\n        .workers()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/workers/struct.Workers.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1workers~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific worker\n/// \n/// Retrieve a specific worker\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `id: &'astr`: ID of the resource to return (required)\nuse std::str::FromStr;\nasync fn example_workers_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetWorkersResponse = client\n        .workers()\n        .get(\n            Some(\"some-string\".to_string()),\n            uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/workers/struct.Workers.html#method.get"
+    }
+  }
+]

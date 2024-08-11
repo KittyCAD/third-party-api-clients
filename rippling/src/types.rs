@@ -1,6 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-#[cfg(feature = "tabled")]
-use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -4556,7 +4554,7 @@ pub struct Team {
     pub parent_id: Option<String>,
     #[doc = "The parent team\n\nExpandable field"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub parent: Option<Team>,
+    pub parent: Option<Box<Team>>,
     #[doc = "The name of the team."]
     pub name: String,
 }
@@ -4664,7 +4662,7 @@ pub struct Department {
     pub parent_id: Option<String>,
     #[doc = "The parent department.\n\nExpandable field"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub parent: Option<Department>,
+    pub parent: Option<Box<Department>>,
 }
 
 impl std::fmt::Display for Department {
@@ -4766,9 +4764,6 @@ pub struct Compensation {
     #[doc = "The worker's ID."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub worker_id: Option<String>,
-    #[doc = "The worker's details.\n\nExpandable field"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub worker: Option<Worker>,
     #[doc = "The worker's annual compensation. This calculation assumes 40-hour work weeks for \
              workers with an hourly wage."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4829,7 +4824,7 @@ impl std::fmt::Display for Compensation {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for Compensation {
-    const LENGTH: usize = 18;
+    const LENGTH: usize = 17;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.id.clone().into(),
@@ -4837,11 +4832,6 @@ impl tabled::Tabled for Compensation {
             self.updated_at.clone().into(),
             if let Some(worker_id) = &self.worker_id {
                 format!("{:?}", worker_id).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(worker) = &self.worker {
-                format!("{:?}", worker).into()
             } else {
                 String::new().into()
             },
@@ -4919,7 +4909,6 @@ impl tabled::Tabled for Compensation {
             "created_at".into(),
             "updated_at".into(),
             "worker_id".into(),
-            "worker".into(),
             "annual_compensation".into(),
             "annual_salary_equivalent".into(),
             "hourly_wage".into(),
@@ -5693,7 +5682,7 @@ pub struct LegalEntity {
     pub parent_id: Option<String>,
     #[doc = "The parent legal entity.\n\nExpandable field"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub parent: Option<LegalEntity>,
+    pub parent: Option<Box<LegalEntity>>,
     #[doc = "The legal entity management type in the case of an employer of record (EOR) or \
              professional employment organization (PEO). * `PEO`: The legal entity is considered \
              a Professional Employment Organization (PEO). * `EOR`: The legal entity is \
@@ -5703,9 +5692,6 @@ pub struct LegalEntity {
     #[doc = "The company or organization associated with the legal entity"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub company_id: Option<String>,
-    #[doc = "The company or organization associated with the legal entity\n\nExpandable field"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub company: Option<Company>,
 }
 
 impl std::fmt::Display for LegalEntity {
@@ -5720,7 +5706,7 @@ impl std::fmt::Display for LegalEntity {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for LegalEntity {
-    const LENGTH: usize = 15;
+    const LENGTH: usize = 14;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.id.clone().into(),
@@ -5781,11 +5767,6 @@ impl tabled::Tabled for LegalEntity {
             } else {
                 String::new().into()
             },
-            if let Some(company) = &self.company {
-                format!("{:?}", company).into()
-            } else {
-                String::new().into()
-            },
         ]
     }
 
@@ -5805,7 +5786,6 @@ impl tabled::Tabled for LegalEntity {
             "parent".into(),
             "management_type".into(),
             "company_id".into(),
-            "company".into(),
         ]
     }
 }
@@ -5951,9 +5931,6 @@ pub struct Company {
     #[doc = "The company's ultimate holding entity."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub parent_legal_entity_id: Option<String>,
-    #[doc = "The company's ultimate holding entity.\n\nExpandable field"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub parent_legal_entity: Option<LegalEntity>,
     #[doc = "A list of the company's entities."]
     pub legal_entities_id: String,
     #[doc = "A list of the company's entities.\n\nExpandable field"]
@@ -5989,7 +5966,7 @@ impl std::fmt::Display for Company {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for Company {
-    const LENGTH: usize = 13;
+    const LENGTH: usize = 12;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.id.clone().into(),
@@ -5997,11 +5974,6 @@ impl tabled::Tabled for Company {
             self.updated_at.clone().into(),
             if let Some(parent_legal_entity_id) = &self.parent_legal_entity_id {
                 format!("{:?}", parent_legal_entity_id).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(parent_legal_entity) = &self.parent_legal_entity {
-                format!("{:?}", parent_legal_entity).into()
             } else {
                 String::new().into()
             },
@@ -6042,7 +6014,6 @@ impl tabled::Tabled for Company {
             "created_at".into(),
             "updated_at".into(),
             "parent_legal_entity_id".into(),
-            "parent_legal_entity".into(),
             "legal_entities_id".into(),
             "legal_entities".into(),
             "physical_address".into(),

@@ -44,7 +44,6 @@ impl CustomFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();

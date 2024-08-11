@@ -43,7 +43,6 @@ impl Teams {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
@@ -73,7 +72,7 @@ impl Teams {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "teams/{id}".replace("{id}", &id)
+                "teams/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -92,7 +91,6 @@ impl Teams {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();

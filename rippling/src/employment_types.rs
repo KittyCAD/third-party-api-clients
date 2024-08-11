@@ -44,7 +44,6 @@ impl EmploymentTypes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
@@ -74,7 +73,7 @@ impl EmploymentTypes {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "employment-types/{id}".replace("{id}", &id)
+                "employment-types/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -87,7 +86,6 @@ impl EmploymentTypes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();

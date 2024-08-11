@@ -459,13 +459,12 @@ paths:
       - Companies
       summary: List companies
       description: "A List of companies\n - Requires: `API Tier 1`\n - Expandable\
-        \ fields: `parent_legal_entity`, `legal_entities`\n - Sortable fields: `id`,\
+        \ fields: `legal_entities`\n - Sortable fields: `id`,\
         \ `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       x-rippling-expandable-fields:
-      - parent_legal_entity
       - legal_entities
       x-rippling-sortable-fields:
       - id
@@ -2460,14 +2459,6 @@ components:
         worker_id:
           type: string
           description: The worker's ID.
-        worker:
-          type: object
-          description: 'The worker''s details.
-
-
-            Expandable field'
-          allOf:
-          - $ref: '#/components/schemas/Worker'
         annual_compensation:
           type: object
           description: The worker's annual compensation. This calculation assumes
@@ -2534,7 +2525,6 @@ components:
           description: The payment terms for an worker's compensation.
       description: ''
       x-rippling-expandable-fields:
-      - worker
       required:
       - id
       - created_at
@@ -2843,18 +2833,9 @@ components:
         company_id:
           type: string
           description: The company or organization associated with the legal entity
-        company:
-          type: object
-          description: 'The company or organization associated with the legal entity
-
-
-            Expandable field'
-          allOf:
-          - $ref: '#/components/schemas/Company'
       description: ''
       x-rippling-expandable-fields:
       - parent
-      - company
       required:
       - id
       - created_at
@@ -2933,14 +2914,6 @@ components:
         parent_legal_entity_id:
           type: string
           description: The company's ultimate holding entity.
-        parent_legal_entity:
-          type: object
-          description: 'The company''s ultimate holding entity.
-
-
-            Expandable field'
-          allOf:
-          - $ref: '#/components/schemas/LegalEntity'
         legal_entities_id:
           type: string
           description: A list of the company's entities.
@@ -2974,7 +2947,6 @@ components:
           description: The name of the company.
       description: ''
       x-rippling-expandable-fields:
-      - parent_legal_entity
       - legal_entities
       required:
       - id

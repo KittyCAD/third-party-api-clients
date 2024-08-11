@@ -48,7 +48,6 @@ impl Workers {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
@@ -71,7 +70,7 @@ impl Workers {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "workers/{id}".replace("{id}", &id)
+                "workers/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -90,7 +89,6 @@ impl Workers {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();

@@ -43,7 +43,6 @@ impl Departments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
@@ -74,7 +73,7 @@ impl Departments {
             &format!(
                 "{}/{}",
                 self.client.base_url,
-                "departments/{id}".replace("{id}", &id)
+                "departments/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -93,7 +92,6 @@ impl Departments {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
