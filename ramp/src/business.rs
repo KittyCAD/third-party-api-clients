@@ -12,9 +12,8 @@ impl Business {
         Self { client }
     }
 
-    #[doc = "Fetch the company metadata associated with the OAuth2 access \
-             token\n\n```rust,no_run\nasync fn example_business_get_resource() -> \
-             anyhow::Result<()> {\n    let client =\n        \
+    #[doc = "Fetch the company information\n\n```rust,no_run\nasync fn \
+             example_business_get_resource() -> anyhow::Result<()> {\n    let client =\n        \
              ramp_api::Client::new_from_env(String::from(\"token\"), \
              String::from(\"refresh-token\"));\n    let result: ramp_api::types::Business = \
              client.business().get_resource().await?;\n    println!(\"{:?}\", result);\n    \
@@ -25,7 +24,7 @@ impl Business {
     ) -> Result<crate::types::Business, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "developer/v1/business/"),
+            &format!("{}/{}", self.client.base_url, "developer/v1/business"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -39,18 +38,22 @@ impl Business {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Retrieve the current balance info of a business\n\n```rust,no_run\nasync fn example_business_get_balance_resource() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::BusinessBalance = client.business().get_balance_resource().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Fetch the company balance information\n\n```rust,no_run\nasync fn example_business_get_balance_resource() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::BusinessBalance = client.business().get_balance_resource().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_balance_resource<'a>(
         &'a self,
     ) -> Result<crate::types::BusinessBalance, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/business/balance"
             ),
@@ -67,7 +70,11 @@ impl Business {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

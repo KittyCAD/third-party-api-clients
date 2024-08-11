@@ -61,23 +61,75 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+/// Operations related to accounting.
+#[cfg(feature = "requests")]
+pub mod accounting;
+/// Operations related to bill pay.
+#[cfg(feature = "requests")]
+pub mod bill;
+/// Operations related to business.
+#[cfg(feature = "requests")]
 pub mod business;
+/// Operations related to entity.
+#[cfg(feature = "requests")]
+pub mod business_entities;
+/// Operations related to cards.
+#[cfg(feature = "requests")]
 pub mod card;
+/// Operations related to card programs.
+#[cfg(feature = "requests")]
 pub mod card_program;
-pub mod custom_id_provider;
+/// Operations related to cashback.
+#[cfg(feature = "requests")]
+pub mod cashback;
+/// Operations related to departments.
+#[cfg(feature = "requests")]
 pub mod department;
+/// Limit Operations.
+#[cfg(feature = "requests")]
+pub mod limit;
+/// Operations related to location.
+#[cfg(feature = "requests")]
 pub mod location;
+/// Operations related to memos.
+#[cfg(feature = "requests")]
 pub mod memo;
+/// Operations related to merchant.
+#[cfg(feature = "requests")]
 pub mod merchant;
+mod methods;
+/// Operations related to receipts.
+#[cfg(feature = "requests")]
 pub mod receipt;
+/// Operations related to receipt integrations.
+#[cfg(feature = "requests")]
 pub mod receipt_integrations;
+/// Operations related to reimbursements.
+#[cfg(feature = "requests")]
 pub mod reimbursement;
+/// Operations related to sales leads.
+#[cfg(feature = "requests")]
 pub mod sales_lead;
+/// Spend Program Operations.
+#[cfg(feature = "requests")]
+pub mod spend_program;
+/// Operations related to statements.
+#[cfg(feature = "requests")]
+pub mod statement;
 #[cfg(test)]
 mod tests;
+/// Operations related to token.
+#[cfg(feature = "requests")]
 pub mod token;
+/// Operations related to transactions.
+#[cfg(feature = "requests")]
 pub mod transaction;
+/// Operations related to transfer payments.
+#[cfg(feature = "requests")]
+pub mod transfer_payment;
 pub mod types;
+/// Operations related to users.
+#[cfg(feature = "requests")]
 pub mod user;
 
 use std::{
@@ -91,10 +143,13 @@ use std::{
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+#[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "requests")]
 static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
+#[cfg(feature = "requests")]
 pub struct Client {
     base_url: String,
     token: Arc<tokio::sync::RwLock<InnerToken>>,
@@ -104,11 +159,15 @@ pub struct Client {
 
     auto_refresh: bool,
 
+    #[cfg(feature = "retry")]
     client: reqwest_middleware::ClientWithMiddleware,
+    #[cfg(not(feature = "retry"))]
+    client: reqwest::Client,
 }
 
 /// An access token.
 #[derive(Debug, JsonSchema, Clone, Default, Serialize, Deserialize)]
+#[cfg(feature = "requests")]
 pub struct AccessToken {
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub token_type: String,
@@ -130,15 +189,18 @@ pub struct AccessToken {
 /// Time in seconds before the access token expiration point that a refresh should
 /// be performed. This value is subtracted from the `expires_in` value returned by
 /// the provider prior to storing
+#[cfg(feature = "requests")]
 const REFRESH_THRESHOLD: Duration = Duration::from_secs(60);
 
 #[derive(Debug, Clone)]
+#[cfg(feature = "requests")]
 struct InnerToken {
     access_token: String,
     refresh_token: String,
     expires_at: Option<Instant>,
 }
 
+#[cfg(feature = "requests")]
 impl Client {
     /// Create a new Client struct. It takes a type that can convert into
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
@@ -158,40 +220,61 @@ impl Client {
         T: ToString + std::fmt::Debug,
         Q: ToString + std::fmt::Debug,
     {
-        // Retry up to 3 times with increasing intervals between attempts.
-        let retry_policy =
-            reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
         let client = reqwest::Client::builder()
             .user_agent(APP_USER_AGENT)
             .build();
-        match client {
-            Ok(c) => {
-                let client = reqwest_middleware::ClientBuilder::new(c)
-                    // Trace HTTP requests. See the tracing crate to make use of these traces.
-                    .with(reqwest_tracing::TracingMiddleware::default())
-                    // Retry failed requests.
-                    .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
-                        reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                        |req: &reqwest::Request| req.try_clone().is_some(),
-                    ))
-                    .build();
 
-                Client {
-                    base_url: "https://api.ramp.com".to_string(),
-                    client_id: client_id.to_string(),
-                    client_secret: client_secret.to_string(),
-                    redirect_uri: redirect_uri.to_string(),
-                    token: Arc::new(tokio::sync::RwLock::new(InnerToken {
-                        access_token: token.to_string(),
-                        refresh_token: refresh_token.to_string(),
-                        expires_at: None,
-                    })),
+        #[cfg(feature = "retry")]
+        {
+            // Retry up to 3 times with increasing intervals between attempts.
+            let retry_policy =
+                reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
+            match client {
+                Ok(c) => {
+                    let client = reqwest_middleware::ClientBuilder::new(c)
+                        // Trace HTTP requests. See the tracing crate to make use of these traces.
+                        .with(reqwest_tracing::TracingMiddleware::default())
+                        // Retry failed requests.
+                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                            reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
+                            |req: &reqwest::Request| req.try_clone().is_some(),
+                        ))
+                        .build();
 
-                    auto_refresh: false,
-                    client,
+                    Client {
+                        base_url: "https://api.ramp.com".to_string(),
+                        client_id: client_id.to_string(),
+                        client_secret: client_secret.to_string(),
+                        redirect_uri: redirect_uri.to_string(),
+                        token: Arc::new(tokio::sync::RwLock::new(InnerToken {
+                            access_token: token.to_string(),
+                            refresh_token: refresh_token.to_string(),
+                            expires_at: None,
+                        })),
+
+                        auto_refresh: false,
+                        client,
+                    }
                 }
+                Err(e) => panic!("creating reqwest client failed: {:?}", e),
             }
-            Err(e) => panic!("creating reqwest client failed: {:?}", e),
+        }
+        #[cfg(not(feature = "retry"))]
+        {
+            Client {
+                base_url: "https://api.ramp.com".to_string(),
+                client_id: client_id.to_string(),
+                client_secret: client_secret.to_string(),
+                redirect_uri: redirect_uri.to_string(),
+                token: Arc::new(tokio::sync::RwLock::new(InnerToken {
+                    access_token: token.to_string(),
+                    refresh_token: refresh_token.to_string(),
+                    expires_at: None,
+                })),
+
+                auto_refresh: false,
+                client,
+            }
         }
     }
 
@@ -458,78 +541,113 @@ impl Client {
         Ok(req)
     }
 
-    /// Return a reference to an interface that provides access to Business operations.
+    /// Limit Operations.
+    pub fn limit(&self) -> limit::Limit {
+        limit::Limit::new(self.clone())
+    }
+
+    /// Operations related to accounting.
+    pub fn accounting(&self) -> accounting::Accounting {
+        accounting::Accounting::new(self.clone())
+    }
+
+    /// Operations related to bill pay.
+    pub fn bill(&self) -> bill::Bill {
+        bill::Bill::new(self.clone())
+    }
+
+    /// Operations related to business.
     pub fn business(&self) -> business::Business {
         business::Business::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Card operations.
-    pub fn card(&self) -> card::Card {
-        card::Card::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Card Program operations.
+    /// Operations related to card programs.
     pub fn card_program(&self) -> card_program::CardProgram {
         card_program::CardProgram::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Custom Id Provider operations.
-    pub fn custom_id_provider(&self) -> custom_id_provider::CustomIdProvider {
-        custom_id_provider::CustomIdProvider::new(self.clone())
+    /// Operations related to cards.
+    pub fn card(&self) -> card::Card {
+        card::Card::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Department operations.
+    /// Operations related to cashback.
+    pub fn cashback(&self) -> cashback::Cashback {
+        cashback::Cashback::new(self.clone())
+    }
+
+    /// Operations related to departments.
     pub fn department(&self) -> department::Department {
         department::Department::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Location operations.
+    /// Operations related to entity.
+    pub fn business_entities(&self) -> business_entities::BusinessEntities {
+        business_entities::BusinessEntities::new(self.clone())
+    }
+
+    /// Operations related to location.
     pub fn location(&self) -> location::Location {
         location::Location::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Receipt operations.
-    pub fn receipt(&self) -> receipt::Receipt {
-        receipt::Receipt::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Reimbursement operations.
-    pub fn reimbursement(&self) -> reimbursement::Reimbursement {
-        reimbursement::Reimbursement::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Token operations.
-    pub fn token(&self) -> token::Token {
-        token::Token::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Transaction operations.
-    pub fn transaction(&self) -> transaction::Transaction {
-        transaction::Transaction::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to User operations.
-    pub fn user(&self) -> user::User {
-        user::User::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Memo operations.
+    /// Operations related to memos.
     pub fn memo(&self) -> memo::Memo {
         memo::Memo::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Merchant operations.
+    /// Operations related to merchant.
     pub fn merchant(&self) -> merchant::Merchant {
         merchant::Merchant::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to SalesLead operations.
+    /// Operations related to receipt integrations.
+    pub fn receipt_integrations(&self) -> receipt_integrations::ReceiptIntegrations {
+        receipt_integrations::ReceiptIntegrations::new(self.clone())
+    }
+
+    /// Operations related to receipts.
+    pub fn receipt(&self) -> receipt::Receipt {
+        receipt::Receipt::new(self.clone())
+    }
+
+    /// Operations related to reimbursements.
+    pub fn reimbursement(&self) -> reimbursement::Reimbursement {
+        reimbursement::Reimbursement::new(self.clone())
+    }
+
+    /// Operations related to sales leads.
     pub fn sales_lead(&self) -> sales_lead::SalesLead {
         sales_lead::SalesLead::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Receipt Integrations operations.
-    pub fn receipt_integrations(&self) -> receipt_integrations::ReceiptIntegrations {
-        receipt_integrations::ReceiptIntegrations::new(self.clone())
+    /// Operations related to statements.
+    pub fn statement(&self) -> statement::Statement {
+        statement::Statement::new(self.clone())
+    }
+
+    /// Operations related to token.
+    pub fn token(&self) -> token::Token {
+        token::Token::new(self.clone())
+    }
+
+    /// Operations related to transactions.
+    pub fn transaction(&self) -> transaction::Transaction {
+        transaction::Transaction::new(self.clone())
+    }
+
+    /// Operations related to transfer payments.
+    pub fn transfer_payment(&self) -> transfer_payment::TransferPayment {
+        transfer_payment::TransferPayment::new(self.clone())
+    }
+
+    /// Operations related to users.
+    pub fn user(&self) -> user::User {
+        user::User::new(self.clone())
+    }
+
+    /// Spend Program Operations.
+    pub fn spend_program(&self) -> spend_program::SpendProgram {
+        spend_program::SpendProgram::new(self.clone())
     }
 }

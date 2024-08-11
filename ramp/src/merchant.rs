@@ -12,7 +12,7 @@ impl Merchant {
         Self { client }
     }
 
-    #[doc = "List all the merchants\n\n**Parameters:**\n\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `transaction_from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `transaction_to_date: Option<chrono::DateTime<chrono::Utc>>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_merchant_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMerchantResourceSchema = client\n        .merchant()\n        .get_list_with_pagination(\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(chrono::Utc::now()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List merchants\n\n**Parameters:**\n\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `transaction_from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `transaction_to_date: Option<chrono::DateTime<chrono::Utc>>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_merchant_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMerchantResourceSchema = client\n        .merchant()\n        .get_list_with_pagination(\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(chrono::Utc::now()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
         &'a self,
@@ -24,7 +24,7 @@ impl Merchant {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "developer/v1/merchants/"),
+            &format!("{}/{}", self.client.base_url, "developer/v1/merchants"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -56,7 +56,11 @@ impl Merchant {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }
