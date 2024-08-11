@@ -5769,7 +5769,6 @@ components:
           type: string
           description: The id of the relevant shift input
         value:
-          type: object
           description: The value of the shift input.
         author:
           type: object
@@ -5795,7 +5794,6 @@ components:
           type: string
           description: The id of the relevant shift input
         value:
-          type: object
           description: The value of the shift input.
         author_id:
           type: string

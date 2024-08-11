@@ -13575,7 +13575,7 @@ pub struct ShiftInputValue {
     #[doc = "The id of the relevant shift input"]
     pub shift_input_id: String,
     #[doc = "The value of the shift input."]
-    pub value: Value,
+    pub value: serde_json::Value,
     #[doc = "The role that last added/updated this input.\n\nExpandable field"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub author: Option<Worker>,
@@ -13632,7 +13632,7 @@ pub struct ShiftInputValueRequest {
     #[doc = "The id of the relevant shift input"]
     pub shift_input_id: String,
     #[doc = "The value of the shift input."]
-    pub value: Value,
+    pub value: serde_json::Value,
     #[doc = "The id of the role that last added/updated this input."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub author_id: Option<String>,
