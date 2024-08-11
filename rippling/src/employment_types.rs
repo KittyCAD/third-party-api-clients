@@ -55,12 +55,20 @@ impl EmploymentTypes {
         }
     }
 
-    #[doc = "Retrieve a specific employment type\n\nRetrieve a specific employment type\n\n**Parameters:**\n\n- `id: &'astr`: ID of the resource to return (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_employment_types_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: serde_json::Value = client\n        .employment_types()\n        .get(uuid::Uuid::from_str(\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )?)\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve a specific employment type\n\nRetrieve a specific employment \
+             type\n\n**Parameters:**\n\n- `id: &'astr`: ID of the resource to return \
+             (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn \
+             example_employment_types_get() -> anyhow::Result<()> {\n    let client = \
+             rippling_api::Client::new_from_env();\n    let result: \
+             rippling_api::types::GetEmploymentTypesResponse = client\n        \
+             .employment_types()\n        .get(uuid::Uuid::from_str(\n            \
+             \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )?)\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
         id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::GetEmploymentTypesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

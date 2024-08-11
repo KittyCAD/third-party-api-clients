@@ -58,8 +58,8 @@ impl Teams {
              Option<String>`\n- `id: &'astr`: ID of the resource to return \
              (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_teams_get() -> \
              anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             result: serde_json::Value = client\n        .teams()\n        .get(\n            \
-             Some(\"some-string\".to_string()),\n            \
+             result: rippling_api::types::GetTeamsResponse = client\n        .teams()\n        \
+             .get(\n            Some(\"some-string\".to_string()),\n            \
              uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
@@ -67,7 +67,7 @@ impl Teams {
         &'a self,
         expand: Option<String>,
         id: &'a str,
-    ) -> Result<serde_json::Value, crate::types::error::Error> {
+    ) -> Result<crate::types::GetTeamsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(
