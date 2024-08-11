@@ -4354,6 +4354,10 @@ components:
           type: number
           description: The unique identifier of the contractor in Gusto.
           readOnly: true
+        uuid:
+          type: string
+          description: A unique identifier of the employee in Gusto.
+          readOnly: true
         company_id:
           type: number
           description: The ID of the company the contractor is employed by.

@@ -2444,6 +2444,9 @@ pub struct Contractor {
     #[doc = "The unique identifier of the contractor in Gusto."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<f64>,
+    #[doc = "A unique identifier of the employee in Gusto."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub uuid: Option<String>,
     #[doc = "The ID of the company the contractor is employed by."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub company_id: Option<f64>,
@@ -2506,11 +2509,16 @@ impl std::fmt::Display for Contractor {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for Contractor {
-    const LENGTH: usize = 14;
+    const LENGTH: usize = 15;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id) = &self.id {
                 format!("{:?}", id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(uuid) = &self.uuid {
+                format!("{:?}", uuid).into()
             } else {
                 String::new().into()
             },
@@ -2581,6 +2589,7 @@ impl tabled::Tabled for Contractor {
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             "id".into(),
+            "uuid".into(),
             "company_id".into(),
             "wage_type".into(),
             "is_active".into(),
