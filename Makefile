@@ -76,6 +76,18 @@ remote: openapitor
 		--request-timeout-seconds 60 \
 		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
 
+.PHONY: rippling
+rippling: openapitor
+	$(openapitor_exe) \
+		--input specs/rippling.yaml \
+		--target-version 0.1.0 \
+		--output ./rippling \
+		--name rippling-api \
+		--description "A fully generated & opinionated API client for the Rippling API." \
+		--base-url "https://rest.ripplingapis.com" \
+		--request-timeout-seconds 60 \
+		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
+
 # Spec is from https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
 .PHONY: twilio
 twilio: openapitor

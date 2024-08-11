@@ -1,0 +1,6255 @@
+info:
+  description: Documentation for the Rippling Platform API.
+  title: Rippling Platform API
+  version: 1.0.0
+servers:
+- url: https://rest.ripplingapis.com
+  description: Production Rippling API endpoint.
+paths:
+  /departments:
+    get:
+      operationId: list-departments
+      tags:
+      - Departments
+      summary: List departments
+      description: "A List of departments\n - Requires: `API Tier 1`\n - Expandable\
+        \ fields: `parent`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields:
+      - parent
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - departments.read
+      responses:
+        '200':
+          description: A list of departments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Department'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /departments/{id}:
+    get:
+      tags:
+      - Departments
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - departments.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Department'
+          description: a specific department
+      operationId: get-departments
+      summary: Retrieve a specific department
+      description: Retrieve a specific department
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - parent
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /employment-types:
+    get:
+      operationId: list-employment-types
+      tags:
+      - Employment Types
+      summary: List employment types
+      description: "A List of employment types\n - Requires: `API Tier 1`\n - Sortable\
+        \ fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - employment-types.read
+      responses:
+        '200':
+          description: A list of employment types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyEmploymentType'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /employment-types/{id}:
+    get:
+      tags:
+      - Employment Types
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - employment-types.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/CompanyEmploymentType'
+          description: a specific employment type
+      operationId: get-employment-types
+      summary: Retrieve a specific employment type
+      description: Retrieve a specific employment type
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /teams:
+    get:
+      operationId: list-teams
+      tags:
+      - Teams
+      summary: List teams
+      description: "A List of teams\n - Requires: `API Tier 1`\n - Expandable fields:\
+        \ `parent`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields:
+      - parent
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - teams.read
+      responses:
+        '200':
+          description: A list of teams
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Team'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /teams/{id}:
+    get:
+      tags:
+      - Teams
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - teams.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Team'
+          description: a specific team
+      operationId: get-teams
+      summary: Retrieve a specific team
+      description: Retrieve a specific team
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - parent
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /work-locations:
+    get:
+      operationId: list-work-locations
+      tags:
+      - Work Locations
+      summary: List work locations
+      description: "A List of work locations\n - Requires: `API Tier 1`\n - Sortable\
+        \ fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - work-locations.read
+      responses:
+        '200':
+          description: A list of work locations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkLocation'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /work-locations/{id}:
+    get:
+      tags:
+      - Work Locations
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - work-locations.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/WorkLocation'
+          description: a specific work location
+      operationId: get-work-locations
+      summary: Retrieve a specific work location
+      description: Retrieve a specific work location
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /workers:
+    get:
+      operationId: list-workers
+      tags:
+      - Workers
+      summary: List workers
+      description: "A List of workers\n - Requires: `API Tier 1`\n - Filterable fields:\
+        \ `status`, `work_email`\n - Expandable fields: `user`, `legal_entity`, `employment_type`,\
+        \ `compensation`, `department`, `teams`, `level`, `custom_fields`\n - Sortable\
+        \ fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields:
+      - user
+      - legal_entity
+      - employment_type
+      - compensation
+      - department
+      - teams
+      - level
+      - custom_fields
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - workers.read
+      responses:
+        '200':
+          description: A list of workers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Worker'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-rippling-filterable-fields:
+      - status
+      - work_email
+  /workers/{id}:
+    get:
+      tags:
+      - Workers
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - workers.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Worker'
+          description: a specific worker
+      operationId: get-workers
+      summary: Retrieve a specific worker
+      description: Retrieve a specific worker
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - user
+      - legal_entity
+      - employment_type
+      - compensation
+      - department
+      - teams
+      - level
+      - custom_fields
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /users:
+    get:
+      operationId: list-users
+      tags:
+      - Users
+      summary: List users
+      description: "A List of users\n - Requires: `API Tier 1`\n - Sortable fields:\
+        \ `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - users.read
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - users.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/User'
+          description: a specific user
+      operationId: get-users
+      summary: Retrieve a specific user
+      description: Retrieve a specific user
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_1
+      x-deprecated-description:
+      - API_Tier_1
+  /companies:
+    get:
+      operationId: list-companies
+      tags:
+      - Companies
+      summary: List companies
+      description: "A List of companies\n - Requires: `API Tier 1`\n - Expandable\
+        \ fields: `parent_legal_entity`, `legal_entities`\n - Sortable fields: `id`,\
+        \ `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields:
+      - parent_legal_entity
+      - legal_entities
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - companies.read
+      responses:
+        '200':
+          description: A list of companies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Company'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /sso-me:
+    get:
+      operationId: list-sso-me
+      tags:
+      - Me
+      summary: Retrieve my SSO information
+      description: "SSO information of the current user\n - Requires: `API Tier 1`\n\
+        \ - Expandable fields: `company`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - company
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - sso-me.read
+      responses:
+        '200':
+          description: SSO information of the current user
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/SSOMe'
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /entitlements:
+    get:
+      operationId: list-entitlements
+      tags:
+      - Entitlements
+      summary: List entitlements
+      description: "A List of entitlements\n - Requires: `API Tier 1`"
+      parameters: []
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields: []
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - entitlements.read
+      responses:
+        '200':
+          description: A list of entitlements
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EntitlementModel'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+  /custom-fields:
+    get:
+      operationId: list-custom-fields
+      tags:
+      - Custom Fields
+      summary: List custom fields
+      description: "A List of custom fields\n - Requires: `API Tier 1`\n - Sortable\
+        \ fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - custom-fields.read
+      responses:
+        '200':
+          description: A list of custom fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomField'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+      x-deprecated-description:
+      - API_Tier_1
+      x-rippling-entitlements:
+      - API_Tier_1
+tags:
+- name: Employment Types
+  description: Employment types used by the company
+- name: Teams
+  description: Teams at the company
+- name: Time Entries
+  description: Time entries submitted by workers
+- name: Shift Inputs
+  description: Shift inputs used by the company
+- name: Job Requisitions
+  description: A request for a job to be filled by a candidate
+- name: Tracks and Levels
+  description: Levels and tracks used by the company for workers
+- name: Entitlements
+  description: Availability of API features to the company or Partners.
+- name: Users
+  description: Users of the company
+- name: Legal entities
+  description: Legal entities registered by the company
+- name: Compensations
+  description: Compensation associated with workers
+- name: Workers
+  description: Workers who work or have worked at the company
+- name: Departments
+  description: Departments used by the company
+- name: Job
+  description: Job related information for the company
+- name: Candidates
+  description: Someone who applies to a job requisition opened by the company
+- name: Work Locations
+  description: Work locations used by the company
+- name: Candidate Applications
+  description: An application by a candidate to a specific job requisition
+- name: Leave Requests
+  description: Leave requests submitted by workers
+- name: Companies
+  description: Companies on Rippling
+- name: Custom Fields
+  description: Custom fields defined by the company
+- name: Me
+  description: Provides the user's SSO information
+- name: Custom Object Fields
+  description: Custom object fields defined by the company
+openapi: 3.0.3
+components:
+  schemas:
+    MetaResponse:
+      description: Meta information for the response.
+      type: object
+      properties:
+        __meta:
+          type: object
+          properties:
+            redacted_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/RedactedField'
+    RedactedFields:
+      description: A list of redacted fields.
+      type: object
+      properties:
+        redacted_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                description: The name for the redacted field
+                type: string
+                example: date_of_birth
+              reason:
+                description: The reason for the redaction
+                type: string
+                example: Insufficient entitlements
+    RedactedField:
+      description: Info about the redacted fields.
+      type: object
+      properties:
+        name:
+          description: The name for the redacted field
+          type: string
+          example: date_of_birth
+        reason:
+          description: The reason for the redaction
+          type: string
+          example: Insufficient entitlements
+    LeaveRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the leave request.
+        worker:
+          type: object
+          description: 'The worker associated with the leave request.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        requester_id:
+          type: string
+          description: The ID of the worker who requested the leave request.
+        requester:
+          type: object
+          description: 'The worker who requested the leave request.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        status:
+          type: string
+          description: The status of the leave request.
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - CANCELED
+        start_time:
+          type: string
+          description: The start time of the leave request.
+        end_time:
+          type: string
+          description: The end time of the leave request.
+        comments:
+          type: string
+          description: The comments associated with the leave request.
+        number_of_minutes_requested:
+          type: number
+          description: The number of minutes requested for the leave request.
+        leave_policy_id:
+          type: string
+          description: The ID of the leave policy associated with the leave request.
+        leave_type_id:
+          type: string
+          description: The ID of the leave type associated with the leave request.
+        leave_type:
+          type: string
+          description: 'The leave type associated with the leave request.
+
+
+            Expandable field'
+        reason_for_leave:
+          type: string
+          description: The reason for the leave request.
+        reviewer_id:
+          type: string
+          description: The ID of the worker who reviewed the leave request.
+        reviewer:
+          type: object
+          description: 'The worker who reviewed the leave request.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        reviewed_at:
+          type: string
+          description: The timestamp the leave request was reviewed.
+        days_take_off:
+          type: object
+          description: The specific dates taken off and the amount of time taken off
+            for each one.
+          allOf:
+          - $ref: '#/components/schemas/DayOff'
+        is_managed_by_external_system:
+          type: boolean
+          description: Whether the leave request is managed by an external system.
+      description: ''
+      x-rippling-expandable-fields:
+      - worker
+      - requester
+      - leave_type
+      - reviewer
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+      - status
+    LeaveRequestRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the leave request.
+        requester_id:
+          type: string
+          description: The ID of the worker who requested the leave request.
+        status:
+          type: string
+          description: The status of the leave request.
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - CANCELED
+        start_time:
+          type: string
+          description: The start time of the leave request.
+        end_time:
+          type: string
+          description: The end time of the leave request.
+        comments:
+          type: string
+          description: The comments associated with the leave request.
+        number_of_minutes_requested:
+          type: number
+          description: The number of minutes requested for the leave request.
+        leave_policy_id:
+          type: string
+          description: The ID of the leave policy associated with the leave request.
+        leave_type_id:
+          type: string
+          description: The ID of the leave type associated with the leave request.
+        reason_for_leave:
+          type: string
+          description: The reason for the leave request.
+        reviewer_id:
+          type: string
+          description: The ID of the worker who reviewed the leave request.
+        reviewed_at:
+          type: string
+          description: The timestamp the leave request was reviewed.
+        days_take_off:
+          type: object
+          description: The specific dates taken off and the amount of time taken off
+            for each one.
+          allOf:
+          - $ref: '#/components/schemas/DayOff'
+        is_managed_by_external_system:
+          type: boolean
+          description: Whether the leave request is managed by an external system.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+      - status
+    DayOff:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date of the day off.
+        number_of_minutes_taken_off:
+          type: number
+          description: The number of minutes taken off for the day.
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - date
+      - number_of_minutes_taken_off
+    DayOffRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date of the day off.
+        number_of_minutes_taken_off:
+          type: number
+          description: The number of minutes taken off for the day.
+      description: ''
+      required:
+      - date
+      - number_of_minutes_taken_off
+    Worker:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        user_id:
+          type: string
+          description: The worker's associated user.
+        user:
+          type: object
+          description: 'The worker''s associated user.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/User'
+        legal_entity_id:
+          type: string
+          description: The worker's associated legal entity.
+        legal_entity:
+          type: object
+          description: 'The worker''s associated legal entity.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/LegalEntity'
+        country:
+          type: string
+          description: The worker's country.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+        start_date:
+          type: string
+          description: The start date of the worker.
+        end_date:
+          type: string
+          description: The end date of the worker.
+        number:
+          type: integer
+          description: The worker's number within the organization.
+        work_email:
+          type: string
+          description: The worker's associated work email address.
+        personal_email:
+          type: string
+          description: The worker's associated personal email address.
+        status:
+          type: string
+          description: The worker's status within the organization.
+          enum:
+          - HIRED
+          - ACCEPTED
+          - ACTIVE
+          - TERMINATED
+        location:
+          type: object
+          description: The location that the worker is mapped to for tax purposes.
+            In the case that a worker is remote, the location's type is remote.
+          allOf:
+          - $ref: '#/components/schemas/WorkerLocation'
+        employment_type_id:
+          type: string
+          description: The worker's employment type.
+        employment_type:
+          type: object
+          description: 'The worker''s employment type.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/CompanyEmploymentType'
+        gender:
+          type: string
+          description: The gender of the worker, if specified.
+          enum:
+          - MALE
+          - FEMALE
+          - NONBINARY
+          - UNDETERMINED
+          - DIVERSE
+          - DOES_NOT_APPLY
+        date_of_birth:
+          type: string
+          description: The worker's date of birth.
+        race:
+          type: string
+          description: The identified race of the worker, if specified.
+          enum:
+          - BLACK
+          - BROWN
+          - CHINESE
+          - EURASIAN
+          - INDIAN
+          - INDIGENOUS
+          - WHITE
+          - YELLOW
+          - NOT_INFORMED
+          - OTHER
+        ethnicity:
+          type: string
+          description: The identified ethnicity of the worker, if specified.
+          enum:
+          - HISPANIC_OR_LATINO
+          - WHITE
+          - BLACK_OR_AFRICAN_AMERICAN
+          - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+          - ASIAN
+          - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+          - TWO_OR_MORE_RACES
+          - DECLINE_TO_SELF_IDENTIFY
+        citizenship:
+          type: string
+          description: The countries that the worker has citizenship in.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+        compensation_id:
+          type: string
+          description: The compensation package for the worker.
+        compensation:
+          type: object
+          description: 'The compensation package for the worker.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Compensation'
+        department_id:
+          type: string
+          description: The worker's assigned department.
+        department:
+          type: object
+          description: 'The worker''s assigned department.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Department'
+        teams_id:
+          type: string
+          description: The worker's assigned teams.
+        teams:
+          type: object
+          description: 'The worker''s assigned teams.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Team'
+        title:
+          type: string
+          description: The worker's title.
+        level_id:
+          type: string
+          description: The level of the worker.
+        level:
+          type: object
+          description: 'The level of the worker.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Level'
+        termination_details:
+          type: object
+          description: The details of the worker's termination, if applicable.
+          allOf:
+          - $ref: '#/components/schemas/TerminationDetails'
+        custom_fields:
+          type: object
+          description: Custom fields for the worker
+          additionalProperties: {}
+      description: ''
+      x-rippling-expandable-fields:
+      - user
+      - legal_entity
+      - employment_type
+      - compensation
+      - department
+      - teams
+      - level
+      required:
+      - id
+      - created_at
+      - updated_at
+    WorkerRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The worker's associated user.
+        legal_entity_id:
+          type: string
+          description: The worker's associated legal entity.
+        country:
+          type: string
+          description: The worker's country.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+        start_date:
+          type: string
+          description: The start date of the worker.
+        end_date:
+          type: string
+          description: The end date of the worker.
+        number:
+          type: integer
+          description: The worker's number within the organization.
+        work_email:
+          type: string
+          description: The worker's associated work email address.
+        personal_email:
+          type: string
+          description: The worker's associated personal email address.
+        status:
+          type: string
+          description: The worker's status within the organization.
+          enum:
+          - HIRED
+          - ACCEPTED
+          - ACTIVE
+          - TERMINATED
+        location:
+          type: object
+          description: The location that the worker is mapped to for tax purposes.
+            In the case that a worker is remote, the location's type is remote.
+          allOf:
+          - $ref: '#/components/schemas/WorkerLocation'
+        employment_type_id:
+          type: string
+          description: The worker's employment type.
+        gender:
+          type: string
+          description: The gender of the worker, if specified.
+          enum:
+          - MALE
+          - FEMALE
+          - NONBINARY
+          - UNDETERMINED
+          - DIVERSE
+          - DOES_NOT_APPLY
+        date_of_birth:
+          type: string
+          description: The worker's date of birth.
+        race:
+          type: string
+          description: The identified race of the worker, if specified.
+          enum:
+          - BLACK
+          - BROWN
+          - CHINESE
+          - EURASIAN
+          - INDIAN
+          - INDIGENOUS
+          - WHITE
+          - YELLOW
+          - NOT_INFORMED
+          - OTHER
+        ethnicity:
+          type: string
+          description: The identified ethnicity of the worker, if specified.
+          enum:
+          - HISPANIC_OR_LATINO
+          - WHITE
+          - BLACK_OR_AFRICAN_AMERICAN
+          - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+          - ASIAN
+          - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+          - TWO_OR_MORE_RACES
+          - DECLINE_TO_SELF_IDENTIFY
+        citizenship:
+          type: string
+          description: The countries that the worker has citizenship in.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+        compensation_id:
+          type: string
+          description: The compensation package for the worker.
+        department_id:
+          type: string
+          description: The worker's assigned department.
+        teams_id:
+          type: string
+          description: The worker's assigned teams.
+        title:
+          type: string
+          description: The worker's title.
+        level_id:
+          type: string
+          description: The level of the worker.
+        termination_details:
+          type: object
+          description: The details of the worker's termination, if applicable.
+          allOf:
+          - $ref: '#/components/schemas/TerminationDetails'
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    TerminationDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The termination type indicates whether the termination was
+            voluntary or involuntary.
+          enum:
+          - VOLUNTARY
+          - INVOLUNTARY
+          - RETIREMENT
+          - DEATH
+          - ABANDONMENT
+          - OFFER_DECLINED
+          - RESCIND
+          - RENEGE
+        reason:
+          type: string
+          description: This is a description that will be custom to each Rippling
+            company.
+      description: ''
+      x-rippling-expandable-fields: []
+    TerminationDetailsRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The termination type indicates whether the termination was
+            voluntary or involuntary.
+          enum:
+          - VOLUNTARY
+          - INVOLUNTARY
+          - RETIREMENT
+          - DEATH
+          - ABANDONMENT
+          - OFFER_DECLINED
+          - RESCIND
+          - RENEGE
+        reason:
+          type: string
+          description: This is a description that will be custom to each Rippling
+            company.
+      description: ''
+    Level:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the level. Must be unique within the company or
+            organization.
+        parent_id:
+          type: string
+          description: The parent level.
+        parent:
+          type: string
+          description: 'The parent level.
+
+
+            Expandable field'
+        global_level:
+          type: integer
+          description: Global level is used to track the seniority of levels. The
+            higher up a level is placed on the page, the more senior and higher-ranked
+            the level. Global level is used in workflows, policies, and reports that
+            use the level attribute (e.g., you can use Level Lookup to set up a workflow
+            that notifies the nearest person in an worker's management chain at or
+            above the specified level).
+        description:
+          type: string
+          description: The description of the level.
+        rank:
+          type: integer
+          description: The rank of the level within its track.
+        track_id:
+          type: string
+          description: The track associated with the level, if it's not a global level.
+        track:
+          type: object
+          description: 'The track associated with the level, if it''s not a global
+            level.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Track'
+      description: ''
+      x-rippling-expandable-fields:
+      - parent
+      - track
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    LevelRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the level. Must be unique within the company or
+            organization.
+        parent_id:
+          type: string
+          description: The parent level.
+        global_level:
+          type: integer
+          description: Global level is used to track the seniority of levels. The
+            higher up a level is placed on the page, the more senior and higher-ranked
+            the level. Global level is used in workflows, policies, and reports that
+            use the level attribute (e.g., you can use Level Lookup to set up a workflow
+            that notifies the nearest person in an worker's management chain at or
+            above the specified level).
+        description:
+          type: string
+          description: The description of the level.
+        rank:
+          type: integer
+          description: The rank of the level within its track.
+        track_id:
+          type: string
+          description: The track associated with the level, if it's not a global level.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    Track:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the track. Must be unique within the company or
+            organization.
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    TrackRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the track. Must be unique within the company or
+            organization.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        parent_id:
+          type: string
+          description: The parent team
+        parent:
+          type: object
+          description: 'The parent team
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Team'
+        name:
+          type: string
+          description: The name of the team.
+      description: ''
+      x-rippling-expandable-fields:
+      - parent
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    TeamRequest:
+      type: object
+      properties:
+        parent_id:
+          type: string
+          description: The parent team
+        name:
+          type: string
+          description: The name of the team.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the department.
+        parent_id:
+          type: string
+          description: The parent department.
+        parent:
+          type: object
+          description: 'The parent department.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Department'
+      description: ''
+      x-rippling-expandable-fields:
+      - parent
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    DepartmentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the department.
+        parent_id:
+          type: string
+          description: The parent department.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    Compensation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        worker_id:
+          type: string
+          description: The worker's ID.
+        worker:
+          type: object
+          description: 'The worker''s details.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        annual_compensation:
+          type: object
+          description: The worker's annual compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        annual_salary_equivalent:
+          type: object
+          description: The worker's annual salary equivalent, for insurance purposes.
+            It will be equal to the worker's annual compensation, except for owners
+            that are receiving no cashcompensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        hourly_wage:
+          type: object
+          description: The worker's hourly wage. This calculation assumes 40-hour
+            work weeks for workers with fixed compensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        monthly_compensation:
+          type: object
+          description: The worker's monthly compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        on_target_commission:
+          type: object
+          description: The worker's on-target commission.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        relocation_reimbursement:
+          type: object
+          description: The worker's hourly wage. This calculation assumes 40-hour
+            work weeks for workers with fixed compensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        signing_bonus:
+          type: object
+          description: The worker's signing bonus.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        target_annual_bonus:
+          type: object
+          description: The worker's target annual bonus amount.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        weekly_compensation:
+          type: object
+          description: The worker's weekly compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        target_annual_bonus_percent:
+          type: number
+          description: The worker's target annual bonus as a percent of annual compensation.
+        bonus_schedule:
+          type: string
+          description: The worker's bonus schedule.
+        payment_type:
+          type: string
+          description: The payment type for an worker's compensation.
+        payment_terms:
+          type: string
+          description: The payment terms for an worker's compensation.
+      description: ''
+      x-rippling-expandable-fields:
+      - worker
+      required:
+      - id
+      - created_at
+      - updated_at
+    CompensationRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The worker's ID.
+        annual_compensation:
+          type: object
+          description: The worker's annual compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        annual_salary_equivalent:
+          type: object
+          description: The worker's annual salary equivalent, for insurance purposes.
+            It will be equal to the worker's annual compensation, except for owners
+            that are receiving no cashcompensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        hourly_wage:
+          type: object
+          description: The worker's hourly wage. This calculation assumes 40-hour
+            work weeks for workers with fixed compensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        monthly_compensation:
+          type: object
+          description: The worker's monthly compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        on_target_commission:
+          type: object
+          description: The worker's on-target commission.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        relocation_reimbursement:
+          type: object
+          description: The worker's hourly wage. This calculation assumes 40-hour
+            work weeks for workers with fixed compensation.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        signing_bonus:
+          type: object
+          description: The worker's signing bonus.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        target_annual_bonus:
+          type: object
+          description: The worker's target annual bonus amount.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        weekly_compensation:
+          type: object
+          description: The worker's weekly compensation. This calculation assumes
+            40-hour work weeks for workers with an hourly wage.
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+        target_annual_bonus_percent:
+          type: number
+          description: The worker's target annual bonus as a percent of annual compensation.
+        bonus_schedule:
+          type: string
+          description: The worker's bonus schedule.
+        payment_type:
+          type: string
+          description: The payment type for an worker's compensation.
+        payment_terms:
+          type: string
+          description: The payment terms for an worker's compensation.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    Currency:
+      type: object
+      properties:
+        currency_type:
+          type: string
+          description: 'The currency type, ex: USD, EUR, etc.'
+        value:
+          type: number
+          description: The decimal amount for the currency.
+      description: ''
+      x-rippling-expandable-fields: []
+    CurrencyRequest:
+      type: object
+      properties:
+        currency_type:
+          type: string
+          description: 'The currency type, ex: USD, EUR, etc.'
+        value:
+          type: number
+          description: The decimal amount for the currency.
+      description: ''
+    CompanyEmploymentType:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        label:
+          type: string
+          description: The display label of the employment type.
+        name:
+          type: string
+          description: The name of the employment type for non-custom employment types.
+        type:
+          type: string
+          description: 'The classification of the worker by the company. * `CONTRACTOR`:
+            Contractors are self-employed workers who provide services on a short-term
+            or per-project basis and are not eligible for tax-withholding or benefits.
+            * `EMPLOYEE`: Employees are hired and managed by an employer, work under
+            the employer''s direct supervision and control, and are protected by law
+            for wages and employment rights.'
+          enum:
+          - CONTRACTOR
+          - EMPLOYEE
+        compensation_time_period:
+          type: string
+          description: 'The compensation period for the employment type. * `SALARIED`:
+            Employees that are paid a fixed amount per year. * `HOURLY`: Employees
+            that are paid a wage per hour worked.'
+          enum:
+          - HOURLY
+          - SALARIED
+        amount_worked:
+          type: string
+          description: 'The amount worked for the employment type. * `FULL-TIME`:
+            Full-time is at least 30 hours per week. Full-time workers will typically
+            be eligible for benefits. * `PART-TIME`: Part-time is less than 30 hours
+            per week. These workers may be eligible for benefits, depending on company
+            settings and hours worked. * `TEMPORARY`: These workers are hired on a
+            temporary basis. You can specify how each worker with this employment
+            type will be paid individually.'
+          enum:
+          - PART-TIME
+          - FULL-TIME
+          - TEMPORARY
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - label
+    CompanyEmploymentTypeRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The display label of the employment type.
+        name:
+          type: string
+          description: The name of the employment type for non-custom employment types.
+        type:
+          type: string
+          description: 'The classification of the worker by the company. * `CONTRACTOR`:
+            Contractors are self-employed workers who provide services on a short-term
+            or per-project basis and are not eligible for tax-withholding or benefits.
+            * `EMPLOYEE`: Employees are hired and managed by an employer, work under
+            the employer''s direct supervision and control, and are protected by law
+            for wages and employment rights.'
+          enum:
+          - CONTRACTOR
+          - EMPLOYEE
+        compensation_time_period:
+          type: string
+          description: 'The compensation period for the employment type. * `SALARIED`:
+            Employees that are paid a fixed amount per year. * `HOURLY`: Employees
+            that are paid a wage per hour worked.'
+          enum:
+          - HOURLY
+          - SALARIED
+        amount_worked:
+          type: string
+          description: 'The amount worked for the employment type. * `FULL-TIME`:
+            Full-time is at least 30 hours per week. Full-time workers will typically
+            be eligible for benefits. * `PART-TIME`: Part-time is less than 30 hours
+            per week. These workers may be eligible for benefits, depending on company
+            settings and hours worked. * `TEMPORARY`: These workers are hired on a
+            temporary basis. You can specify how each worker with this employment
+            type will be paid individually.'
+          enum:
+          - PART-TIME
+          - FULL-TIME
+          - TEMPORARY
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - label
+    WorkerLocation:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of location.
+          enum:
+          - REMOTE
+          - WORK
+        work_location_id:
+          type: string
+          description: The work location, if the worker isn't remote.
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - type
+      - work_location_id
+    WorkerLocationRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of location.
+          enum:
+          - REMOTE
+          - WORK
+        work_location_id:
+          type: string
+          description: The work location, if the worker isn't remote.
+      description: ''
+      required:
+      - type
+      - work_location_id
+    LegalEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        tax_identifier:
+          type: string
+          description: The tax identifier for the legal entity.
+        country:
+          type: object
+          description: The country the legal entity is based in.
+          allOf:
+          - $ref: '#/components/schemas/Country'
+        legal_name:
+          type: string
+          description: The legal name of the legal entity.
+        entity_level:
+          type: string
+          description: 'The legal entity''s level in a hierarchy. * `PARENT`: The
+            legal entity is considered the ultimate holding entity. * `SUBSIDIARY`:
+            The legal entity is considered a subsidiary, fully or partially held by
+            another. * `BRANCH`: The legal entity is considered a branch, associated
+            with a parent legal entity.'
+          enum:
+          - PARENT
+          - SUBSIDIARY
+          - BRANCH
+        registration_date:
+          type: string
+          description: The registration date of the entity.
+        mailing_address:
+          type: object
+          description: The mailing address of the legal entity.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        physical_address:
+          type: object
+          description: The physical address of the legal entity, if it differs from
+            the mailing address.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        parent_id:
+          type: string
+          description: The parent legal entity.
+        parent:
+          type: object
+          description: 'The parent legal entity.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/LegalEntity'
+        management_type:
+          type: string
+          description: 'The legal entity management type in the case of an employer
+            of record (EOR) or professional employment organization (PEO). * `PEO`:
+            The legal entity is considered a Professional Employment Organization
+            (PEO). * `EOR`: The legal entity is considered an Employer of Record (EOR).'
+          enum:
+          - PEO
+          - EOR
+        company_id:
+          type: string
+          description: The company or organization associated with the legal entity
+        company:
+          type: object
+          description: 'The company or organization associated with the legal entity
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Company'
+      description: ''
+      x-rippling-expandable-fields:
+      - parent
+      - company
+      required:
+      - id
+      - created_at
+      - updated_at
+    LegalEntityRequest:
+      type: object
+      properties:
+        tax_identifier:
+          type: string
+          description: The tax identifier for the legal entity.
+        country:
+          type: object
+          description: The country the legal entity is based in.
+          allOf:
+          - $ref: '#/components/schemas/Country'
+        legal_name:
+          type: string
+          description: The legal name of the legal entity.
+        entity_level:
+          type: string
+          description: 'The legal entity''s level in a hierarchy. * `PARENT`: The
+            legal entity is considered the ultimate holding entity. * `SUBSIDIARY`:
+            The legal entity is considered a subsidiary, fully or partially held by
+            another. * `BRANCH`: The legal entity is considered a branch, associated
+            with a parent legal entity.'
+          enum:
+          - PARENT
+          - SUBSIDIARY
+          - BRANCH
+        registration_date:
+          type: string
+          description: The registration date of the entity.
+        mailing_address:
+          type: object
+          description: The mailing address of the legal entity.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        physical_address:
+          type: object
+          description: The physical address of the legal entity, if it differs from
+            the mailing address.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        parent_id:
+          type: string
+          description: The parent legal entity.
+        management_type:
+          type: string
+          description: 'The legal entity management type in the case of an employer
+            of record (EOR) or professional employment organization (PEO). * `PEO`:
+            The legal entity is considered a Professional Employment Organization
+            (PEO). * `EOR`: The legal entity is considered an Employer of Record (EOR).'
+          enum:
+          - PEO
+          - EOR
+        company_id:
+          type: string
+          description: The company or organization associated with the legal entity
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        parent_legal_entity_id:
+          type: string
+          description: The company's ultimate holding entity.
+        parent_legal_entity:
+          type: object
+          description: 'The company''s ultimate holding entity.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/LegalEntity'
+        legal_entities_id:
+          type: string
+          description: A list of the company's entities.
+        legal_entities:
+          type: object
+          description: 'A list of the company''s entities.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/LegalEntity'
+        physical_address:
+          type: object
+          description: The physical address of the holding entity.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        primary_email:
+          type: string
+          description: The email address used when registering this company.
+        legal_name:
+          type: string
+          description: The legal name of the company.
+        doing_business_as_name:
+          type: string
+          description: The doing business as name for the company.
+        phone:
+          type: string
+          description: The phone number for the company.
+        name:
+          type: string
+          description: The name of the company.
+      description: ''
+      x-rippling-expandable-fields:
+      - parent_legal_entity
+      - legal_entities
+      required:
+      - id
+      - created_at
+      - updated_at
+      - legal_entities_id
+      - legal_entities
+      - name
+    CompanyRequest:
+      type: object
+      properties:
+        parent_legal_entity_id:
+          type: string
+          description: The company's ultimate holding entity.
+        legal_entities_id:
+          type: string
+          description: A list of the company's entities.
+        physical_address:
+          type: object
+          description: The physical address of the holding entity.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        primary_email:
+          type: string
+          description: The email address used when registering this company.
+        legal_name:
+          type: string
+          description: The legal name of the company.
+        doing_business_as_name:
+          type: string
+          description: The doing business as name for the company.
+        phone:
+          type: string
+          description: The phone number for the company.
+        name:
+          type: string
+          description: The name of the company.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - legal_entities_id
+      - legal_entities
+      - name
+    Address:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The classification of the address.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        formatted:
+          type: string
+          description: The formatted mailing address.
+        street_address:
+          type: string
+          description: The full street address component, which may include house
+            number, street name, P.O. box, and multi-line extended street address
+            information, pursuant to SCIM RFC 7643 4.1.2..
+        locality:
+          type: string
+          description: The city or locality component.
+        region:
+          type: string
+          description: The state or region component, pursuant to SCIM RFC 7643 4.1.2.
+        postal_code:
+          type: string
+          description: The zip code or postal code component, pursuant to SCIM RFC
+            7643 4.1.2.
+        country:
+          type: string
+          description: The country component, pursuant to SCIM RFC 7643 4.1.2.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+      x-rippling-expandable-fields: []
+    AddressRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The classification of the address.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        formatted:
+          type: string
+          description: The formatted mailing address.
+        street_address:
+          type: string
+          description: The full street address component, which may include house
+            number, street name, P.O. box, and multi-line extended street address
+            information, pursuant to SCIM RFC 7643 4.1.2..
+        locality:
+          type: string
+          description: The city or locality component.
+        region:
+          type: string
+          description: The state or region component, pursuant to SCIM RFC 7643 4.1.2.
+        postal_code:
+          type: string
+          description: The zip code or postal code component, pursuant to SCIM RFC
+            7643 4.1.2.
+        country:
+          type: string
+          description: The country component, pursuant to SCIM RFC 7643 4.1.2.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+    Country:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The code of the country.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - code
+    CountryRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The code of the country.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+      required:
+      - code
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        active:
+          type: boolean
+          description: Whether the user is able to access company resources, typically
+            when they are in actively engaged with the company and not after off-boarding.
+        username:
+          type: string
+          description: The unique identifier across Rippling used by the User for
+            direct authentication into their associated company. Globally unique.
+        name:
+          type: object
+          description: The user's name.
+          allOf:
+          - $ref: '#/components/schemas/UserName'
+        display_name:
+          type: string
+          description: The display name of the user using either the concatenated
+            preferred given and family name or username depending on availability.
+        emails:
+          type: object
+          description: The user's email addresses.
+          allOf:
+          - $ref: '#/components/schemas/Email'
+        phone_numbers:
+          type: object
+          description: The user's phone numbers.
+          allOf:
+          - $ref: '#/components/schemas/UserPhoneNumber'
+        addresses:
+          type: object
+          description: The user's addresses.
+          allOf:
+          - $ref: '#/components/schemas/UserAddress'
+        photos:
+          type: object
+          description: The user's photos.
+          allOf:
+          - $ref: '#/components/schemas/UserPhoto'
+        preferred_language:
+          type: string
+          description: The User's preferred written or spoken language in the same
+            format of the HTTP Accept-Language header, pursuant to Section 5.3.5 of
+            RFC7231.
+        locale:
+          type: string
+          description: The User's default location for purposes of localization of
+            currency, date time format, or numerical representations pursuant to RFC5646.
+        timezone:
+          type: string
+          description: The User's current time zone in IANA database Olson format
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+    UserRequest:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Whether the user is able to access company resources, typically
+            when they are in actively engaged with the company and not after off-boarding.
+        username:
+          type: string
+          description: The unique identifier across Rippling used by the User for
+            direct authentication into their associated company. Globally unique.
+        name:
+          type: object
+          description: The user's name.
+          allOf:
+          - $ref: '#/components/schemas/UserName'
+        display_name:
+          type: string
+          description: The display name of the user using either the concatenated
+            preferred given and family name or username depending on availability.
+        emails:
+          type: object
+          description: The user's email addresses.
+          allOf:
+          - $ref: '#/components/schemas/Email'
+        phone_numbers:
+          type: object
+          description: The user's phone numbers.
+          allOf:
+          - $ref: '#/components/schemas/UserPhoneNumber'
+        addresses:
+          type: object
+          description: The user's addresses.
+          allOf:
+          - $ref: '#/components/schemas/UserAddress'
+        photos:
+          type: object
+          description: The user's photos.
+          allOf:
+          - $ref: '#/components/schemas/UserPhoto'
+        preferred_language:
+          type: string
+          description: The User's preferred written or spoken language in the same
+            format of the HTTP Accept-Language header, pursuant to Section 5.3.5 of
+            RFC7231.
+        locale:
+          type: string
+          description: The User's default location for purposes of localization of
+            currency, date time format, or numerical representations pursuant to RFC5646.
+        timezone:
+          type: string
+          description: The User's current time zone in IANA database Olson format
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    UserPhoto:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The URL of the photo.
+        type:
+          type: string
+          description: The classification of the photo.
+          enum:
+          - PHOTO
+          - THUMBNAIL
+      description: ''
+      x-rippling-expandable-fields: []
+    UserPhotoRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The URL of the photo.
+        type:
+          type: string
+          description: The classification of the photo.
+          enum:
+          - PHOTO
+          - THUMBNAIL
+      description: ''
+    UserAddress:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The classification of the address.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        formatted:
+          type: string
+          description: The formatted mailing address.
+        street_address:
+          type: string
+          description: The full street address component, which may include house
+            number, street name, P.O. box, and multi-line extended street address
+            information, pursuant to SCIM RFC 7643 4.1.2..
+        locality:
+          type: string
+          description: The city or locality component.
+        region:
+          type: string
+          description: The state or region component, pursuant to SCIM RFC 7643 4.1.2.
+        postal_code:
+          type: string
+          description: The zip code or postal code component, pursuant to SCIM RFC
+            7643 4.1.2.
+        country:
+          type: string
+          description: The country component, pursuant to SCIM RFC 7643 4.1.2.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+      x-rippling-expandable-fields: []
+    UserAddressRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The classification of the address.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        formatted:
+          type: string
+          description: The formatted mailing address.
+        street_address:
+          type: string
+          description: The full street address component, which may include house
+            number, street name, P.O. box, and multi-line extended street address
+            information, pursuant to SCIM RFC 7643 4.1.2..
+        locality:
+          type: string
+          description: The city or locality component.
+        region:
+          type: string
+          description: The state or region component, pursuant to SCIM RFC 7643 4.1.2.
+        postal_code:
+          type: string
+          description: The zip code or postal code component, pursuant to SCIM RFC
+            7643 4.1.2.
+        country:
+          type: string
+          description: The country component, pursuant to SCIM RFC 7643 4.1.2.
+          enum:
+          - AF
+          - AX
+          - AL
+          - DZ
+          - AS
+          - AD
+          - AO
+          - AI
+          - AQ
+          - AG
+          - AR
+          - AM
+          - AW
+          - AU
+          - AT
+          - AZ
+          - BS
+          - BH
+          - BD
+          - BB
+          - BY
+          - BE
+          - BZ
+          - BJ
+          - BM
+          - BT
+          - BO
+          - BQ
+          - BA
+          - BW
+          - BV
+          - BR
+          - IO
+          - BN
+          - BG
+          - BF
+          - BI
+          - CV
+          - KH
+          - CM
+          - CA
+          - KY
+          - CF
+          - TD
+          - CL
+          - CN
+          - CX
+          - CC
+          - CO
+          - KM
+          - CG
+          - CD
+          - CK
+          - CR
+          - CI
+          - HR
+          - CW
+          - CY
+          - CZ
+          - DK
+          - DJ
+          - DM
+          - DO
+          - EC
+          - EG
+          - SV
+          - GQ
+          - ER
+          - EE
+          - SZ
+          - ET
+          - FK
+          - FO
+          - FJ
+          - FI
+          - FR
+          - GF
+          - PF
+          - TF
+          - GA
+          - GM
+          - GE
+          - DE
+          - GH
+          - GI
+          - GR
+          - GL
+          - GD
+          - GP
+          - GU
+          - GT
+          - GG
+          - GN
+          - GW
+          - GY
+          - HT
+          - HM
+          - VA
+          - HN
+          - HK
+          - HU
+          - IS
+          - IN
+          - ID
+          - IQ
+          - IE
+          - IM
+          - IL
+          - IT
+          - JM
+          - JP
+          - JE
+          - JO
+          - KZ
+          - KE
+          - KI
+          - KR
+          - XK
+          - KW
+          - KG
+          - LA
+          - LV
+          - LB
+          - LS
+          - LR
+          - LY
+          - LI
+          - LT
+          - LU
+          - MO
+          - MG
+          - MW
+          - MY
+          - MV
+          - ML
+          - MT
+          - MH
+          - MQ
+          - MR
+          - MU
+          - YT
+          - MX
+          - FM
+          - MD
+          - MC
+          - MN
+          - ME
+          - MS
+          - MA
+          - MZ
+          - MM
+          - NA
+          - NR
+          - NP
+          - NL
+          - AN
+          - NC
+          - NZ
+          - NI
+          - NE
+          - NG
+          - NU
+          - NF
+          - MK
+          - MP
+          - 'NO'
+          - OM
+          - PK
+          - PW
+          - PS
+          - PA
+          - PG
+          - PY
+          - PE
+          - PH
+          - PN
+          - PL
+          - PT
+          - PR
+          - QA
+          - RO
+          - RU
+          - RW
+          - RE
+          - BL
+          - SH
+          - KN
+          - LC
+          - MF
+          - PM
+          - VC
+          - WS
+          - SM
+          - ST
+          - SA
+          - SN
+          - RS
+          - SC
+          - SL
+          - SG
+          - SX
+          - SK
+          - SI
+          - SB
+          - SO
+          - ZA
+          - GS
+          - SS
+          - ES
+          - LK
+          - SD
+          - SR
+          - SJ
+          - SE
+          - CH
+          - TW
+          - TJ
+          - TZ
+          - TH
+          - TL
+          - TG
+          - TK
+          - TO
+          - TT
+          - TN
+          - TR
+          - TM
+          - TC
+          - TV
+          - UG
+          - UA
+          - AE
+          - GB
+          - US
+          - UM
+          - UY
+          - UZ
+          - VU
+          - VE
+          - VN
+          - VG
+          - VI
+          - WF
+          - EH
+          - YE
+          - ZM
+          - ZW
+      description: ''
+    UserPhoneNumber:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The canonical global phone number pursuant to RFC3966.
+        type:
+          type: string
+          description: The classification of the phone number, pursuant to SCIM RFC
+            7643 4.1.2.
+          enum:
+          - HOME
+          - WORK
+          - MOBILE
+          - FAX
+          - OTHER
+        display:
+          type: string
+          description: The display value of the phone number.
+      description: ''
+      x-rippling-expandable-fields: []
+    UserPhoneNumberRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The canonical global phone number pursuant to RFC3966.
+        type:
+          type: string
+          description: The classification of the phone number, pursuant to SCIM RFC
+            7643 4.1.2.
+          enum:
+          - HOME
+          - WORK
+          - MOBILE
+          - FAX
+          - OTHER
+        display:
+          type: string
+          description: The display value of the phone number.
+      description: ''
+    Email:
+      type: object
+      properties:
+        value:
+          type: string
+          description: A valid email address.
+        type:
+          type: string
+          description: The classification of the email.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        display:
+          type: string
+          description: The display value of the email address.
+      description: ''
+      x-rippling-expandable-fields: []
+    EmailRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: A valid email address.
+        type:
+          type: string
+          description: The classification of the email.
+          enum:
+          - HOME
+          - WORK
+          - OTHER
+        display:
+          type: string
+          description: The display value of the email address.
+      description: ''
+    UserName:
+      type: object
+      properties:
+        formatted:
+          type: string
+          description: The user's full name.
+        given_name:
+          type: string
+          description: The given legal name of the user, or first name in most Western
+            languages.
+        middle_name:
+          type: string
+          description: The middle name(s) of the user.
+        family_name:
+          type: string
+          description: The legal family name of the user, or last name in most Western
+            languages.
+        preferred_given_name:
+          type: string
+          description: The preferred given name, or first name in most Western languages,
+            by the user.
+        preferred_family_name:
+          type: string
+          description: The preferred family name, or last name in most Western languages,
+            by the user.
+      description: ''
+      x-rippling-expandable-fields: []
+    UserNameRequest:
+      type: object
+      properties:
+        formatted:
+          type: string
+          description: The user's full name.
+        given_name:
+          type: string
+          description: The given legal name of the user, or first name in most Western
+            languages.
+        middle_name:
+          type: string
+          description: The middle name(s) of the user.
+        family_name:
+          type: string
+          description: The legal family name of the user, or last name in most Western
+            languages.
+        preferred_given_name:
+          type: string
+          description: The preferred given name, or first name in most Western languages,
+            by the user.
+        preferred_family_name:
+          type: string
+          description: The preferred family name, or last name in most Western languages,
+            by the user.
+      description: ''
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        status:
+          type: string
+          description: Application status
+          enum:
+          - ACTIVE
+          - REJECTED
+          - HIRED
+          - ARCHIVED
+        stage:
+          type: string
+          description: Application stage
+        applied_at:
+          type: string
+          description: Application creation date
+        job_id:
+          type: string
+          description: Job requisition ID
+        job:
+          type: object
+          description: 'Job requisition
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/JobRequisition'
+        url:
+          type: string
+          description: Application url
+      description: ''
+      x-rippling-expandable-fields:
+      - job
+      required:
+      - id
+      - created_at
+      - updated_at
+    ApplicationRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Application status
+          enum:
+          - ACTIVE
+          - REJECTED
+          - HIRED
+          - ARCHIVED
+        stage:
+          type: string
+          description: Application stage
+        applied_at:
+          type: string
+          description: Application creation date
+        job_id:
+          type: string
+          description: Job requisition ID
+        url:
+          type: string
+          description: Application url
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    JobRequisition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: Job requisition name
+        status:
+          type: string
+          description: Job requisition status
+          enum:
+          - OPEN
+          - CLOSED
+          - PUBLISHED
+          - DRAFT
+          - ARCHIVED
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - status
+    JobRequisitionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Job requisition name
+        status:
+          type: string
+          description: Job requisition status
+          enum:
+          - OPEN
+          - CLOSED
+          - PUBLISHED
+          - DRAFT
+          - ARCHIVED
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - status
+    Candidate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        first_name:
+          type: string
+          description: Candidate first name
+        last_name:
+          type: string
+          description: Candidate last name
+        email:
+          type: string
+          description: Candidate email
+        phone_number:
+          type: string
+          description: Candidate phone number
+        timezone:
+          type: string
+          description: Candidate timezone
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+    CandidateRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Candidate first name
+        last_name:
+          type: string
+          description: Candidate last name
+        email:
+          type: string
+          description: Candidate email
+        phone_number:
+          type: string
+          description: Candidate phone number
+        timezone:
+          type: string
+          description: Candidate timezone
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the custom field.
+        description:
+          type: string
+          description: The description of the custom field.
+        required:
+          type: boolean
+          description: Whether the custom field is required.
+        type:
+          type: string
+          description: The data type of the custom field.
+          enum:
+          - TEXT
+          - DATE
+          - NUMBER
+          - CURRENCY
+          - PERCENTAGE
+          - SELECT
+          - FILE
+          - ID
+          - RADIO
+          - TEXTAREA
+          - RANGE
+          - REFERENCE_ID
+          - BOOLEAN
+          - ADDRESS
+          - OG_REFERENCE_FIELD
+          - NATIVE_EDGE
+          - DATETIME
+          - EMAIL
+          - URL
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - description
+      - required
+      - type
+    CustomFieldRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the custom field.
+        description:
+          type: string
+          description: The description of the custom field.
+        required:
+          type: boolean
+          description: Whether the custom field is required.
+        type:
+          type: string
+          description: The data type of the custom field.
+          enum:
+          - TEXT
+          - DATE
+          - NUMBER
+          - CURRENCY
+          - PERCENTAGE
+          - SELECT
+          - FILE
+          - ID
+          - RADIO
+          - TEXTAREA
+          - RANGE
+          - REFERENCE_ID
+          - BOOLEAN
+          - ADDRESS
+          - OG_REFERENCE_FIELD
+          - NATIVE_EDGE
+          - DATETIME
+          - EMAIL
+          - URL
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - description
+      - required
+      - type
+    JobCode:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the job dimension.
+        job_dimension_id:
+          type: string
+          description: The ID of the job dimension this job code belongs to.
+        job_dimension:
+          type: object
+          description: 'The job dimension this job code belongs to.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/JobDimension'
+        external_id:
+          type: string
+          description: The unique identifier of the job code in an outside system.
+        group_id:
+          type: string
+          description: The ID of the job roster group.
+      description: ''
+      x-rippling-expandable-fields:
+      - job_dimension
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - job_dimension_id
+    JobCodeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the job dimension.
+        job_dimension_id:
+          type: string
+          description: The ID of the job dimension this job code belongs to.
+        external_id:
+          type: string
+          description: The unique identifier of the job code in an outside system.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - job_dimension_id
+    JobDimension:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the job dimension
+        external_id:
+          type: string
+          description: The unique identifier of the job dimension in a third party
+            system
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    JobDimensionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the job dimension
+        external_id:
+          type: string
+          description: The unique identifier of the job dimension in a third party
+            system
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    TimeCard:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the time card.
+        worker:
+          type: object
+          description: 'The worker associated with the time card.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        pay_period:
+          type: object
+          description: The pay period associated with the time card.
+          allOf:
+          - $ref: '#/components/schemas/PayPeriod'
+        summary:
+          type: object
+          description: The summary of the time card.
+          allOf:
+          - $ref: '#/components/schemas/TimeCardSummary'
+      description: ''
+      x-rippling-expandable-fields:
+      - worker
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+    TimeCardRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the time card.
+        pay_period:
+          type: object
+          description: The pay period associated with the time card.
+          allOf:
+          - $ref: '#/components/schemas/PayPeriod'
+        summary:
+          type: object
+          description: The summary of the time card.
+          allOf:
+          - $ref: '#/components/schemas/TimeCardSummary'
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+    TimeCardSummary:
+      type: object
+      properties:
+        earnings:
+          type: number
+          description: The earnings for the pay period.
+        hours_worked_by_job_code:
+          type: object
+          description: The amount of hours worked for each job code for the pay period.
+          allOf:
+          - $ref: '#/components/schemas/JobCodeSummary'
+        premiums:
+          type: number
+          description: The premiums for the pay period.
+        approved_hours:
+          type: number
+          description: The approved hours for the pay period.
+        paid_hours:
+          type: number
+          description: The paid hours for the pay period.
+        total_hours:
+          type: number
+          description: The total hours for the pay period.
+        total_paid_time_off_hours:
+          type: number
+          description: The total paid time off hours for the pay period.
+        total_holiday_hours:
+          type: number
+          description: The total holiday hours for the pay period.
+        total_unpaid_time_off_hours:
+          type: number
+          description: The total unpaid time off hours for the pay period.
+        regular_hours:
+          type: number
+          description: The total number of regular hours worked during the pay period.
+        overtime_hours:
+          type: number
+          description: The total number of overtime hours worked during the pay period.
+        double_overtime_hours:
+          type: number
+          description: The total number of doubletime hours worked during the pay
+            period.
+      description: ''
+      x-rippling-expandable-fields: []
+    TimeCardSummaryRequest:
+      type: object
+      properties:
+        earnings:
+          type: number
+          description: The earnings for the pay period.
+        hours_worked_by_job_code:
+          type: object
+          description: The amount of hours worked for each job code for the pay period.
+          allOf:
+          - $ref: '#/components/schemas/JobCodeSummary'
+        premiums:
+          type: number
+          description: The premiums for the pay period.
+        approved_hours:
+          type: number
+          description: The approved hours for the pay period.
+        paid_hours:
+          type: number
+          description: The paid hours for the pay period.
+        total_hours:
+          type: number
+          description: The total hours for the pay period.
+        total_paid_time_off_hours:
+          type: number
+          description: The total paid time off hours for the pay period.
+        total_holiday_hours:
+          type: number
+          description: The total holiday hours for the pay period.
+        total_unpaid_time_off_hours:
+          type: number
+          description: The total unpaid time off hours for the pay period.
+        regular_hours:
+          type: number
+          description: The total number of regular hours worked during the pay period.
+        overtime_hours:
+          type: number
+          description: The total number of overtime hours worked during the pay period.
+        double_overtime_hours:
+          type: number
+          description: The total number of doubletime hours worked during the pay
+            period.
+      description: ''
+    JobCodeSummary:
+      type: object
+      properties:
+        job_code_ids:
+          type: string
+          description: List of job code ids that this summary is tracking hours for.
+        job_codes:
+          type: object
+          description: 'List of job codes that this summary is tracking hours for.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/JobCode'
+        hours_worked:
+          type: number
+          description: The total hours worked for the job codes.
+      description: ''
+      x-rippling-expandable-fields:
+      - job_codes
+    JobCodeSummaryRequest:
+      type: object
+      properties:
+        job_code_ids:
+          type: string
+          description: List of job code ids that this summary is tracking hours for.
+        hours_worked:
+          type: number
+          description: The total hours worked for the job codes.
+      description: ''
+    PayPeriod:
+      type: object
+      properties:
+        start_date:
+          type: string
+          description: The start date of the pay period.
+        end_date:
+          type: string
+          description: The end date of the pay period.
+        pay_schedule_id:
+          type: string
+          description: The ID of the pay schedule associated with the pay period.
+      description: ''
+      x-rippling-expandable-fields: []
+    PayPeriodRequest:
+      type: object
+      properties:
+        start_date:
+          type: string
+          description: The start date of the pay period.
+        end_date:
+          type: string
+          description: The end date of the pay period.
+        pay_schedule_id:
+          type: string
+          description: The ID of the pay schedule associated with the pay period.
+      description: ''
+    ShiftInput:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        creator_id:
+          type: string
+          description: The creator id associated with the shift input.
+        creator:
+          type: object
+          description: 'The creator associated with the shift input.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        name:
+          type: string
+          description: Name of the shift unit.
+        prompt:
+          type: string
+          description: Prompt for the shift unit.
+        type:
+          type: string
+          description: Type of shift unit.
+        country_code:
+          type: string
+          description: Two letter string designating country code which the shift
+            input is associated.
+        managed_by:
+          type: string
+          description: The party that manages this shift input
+      description: ''
+      x-rippling-expandable-fields:
+      - creator
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - prompt
+      - type
+      - country_code
+    ShiftInputRequest:
+      type: object
+      properties:
+        creator_id:
+          type: string
+          description: The creator id associated with the shift input.
+        name:
+          type: string
+          description: Name of the shift unit.
+        prompt:
+          type: string
+          description: Prompt for the shift unit.
+        type:
+          type: string
+          description: Type of shift unit.
+        country_code:
+          type: string
+          description: Two letter string designating country code which the shift
+            input is associated.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - prompt
+      - type
+      - country_code
+    TimeEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the time entry.
+        worker:
+          type: object
+          description: 'The worker associated with the time entry.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        start_time:
+          type: string
+          description: The start time of the time entry.
+        end_time:
+          type: string
+          description: The end time of the time entry.
+        comments:
+          type: object
+          description: The comments associated with the time entry.
+          allOf:
+          - $ref: '#/components/schemas/TimeEntryComment'
+        job_shifts:
+          type: object
+          description: The job shifts worked during the time entry.
+          allOf:
+          - $ref: '#/components/schemas/JobShift'
+        breaks:
+          type: object
+          description: The breaks taken during the time entry.
+          allOf:
+          - $ref: '#/components/schemas/Break'
+        time_entry_summary:
+          type: object
+          description: A summary of the time entry.
+          allOf:
+          - $ref: '#/components/schemas/TimeEntrySummary'
+        time_card_id:
+          type: string
+          description: The ID of the time card associated with the time entry.
+        time_card:
+          type: object
+          description: 'The time card associated with the time entry.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/TimeCard'
+        tags:
+          type: string
+          description: The tags associated with the time entry.
+        idempotency_key:
+          type: string
+          description: The unique key of the time entry in an outside system. If set,
+            no other time entry with the same key can be created.
+        create_extra_hours_run:
+          type: boolean
+          description: Whether the time entry should create an extra hours run.
+        status:
+          type: string
+          description: The status of the time entry.
+          enum:
+          - DRAFT
+          - APPROVED
+          - PAID
+          - FINALIZED
+        pay_period:
+          type: object
+          description: The pay period associated with the time card.
+          allOf:
+          - $ref: '#/components/schemas/PayPeriod'
+        shift_input_values:
+          type: object
+          description: Arbitrary shift inputs collected on the time entry
+          allOf:
+          - $ref: '#/components/schemas/ShiftInputValue'
+      description: ''
+      x-rippling-expandable-fields:
+      - worker
+      - time_card
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+    TimeEntryRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the time entry.
+        duration:
+          type: number
+          description: The duration of the time entry.
+        comments:
+          type: object
+          description: The comments associated with the time entry.
+          allOf:
+          - $ref: '#/components/schemas/TimeEntryComment'
+        job_shifts:
+          type: object
+          description: The job shifts worked during the time entry.
+          allOf:
+          - $ref: '#/components/schemas/JobShift'
+        breaks:
+          type: object
+          description: The breaks taken during the time entry.
+          allOf:
+          - $ref: '#/components/schemas/Break'
+        tags:
+          type: string
+          description: The tags associated with the time entry.
+        idempotency_key:
+          type: string
+          description: The unique key of the time entry in an outside system. If set,
+            no other time entry with the same key can be created.
+        create_extra_hours_run:
+          type: boolean
+          description: Whether the time entry should create an extra hours run.
+        status:
+          type: string
+          description: The status of the time entry.
+          enum:
+          - DRAFT
+          - APPROVED
+          - PAID
+          - FINALIZED
+        pay_period:
+          type: object
+          description: The pay period associated with the time card.
+          allOf:
+          - $ref: '#/components/schemas/PayPeriod'
+        shift_input_values:
+          type: object
+          description: Arbitrary shift inputs collected on the time entry
+          allOf:
+          - $ref: '#/components/schemas/ShiftInputValue'
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+    ShiftInputValue:
+      type: object
+      properties:
+        shift_input_id:
+          type: string
+          description: The id of the relevant shift input
+        value:
+          type: object
+          description: The value of the shift input.
+        author:
+          type: object
+          description: 'The role that last added/updated this input.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        author_id:
+          type: string
+          description: The id of the role that last added/updated this input.
+      description: ''
+      x-rippling-expandable-fields:
+      - author
+      required:
+      - shift_input_id
+      - value
+    ShiftInputValueRequest:
+      type: object
+      properties:
+        shift_input_id:
+          type: string
+          description: The id of the relevant shift input
+        value:
+          type: object
+          description: The value of the shift input.
+        author_id:
+          type: string
+          description: The id of the role that last added/updated this input.
+      description: ''
+      required:
+      - shift_input_id
+      - value
+    TimeEntrySummary:
+      type: object
+      properties:
+        over_time_hours:
+          type: number
+          description: The number of overtime hours worked during this time entry.
+        double_over_time_hours:
+          type: number
+          description: The number of double overtime hours worked during this time
+            entry.
+        regular_hours:
+          type: number
+          description: The number of regular hours worked during this time entry.
+        duration:
+          type: number
+          description: The duration of the time entry.
+      description: "\n    DTO used to store the summary of a TimeEntry\n    "
+      x-rippling-expandable-fields: []
+    TimeEntrySummaryRequest:
+      type: object
+      properties:
+        over_time_hours:
+          type: number
+          description: The number of overtime hours worked during this time entry.
+        double_over_time_hours:
+          type: number
+          description: The number of double overtime hours worked during this time
+            entry.
+        regular_hours:
+          type: number
+          description: The number of regular hours worked during this time entry.
+        duration:
+          type: number
+          description: The duration of the time entry.
+      description: "\n    DTO used to store the summary of a TimeEntry\n    "
+    Break:
+      type: object
+      properties:
+        start_time:
+          type: string
+          description: The start time of the break.
+        end_time:
+          type: string
+          description: The end time of the break.
+        original_start_time:
+          type: string
+          description: The original start time of the break. If the startTime field
+            has been rounded then this contain the start time before the rounding
+            occured.
+        original_end_time:
+          type: string
+          description: The original end time of the break. If the endTime field has
+            been rounded then this contain the end time before the rounding occured.
+        break_type_id:
+          type: string
+          description: The ID of the break type.
+        break_type:
+          type: object
+          description: 'The break type.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/BreakType'
+      description: ''
+      x-rippling-expandable-fields:
+      - break_type
+    BreakRequest:
+      type: object
+      properties:
+        start_time:
+          type: string
+          description: The start time of the break.
+        end_time:
+          type: string
+          description: The end time of the break.
+        break_type_id:
+          type: string
+          description: The ID of the break type.
+      description: ''
+    BreakType:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        description:
+          type: string
+          description: Description of the break type.
+        is_paid:
+          type: boolean
+          description: Whether the break is paid.
+        is_over_time_eligible:
+          type: boolean
+          description: Whether the break counts towards hours worked
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+    BreakTypeRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the break type.
+        is_paid:
+          type: boolean
+          description: Whether the break is paid.
+        is_over_time_eligible:
+          type: boolean
+          description: Whether the break counts towards hours worked
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    JobShift:
+      type: object
+      properties:
+        start_time:
+          type: string
+          description: The start time of the job shift.
+        end_time:
+          type: string
+          description: The end time of the job shift.
+        original_start_time:
+          type: string
+          description: The original start time of the job shift. If the startTime
+            field has been rounded then this contain the start time before the rounding
+            occured.
+        original_end_time:
+          type: string
+          description: The original end time of the job shift. If the endTime field
+            has been rounded then this contain the end time before the rounding occured.
+        job_code_ids:
+          type: string
+          description: The IDs of the job codes associated with the job shift.
+        job_codes:
+          type: object
+          description: 'The job codes associated with the job shift.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/JobCode'
+        is_hours_only_input:
+          type: boolean
+          description: Whether the job shift was entered as a duration in hours table
+      description: ''
+      x-rippling-expandable-fields:
+      - job_codes
+    JobShiftRequest:
+      type: object
+      properties:
+        start_time:
+          type: string
+          description: The start time of the job shift.
+        end_time:
+          type: string
+          description: The end time of the job shift.
+        original_start_time:
+          type: string
+          description: The original start time of the job shift. If the startTime
+            field has been rounded then this contain the start time before the rounding
+            occured.
+        original_end_time:
+          type: string
+          description: The original end time of the job shift. If the endTime field
+            has been rounded then this contain the end time before the rounding occured.
+        job_code_ids:
+          type: string
+          description: The IDs of the job codes associated with the job shift.
+        is_hours_only_input:
+          type: boolean
+          description: Whether the job shift was entered as a duration in hours table
+      description: ''
+    TimeEntryComment:
+      type: object
+      properties:
+        created_at:
+          type: string
+          description: The time the comment was created.
+        author_id:
+          type: string
+          description: The ID of the worker who made of the comment.
+        author:
+          type: object
+          description: 'The worker who made the comment.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Worker'
+        text:
+          type: string
+          description: The text of the comment.
+      description: ''
+      x-rippling-expandable-fields:
+      - author
+    TimeEntryCommentRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the comment.
+      description: ''
+    EntitlementModel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        description:
+          type: string
+          description: Description of the entitlement
+        display_name:
+          type: string
+          description: Display name of the entitlement
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - description
+      - display_name
+    EntitlementModelRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the entitlement
+        display_name:
+          type: string
+          description: Display name of the entitlement
+      description: ''
+      required:
+      - id
+      - description
+      - display_name
+    SSOMe:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        work_email:
+          type: string
+          description: The user's work email address.
+        company_id:
+          type: string
+          description: The company ID of the user.
+        company:
+          type: object
+          description: 'The company of the user.
+
+
+            Expandable field'
+          allOf:
+          - $ref: '#/components/schemas/Company'
+      description: ''
+      x-rippling-expandable-fields:
+      - company
+      required:
+      - id
+      - created_at
+      - updated_at
+    SSOMeRequest:
+      type: object
+      properties:
+        work_email:
+          type: string
+          description: The user's work email address.
+        company_id:
+          type: string
+          description: The company ID of the user.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+    WorkLocation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier field
+        created_at:
+          type: string
+          description: Record creation date
+        updated_at:
+          type: string
+          description: Record update date
+        name:
+          type: string
+          description: The name of the work location.
+        address:
+          type: object
+          description: The address for the work location.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+      description: ''
+      x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - address
+    WorkLocationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the work location.
+        address:
+          type: object
+          description: The address for the work location.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - address
+  parameters:
+    get_id:
+      name: id
+      in: path
+      description: ID of the resource to return
+      required: true
+      schema:
+        type: string
+        format: id
+    delete_id:
+      name: id
+      in: path
+      description: ID of the resource to delete
+      required: true
+      schema:
+        type: string
+        format: id
+    patch_id:
+      name: id
+      in: path
+      description: ID of the resource to patch
+      required: true
+      schema:
+        type: string
+        format: id
+    put_id:
+      name: id
+      in: path
+      description: ID of the resource to replace
+      required: true
+      schema:
+        type: string
+        format: id
+    order_by:
+      name: order_by
+      in: query
+      allowEmptyValue: false
+      schema:
+        type: string
+    expand:
+      name: expand
+      in: query
+      allowEmptyValue: false
+      schema:
+        type: string
+    filter:
+      name: filter
+      in: query
+      allowEmptyValue: false
+      schema:
+        type: string
+  securitySchemes:
+    BearerTokenProduction:
+      type: http
+      scheme: bearer
+    OAuth2Production:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.rippling.com/o/authorize
+          tokenUrl: https://app.rippling.com/o/token
+          refreshUrl: https://app.rippling.com/o/token
+          scopes:
+            compensations.read: Read compensations data available to the authorized
+              client
+            departments.read: Read departments data available to the authorized client
+            employment-types.read: Read employment types data available to the authorized
+              client
+            legal-entities.read: Read legal entities data available to the authorized
+              client
+            levels.read: Read levels data available to the authorized client
+            teams.read: Read teams data available to the authorized client
+            tracks.read: Read tracks data available to the authorized client
+            work-locations.read: Read work locations data available to the authorized
+              client
+            workers.read: Read workers data available to the authorized client
+            users.read: Read users data available to the authorized client
+            companies.read: Read companies data available to the authorized client
+            sso-me.read: Read sso-me data available to the authorized client
+            time-entries.read: Read time entries data available to the authorized
+              client
+            time-entries.read-write: Read and write time entries data available to
+              the authorized client
+            shift-inputs.read: Read shift inputs data available to the authorized
+              client
+            shift-inputs.read-write: Read and write shift inputs data available to
+              the authorized client
+            time-cards.read: Read time cards data available to the authorized client
+            job-dimensions.read: Read job dimensions data available to the authorized
+              client
+            job-dimensions.read-write: Read and write job dimensions data available
+              to the authorized client
+            job-codes.read: Read job codes data available to the authorized client
+            job-codes.read-write: Read and write job codes data available to the authorized
+              client
+            custom-fields.read: Read custom fields data available to the authorized
+              client
+            job-requisitions.read: Read job requisitions data available to the authorized
+              client
+            candidates.read: Read candidates data available to the authorized client
+            candidate-applications.read: Read candidate applications data available
+              to the authorized client
+            candidate-applications.read-write: Read and write candidate applications
+              data available to the authorized client
+            leave-requests.read: Read leave requests data available to the authorized
+              client
+            custom-objects.read: Read custom objects data available to the authorized
+              client
+            custom-objects.read-write: Read and write custom objects data available
+              to the authorized client
