@@ -23,7 +23,7 @@ impl FederalTaxDetailsBeta {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"
@@ -42,7 +42,11 @@ impl FederalTaxDetailsBeta {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -58,7 +62,7 @@ impl FederalTaxDetailsBeta {
     > {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/federal_tax_details"
@@ -78,7 +82,11 @@ impl FederalTaxDetailsBeta {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

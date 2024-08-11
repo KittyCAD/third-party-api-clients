@@ -67,27 +67,48 @@
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(feature = "requests")]
 pub mod admins_beta;
+#[cfg(feature = "requests")]
 pub mod benefits;
+#[cfg(feature = "requests")]
 pub mod companies;
+#[cfg(feature = "requests")]
 pub mod company_bank_accounts_beta;
+#[cfg(feature = "requests")]
 pub mod compensations;
+#[cfg(feature = "requests")]
 pub mod contractor_payments;
+#[cfg(feature = "requests")]
 pub mod contractors;
+#[cfg(feature = "requests")]
 pub mod current_user;
+#[cfg(feature = "requests")]
 pub mod custom_fields;
+#[cfg(feature = "requests")]
 pub mod earning_type;
+#[cfg(feature = "requests")]
 pub mod employees;
+#[cfg(feature = "requests")]
 pub mod federal_tax_details_beta;
+#[cfg(feature = "requests")]
 pub mod garnishments;
+#[cfg(feature = "requests")]
 pub mod job_applicants_beta;
+#[cfg(feature = "requests")]
 pub mod jobs;
+#[cfg(feature = "requests")]
 pub mod locations;
+mod methods;
+#[cfg(feature = "requests")]
 pub mod pay_schedules;
+#[cfg(feature = "requests")]
 pub mod payroll;
+#[cfg(feature = "requests")]
 pub mod terminations;
 #[cfg(test)]
 mod tests;
+#[cfg(feature = "requests")]
 pub mod time_off_requests;
 pub mod types;
 
@@ -102,10 +123,13 @@ use std::{
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+#[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "requests")]
 static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
+#[cfg(feature = "requests")]
 pub struct Client {
     base_url: String,
     token: Arc<tokio::sync::RwLock<InnerToken>>,
@@ -115,11 +139,15 @@ pub struct Client {
 
     auto_refresh: bool,
 
+    #[cfg(feature = "retry")]
     client: reqwest_middleware::ClientWithMiddleware,
+    #[cfg(not(feature = "retry"))]
+    client: reqwest::Client,
 }
 
 /// An access token.
 #[derive(Debug, JsonSchema, Clone, Default, Serialize, Deserialize)]
+#[cfg(feature = "requests")]
 pub struct AccessToken {
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub token_type: String,
@@ -141,15 +169,18 @@ pub struct AccessToken {
 /// Time in seconds before the access token expiration point that a refresh should
 /// be performed. This value is subtracted from the `expires_in` value returned by
 /// the provider prior to storing
+#[cfg(feature = "requests")]
 const REFRESH_THRESHOLD: Duration = Duration::from_secs(60);
 
 #[derive(Debug, Clone)]
+#[cfg(feature = "requests")]
 struct InnerToken {
     access_token: String,
     refresh_token: String,
     expires_at: Option<Instant>,
 }
 
+#[cfg(feature = "requests")]
 impl Client {
     /// Create a new Client struct. It takes a type that can convert into
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
@@ -169,40 +200,61 @@ impl Client {
         T: ToString + std::fmt::Debug,
         Q: ToString + std::fmt::Debug,
     {
-        // Retry up to 3 times with increasing intervals between attempts.
-        let retry_policy =
-            reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
         let client = reqwest::Client::builder()
             .user_agent(APP_USER_AGENT)
             .build();
-        match client {
-            Ok(c) => {
-                let client = reqwest_middleware::ClientBuilder::new(c)
-                    // Trace HTTP requests. See the tracing crate to make use of these traces.
-                    .with(reqwest_tracing::TracingMiddleware::default())
-                    // Retry failed requests.
-                    .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
-                        reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                        |req: &reqwest::Request| req.try_clone().is_some(),
-                    ))
-                    .build();
 
-                Client {
-                    base_url: "https://api.gusto.com".to_string(),
-                    client_id: client_id.to_string(),
-                    client_secret: client_secret.to_string(),
-                    redirect_uri: redirect_uri.to_string(),
-                    token: Arc::new(tokio::sync::RwLock::new(InnerToken {
-                        access_token: token.to_string(),
-                        refresh_token: refresh_token.to_string(),
-                        expires_at: None,
-                    })),
+        #[cfg(feature = "retry")]
+        {
+            // Retry up to 3 times with increasing intervals between attempts.
+            let retry_policy =
+                reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
+            match client {
+                Ok(c) => {
+                    let client = reqwest_middleware::ClientBuilder::new(c)
+                        // Trace HTTP requests. See the tracing crate to make use of these traces.
+                        .with(reqwest_tracing::TracingMiddleware::default())
+                        // Retry failed requests.
+                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                            reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
+                            |req: &reqwest::Request| req.try_clone().is_some(),
+                        ))
+                        .build();
 
-                    auto_refresh: false,
-                    client,
+                    Client {
+                        base_url: "https://api.gusto.com".to_string(),
+                        client_id: client_id.to_string(),
+                        client_secret: client_secret.to_string(),
+                        redirect_uri: redirect_uri.to_string(),
+                        token: Arc::new(tokio::sync::RwLock::new(InnerToken {
+                            access_token: token.to_string(),
+                            refresh_token: refresh_token.to_string(),
+                            expires_at: None,
+                        })),
+
+                        auto_refresh: false,
+                        client,
+                    }
                 }
+                Err(e) => panic!("creating reqwest client failed: {:?}", e),
             }
-            Err(e) => panic!("creating reqwest client failed: {:?}", e),
+        }
+        #[cfg(not(feature = "retry"))]
+        {
+            Client {
+                base_url: "https://api.gusto.com".to_string(),
+                client_id: client_id.to_string(),
+                client_secret: client_secret.to_string(),
+                redirect_uri: redirect_uri.to_string(),
+                token: Arc::new(tokio::sync::RwLock::new(InnerToken {
+                    access_token: token.to_string(),
+                    refresh_token: refresh_token.to_string(),
+                    expires_at: None,
+                })),
+
+                auto_refresh: false,
+                client,
+            }
         }
     }
 
@@ -461,7 +513,6 @@ impl Client {
             reqwest::header::CONTENT_TYPE,
             reqwest::header::HeaderValue::from_static("application/json"),
         );
-        req = req.header("X-Gusto-API-Version", "2023-09-01");
 
         if let Some(body) = body {
             req = req.body(body);

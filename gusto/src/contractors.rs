@@ -26,7 +26,7 @@ impl Contractors {
     ) -> Result<crate::types::Contractor, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/contractors/{contractor_id_or_uuid}"
@@ -45,7 +45,11 @@ impl Contractors {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -58,7 +62,7 @@ impl Contractors {
     ) -> Result<crate::types::Contractor, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/contractors/{contractor_id_or_uuid}"
@@ -78,7 +82,11 @@ impl Contractors {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -98,7 +106,7 @@ impl Contractors {
     ) -> Result<Vec<crate::types::Contractor>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/contractors"
@@ -117,11 +125,15 @@ impl Contractors {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create a contractor\n\nCreate an individual or business contractor.\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n\n```rust,no_run\nasync fn example_contractors_post_companies_company_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Contractor = client\n        .contractors()\n        .post_companies_company_id(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdContractorsRequestBody {\n                type_: gusto_api::types::PostCompaniesCompanyIdContractorsRequestBodyType::Business,\n                wage_type:\n                    gusto_api::types::PostCompaniesCompanyIdContractorsRequestBodyWageType::Fixed,\n                first_name: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                start_date: chrono::Utc::now().date().naive_utc(),\n                self_onboarding: Some(false),\n                email: Some(\"some-string\".to_string()),\n                middle_initial: Some(\"some-string\".to_string()),\n                business_name: Some(\"some-string\".to_string()),\n                ein: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a contractor\n\nCreate an individual or business contractor.\n\n**Parameters:**\n\n- `company_id_or_uuid: &'astr`: The ID or UUID of the company (required)\n\n```rust,no_run\nasync fn example_contractors_post_companies_company_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Contractor = client\n        .contractors()\n        .post_companies_company_id(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdContractorsRequestBody {\n                type_: gusto_api::types::PostCompaniesCompanyIdContractorsRequestBodyType::Business,\n                wage_type:\n                    gusto_api::types::PostCompaniesCompanyIdContractorsRequestBodyWageType::Fixed,\n                first_name: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                start_date: chrono::Utc::now().date().naive_utc(),\n                self_onboarding: false,\n                email: Some(\"some-string\".to_string()),\n                middle_initial: Some(\"some-string\".to_string()),\n                business_name: Some(\"some-string\".to_string()),\n                ein: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_companies_company_id<'a>(
         &'a self,
@@ -130,7 +142,7 @@ impl Contractors {
     ) -> Result<crate::types::Contractor, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/contractors"
@@ -150,7 +162,11 @@ impl Contractors {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

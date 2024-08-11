@@ -46,7 +46,7 @@ impl TimeOffRequests {
     ) -> Result<Vec<crate::types::TimeOffRequest>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/time_off_requests".replace("{company_id}", company_id)
@@ -74,7 +74,11 @@ impl TimeOffRequests {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -96,7 +100,7 @@ impl TimeOffRequests {
     ) -> Result<crate::types::TimeOffRequest, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/time_off_requests/{time_off_request_id}"
@@ -116,7 +120,11 @@ impl TimeOffRequests {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

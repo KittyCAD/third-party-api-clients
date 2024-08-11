@@ -19,7 +19,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::SupportedBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "v1/benefits"),
+            &format!("{}/{}", self.client.base_url, "v1/benefits"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -33,7 +33,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -54,7 +58,7 @@ impl Benefits {
     ) -> Result<crate::types::SupportedBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/benefits/{benefit_id}".replace("{benefit_id}", benefit_id)
@@ -72,7 +76,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -95,7 +103,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::CompanyBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/company_benefits".replace("{company_id}", company_id)
@@ -113,11 +121,15 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create a company benefit\n\nCompany benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.\n\nNote that company benefits can be deactivated only when no employees are enrolled.\n\n**Parameters:**\n\n- `company_id: &'astr`: The ID of the company (required)\n\n```rust,no_run\nasync fn example_benefits_post_companies_company_id_company() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::CompanyBenefit = client\n        .benefits()\n        .post_companies_company_id_company(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdCompanyBenefitsRequestBody {\n                benefit_id: 3.14 as f64,\n                active: Some(false),\n                description: \"some-string\".to_string(),\n                responsible_for_employer_taxes: Some(false),\n                responsible_for_employee_w_2: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a company benefit\n\nCompany benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.\n\nNote that company benefits can be deactivated only when no employees are enrolled.\n\n**Parameters:**\n\n- `company_id: &'astr`: The ID of the company (required)\n\n```rust,no_run\nasync fn example_benefits_post_companies_company_id_company() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::CompanyBenefit = client\n        .benefits()\n        .post_companies_company_id_company(\n            \"some-string\",\n            &gusto_api::types::PostCompaniesCompanyIdCompanyBenefitsRequestBody {\n                benefit_id: 3.14 as f64,\n                active: false,\n                description: \"some-string\".to_string(),\n                responsible_for_employer_taxes: Some(false),\n                responsible_for_employee_w_2: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_companies_company_id_company<'a>(
         &'a self,
@@ -126,7 +138,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/company_benefits".replace("{company_id}", company_id)
@@ -145,7 +157,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -157,7 +173,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/company_benefits/{company_benefit_id}"
@@ -176,7 +192,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -189,7 +209,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/company_benefits/{company_benefit_id}"
@@ -209,7 +229,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -231,7 +255,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::EmployeeBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/employee_benefits"
@@ -250,11 +274,15 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create an employee benefit\n\nEmployee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.\n\n**Parameters:**\n\n- `employee_id: &'astr`: The ID of the employee (required)\n\n```rust,no_run\nasync fn example_benefits_post_employees_employee_id_employee() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result : gusto_api::types::EmployeeBenefit = client . benefits () . post_employees_employee_id_employee (\"some-string\" , & gusto_api::types::PostEmployeesEmployeeIdEmployeeBenefitsRequestBody { company_benefit_id : 3.14 as f64 , active : Some (false) , employee_deduction : Some (\"some-string\" . to_string ()) , company_contribution : Some (\"some-string\" . to_string ()) , employee_deduction_annual_maximum : Some (\"some-string\" . to_string ()) , company_contribution_annual_maximum : Some (\"some-string\" . to_string ()) , limit_option : Some (\"some-string\" . to_string ()) , deduct_as_percentage : Some (false) , contribute_as_percentage : Some (false) , catch_up : Some (false) , coverage_amount : Some (\"some-string\" . to_string ()) , deduction_reduces_taxable_income : Some (gusto_api::types::PostEmployeesEmployeeIdEmployeeBenefitsRequestBodyDeductionReducesTaxableIncome :: DoesNotReduceTaxableIncome) , coverage_salary_multiplier : Some (\"some-string\" . to_string ()) }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create an employee benefit\n\nEmployee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.\n\n**Parameters:**\n\n- `employee_id: &'astr`: The ID of the employee (required)\n\n```rust,no_run\nasync fn example_benefits_post_employees_employee_id_employee() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result : gusto_api::types::EmployeeBenefit = client . benefits () . post_employees_employee_id_employee (\"some-string\" , & gusto_api::types::PostEmployeesEmployeeIdEmployeeBenefitsRequestBody { company_benefit_id : 3.14 as f64 , active : false , employee_deduction : Some (\"some-string\" . to_string ()) , company_contribution : Some (\"some-string\" . to_string ()) , employee_deduction_annual_maximum : Some (\"some-string\" . to_string ()) , company_contribution_annual_maximum : Some (\"some-string\" . to_string ()) , limit_option : Some (\"some-string\" . to_string ()) , deduct_as_percentage : false , contribute_as_percentage : false , catch_up : false , coverage_amount : Some (\"some-string\" . to_string ()) , deduction_reduces_taxable_income : Some (gusto_api::types::PostEmployeesEmployeeIdEmployeeBenefitsRequestBodyDeductionReducesTaxableIncome :: DoesNotReduceTaxableIncome) , coverage_salary_multiplier : Some (\"some-string\" . to_string ()) }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_employees_employee_id_employee<'a>(
         &'a self,
@@ -263,7 +291,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/employee_benefits"
@@ -283,7 +311,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -296,7 +328,7 @@ impl Benefits {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company"
@@ -310,7 +342,11 @@ impl Benefits {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -322,7 +358,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -341,11 +377,15 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Update an employee benefit\n\nEmployee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.\n\n**Parameters:**\n\n- `employee_benefit_id: &'astr`: The ID of the employee benefit (required)\n\n```rust,no_run\nasync fn example_benefits_put_employee_employee_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::EmployeeBenefit = client\n        .benefits()\n        .put_employee_employee_id(\n            \"some-string\",\n            &gusto_api::types::PutEmployeeBenefitsEmployeeBenefitIdRequestBody {\n                version: \"some-string\".to_string(),\n                active: Some(false),\n                employee_deduction: Some(\"some-string\".to_string()),\n                company_contribution: Some(\"some-string\".to_string()),\n                employee_deduction_annual_maximum: Some(\"some-string\".to_string()),\n                company_contribution_annual_maximum: Some(\"some-string\".to_string()),\n                limit_option: Some(\"some-string\".to_string()),\n                deduct_as_percentage: Some(false),\n                contribute_as_percentage: Some(false),\n                catch_up: Some(false),\n                coverage_amount: Some(\"some-string\".to_string()),\n                deduction_reduces_taxable_income: Some(\n                    gusto_api::types::DeductionReducesTaxableIncome::DoesNotReduceTaxableIncome,\n                ),\n                coverage_salary_multiplier: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update an employee benefit\n\nEmployee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.\n\n**Parameters:**\n\n- `employee_benefit_id: &'astr`: The ID of the employee benefit (required)\n\n```rust,no_run\nasync fn example_benefits_put_employee_employee_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::EmployeeBenefit = client\n        .benefits()\n        .put_employee_employee_id(\n            \"some-string\",\n            &gusto_api::types::PutEmployeeBenefitsEmployeeBenefitIdRequestBody {\n                version: \"some-string\".to_string(),\n                active: false,\n                employee_deduction: Some(\"some-string\".to_string()),\n                company_contribution: Some(\"some-string\".to_string()),\n                employee_deduction_annual_maximum: Some(\"some-string\".to_string()),\n                company_contribution_annual_maximum: Some(\"some-string\".to_string()),\n                limit_option: Some(\"some-string\".to_string()),\n                deduct_as_percentage: false,\n                contribute_as_percentage: false,\n                catch_up: false,\n                coverage_amount: Some(\"some-string\".to_string()),\n                deduction_reduces_taxable_income: Some(\n                    gusto_api::types::DeductionReducesTaxableIncome::DoesNotReduceTaxableIncome,\n                ),\n                coverage_salary_multiplier: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn put_employee_employee_id<'a>(
         &'a self,
@@ -354,7 +394,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -374,7 +414,11 @@ impl Benefits {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -393,7 +437,7 @@ impl Benefits {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -406,7 +450,11 @@ impl Benefits {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

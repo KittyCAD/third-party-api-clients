@@ -14694,6 +14694,78 @@ impl tabled::Tabled for ListDepartmentsResponse {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct GetDepartmentsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the department."]
+    pub name: String,
+    #[doc = "The parent department."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
+    #[doc = "The parent department.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent: Option<Department>,
+}
+
+impl std::fmt::Display for GetDepartmentsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetDepartmentsResponse {
+    const LENGTH: usize = 7;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+            if let Some(parent_id) = &self.parent_id {
+                format!("{:?}", parent_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(parent) = &self.parent {
+                format!("{:?}", parent).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "name".into(),
+            "parent_id".into(),
+            "parent".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct ListEmploymentTypesResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
@@ -14740,6 +14812,134 @@ impl tabled::Tabled for ListEmploymentTypesResponse {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[doc = "The classification of the worker by the company. * `CONTRACTOR`: Contractors are \
+         self-employed workers who provide services on a short-term or per-project basis and are \
+         not eligible for tax-withholding or benefits. * `EMPLOYEE`: Employees are hired and \
+         managed by an employer, work under the employer's direct supervision and control, and are \
+         protected by law for wages and employment rights."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum GetEmploymentTypesResponseType {
+    #[serde(rename = "CONTRACTOR")]
+    #[display("CONTRACTOR")]
+    Contractor,
+    #[serde(rename = "EMPLOYEE")]
+    #[display("EMPLOYEE")]
+    Employee,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetEmploymentTypesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The display label of the employment type."]
+    pub label: String,
+    #[doc = "The name of the employment type for non-custom employment types."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[doc = "The classification of the worker by the company. * `CONTRACTOR`: Contractors are \
+             self-employed workers who provide services on a short-term or per-project basis and \
+             are not eligible for tax-withholding or benefits. * `EMPLOYEE`: Employees are hired \
+             and managed by an employer, work under the employer's direct supervision and \
+             control, and are protected by law for wages and employment rights."]
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<GetEmploymentTypesResponseType>,
+    #[doc = "The compensation period for the employment type. * `SALARIED`: Employees that are \
+             paid a fixed amount per year. * `HOURLY`: Employees that are paid a wage per hour \
+             worked."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub compensation_time_period: Option<CompensationTimePeriod>,
+    #[doc = "The amount worked for the employment type. * `FULL-TIME`: Full-time is at least 30 \
+             hours per week. Full-time workers will typically be eligible for benefits. * \
+             `PART-TIME`: Part-time is less than 30 hours per week. These workers may be eligible \
+             for benefits, depending on company settings and hours worked. * `TEMPORARY`: These \
+             workers are hired on a temporary basis. You can specify how each worker with this \
+             employment type will be paid individually."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount_worked: Option<AmountWorked>,
+}
+
+impl std::fmt::Display for GetEmploymentTypesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetEmploymentTypesResponse {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.label.clone().into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(type_) = &self.type_ {
+                format!("{:?}", type_).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(compensation_time_period) = &self.compensation_time_period {
+                format!("{:?}", compensation_time_period).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(amount_worked) = &self.amount_worked {
+                format!("{:?}", amount_worked).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "label".into(),
+            "name".into(),
+            "type_".into(),
+            "compensation_time_period".into(),
+            "amount_worked".into(),
+        ]
     }
 }
 
@@ -14798,6 +14998,78 @@ impl tabled::Tabled for ListTeamsResponse {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct GetTeamsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The parent team"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
+    #[doc = "The parent team\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent: Option<Team>,
+    #[doc = "The name of the team."]
+    pub name: String,
+}
+
+impl std::fmt::Display for GetTeamsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetTeamsResponse {
+    const LENGTH: usize = 7;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(parent_id) = &self.parent_id {
+                format!("{:?}", parent_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(parent) = &self.parent {
+                format!("{:?}", parent).into()
+            } else {
+                String::new().into()
+            },
+            self.name.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "parent_id".into(),
+            "parent".into(),
+            "name".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct ListWorkLocationsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
@@ -14844,6 +15116,64 @@ impl tabled::Tabled for ListWorkLocationsResponse {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetWorkLocationsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the work location."]
+    pub name: String,
+    #[doc = "The address for the work location."]
+    pub address: Address,
+}
+
+impl std::fmt::Display for GetWorkLocationsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetWorkLocationsResponse {
+    const LENGTH: usize = 6;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+            format!("{:?}", self.address).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "name".into(),
+            "address".into(),
+        ]
     }
 }
 
@@ -14899,6 +15229,1114 @@ impl tabled::Tabled for ListWorkersResponse {
     }
 }
 
+#[doc = "The worker's country."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum GetWorkersResponseCountry {
+    #[serde(rename = "AF")]
+    #[display("AF")]
+    Af,
+    #[serde(rename = "AX")]
+    #[display("AX")]
+    Ax,
+    #[serde(rename = "AL")]
+    #[display("AL")]
+    Al,
+    #[serde(rename = "DZ")]
+    #[display("DZ")]
+    Dz,
+    #[serde(rename = "AS")]
+    #[display("AS")]
+    As,
+    #[serde(rename = "AD")]
+    #[display("AD")]
+    Ad,
+    #[serde(rename = "AO")]
+    #[display("AO")]
+    Ao,
+    #[serde(rename = "AI")]
+    #[display("AI")]
+    Ai,
+    #[serde(rename = "AQ")]
+    #[display("AQ")]
+    Aq,
+    #[serde(rename = "AG")]
+    #[display("AG")]
+    Ag,
+    #[serde(rename = "AR")]
+    #[display("AR")]
+    Ar,
+    #[serde(rename = "AM")]
+    #[display("AM")]
+    Am,
+    #[serde(rename = "AW")]
+    #[display("AW")]
+    Aw,
+    #[serde(rename = "AU")]
+    #[display("AU")]
+    Au,
+    #[serde(rename = "AT")]
+    #[display("AT")]
+    At,
+    #[serde(rename = "AZ")]
+    #[display("AZ")]
+    Az,
+    #[serde(rename = "BS")]
+    #[display("BS")]
+    Bs,
+    #[serde(rename = "BH")]
+    #[display("BH")]
+    Bh,
+    #[serde(rename = "BD")]
+    #[display("BD")]
+    Bd,
+    #[serde(rename = "BB")]
+    #[display("BB")]
+    Bb,
+    #[serde(rename = "BY")]
+    #[display("BY")]
+    By,
+    #[serde(rename = "BE")]
+    #[display("BE")]
+    Be,
+    #[serde(rename = "BZ")]
+    #[display("BZ")]
+    Bz,
+    #[serde(rename = "BJ")]
+    #[display("BJ")]
+    Bj,
+    #[serde(rename = "BM")]
+    #[display("BM")]
+    Bm,
+    #[serde(rename = "BT")]
+    #[display("BT")]
+    Bt,
+    #[serde(rename = "BO")]
+    #[display("BO")]
+    Bo,
+    #[serde(rename = "BQ")]
+    #[display("BQ")]
+    Bq,
+    #[serde(rename = "BA")]
+    #[display("BA")]
+    Ba,
+    #[serde(rename = "BW")]
+    #[display("BW")]
+    Bw,
+    #[serde(rename = "BV")]
+    #[display("BV")]
+    Bv,
+    #[serde(rename = "BR")]
+    #[display("BR")]
+    Br,
+    #[serde(rename = "IO")]
+    #[display("IO")]
+    Io,
+    #[serde(rename = "BN")]
+    #[display("BN")]
+    Bn,
+    #[serde(rename = "BG")]
+    #[display("BG")]
+    Bg,
+    #[serde(rename = "BF")]
+    #[display("BF")]
+    Bf,
+    #[serde(rename = "BI")]
+    #[display("BI")]
+    Bi,
+    #[serde(rename = "CV")]
+    #[display("CV")]
+    Cv,
+    #[serde(rename = "KH")]
+    #[display("KH")]
+    Kh,
+    #[serde(rename = "CM")]
+    #[display("CM")]
+    Cm,
+    #[serde(rename = "CA")]
+    #[display("CA")]
+    Ca,
+    #[serde(rename = "KY")]
+    #[display("KY")]
+    Ky,
+    #[serde(rename = "CF")]
+    #[display("CF")]
+    Cf,
+    #[serde(rename = "TD")]
+    #[display("TD")]
+    Td,
+    #[serde(rename = "CL")]
+    #[display("CL")]
+    Cl,
+    #[serde(rename = "CN")]
+    #[display("CN")]
+    Cn,
+    #[serde(rename = "CX")]
+    #[display("CX")]
+    Cx,
+    #[serde(rename = "CC")]
+    #[display("CC")]
+    Cc,
+    #[serde(rename = "CO")]
+    #[display("CO")]
+    Co,
+    #[serde(rename = "KM")]
+    #[display("KM")]
+    Km,
+    #[serde(rename = "CG")]
+    #[display("CG")]
+    Cg,
+    #[serde(rename = "CD")]
+    #[display("CD")]
+    Cd,
+    #[serde(rename = "CK")]
+    #[display("CK")]
+    Ck,
+    #[serde(rename = "CR")]
+    #[display("CR")]
+    Cr,
+    #[serde(rename = "CI")]
+    #[display("CI")]
+    Ci,
+    #[serde(rename = "HR")]
+    #[display("HR")]
+    Hr,
+    #[serde(rename = "CW")]
+    #[display("CW")]
+    Cw,
+    #[serde(rename = "CY")]
+    #[display("CY")]
+    Cy,
+    #[serde(rename = "CZ")]
+    #[display("CZ")]
+    Cz,
+    #[serde(rename = "DK")]
+    #[display("DK")]
+    Dk,
+    #[serde(rename = "DJ")]
+    #[display("DJ")]
+    Dj,
+    #[serde(rename = "DM")]
+    #[display("DM")]
+    Dm,
+    #[serde(rename = "DO")]
+    #[display("DO")]
+    Do,
+    #[serde(rename = "EC")]
+    #[display("EC")]
+    Ec,
+    #[serde(rename = "EG")]
+    #[display("EG")]
+    Eg,
+    #[serde(rename = "SV")]
+    #[display("SV")]
+    Sv,
+    #[serde(rename = "GQ")]
+    #[display("GQ")]
+    Gq,
+    #[serde(rename = "ER")]
+    #[display("ER")]
+    Er,
+    #[serde(rename = "EE")]
+    #[display("EE")]
+    Ee,
+    #[serde(rename = "SZ")]
+    #[display("SZ")]
+    Sz,
+    #[serde(rename = "ET")]
+    #[display("ET")]
+    Et,
+    #[serde(rename = "FK")]
+    #[display("FK")]
+    Fk,
+    #[serde(rename = "FO")]
+    #[display("FO")]
+    Fo,
+    #[serde(rename = "FJ")]
+    #[display("FJ")]
+    Fj,
+    #[serde(rename = "FI")]
+    #[display("FI")]
+    Fi,
+    #[serde(rename = "FR")]
+    #[display("FR")]
+    Fr,
+    #[serde(rename = "GF")]
+    #[display("GF")]
+    Gf,
+    #[serde(rename = "PF")]
+    #[display("PF")]
+    Pf,
+    #[serde(rename = "TF")]
+    #[display("TF")]
+    Tf,
+    #[serde(rename = "GA")]
+    #[display("GA")]
+    Ga,
+    #[serde(rename = "GM")]
+    #[display("GM")]
+    Gm,
+    #[serde(rename = "GE")]
+    #[display("GE")]
+    Ge,
+    #[serde(rename = "DE")]
+    #[display("DE")]
+    De,
+    #[serde(rename = "GH")]
+    #[display("GH")]
+    Gh,
+    #[serde(rename = "GI")]
+    #[display("GI")]
+    Gi,
+    #[serde(rename = "GR")]
+    #[display("GR")]
+    Gr,
+    #[serde(rename = "GL")]
+    #[display("GL")]
+    Gl,
+    #[serde(rename = "GD")]
+    #[display("GD")]
+    Gd,
+    #[serde(rename = "GP")]
+    #[display("GP")]
+    Gp,
+    #[serde(rename = "GU")]
+    #[display("GU")]
+    Gu,
+    #[serde(rename = "GT")]
+    #[display("GT")]
+    Gt,
+    #[serde(rename = "GG")]
+    #[display("GG")]
+    Gg,
+    #[serde(rename = "GN")]
+    #[display("GN")]
+    Gn,
+    #[serde(rename = "GW")]
+    #[display("GW")]
+    Gw,
+    #[serde(rename = "GY")]
+    #[display("GY")]
+    Gy,
+    #[serde(rename = "HT")]
+    #[display("HT")]
+    Ht,
+    #[serde(rename = "HM")]
+    #[display("HM")]
+    Hm,
+    #[serde(rename = "VA")]
+    #[display("VA")]
+    Va,
+    #[serde(rename = "HN")]
+    #[display("HN")]
+    Hn,
+    #[serde(rename = "HK")]
+    #[display("HK")]
+    Hk,
+    #[serde(rename = "HU")]
+    #[display("HU")]
+    Hu,
+    #[serde(rename = "IS")]
+    #[display("IS")]
+    Is,
+    #[serde(rename = "IN")]
+    #[display("IN")]
+    In,
+    #[serde(rename = "ID")]
+    #[display("ID")]
+    Id,
+    #[serde(rename = "IQ")]
+    #[display("IQ")]
+    Iq,
+    #[serde(rename = "IE")]
+    #[display("IE")]
+    Ie,
+    #[serde(rename = "IM")]
+    #[display("IM")]
+    Im,
+    #[serde(rename = "IL")]
+    #[display("IL")]
+    Il,
+    #[serde(rename = "IT")]
+    #[display("IT")]
+    It,
+    #[serde(rename = "JM")]
+    #[display("JM")]
+    Jm,
+    #[serde(rename = "JP")]
+    #[display("JP")]
+    Jp,
+    #[serde(rename = "JE")]
+    #[display("JE")]
+    Je,
+    #[serde(rename = "JO")]
+    #[display("JO")]
+    Jo,
+    #[serde(rename = "KZ")]
+    #[display("KZ")]
+    Kz,
+    #[serde(rename = "KE")]
+    #[display("KE")]
+    Ke,
+    #[serde(rename = "KI")]
+    #[display("KI")]
+    Ki,
+    #[serde(rename = "KR")]
+    #[display("KR")]
+    Kr,
+    #[serde(rename = "XK")]
+    #[display("XK")]
+    Xk,
+    #[serde(rename = "KW")]
+    #[display("KW")]
+    Kw,
+    #[serde(rename = "KG")]
+    #[display("KG")]
+    Kg,
+    #[serde(rename = "LA")]
+    #[display("LA")]
+    La,
+    #[serde(rename = "LV")]
+    #[display("LV")]
+    Lv,
+    #[serde(rename = "LB")]
+    #[display("LB")]
+    Lb,
+    #[serde(rename = "LS")]
+    #[display("LS")]
+    Ls,
+    #[serde(rename = "LR")]
+    #[display("LR")]
+    Lr,
+    #[serde(rename = "LY")]
+    #[display("LY")]
+    Ly,
+    #[serde(rename = "LI")]
+    #[display("LI")]
+    Li,
+    #[serde(rename = "LT")]
+    #[display("LT")]
+    Lt,
+    #[serde(rename = "LU")]
+    #[display("LU")]
+    Lu,
+    #[serde(rename = "MO")]
+    #[display("MO")]
+    Mo,
+    #[serde(rename = "MG")]
+    #[display("MG")]
+    Mg,
+    #[serde(rename = "MW")]
+    #[display("MW")]
+    Mw,
+    #[serde(rename = "MY")]
+    #[display("MY")]
+    My,
+    #[serde(rename = "MV")]
+    #[display("MV")]
+    Mv,
+    #[serde(rename = "ML")]
+    #[display("ML")]
+    Ml,
+    #[serde(rename = "MT")]
+    #[display("MT")]
+    Mt,
+    #[serde(rename = "MH")]
+    #[display("MH")]
+    Mh,
+    #[serde(rename = "MQ")]
+    #[display("MQ")]
+    Mq,
+    #[serde(rename = "MR")]
+    #[display("MR")]
+    Mr,
+    #[serde(rename = "MU")]
+    #[display("MU")]
+    Mu,
+    #[serde(rename = "YT")]
+    #[display("YT")]
+    Yt,
+    #[serde(rename = "MX")]
+    #[display("MX")]
+    Mx,
+    #[serde(rename = "FM")]
+    #[display("FM")]
+    Fm,
+    #[serde(rename = "MD")]
+    #[display("MD")]
+    Md,
+    #[serde(rename = "MC")]
+    #[display("MC")]
+    Mc,
+    #[serde(rename = "MN")]
+    #[display("MN")]
+    Mn,
+    #[serde(rename = "ME")]
+    #[display("ME")]
+    Me,
+    #[serde(rename = "MS")]
+    #[display("MS")]
+    Ms,
+    #[serde(rename = "MA")]
+    #[display("MA")]
+    Ma,
+    #[serde(rename = "MZ")]
+    #[display("MZ")]
+    Mz,
+    #[serde(rename = "MM")]
+    #[display("MM")]
+    Mm,
+    #[serde(rename = "NA")]
+    #[display("NA")]
+    Na,
+    #[serde(rename = "NR")]
+    #[display("NR")]
+    Nr,
+    #[serde(rename = "NP")]
+    #[display("NP")]
+    Np,
+    #[serde(rename = "NL")]
+    #[display("NL")]
+    Nl,
+    #[serde(rename = "AN")]
+    #[display("AN")]
+    An,
+    #[serde(rename = "NC")]
+    #[display("NC")]
+    Nc,
+    #[serde(rename = "NZ")]
+    #[display("NZ")]
+    Nz,
+    #[serde(rename = "NI")]
+    #[display("NI")]
+    Ni,
+    #[serde(rename = "NE")]
+    #[display("NE")]
+    Ne,
+    #[serde(rename = "NG")]
+    #[display("NG")]
+    Ng,
+    #[serde(rename = "NU")]
+    #[display("NU")]
+    Nu,
+    #[serde(rename = "NF")]
+    #[display("NF")]
+    Nf,
+    #[serde(rename = "MK")]
+    #[display("MK")]
+    Mk,
+    #[serde(rename = "MP")]
+    #[display("MP")]
+    Mp,
+    #[serde(rename = "NO")]
+    #[display("NO")]
+    No,
+    #[serde(rename = "OM")]
+    #[display("OM")]
+    Om,
+    #[serde(rename = "PK")]
+    #[display("PK")]
+    Pk,
+    #[serde(rename = "PW")]
+    #[display("PW")]
+    Pw,
+    #[serde(rename = "PS")]
+    #[display("PS")]
+    Ps,
+    #[serde(rename = "PA")]
+    #[display("PA")]
+    Pa,
+    #[serde(rename = "PG")]
+    #[display("PG")]
+    Pg,
+    #[serde(rename = "PY")]
+    #[display("PY")]
+    Py,
+    #[serde(rename = "PE")]
+    #[display("PE")]
+    Pe,
+    #[serde(rename = "PH")]
+    #[display("PH")]
+    Ph,
+    #[serde(rename = "PN")]
+    #[display("PN")]
+    Pn,
+    #[serde(rename = "PL")]
+    #[display("PL")]
+    Pl,
+    #[serde(rename = "PT")]
+    #[display("PT")]
+    Pt,
+    #[serde(rename = "PR")]
+    #[display("PR")]
+    Pr,
+    #[serde(rename = "QA")]
+    #[display("QA")]
+    Qa,
+    #[serde(rename = "RO")]
+    #[display("RO")]
+    Ro,
+    #[serde(rename = "RU")]
+    #[display("RU")]
+    Ru,
+    #[serde(rename = "RW")]
+    #[display("RW")]
+    Rw,
+    #[serde(rename = "RE")]
+    #[display("RE")]
+    Re,
+    #[serde(rename = "BL")]
+    #[display("BL")]
+    Bl,
+    #[serde(rename = "SH")]
+    #[display("SH")]
+    Sh,
+    #[serde(rename = "KN")]
+    #[display("KN")]
+    Kn,
+    #[serde(rename = "LC")]
+    #[display("LC")]
+    Lc,
+    #[serde(rename = "MF")]
+    #[display("MF")]
+    Mf,
+    #[serde(rename = "PM")]
+    #[display("PM")]
+    Pm,
+    #[serde(rename = "VC")]
+    #[display("VC")]
+    Vc,
+    #[serde(rename = "WS")]
+    #[display("WS")]
+    Ws,
+    #[serde(rename = "SM")]
+    #[display("SM")]
+    Sm,
+    #[serde(rename = "ST")]
+    #[display("ST")]
+    St,
+    #[serde(rename = "SA")]
+    #[display("SA")]
+    Sa,
+    #[serde(rename = "SN")]
+    #[display("SN")]
+    Sn,
+    #[serde(rename = "RS")]
+    #[display("RS")]
+    Rs,
+    #[serde(rename = "SC")]
+    #[display("SC")]
+    Sc,
+    #[serde(rename = "SL")]
+    #[display("SL")]
+    Sl,
+    #[serde(rename = "SG")]
+    #[display("SG")]
+    Sg,
+    #[serde(rename = "SX")]
+    #[display("SX")]
+    Sx,
+    #[serde(rename = "SK")]
+    #[display("SK")]
+    Sk,
+    #[serde(rename = "SI")]
+    #[display("SI")]
+    Si,
+    #[serde(rename = "SB")]
+    #[display("SB")]
+    Sb,
+    #[serde(rename = "SO")]
+    #[display("SO")]
+    So,
+    #[serde(rename = "ZA")]
+    #[display("ZA")]
+    Za,
+    #[serde(rename = "GS")]
+    #[display("GS")]
+    Gs,
+    #[serde(rename = "SS")]
+    #[display("SS")]
+    Ss,
+    #[serde(rename = "ES")]
+    #[display("ES")]
+    Es,
+    #[serde(rename = "LK")]
+    #[display("LK")]
+    Lk,
+    #[serde(rename = "SD")]
+    #[display("SD")]
+    Sd,
+    #[serde(rename = "SR")]
+    #[display("SR")]
+    Sr,
+    #[serde(rename = "SJ")]
+    #[display("SJ")]
+    Sj,
+    #[serde(rename = "SE")]
+    #[display("SE")]
+    Se,
+    #[serde(rename = "CH")]
+    #[display("CH")]
+    Ch,
+    #[serde(rename = "TW")]
+    #[display("TW")]
+    Tw,
+    #[serde(rename = "TJ")]
+    #[display("TJ")]
+    Tj,
+    #[serde(rename = "TZ")]
+    #[display("TZ")]
+    Tz,
+    #[serde(rename = "TH")]
+    #[display("TH")]
+    Th,
+    #[serde(rename = "TL")]
+    #[display("TL")]
+    Tl,
+    #[serde(rename = "TG")]
+    #[display("TG")]
+    Tg,
+    #[serde(rename = "TK")]
+    #[display("TK")]
+    Tk,
+    #[serde(rename = "TO")]
+    #[display("TO")]
+    To,
+    #[serde(rename = "TT")]
+    #[display("TT")]
+    Tt,
+    #[serde(rename = "TN")]
+    #[display("TN")]
+    Tn,
+    #[serde(rename = "TR")]
+    #[display("TR")]
+    Tr,
+    #[serde(rename = "TM")]
+    #[display("TM")]
+    Tm,
+    #[serde(rename = "TC")]
+    #[display("TC")]
+    Tc,
+    #[serde(rename = "TV")]
+    #[display("TV")]
+    Tv,
+    #[serde(rename = "UG")]
+    #[display("UG")]
+    Ug,
+    #[serde(rename = "UA")]
+    #[display("UA")]
+    Ua,
+    #[serde(rename = "AE")]
+    #[display("AE")]
+    Ae,
+    #[serde(rename = "GB")]
+    #[display("GB")]
+    Gb,
+    #[serde(rename = "US")]
+    #[display("US")]
+    Us,
+    #[serde(rename = "UM")]
+    #[display("UM")]
+    Um,
+    #[serde(rename = "UY")]
+    #[display("UY")]
+    Uy,
+    #[serde(rename = "UZ")]
+    #[display("UZ")]
+    Uz,
+    #[serde(rename = "VU")]
+    #[display("VU")]
+    Vu,
+    #[serde(rename = "VE")]
+    #[display("VE")]
+    Ve,
+    #[serde(rename = "VN")]
+    #[display("VN")]
+    Vn,
+    #[serde(rename = "VG")]
+    #[display("VG")]
+    Vg,
+    #[serde(rename = "VI")]
+    #[display("VI")]
+    Vi,
+    #[serde(rename = "WF")]
+    #[display("WF")]
+    Wf,
+    #[serde(rename = "EH")]
+    #[display("EH")]
+    Eh,
+    #[serde(rename = "YE")]
+    #[display("YE")]
+    Ye,
+    #[serde(rename = "ZM")]
+    #[display("ZM")]
+    Zm,
+    #[serde(rename = "ZW")]
+    #[display("ZW")]
+    Zw,
+}
+
+#[doc = "The worker's status within the organization."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum GetWorkersResponseStatus {
+    #[serde(rename = "HIRED")]
+    #[display("HIRED")]
+    Hired,
+    #[serde(rename = "ACCEPTED")]
+    #[display("ACCEPTED")]
+    Accepted,
+    #[serde(rename = "ACTIVE")]
+    #[display("ACTIVE")]
+    Active,
+    #[serde(rename = "TERMINATED")]
+    #[display("TERMINATED")]
+    Terminated,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetWorkersResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The worker's associated user."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
+    #[doc = "The worker's associated user.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub user: Option<User>,
+    #[doc = "The worker's associated legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub legal_entity_id: Option<String>,
+    #[doc = "The worker's associated legal entity.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub legal_entity: Option<LegalEntity>,
+    #[doc = "The worker's country."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country: Option<GetWorkersResponseCountry>,
+    #[doc = "The start date of the worker."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
+    #[doc = "The end date of the worker."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub end_date: Option<String>,
+    #[doc = "The worker's number within the organization."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub number: Option<i64>,
+    #[doc = "The worker's associated work email address."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub work_email: Option<String>,
+    #[doc = "The worker's associated personal email address."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub personal_email: Option<String>,
+    #[doc = "The worker's status within the organization."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<GetWorkersResponseStatus>,
+    #[doc = "The location that the worker is mapped to for tax purposes. In the case that a \
+             worker is remote, the location's type is remote."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub location: Option<WorkerLocation>,
+    #[doc = "The worker's employment type."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub employment_type_id: Option<String>,
+    #[doc = "The worker's employment type.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub employment_type: Option<CompanyEmploymentType>,
+    #[doc = "The gender of the worker, if specified."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub gender: Option<Gender>,
+    #[doc = "The worker's date of birth."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub date_of_birth: Option<String>,
+    #[doc = "The identified race of the worker, if specified."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub race: Option<Race>,
+    #[doc = "The identified ethnicity of the worker, if specified."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ethnicity: Option<Ethnicity>,
+    #[doc = "The countries that the worker has citizenship in."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub citizenship: Option<Citizenship>,
+    #[doc = "The compensation package for the worker."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub compensation_id: Option<String>,
+    #[doc = "The compensation package for the worker.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub compensation: Option<Compensation>,
+    #[doc = "The worker's assigned department."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub department_id: Option<String>,
+    #[doc = "The worker's assigned department.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub department: Option<Department>,
+    #[doc = "The worker's assigned teams."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub teams_id: Option<String>,
+    #[doc = "The worker's assigned teams.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub teams: Option<Team>,
+    #[doc = "The worker's title."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    #[doc = "The level of the worker."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub level_id: Option<String>,
+    #[doc = "The level of the worker.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub level: Option<Level>,
+    #[doc = "The details of the worker's termination, if applicable."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub termination_details: Option<TerminationDetails>,
+    #[doc = "Custom fields for the worker"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub custom_fields: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl std::fmt::Display for GetWorkersResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetWorkersResponse {
+    const LENGTH: usize = 34;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(user_id) = &self.user_id {
+                format!("{:?}", user_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(user) = &self.user {
+                format!("{:?}", user).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(legal_entity_id) = &self.legal_entity_id {
+                format!("{:?}", legal_entity_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(legal_entity) = &self.legal_entity {
+                format!("{:?}", legal_entity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(country) = &self.country {
+                format!("{:?}", country).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(start_date) = &self.start_date {
+                format!("{:?}", start_date).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(end_date) = &self.end_date {
+                format!("{:?}", end_date).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(number) = &self.number {
+                format!("{:?}", number).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(work_email) = &self.work_email {
+                format!("{:?}", work_email).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(personal_email) = &self.personal_email {
+                format!("{:?}", personal_email).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(status) = &self.status {
+                format!("{:?}", status).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(location) = &self.location {
+                format!("{:?}", location).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(employment_type_id) = &self.employment_type_id {
+                format!("{:?}", employment_type_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(employment_type) = &self.employment_type {
+                format!("{:?}", employment_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(gender) = &self.gender {
+                format!("{:?}", gender).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(date_of_birth) = &self.date_of_birth {
+                format!("{:?}", date_of_birth).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(race) = &self.race {
+                format!("{:?}", race).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(ethnicity) = &self.ethnicity {
+                format!("{:?}", ethnicity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(citizenship) = &self.citizenship {
+                format!("{:?}", citizenship).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(compensation_id) = &self.compensation_id {
+                format!("{:?}", compensation_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(compensation) = &self.compensation {
+                format!("{:?}", compensation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(department_id) = &self.department_id {
+                format!("{:?}", department_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(department) = &self.department {
+                format!("{:?}", department).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(teams_id) = &self.teams_id {
+                format!("{:?}", teams_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(teams) = &self.teams {
+                format!("{:?}", teams).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(title) = &self.title {
+                format!("{:?}", title).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(level_id) = &self.level_id {
+                format!("{:?}", level_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(level) = &self.level {
+                format!("{:?}", level).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(termination_details) = &self.termination_details {
+                format!("{:?}", termination_details).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(custom_fields) = &self.custom_fields {
+                format!("{:?}", custom_fields).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "user_id".into(),
+            "user".into(),
+            "legal_entity_id".into(),
+            "legal_entity".into(),
+            "country".into(),
+            "start_date".into(),
+            "end_date".into(),
+            "number".into(),
+            "work_email".into(),
+            "personal_email".into(),
+            "status".into(),
+            "location".into(),
+            "employment_type_id".into(),
+            "employment_type".into(),
+            "gender".into(),
+            "date_of_birth".into(),
+            "race".into(),
+            "ethnicity".into(),
+            "citizenship".into(),
+            "compensation_id".into(),
+            "compensation".into(),
+            "department_id".into(),
+            "department".into(),
+            "teams_id".into(),
+            "teams".into(),
+            "title".into(),
+            "level_id".into(),
+            "level".into(),
+            "termination_details".into(),
+            "custom_fields".into(),
+        ]
+    }
+}
+
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14948,6 +16386,160 @@ impl tabled::Tabled for ListUsersResponse {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetUsersResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "Whether the user is able to access company resources, typically when they are in \
+             actively engaged with the company and not after off-boarding."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active: Option<bool>,
+    #[doc = "The unique identifier across Rippling used by the User for direct authentication \
+             into their associated company. Globally unique."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub username: Option<String>,
+    #[doc = "The user's name."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<UserName>,
+    #[doc = "The display name of the user using either the concatenated preferred given and \
+             family name or username depending on availability."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub display_name: Option<String>,
+    #[doc = "The user's email addresses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub emails: Option<Email>,
+    #[doc = "The user's phone numbers."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub phone_numbers: Option<UserPhoneNumber>,
+    #[doc = "The user's addresses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub addresses: Option<UserAddress>,
+    #[doc = "The user's photos."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub photos: Option<UserPhoto>,
+    #[doc = "The User's preferred written or spoken language in the same format of the HTTP \
+             Accept-Language header, pursuant to Section 5.3.5 of RFC7231."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub preferred_language: Option<String>,
+    #[doc = "The User's default location for purposes of localization of currency, date time \
+             format, or numerical representations pursuant to RFC5646."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub locale: Option<String>,
+    #[doc = "The User's current time zone in IANA database Olson format"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timezone: Option<String>,
+}
+
+impl std::fmt::Display for GetUsersResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetUsersResponse {
+    const LENGTH: usize = 15;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(active) = &self.active {
+                format!("{:?}", active).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(username) = &self.username {
+                format!("{:?}", username).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(display_name) = &self.display_name {
+                format!("{:?}", display_name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(emails) = &self.emails {
+                format!("{:?}", emails).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(phone_numbers) = &self.phone_numbers {
+                format!("{:?}", phone_numbers).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(addresses) = &self.addresses {
+                format!("{:?}", addresses).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(photos) = &self.photos {
+                format!("{:?}", photos).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(preferred_language) = &self.preferred_language {
+                format!("{:?}", preferred_language).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(locale) = &self.locale {
+                format!("{:?}", locale).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(timezone) = &self.timezone {
+                format!("{:?}", timezone).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "active".into(),
+            "username".into(),
+            "name".into(),
+            "display_name".into(),
+            "emails".into(),
+            "phone_numbers".into(),
+            "addresses".into(),
+            "photos".into(),
+            "preferred_language".into(),
+            "locale".into(),
+            "timezone".into(),
+        ]
     }
 }
 

@@ -4610,8 +4610,8 @@ components:
       x-tags:
         - Time Off Requests
       properties:
-        id:
-          type: integer
+        uuid:
+          type: string
           description: The ID of the time off request.
           readOnly: true
         status:
@@ -4650,8 +4650,8 @@ components:
           type: object
           description: ''
           properties:
-            id:
-              type: number
+            uuid:
+              type: string
               description: The ID of the employee the time off request is for.
               readOnly: true
             full_name:
@@ -4664,8 +4664,8 @@ components:
           nullable: true
           description: ''
           properties:
-            id:
-              type: number
+            uuid:
+              type: string
               description: The ID of the employee who initiated the time off request.
               readOnly: true
             full_name:
@@ -4678,8 +4678,8 @@ components:
           nullable: true
           description: This value will be null if the request has not been approved.
           properties:
-            id:
-              type: number
+            uuid:
+              type: string
               description: The ID of the employee who approved the time off request.
               readOnly: true
             full_name:

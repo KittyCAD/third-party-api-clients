@@ -1,6 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-#[cfg(feature = "tabled")]
-use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -133,6 +131,62 @@ pub mod base64 {
     }
 }
 
+#[cfg(feature = "requests")]
+pub mod multipart {
+    #![doc = " Multipart form data types."]
+    #[doc = " An attachement to a multipart form."]
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct Attachment {
+        #[doc = " The name of the field."]
+        pub name: String,
+        #[doc = " The filename of the attachment."]
+        pub filename: Option<String>,
+        #[doc = " The content type of the attachment."]
+        pub content_type: Option<String>,
+        #[doc = " The data of the attachment."]
+        pub data: Vec<u8>,
+    }
+
+    impl std::convert::TryFrom<Attachment> for reqwest::multipart::Part {
+        type Error = reqwest::Error;
+        fn try_from(attachment: Attachment) -> Result<Self, Self::Error> {
+            let mut part = reqwest::multipart::Part::bytes(attachment.data);
+            if let Some(filename) = attachment.filename {
+                part = part.file_name(filename);
+            }
+            if let Some(content_type) = attachment.content_type {
+                part = part.mime_str(&content_type)?;
+            }
+            Ok(part)
+        }
+    }
+
+    impl std::convert::TryFrom<std::path::PathBuf> for Attachment {
+        type Error = std::io::Error;
+        fn try_from(path: std::path::PathBuf) -> Result<Self, Self::Error> {
+            let filename = path
+                .file_name()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_str()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_string();
+            let content_type = mime_guess::from_path(&path).first_raw();
+            let data = std::fs::read(path)?;
+            Ok(Attachment {
+                name: "file".to_string(),
+                filename: Some(filename),
+                content_type: content_type.map(|s| s.to_string()),
+                data,
+            })
+        }
+    }
+}
+
+#[cfg(feature = "requests")]
 pub mod paginate {
     #![doc = " Utility functions used for pagination."]
     use anyhow::Result;
@@ -142,6 +196,8 @@ pub mod paginate {
         type Item: serde::de::DeserializeOwned;
         #[doc = " Returns true if the response has more pages."]
         fn has_more_pages(&self) -> bool;
+        #[doc = " Returns the next page token."]
+        fn next_page_token(&self) -> Option<String>;
         #[doc = " Modify a request to get the next page."]
         fn next_page(
             &self,
@@ -298,12 +354,14 @@ pub mod phone_number {
     }
 }
 
+#[cfg(feature = "requests")]
 pub mod error {
     #![doc = " Error methods."]
     #[doc = " Error produced by generated client methods."]
     pub enum Error {
         #[doc = " The request did not conform to API requirements."]
         InvalidRequest(String),
+        #[cfg(feature = "retry")]
         #[doc = " A server error either due to the data, or with the connection."]
         CommunicationError(reqwest_middleware::Error),
         #[doc = " A request error, caused when building the request."]
@@ -317,10 +375,21 @@ pub mod error {
         },
         #[doc = " An expected error response."]
         InvalidResponsePayload {
+            #[cfg(feature = "retry")]
             #[doc = " The error."]
             error: reqwest_middleware::Error,
+            #[cfg(not(feature = "retry"))]
+            #[doc = " The error."]
+            error: reqwest::Error,
             #[doc = " The full response."]
             response: reqwest::Response,
+        },
+        #[doc = " An error from the server."]
+        Server {
+            #[doc = " The text from the body."]
+            body: String,
+            #[doc = " The response status."]
+            status: reqwest::StatusCode,
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
@@ -333,10 +402,13 @@ pub mod error {
             match self {
                 Error::InvalidRequest(_) => None,
                 Error::RequestError(e) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Reqwest(e)) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Middleware(_)) => None,
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
+                Error::Server { body: _, status } => Some(*status),
                 Error::UnexpectedResponse(r) => Some(r.status()),
             }
         }
@@ -350,6 +422,7 @@ pub mod error {
         }
     }
 
+    #[cfg(feature = "retry")]
     impl From<reqwest_middleware::Error> for Error {
         fn from(e: reqwest_middleware::Error) -> Self {
             Self::CommunicationError(e)
@@ -362,12 +435,22 @@ pub mod error {
         }
     }
 
+    impl From<serde_json::Error> for Error {
+        fn from(e: serde_json::Error) -> Self {
+            Self::SerdeError {
+                error: format_serde_error::SerdeError::new(String::new(), e),
+                status: reqwest::StatusCode::INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
     impl std::fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
                     write!(f, "Invalid Request: {}", s)
                 }
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => {
                     write!(f, "Communication Error: {}", e)
                 }
@@ -380,15 +463,14 @@ pub mod error {
                 Error::InvalidResponsePayload { error, response: _ } => {
                     write!(f, "Invalid Response Payload: {}", error)
                 }
+                Error::Server { body, status } => {
+                    write!(f, "Server Error: {} {}", status, body)
+                }
                 Error::UnexpectedResponse(r) => {
                     write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
-    }
-
-    trait ErrorFormat {
-        fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     }
 
     impl std::fmt::Debug for Error {
@@ -400,6 +482,7 @@ pub mod error {
     impl std::error::Error for Error {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => Some(e),
                 Error::SerdeError { error, status: _ } => Some(error),
                 Error::InvalidResponsePayload { error, response: _ } => Some(error),
@@ -944,8 +1027,8 @@ pub struct Garnishment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub employee_id: Option<i64>,
     #[doc = "Whether or not this garnishment is currently active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -960,8 +1043,8 @@ pub struct Garnishment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub times: Option<i64>,
     #[doc = "Whether the garnishment should recur indefinitely."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub recurring: Option<bool>,
+    #[serde(default)]
+    pub recurring: bool,
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -971,8 +1054,8 @@ pub struct Garnishment {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
 }
 
 impl std::fmt::Display for Garnishment {
@@ -1005,11 +1088,7 @@ impl tabled::Tabled for Garnishment {
             } else {
                 String::new().into()
             },
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(amount) = &self.amount {
                 format!("{:?}", amount).into()
             } else {
@@ -1030,11 +1109,7 @@ impl tabled::Tabled for Garnishment {
             } else {
                 String::new().into()
             },
-            if let Some(recurring) = &self.recurring {
-                format!("{:?}", recurring).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.recurring).into(),
             if let Some(annual_maximum) = &self.annual_maximum {
                 format!("{:?}", annual_maximum).into()
             } else {
@@ -1045,11 +1120,7 @@ impl tabled::Tabled for Garnishment {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
         ]
     }
 
@@ -2380,8 +2451,8 @@ pub struct Contractor {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub wage_type: Option<WageType>,
     #[doc = "The status of the contractor with the company."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_active: Option<bool>,
+    #[serde(default)]
+    pub is_active: bool,
     #[doc = "The current version of the object. See the versioning guide for information on how \
              to use this field."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2453,11 +2524,7 @@ impl tabled::Tabled for Contractor {
             } else {
                 String::new().into()
             },
-            if let Some(is_active) = &self.is_active {
-                format!("{:?}", is_active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_active).into(),
             if let Some(version) = &self.version {
                 format!("{:?}", version).into()
             } else {
@@ -2934,7 +3001,7 @@ pub enum RequestType {
 pub struct TimeOffRequestEmployee {
     #[doc = "The ID of the employee the time off request is for."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<f64>,
+    pub uuid: Option<String>,
     #[doc = "The full name of the employee the time off request is for."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub full_name: Option<String>,
@@ -2955,8 +3022,8 @@ impl tabled::Tabled for TimeOffRequestEmployee {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(id) = &self.id {
-                format!("{:?}", id).into()
+            if let Some(uuid) = &self.uuid {
+                format!("{:?}", uuid).into()
             } else {
                 String::new().into()
             },
@@ -2969,7 +3036,7 @@ impl tabled::Tabled for TimeOffRequestEmployee {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["id".into(), "full_name".into()]
+        vec!["uuid".into(), "full_name".into()]
     }
 }
 
@@ -2980,7 +3047,7 @@ impl tabled::Tabled for TimeOffRequestEmployee {
 pub struct Initiator {
     #[doc = "The ID of the employee who initiated the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<f64>,
+    pub uuid: Option<String>,
     #[doc = "The full name of the employee who initiated the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub full_name: Option<String>,
@@ -3001,8 +3068,8 @@ impl tabled::Tabled for Initiator {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(id) = &self.id {
-                format!("{:?}", id).into()
+            if let Some(uuid) = &self.uuid {
+                format!("{:?}", uuid).into()
             } else {
                 String::new().into()
             },
@@ -3015,7 +3082,7 @@ impl tabled::Tabled for Initiator {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["id".into(), "full_name".into()]
+        vec!["uuid".into(), "full_name".into()]
     }
 }
 
@@ -3026,7 +3093,7 @@ impl tabled::Tabled for Initiator {
 pub struct Approver {
     #[doc = "The ID of the employee who approved the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<f64>,
+    pub uuid: Option<String>,
     #[doc = "The full name of the employee who approved the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub full_name: Option<String>,
@@ -3047,8 +3114,8 @@ impl tabled::Tabled for Approver {
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(id) = &self.id {
-                format!("{:?}", id).into()
+            if let Some(uuid) = &self.uuid {
+                format!("{:?}", uuid).into()
             } else {
                 String::new().into()
             },
@@ -3061,7 +3128,7 @@ impl tabled::Tabled for Approver {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["id".into(), "full_name".into()]
+        vec!["uuid".into(), "full_name".into()]
     }
 }
 
@@ -3072,7 +3139,7 @@ impl tabled::Tabled for Approver {
 pub struct TimeOffRequest {
     #[doc = "The ID of the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    pub uuid: Option<String>,
     #[doc = "The status of the time off request."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<Status>,
@@ -3117,8 +3184,8 @@ impl tabled::Tabled for TimeOffRequest {
     const LENGTH: usize = 9;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(id) = &self.id {
-                format!("{:?}", id).into()
+            if let Some(uuid) = &self.uuid {
+                format!("{:?}", uuid).into()
             } else {
                 String::new().into()
             },
@@ -3167,7 +3234,7 @@ impl tabled::Tabled for TimeOffRequest {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".into(),
+            "uuid".into(),
             "status".into(),
             "employee_note".into(),
             "employer_note".into(),
@@ -3775,8 +3842,8 @@ pub struct CompanyBenefit {
     pub benefit_id: Option<f64>,
     #[doc = "Whether this benefit is active for employee participation. Company benefits may only \
              be deactivated if no employees are actively participating."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The description of the company benefit.For example, a company may offer multiple \
              benefits with an ID of 1 (for Medical Insurance). The description would show \
              something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."]
@@ -3836,11 +3903,7 @@ impl tabled::Tabled for CompanyBenefit {
             } else {
                 String::new().into()
             },
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(description) = &self.description {
                 format!("{:?}", description).into()
             } else {
@@ -3956,7 +4019,6 @@ pub enum DeductionReducesTaxableIncome {
 }
 
 
-
 #[doc = "The representation of an employee benefit."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3976,8 +4038,8 @@ pub struct EmployeeBenefit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub company_benefit_id: Option<f64>,
     #[doc = "Whether the employee benefit is active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount to be deducted, per pay period, from the employee's pay."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub employee_deduction: Option<String>,
@@ -3998,16 +4060,16 @@ pub struct EmployeeBenefit {
     pub limit_option: Option<String>,
     #[doc = "Whether the employee deduction amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
     #[doc = "Whether the company contribution amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub contribute_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub contribute_as_percentage: bool,
     #[doc = "Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and \
              401k benefits use this value for employees over 50."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub catch_up: Option<bool>,
+    #[serde(default)]
+    pub catch_up: bool,
     #[doc = "The amount that the employee is insured for. Note: company contribution cannot be \
              present if coverage amount is set."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4058,11 +4120,7 @@ impl tabled::Tabled for EmployeeBenefit {
             } else {
                 String::new().into()
             },
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(employee_deduction) = &self.employee_deduction {
                 format!("{:?}", employee_deduction).into()
             } else {
@@ -4091,21 +4149,9 @@ impl tabled::Tabled for EmployeeBenefit {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(contribute_as_percentage) = &self.contribute_as_percentage {
-                format!("{:?}", contribute_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(catch_up) = &self.catch_up {
-                format!("{:?}", catch_up).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
+            format!("{:?}", self.contribute_as_percentage).into(),
+            format!("{:?}", self.catch_up).into(),
             if let Some(coverage_amount) = &self.coverage_amount {
                 format!("{:?}", coverage_amount).into()
             } else {
@@ -5761,7 +5807,6 @@ pub enum Include {
 }
 
 
-
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
@@ -5782,7 +5827,6 @@ pub enum GetInclude {
     #[default]
     CustomFields,
 }
-
 
 
 #[doc = ""]
@@ -5897,7 +5941,6 @@ pub enum GetCompaniesCompanyIdInclude {
     #[default]
     CustomFields,
 }
-
 
 
 #[derive(
@@ -6501,8 +6544,8 @@ pub struct PostCompaniesCompanyIdContractorsRequestBody {
     #[doc = "Whether the contractor or the payroll admin will complete onboarding in Gusto. \
              Self-onboarding is recommended so that contractors receive Gusto accounts. If \
              self_onboarding is true, then email is required. "]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub self_onboarding: Option<bool>,
+    #[serde(default)]
+    pub self_onboarding: bool,
     #[doc = "The contractor’s email address. This attribute is optional for “Individual” \
              contractors and will be ignored for “Business” contractors."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6549,11 +6592,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdContractorsRequestBody {
                 String::new().into()
             },
             format!("{:?}", self.start_date).into(),
-            if let Some(self_onboarding) = &self.self_onboarding {
-                format!("{:?}", self_onboarding).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.self_onboarding).into(),
             if let Some(email) = &self.email {
                 format!("{:?}", email).into()
             } else {
@@ -6727,8 +6766,8 @@ impl tabled::Tabled for PostJobsJobIdCompensationsRequestBody {
 )]
 pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     #[doc = "Whether or not this garnishment is currently active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
     pub amount: String,
@@ -6740,8 +6779,8 @@ pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub times: Option<i64>,
     #[doc = "Whether the garnishment should recur indefinitely."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub recurring: Option<bool>,
+    #[serde(default)]
+    pub recurring: bool,
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6751,8 +6790,8 @@ pub struct PostEmployeesEmployeeIdGarnishmentsRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
 }
 
 impl std::fmt::Display for PostEmployeesEmployeeIdGarnishmentsRequestBody {
@@ -6770,11 +6809,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
     const LENGTH: usize = 9;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             self.amount.clone().into(),
             self.description.clone().into(),
             format!("{:?}", self.court_ordered).into(),
@@ -6783,11 +6818,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(recurring) = &self.recurring {
-                format!("{:?}", recurring).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.recurring).into(),
             if let Some(annual_maximum) = &self.annual_maximum {
                 format!("{:?}", annual_maximum).into()
             } else {
@@ -6798,11 +6829,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
         ]
     }
 
@@ -6826,8 +6853,8 @@ impl tabled::Tabled for PostEmployeesEmployeeIdGarnishmentsRequestBody {
 )]
 pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[doc = "Whether or not this garnishment is currently active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount of the garnishment. Either a percentage or a fixed dollar amount. \
              Represented as a float, e.g. \"8.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6842,8 +6869,8 @@ pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub times: Option<i64>,
     #[doc = "Whether the garnishment should recur indefinitely."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub recurring: Option<bool>,
+    #[serde(default)]
+    pub recurring: bool,
     #[doc = "The maximum deduction per annum. A null value indicates no maximum. Represented as a \
              float, e.g. \"200.00\"."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6853,8 +6880,8 @@ pub struct PutGarnishmentsGarnishmentIdRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pay_period_maximum: Option<String>,
     #[doc = "Whether the amount should be treated as a percentage to be deducted per pay period."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
     #[doc = "The current version of the object. See the versioning guide for information on how \
              to use this field."]
     pub version: String,
@@ -6875,11 +6902,7 @@ impl tabled::Tabled for PutGarnishmentsGarnishmentIdRequestBody {
     const LENGTH: usize = 10;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(amount) = &self.amount {
                 format!("{:?}", amount).into()
             } else {
@@ -6900,11 +6923,7 @@ impl tabled::Tabled for PutGarnishmentsGarnishmentIdRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(recurring) = &self.recurring {
-                format!("{:?}", recurring).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.recurring).into(),
             if let Some(annual_maximum) = &self.annual_maximum {
                 format!("{:?}", annual_maximum).into()
             } else {
@@ -6915,11 +6934,7 @@ impl tabled::Tabled for PutGarnishmentsGarnishmentIdRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
             self.version.clone().into(),
         ]
     }
@@ -7237,8 +7252,8 @@ pub struct PostCompaniesCompanyIdCompanyBenefitsRequestBody {
     #[doc = "The ID of the benefit to which the company benefit belongs."]
     pub benefit_id: f64,
     #[doc = "Whether this benefit is active for employee participation."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The description of the company benefit.For example, a company may offer multiple \
              benefits with an ID of 1 (for Medical Insurance). The description would show \
              something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."]
@@ -7273,11 +7288,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdCompanyBenefitsRequestBody {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.benefit_id).into(),
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             self.description.clone().into(),
             if let Some(responsible_for_employer_taxes) = &self.responsible_for_employer_taxes {
                 format!("{:?}", responsible_for_employer_taxes).into()
@@ -7502,8 +7513,8 @@ pub struct PostEmployeesEmployeeIdEmployeeBenefitsRequestBody {
     #[doc = "The ID of the company to which the benefit belongs."]
     pub company_benefit_id: f64,
     #[doc = "Whether the employee benefit is active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount to be deducted, per pay period, from the employee's pay."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub employee_deduction: Option<String>,
@@ -7524,16 +7535,16 @@ pub struct PostEmployeesEmployeeIdEmployeeBenefitsRequestBody {
     pub limit_option: Option<String>,
     #[doc = "Whether the employee deduction amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
     #[doc = "Whether the company contribution amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub contribute_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub contribute_as_percentage: bool,
     #[doc = "Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and \
              401k benefits use this value for employees over 50."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub catch_up: Option<bool>,
+    #[serde(default)]
+    pub catch_up: bool,
     #[doc = "The amount that the employee is insured for. Note: company contribution cannot be \
              present if coverage amount is set."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7566,11 +7577,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdEmployeeBenefitsRequestBody {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.company_benefit_id).into(),
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(employee_deduction) = &self.employee_deduction {
                 format!("{:?}", employee_deduction).into()
             } else {
@@ -7599,21 +7606,9 @@ impl tabled::Tabled for PostEmployeesEmployeeIdEmployeeBenefitsRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(contribute_as_percentage) = &self.contribute_as_percentage {
-                format!("{:?}", contribute_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(catch_up) = &self.catch_up {
-                format!("{:?}", catch_up).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
+            format!("{:?}", self.contribute_as_percentage).into(),
+            format!("{:?}", self.catch_up).into(),
             if let Some(coverage_amount) = &self.coverage_amount {
                 format!("{:?}", coverage_amount).into()
             } else {
@@ -7705,8 +7700,8 @@ pub struct PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
              to use this field."]
     pub version: String,
     #[doc = "Whether the employee benefit is active."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    #[serde(default)]
+    pub active: bool,
     #[doc = "The amount to be deducted, per pay period, from the employee's pay."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub employee_deduction: Option<String>,
@@ -7727,16 +7722,16 @@ pub struct PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
     pub limit_option: Option<String>,
     #[doc = "Whether the employee deduction amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deduct_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub deduct_as_percentage: bool,
     #[doc = "Whether the company contribution amount should be treated as a percentage to be \
              deducted from each payroll."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub contribute_as_percentage: Option<bool>,
+    #[serde(default)]
+    pub contribute_as_percentage: bool,
     #[doc = "Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and \
              401k benefits use this value for employees over 50."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub catch_up: Option<bool>,
+    #[serde(default)]
+    pub catch_up: bool,
     #[doc = "The amount that the employee is insured for. Note: company contribution cannot be \
              present if coverage amount is set."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7768,11 +7763,7 @@ impl tabled::Tabled for PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.version.clone().into(),
-            if let Some(active) = &self.active {
-                format!("{:?}", active).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.active).into(),
             if let Some(employee_deduction) = &self.employee_deduction {
                 format!("{:?}", employee_deduction).into()
             } else {
@@ -7801,21 +7792,9 @@ impl tabled::Tabled for PutEmployeeBenefitsEmployeeBenefitIdRequestBody {
             } else {
                 String::new().into()
             },
-            if let Some(deduct_as_percentage) = &self.deduct_as_percentage {
-                format!("{:?}", deduct_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(contribute_as_percentage) = &self.contribute_as_percentage {
-                format!("{:?}", contribute_as_percentage).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(catch_up) = &self.catch_up {
-                format!("{:?}", catch_up).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.deduct_as_percentage).into(),
+            format!("{:?}", self.contribute_as_percentage).into(),
+            format!("{:?}", self.catch_up).into(),
             if let Some(coverage_amount) = &self.coverage_amount {
                 format!("{:?}", coverage_amount).into()
             } else {
@@ -8372,65 +8351,6 @@ impl tabled::Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriod
     }
 }
 
-#[doc = ""]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct PostPartnerManagedCompaniesResponse {
-    #[doc = "Access token that can be used for OAuth access to the account. Access tokens expire \
-             2 hours after they are issued."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub access_token: Option<String>,
-    #[doc = "Refresh token that can be exchanged for a new access token."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub refresh_token: Option<String>,
-    #[doc = "Gusto’s UUID for the company"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub company_uuid: Option<String>,
-}
-
-impl std::fmt::Display for PostPartnerManagedCompaniesResponse {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-#[cfg(feature = "tabled")]
-impl tabled::Tabled for PostPartnerManagedCompaniesResponse {
-    const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            if let Some(access_token) = &self.access_token {
-                format!("{:?}", access_token).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(refresh_token) = &self.refresh_token {
-                format!("{:?}", refresh_token).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(company_uuid) = &self.company_uuid {
-                format!("{:?}", company_uuid).into()
-            } else {
-                String::new().into()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            "access_token".into(),
-            "refresh_token".into(),
-            "company_uuid".into(),
-        ]
-    }
-}
-
 #[doc = "Information for the user who will be the primary payroll administrator for the new \
          company."]
 #[derive(
@@ -8572,14 +8492,20 @@ impl tabled::Tabled for PostPartnerManagedCompaniesRequestBody {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct PostProvisionResponse {
-    #[doc = "A URL where the user should be redirected to complete their account setup inside of \
-             Gusto."]
+pub struct PostPartnerManagedCompaniesResponse {
+    #[doc = "Access token that can be used for OAuth access to the account. Access tokens expire \
+             2 hours after they are issued."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub account_claim_url: Option<String>,
+    pub access_token: Option<String>,
+    #[doc = "Refresh token that can be exchanged for a new access token."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub refresh_token: Option<String>,
+    #[doc = "Gusto’s UUID for the company"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub company_uuid: Option<String>,
 }
 
-impl std::fmt::Display for PostProvisionResponse {
+impl std::fmt::Display for PostPartnerManagedCompaniesResponse {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -8590,18 +8516,34 @@ impl std::fmt::Display for PostProvisionResponse {
 }
 
 #[cfg(feature = "tabled")]
-impl tabled::Tabled for PostProvisionResponse {
-    const LENGTH: usize = 1;
+impl tabled::Tabled for PostPartnerManagedCompaniesResponse {
+    const LENGTH: usize = 3;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![if let Some(account_claim_url) = &self.account_claim_url {
-            format!("{:?}", account_claim_url).into()
-        } else {
-            String::new().into()
-        }]
+        vec![
+            if let Some(access_token) = &self.access_token {
+                format!("{:?}", access_token).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(refresh_token) = &self.refresh_token {
+                format!("{:?}", refresh_token).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(company_uuid) = &self.company_uuid {
+                format!("{:?}", company_uuid).into()
+            } else {
+                String::new().into()
+            },
+        ]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["account_claim_url".into()]
+        vec![
+            "access_token".into(),
+            "refresh_token".into(),
+            "company_uuid".into(),
+        ]
     }
 }
 
@@ -8809,6 +8751,43 @@ impl tabled::Tabled for PostProvisionRequestBody {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["user".into(), "company".into()]
+    }
+}
+
+#[doc = ""]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct PostProvisionResponse {
+    #[doc = "A URL where the user should be redirected to complete their account setup inside of \
+             Gusto."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub account_claim_url: Option<String>,
+}
+
+impl std::fmt::Display for PostProvisionResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for PostProvisionResponse {
+    const LENGTH: usize = 1;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![if let Some(account_claim_url) = &self.account_claim_url {
+            format!("{:?}", account_claim_url).into()
+        } else {
+            String::new().into()
+        }]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["account_claim_url".into()]
     }
 }
 
@@ -9319,6 +9298,87 @@ impl tabled::Tabled for GetCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
+    #[doc = "The legal name of the company"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub legal_name: Option<String>,
+    #[doc = "The EIN of of the company"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ein: Option<String>,
+    #[doc = "What type of tax entity the company is"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tax_payer_type: Option<String>,
+    #[doc = "The form used by the company for federal tax filing. One of:\n- 941 (Quarterly \
+             federal tax return)\n- 944 (Annual federal tax return)"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub filing_form: Option<String>,
+    #[doc = "Whether this company should be taxed as an S-Corporation"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub taxable_as_scorp: Option<bool>,
+    #[doc = "The current version of the object. See the versioning guide for details using this \
+             field."]
+    pub version: String,
+}
+
+impl std::fmt::Display for PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
+    const LENGTH: usize = 6;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(legal_name) = &self.legal_name {
+                format!("{:?}", legal_name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(ein) = &self.ein {
+                format!("{:?}", ein).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tax_payer_type) = &self.tax_payer_type {
+                format!("{:?}", tax_payer_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(filing_form) = &self.filing_form {
+                format!("{:?}", filing_form).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(taxable_as_scorp) = &self.taxable_as_scorp {
+                format!("{:?}", taxable_as_scorp).into()
+            } else {
+                String::new().into()
+            },
+            self.version.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "legal_name".into(),
+            "ein".into(),
+            "tax_payer_type".into(),
+            "filing_form".into(),
+            "taxable_as_scorp".into(),
+            "version".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct PutCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
     #[doc = "The current version of the object. See the versioning guide for details using this \
              field."]
@@ -9410,87 +9470,6 @@ impl tabled::Tabled for PutCompaniesCompanyIdOrUuidFederalTaxDetailsResponse {
             "filing_form".into(),
             "ein_verified".into(),
             "legal_name".into(),
-        ]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
-    #[doc = "The legal name of the company"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub legal_name: Option<String>,
-    #[doc = "The EIN of of the company"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ein: Option<String>,
-    #[doc = "What type of tax entity the company is"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tax_payer_type: Option<String>,
-    #[doc = "The form used by the company for federal tax filing. One of:\n- 941 (Quarterly \
-             federal tax return)\n- 944 (Annual federal tax return)"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub filing_form: Option<String>,
-    #[doc = "Whether this company should be taxed as an S-Corporation"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub taxable_as_scorp: Option<bool>,
-    #[doc = "The current version of the object. See the versioning guide for details using this \
-             field."]
-    pub version: String,
-}
-
-impl std::fmt::Display for PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-#[cfg(feature = "tabled")]
-impl tabled::Tabled for PutCompaniesCompanyIdOrUuidFederalTaxDetailsRequestBody {
-    const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            if let Some(legal_name) = &self.legal_name {
-                format!("{:?}", legal_name).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(ein) = &self.ein {
-                format!("{:?}", ein).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(tax_payer_type) = &self.tax_payer_type {
-                format!("{:?}", tax_payer_type).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(filing_form) = &self.filing_form {
-                format!("{:?}", filing_form).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(taxable_as_scorp) = &self.taxable_as_scorp {
-                format!("{:?}", taxable_as_scorp).into()
-            } else {
-                String::new().into()
-            },
-            self.version.clone().into(),
-        ]
-    }
-
-    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            "legal_name".into(),
-            "ein".into(),
-            "tax_payer_type".into(),
-            "filing_form".into(),
-            "taxable_as_scorp".into(),
-            "version".into(),
         ]
     }
 }

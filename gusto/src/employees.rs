@@ -21,7 +21,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id_or_uuid}"
@@ -46,7 +46,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -59,7 +63,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id_or_uuid}"
@@ -79,7 +83,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -96,7 +104,7 @@ impl Employees {
     ) -> Result<Vec<crate::types::Employee>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/employees"
@@ -134,7 +142,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -147,7 +159,7 @@ impl Employees {
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/employees"
@@ -167,7 +179,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -179,7 +195,7 @@ impl Employees {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/home_address".replace("{employee_id}", employee_id)
@@ -197,7 +213,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -210,7 +230,7 @@ impl Employees {
     ) -> Result<crate::types::Location, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/home_address".replace("{employee_id}", employee_id)
@@ -229,7 +249,11 @@ impl Employees {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

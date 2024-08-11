@@ -33,7 +33,7 @@ impl Garnishments {
     ) -> Result<Vec<crate::types::Garnishment>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/garnishments".replace("{employee_id}", employee_id)
@@ -51,11 +51,15 @@ impl Garnishments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create a garnishment\n\nGarnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.\n\n**Parameters:**\n\n- `employee_id: &'astr`: The ID of the employee to which the garnishment belongs (required)\n\n```rust,no_run\nasync fn example_garnishments_post_employees_employee_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Garnishment = client\n        .garnishments()\n        .post_employees_employee_id(\n            \"some-string\",\n            &gusto_api::types::PostEmployeesEmployeeIdGarnishmentsRequestBody {\n                active: Some(false),\n                amount: \"some-string\".to_string(),\n                description: \"some-string\".to_string(),\n                court_ordered: false,\n                times: Some(4 as i64),\n                recurring: Some(false),\n                annual_maximum: Some(\"some-string\".to_string()),\n                pay_period_maximum: Some(\"some-string\".to_string()),\n                deduct_as_percentage: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a garnishment\n\nGarnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.\n\n**Parameters:**\n\n- `employee_id: &'astr`: The ID of the employee to which the garnishment belongs (required)\n\n```rust,no_run\nasync fn example_garnishments_post_employees_employee_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Garnishment = client\n        .garnishments()\n        .post_employees_employee_id(\n            \"some-string\",\n            &gusto_api::types::PostEmployeesEmployeeIdGarnishmentsRequestBody {\n                active: false,\n                amount: \"some-string\".to_string(),\n                description: \"some-string\".to_string(),\n                court_ordered: false,\n                times: Some(4 as i64),\n                recurring: false,\n                annual_maximum: Some(\"some-string\".to_string()),\n                pay_period_maximum: Some(\"some-string\".to_string()),\n                deduct_as_percentage: false,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_employees_employee_id<'a>(
         &'a self,
@@ -64,7 +68,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/garnishments".replace("{employee_id}", employee_id)
@@ -83,7 +87,11 @@ impl Garnishments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -106,7 +114,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/garnishments/{garnishment_id}".replace("{garnishment_id}", garnishment_id)
@@ -124,11 +132,15 @@ impl Garnishments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Update a garnishment\n\nGarnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.\n\n**Parameters:**\n\n- `garnishment_id: &'astr`: The ID of the garnishment (required)\n\n```rust,no_run\nasync fn example_garnishments_put_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Garnishment = client\n        .garnishments()\n        .put_id(\n            \"some-string\",\n            &gusto_api::types::PutGarnishmentsGarnishmentIdRequestBody {\n                active: Some(false),\n                amount: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                court_ordered: Some(false),\n                times: Some(4 as i64),\n                recurring: Some(false),\n                annual_maximum: Some(\"some-string\".to_string()),\n                pay_period_maximum: Some(\"some-string\".to_string()),\n                deduct_as_percentage: Some(false),\n                version: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update a garnishment\n\nGarnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.\n\n**Parameters:**\n\n- `garnishment_id: &'astr`: The ID of the garnishment (required)\n\n```rust,no_run\nasync fn example_garnishments_put_id() -> anyhow::Result<()> {\n    let client =\n        gusto_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: gusto_api::types::Garnishment = client\n        .garnishments()\n        .put_id(\n            \"some-string\",\n            &gusto_api::types::PutGarnishmentsGarnishmentIdRequestBody {\n                active: false,\n                amount: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                court_ordered: Some(false),\n                times: Some(4 as i64),\n                recurring: false,\n                annual_maximum: Some(\"some-string\".to_string()),\n                pay_period_maximum: Some(\"some-string\".to_string()),\n                deduct_as_percentage: false,\n                version: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn put_id<'a>(
         &'a self,
@@ -137,7 +149,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/garnishments/{garnishment_id}".replace("{garnishment_id}", garnishment_id)
@@ -156,7 +168,11 @@ impl Garnishments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }
