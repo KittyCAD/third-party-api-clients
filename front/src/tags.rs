@@ -23,7 +23,7 @@ impl Tags {
     ) -> Result<crate::types::ListTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "tags"),
+            &format!("{}/{}", self.client.base_url, "tags"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -37,7 +37,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -47,7 +51,7 @@ impl Tags {
              .create(&front_api::types::CreateTag {\n            name: \
              \"some-string\".to_string(),\n            highlight: \
              Some(front_api::types::Highlight::Purple),\n            \
-             is_visible_in_conversation_lists: Some(false),\n        })\n        .await?;\n    \
+             is_visible_in_conversation_lists: false,\n        })\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
@@ -56,7 +60,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "tags"),
+            &format!("{}/{}", self.client.base_url, "tags"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -71,7 +75,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -83,7 +91,7 @@ impl Tags {
     ) -> Result<crate::types::ListTeamTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/tags".replace("{team_id}", team_id)
@@ -101,11 +109,15 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create team tag\n\nCreate a tag for a team.\n\n**Parameters:**\n\n- `team_id: &'astr`: The team ID (required)\n\n```rust,no_run\nasync fn example_tags_create_team() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_team(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: false,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_team<'a>(
         &'a self,
@@ -114,7 +126,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/tags".replace("{team_id}", team_id)
@@ -133,7 +145,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -151,7 +167,7 @@ impl Tags {
     ) -> Result<crate::types::ListTeammateTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
@@ -169,11 +185,15 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate tag\n\nCreate a tag for a teammate.\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_tags_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: false,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -182,7 +202,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
@@ -201,7 +221,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -219,7 +243,7 @@ impl Tags {
     ) -> Result<crate::types::ListTagChildrenResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/children".replace("{tag_id}", tag_id)
@@ -237,11 +261,15 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create child tag\n\nCreates a child tag.\n\n**Parameters:**\n\n- `tag_id: &'astr`: The tag ID (required)\n\n```rust,no_run\nasync fn example_tags_create_child() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::TagResponse = client\n        .tags()\n        .create_child(\n            \"some-string\",\n            &front_api::types::CreateTag {\n                name: \"some-string\".to_string(),\n                highlight: Some(front_api::types::Highlight::Purple),\n                is_visible_in_conversation_lists: false,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_child<'a>(
         &'a self,
@@ -250,7 +278,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/children".replace("{tag_id}", tag_id)
@@ -269,7 +297,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -281,7 +313,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -299,7 +331,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -311,7 +347,7 @@ impl Tags {
     pub async fn delete<'a>(&'a self, tag_id: &'a str) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -323,7 +359,11 @@ impl Tags {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -336,7 +376,7 @@ impl Tags {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -349,7 +389,11 @@ impl Tags {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -364,7 +408,7 @@ impl Tags {
     ) -> Result<crate::types::ListTaggedConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/conversations".replace("{tag_id}", tag_id)
@@ -396,7 +440,11 @@ impl Tags {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

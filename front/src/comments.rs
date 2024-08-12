@@ -27,7 +27,7 @@ impl Comments {
     ) -> Result<crate::types::ListConversationCommentsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/comments"
@@ -46,7 +46,11 @@ impl Comments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -59,7 +63,7 @@ impl Comments {
     ) -> Result<crate::types::CommentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/comments"
@@ -79,7 +83,11 @@ impl Comments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -96,7 +104,7 @@ impl Comments {
     ) -> Result<crate::types::CommentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "comments/{comment_id}".replace("{comment_id}", comment_id)
@@ -114,7 +122,11 @@ impl Comments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -132,7 +144,7 @@ impl Comments {
     ) -> Result<crate::types::ListCommentMentionsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "comments/{comment_id}/mentions".replace("{comment_id}", comment_id)
@@ -150,7 +162,11 @@ impl Comments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

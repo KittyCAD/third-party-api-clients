@@ -26,7 +26,7 @@ impl Signatures {
     ) -> Result<crate::types::ListTeammateSignaturesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
@@ -44,11 +44,15 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create teammate signature\n\nCreate a new signature for the given teammate\n\n**Parameters:**\n\n- `teammate_id: &'astr`: The teammate ID (required)\n\n```rust,no_run\nasync fn example_signatures_create_teammate() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .create_teammate(\n            \"some-string\",\n            &front_api::types::CreatePrivateSignature {\n                name: \"some-string\".to_string(),\n                sender_info: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                is_default: false,\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_teammate<'a>(
         &'a self,
@@ -57,7 +61,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
@@ -76,7 +80,11 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -94,7 +102,7 @@ impl Signatures {
     ) -> Result<crate::types::ListTeamSignaturesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/signatures".replace("{team_id}", team_id)
@@ -112,7 +120,11 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -126,7 +138,7 @@ impl Signatures {
              \"some-string\".to_string(),\n                sender_info: \
              Some(\"some-string\".to_string()),\n                body: \
              \"some-string\".to_string(),\n                is_visible_for_all_teammate_channels: \
-             Some(false),\n                is_default: Some(false),\n                channel_ids: \
+             Some(false),\n                is_default: false,\n                channel_ids: \
              Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
@@ -137,7 +149,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/signatures".replace("{team_id}", team_id)
@@ -156,7 +168,11 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -168,7 +184,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -186,7 +202,11 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -201,7 +221,7 @@ impl Signatures {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -213,11 +233,15 @@ impl Signatures {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: Some(false),\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update signature\n\nUpdate signature\n\n**Parameters:**\n\n- `signature_id: &'astr`: The signature ID (required)\n\n```rust,no_run\nasync fn example_signatures_update() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::SignatureResponse = client\n        .signatures()\n        .update(\n            \"some-string\",\n            &front_api::types::UpdateSignature {\n                name: Some(\"some-string\".to_string()),\n                sender_info: Some(\"some-string\".to_string()),\n                body: Some(\"some-string\".to_string()),\n                is_visible_for_all_teammate_channels: Some(false),\n                is_default: false,\n                channel_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
@@ -226,7 +250,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -245,7 +269,11 @@ impl Signatures {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

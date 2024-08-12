@@ -24,7 +24,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::ListFoldersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "message_template_folders"),
+            &format!("{}/{}", self.client.base_url, "message_template_folders"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -38,7 +38,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -58,7 +62,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "message_template_folders"),
+            &format!("{}/{}", self.client.base_url, "message_template_folders"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -73,7 +77,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -92,7 +100,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::ListTeamFoldersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/message_template_folders".replace("{team_id}", team_id)
@@ -110,7 +118,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -123,7 +135,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/message_template_folders".replace("{team_id}", team_id)
@@ -142,7 +154,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -161,7 +177,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::ListTeammateFoldersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_template_folders"
@@ -180,7 +196,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -193,7 +213,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_template_folders"
@@ -213,7 +233,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -232,7 +256,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::GetChildFoldersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_template_folders"
@@ -251,7 +275,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -264,7 +292,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_template_folders"
@@ -284,7 +312,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -296,7 +328,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
@@ -315,7 +347,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -334,7 +370,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::DeleteFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
@@ -353,7 +389,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -366,7 +406,7 @@ impl MessageTemplateFolders {
     ) -> Result<crate::types::MessageTemplateFolderResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}"
@@ -386,7 +426,11 @@ impl MessageTemplateFolders {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

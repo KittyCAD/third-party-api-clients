@@ -20,7 +20,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "members/"),
+            &format!("{}/{}", self.client.base_url, "members/"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -29,7 +29,11 @@ impl Members {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -48,7 +52,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "members/note"),
+            &format!("{}/{}", self.client.base_url, "members/note"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -57,7 +61,11 @@ impl Members {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -73,7 +81,7 @@ impl Members {
     ) -> Result<Vec<crate::types::GetMemberCustomFieldsResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "members/customFields"),
+            &format!("{}/{}", self.client.base_url, "members/customFields"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -87,7 +95,11 @@ impl Members {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -99,7 +111,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "members/customFields"),
+            &format!("{}/{}", self.client.base_url, "members/customFields"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -108,7 +120,11 @@ impl Members {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -127,7 +143,7 @@ impl Members {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "members/tags"),
+            &format!("{}/{}", self.client.base_url, "members/tags"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -136,7 +152,11 @@ impl Members {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -154,7 +174,7 @@ impl Members {
     ) -> Result<Vec<crate::types::CommunityMember>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "user/{email}".replace("{email}", email)
@@ -172,7 +192,11 @@ impl Members {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -191,7 +215,7 @@ impl Members {
     ) -> Result<String, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "user/{email}".replace("{email}", email)
@@ -204,7 +228,11 @@ impl Members {
             let text = resp.text().await?;
             Ok(text)
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -219,7 +247,7 @@ impl Members {
     ) -> Result<Vec<crate::types::GetMemberBySocialsResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "members"),
+            &format!("{}/{}", self.client.base_url, "members"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -251,7 +279,11 @@ impl Members {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

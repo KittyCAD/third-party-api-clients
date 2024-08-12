@@ -20,7 +20,7 @@ impl Activities {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "activities"),
+            &format!("{}/{}", self.client.base_url, "activities"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -29,7 +29,11 @@ impl Activities {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -40,7 +44,7 @@ impl Activities {
     ) -> Result<Vec<crate::types::GetActivityTypesResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "activityTypes"),
+            &format!("{}/{}", self.client.base_url, "activityTypes"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -54,7 +58,11 @@ impl Activities {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

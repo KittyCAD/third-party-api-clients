@@ -1,6 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-#[cfg(feature = "tabled")]
-use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -133,6 +131,62 @@ pub mod base64 {
     }
 }
 
+#[cfg(feature = "requests")]
+pub mod multipart {
+    #![doc = " Multipart form data types."]
+    #[doc = " An attachement to a multipart form."]
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct Attachment {
+        #[doc = " The name of the field."]
+        pub name: String,
+        #[doc = " The filename of the attachment."]
+        pub filename: Option<String>,
+        #[doc = " The content type of the attachment."]
+        pub content_type: Option<String>,
+        #[doc = " The data of the attachment."]
+        pub data: Vec<u8>,
+    }
+
+    impl std::convert::TryFrom<Attachment> for reqwest::multipart::Part {
+        type Error = reqwest::Error;
+        fn try_from(attachment: Attachment) -> Result<Self, Self::Error> {
+            let mut part = reqwest::multipart::Part::bytes(attachment.data);
+            if let Some(filename) = attachment.filename {
+                part = part.file_name(filename);
+            }
+            if let Some(content_type) = attachment.content_type {
+                part = part.mime_str(&content_type)?;
+            }
+            Ok(part)
+        }
+    }
+
+    impl std::convert::TryFrom<std::path::PathBuf> for Attachment {
+        type Error = std::io::Error;
+        fn try_from(path: std::path::PathBuf) -> Result<Self, Self::Error> {
+            let filename = path
+                .file_name()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_str()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_string();
+            let content_type = mime_guess::from_path(&path).first_raw();
+            let data = std::fs::read(path)?;
+            Ok(Attachment {
+                name: "file".to_string(),
+                filename: Some(filename),
+                content_type: content_type.map(|s| s.to_string()),
+                data,
+            })
+        }
+    }
+}
+
+#[cfg(feature = "requests")]
 pub mod paginate {
     #![doc = " Utility functions used for pagination."]
     use anyhow::Result;
@@ -142,6 +196,8 @@ pub mod paginate {
         type Item: serde::de::DeserializeOwned;
         #[doc = " Returns true if the response has more pages."]
         fn has_more_pages(&self) -> bool;
+        #[doc = " Returns the next page token."]
+        fn next_page_token(&self) -> Option<String>;
         #[doc = " Modify a request to get the next page."]
         fn next_page(
             &self,
@@ -298,12 +354,14 @@ pub mod phone_number {
     }
 }
 
+#[cfg(feature = "requests")]
 pub mod error {
     #![doc = " Error methods."]
     #[doc = " Error produced by generated client methods."]
     pub enum Error {
         #[doc = " The request did not conform to API requirements."]
         InvalidRequest(String),
+        #[cfg(feature = "retry")]
         #[doc = " A server error either due to the data, or with the connection."]
         CommunicationError(reqwest_middleware::Error),
         #[doc = " A request error, caused when building the request."]
@@ -317,10 +375,21 @@ pub mod error {
         },
         #[doc = " An expected error response."]
         InvalidResponsePayload {
+            #[cfg(feature = "retry")]
             #[doc = " The error."]
             error: reqwest_middleware::Error,
+            #[cfg(not(feature = "retry"))]
+            #[doc = " The error."]
+            error: reqwest::Error,
             #[doc = " The full response."]
             response: reqwest::Response,
+        },
+        #[doc = " An error from the server."]
+        Server {
+            #[doc = " The text from the body."]
+            body: String,
+            #[doc = " The response status."]
+            status: reqwest::StatusCode,
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
@@ -333,10 +402,13 @@ pub mod error {
             match self {
                 Error::InvalidRequest(_) => None,
                 Error::RequestError(e) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Reqwest(e)) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Middleware(_)) => None,
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
+                Error::Server { body: _, status } => Some(*status),
                 Error::UnexpectedResponse(r) => Some(r.status()),
             }
         }
@@ -350,6 +422,7 @@ pub mod error {
         }
     }
 
+    #[cfg(feature = "retry")]
     impl From<reqwest_middleware::Error> for Error {
         fn from(e: reqwest_middleware::Error) -> Self {
             Self::CommunicationError(e)
@@ -362,12 +435,22 @@ pub mod error {
         }
     }
 
+    impl From<serde_json::Error> for Error {
+        fn from(e: serde_json::Error) -> Self {
+            Self::SerdeError {
+                error: format_serde_error::SerdeError::new(String::new(), e),
+                status: reqwest::StatusCode::INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
     impl std::fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
                     write!(f, "Invalid Request: {}", s)
                 }
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => {
                     write!(f, "Communication Error: {}", e)
                 }
@@ -380,15 +463,14 @@ pub mod error {
                 Error::InvalidResponsePayload { error, response: _ } => {
                     write!(f, "Invalid Response Payload: {}", error)
                 }
+                Error::Server { body, status } => {
+                    write!(f, "Server Error: {} {}", status, body)
+                }
                 Error::UnexpectedResponse(r) => {
                     write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
-    }
-
-    trait ErrorFormat {
-        fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     }
 
     impl std::fmt::Debug for Error {
@@ -400,6 +482,7 @@ pub mod error {
     impl std::error::Error for Error {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => Some(e),
                 Error::SerdeError { error, status: _ } => Some(error),
                 Error::InvalidResponsePayload { error, response: _ } => Some(error),
@@ -882,7 +965,6 @@ pub enum EmailType {
     #[default]
     Email,
 }
-
 
 
 #[doc = "A user's email address"]

@@ -19,7 +19,7 @@ impl Segments {
     ) -> Result<Vec<crate::types::GetSegmentsResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "segments"),
+            &format!("{}/{}", self.client.base_url, "segments"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -33,7 +33,11 @@ impl Segments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -49,7 +53,7 @@ impl Segments {
     ) -> Result<Vec<crate::types::GetSegmentStatusesResponse>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "segments/:id/status"),
+            &format!("{}/{}", self.client.base_url, "segments/:id/status"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -63,7 +67,11 @@ impl Segments {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -75,7 +83,7 @@ impl Segments {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "segments/:id"),
+            &format!("{}/{}", self.client.base_url, "segments/:id"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -84,7 +92,11 @@ impl Segments {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -101,7 +113,7 @@ impl Segments {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "segments/note"),
+            &format!("{}/{}", self.client.base_url, "segments/note"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -110,7 +122,11 @@ impl Segments {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

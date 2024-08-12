@@ -10,26 +10,26 @@
 //!
 //! ### Contact
 //!
-//!
+//! 
 //! | name | url | email |
 //! |----|----|----|
 //! | Twilio Support | <https://support.twilio.com> | support@twilio.com |
-//!
+//! 
 //! ### License
 //!
-//!
+//! 
 //! | name | url |
 //! |----|----|
 //! | Apache 2.0 | <https://www.apache.org/licenses/LICENSE-2.0.html> |
-//!
+//! 
 //!
 //! ## Client Details
 //!
-//!
+//! 
 //!
 //! The documentation for the crate is generated
 //! along with the code to make this library easy to use.
-//!
+//! 
 //!
 //! To install the library, add the following to your `Cargo.toml` file.
 //!
@@ -46,7 +46,10 @@
 //! ```rust,no_run
 //! use twilio_api::Client;
 //!
-//! let client = Client::new(String::from("username"), String::from("password"));
+//! let client = Client::new(
+//!     String::from("username"),
+//!     String::from("password"),
+//! );
 //! ```
 //!
 //! Alternatively, the library can search for most of the variables required for
@@ -62,68 +65,100 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
+//!
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-pub mod default;
 #[cfg(test)]
 mod tests;
+mod methods;
 pub mod types;
 pub mod utils;
+#[cfg(feature = "requests")]
+pub mod default;
 
+
+#[cfg(feature = "requests")]
 use std::env;
 
-static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
+#[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "requests")]
+static APP_USER_AGENT: &str = concat!(
+    env!("CARGO_PKG_NAME"),
+    ".rs/",
+    env!("CARGO_PKG_VERSION"),
+);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
+#[cfg(feature = "requests")]
 pub struct Client {
     username: String,
     password: String,
     base_url: String,
 
+    #[cfg(feature = "retry")]
     client: reqwest_middleware::ClientWithMiddleware,
+    #[cfg(not(feature = "retry"))]
+    client: reqwest::Client,
 }
 
+#[cfg(feature = "requests")]
 impl Client {
     /// Create a new Client struct. It takes a type that can convert into
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
     #[tracing::instrument]
-    pub fn new<T>(username: T, password: T) -> Self
+    pub fn new<T>(
+        username: T,
+        password: T,
+    ) -> Self
     where
         T: ToString + std::fmt::Debug,
     {
-        // Retry up to 3 times with increasing intervals between attempts.
-        let retry_policy =
-            reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
         let client = reqwest::Client::builder()
             .user_agent(APP_USER_AGENT)
             .timeout(std::time::Duration::from_secs(60))
             .connect_timeout(std::time::Duration::from_secs(60))
             .build();
-        match client {
-            Ok(c) => {
-                let client = reqwest_middleware::ClientBuilder::new(c)
-                    // Trace HTTP requests. See the tracing crate to make use of these traces.
-                    .with(reqwest_tracing::TracingMiddleware::default())
-                    // Retry failed requests.
-                    .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
-                        reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                        |req: &reqwest::Request| req.try_clone().is_some(),
-                    ))
-                    .build();
+        #[cfg(feature = "retry")]
+        {
+            // Retry up to 3 times with increasing intervals between attempts.
+            let retry_policy =
+                reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
+            match client {
+                Ok(c) => {
+                    let client = reqwest_middleware::ClientBuilder::new(c)
+                        // Trace HTTP requests. See the tracing crate to make use of these traces.
+                        .with(reqwest_tracing::TracingMiddleware::default())
+                        // Retry failed requests.
+                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                            reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
+                            |req: &reqwest::Request| req.try_clone().is_some(),
+                        ))
+                        .build();
 
-                Client {
-                    username: username.to_string(),
-                    password: password.to_string(),
-                    base_url: "https://api.twilio.com".to_string(),
+                    Client {
+                        username: username.to_string(),
+                        password: password.to_string(),
+                        base_url: "https://api.twilio.com".to_string(),
 
-                    client,
+                        client,
+                    }
                 }
+                Err(e) => panic!("creating reqwest client failed: {:?}", e),
             }
-            Err(e) => panic!("creating reqwest client failed: {:?}", e),
+        }
+        #[cfg(not(feature = "retry"))]
+        {
+            Client {
+                username: username.to_string(),
+                password: password.to_string(),
+                base_url: "https://api.twilio.com".to_string(),
+
+                client,
+            }
         }
     }
 
@@ -138,11 +173,15 @@ impl Client {
 
     /// Create a new Client struct from the environment variable: `TWILIO_API_TOKEN`.
     #[tracing::instrument]
-    pub fn new_from_env() -> Self {
+    pub fn new_from_env() -> Self
+    {
         let username = env::var("TWILIO_USERNAME").expect("must set TWILIO_USERNAME");
         let password = env::var("TWILIO_PASSWORD").expect("must set TWILIO_PASSWORD");
 
-        Client::new(username, password)
+        Client::new(
+            username,
+            password,
+        )
     }
 
     /// Create a raw request to our API.
@@ -152,14 +191,18 @@ impl Client {
         method: reqwest::Method,
         uri: &str,
         body: Option<reqwest::Body>,
-    ) -> anyhow::Result<reqwest_middleware::RequestBuilder> {
+    ) -> anyhow::Result<reqwest_middleware::RequestBuilder>
+    {
         let u = if uri.starts_with("https://") || uri.starts_with("http://") {
             uri.to_string()
         } else {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(method, u);
+        let mut req = self.client.request(
+            method,
+            &u,
+        );
 
         // Add in our authentication.
         req = req.basic_auth(&self.username, Some(&self.password));
@@ -181,8 +224,10 @@ impl Client {
         Ok(req)
     }
 
-    /// Return a reference to an interface that provides access to default operations.
-    pub fn default(&self) -> default::Default {
-        default::Default::new(self.clone())
-    }
+
+/// Return a reference to an interface that provides access to default operations.
+               pub fn default(&self) -> default::Default {
+                    default::Default::new(self.clone())
+               }
+
 }

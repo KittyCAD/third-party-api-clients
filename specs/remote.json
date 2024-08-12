@@ -541,10 +541,7 @@
           },
           "bank_account_details": {
             "items": {
-              "description": "List of bank account information. Its properties may vary depending on the country.",
-              "type": "list",
-              "x-struct": null,
-              "x-validate": null
+              "description": "List of bank account information. Its properties may vary depending on the country."
             },
             "nullable": true,
             "type": "array",

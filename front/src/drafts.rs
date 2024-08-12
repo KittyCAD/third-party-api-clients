@@ -26,7 +26,7 @@ impl Drafts {
     ) -> Result<crate::types::ListConversationDraftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -45,7 +45,11 @@ impl Drafts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -58,7 +62,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -78,7 +82,11 @@ impl Drafts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -91,7 +99,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/drafts".replace("{channel_id}", channel_id)
@@ -110,11 +118,22 @@ impl Drafts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Edit draft\n\nEdit a draft message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The draft ID (required)\n\n```rust,no_run\nasync fn example_drafts_edit() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .drafts()\n        .edit(\n            \"some-string\",\n            &front_api::types::EditDraft {\n                author_id: \"some-string\".to_string(),\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                mode: Some(front_api::types::EditDraftMode::Shared),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n                channel_id: Some(\"some-string\".to_string()),\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Edit draft\n\nEdit a draft message.\n\n**Parameters:**\n\n- `message_id: &'astr`: The \
+             draft ID (required)\n\n```rust,no_run\nasync fn example_drafts_edit() -> \
+             anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let \
+             result: front_api::types::MessageResponse = client\n        .drafts()\n        \
+             .edit(\n            \"some-string\",\n            \
+             &front_api::types::EditDraft::Shared {\n                version: \
+             Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn edit<'a>(
         &'a self,
@@ -123,7 +142,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{message_id}/".replace("{message_id}", message_id)
@@ -142,7 +161,11 @@ impl Drafts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -155,7 +178,7 @@ impl Drafts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{draft_id}".replace("{draft_id}", draft_id)
@@ -168,7 +191,11 @@ impl Drafts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

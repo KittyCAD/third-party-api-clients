@@ -23,7 +23,7 @@ impl Accounts {
     ) -> Result<crate::types::ListAccountsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "accounts"),
+            &format!("{}/{}", self.client.base_url, "accounts"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -55,7 +55,11 @@ impl Accounts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -67,7 +71,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "accounts"),
+            &format!("{}/{}", self.client.base_url, "accounts"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -82,7 +86,11 @@ impl Accounts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -94,7 +102,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -112,7 +120,11 @@ impl Accounts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -127,7 +139,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -139,7 +151,11 @@ impl Accounts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -152,7 +168,7 @@ impl Accounts {
     ) -> Result<crate::types::AccountResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}".replace("{account_id}", account_id)
@@ -171,7 +187,11 @@ impl Accounts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -185,7 +205,7 @@ impl Accounts {
     ) -> Result<crate::types::ListAccountContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)
@@ -213,7 +233,11 @@ impl Accounts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -233,7 +257,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)
@@ -246,7 +270,11 @@ impl Accounts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -266,7 +294,7 @@ impl Accounts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "accounts/{account_id}/contacts".replace("{account_id}", account_id)
@@ -279,7 +307,11 @@ impl Accounts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

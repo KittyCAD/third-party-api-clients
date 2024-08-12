@@ -24,7 +24,7 @@ impl ContactGroups {
     ) -> Result<crate::types::ListGroupsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "contact_groups"),
+            &format!("{}/{}", self.client.base_url, "contact_groups"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -38,7 +38,11 @@ impl ContactGroups {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -55,7 +59,7 @@ impl ContactGroups {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "contact_groups"),
+            &format!("{}/{}", self.client.base_url, "contact_groups"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -64,7 +68,11 @@ impl ContactGroups {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -82,7 +90,7 @@ impl ContactGroups {
     ) -> Result<crate::types::ListTeamGroupsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/contact_groups".replace("{team_id}", team_id)
@@ -100,7 +108,11 @@ impl ContactGroups {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -113,7 +125,7 @@ impl ContactGroups {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/contact_groups".replace("{team_id}", team_id)
@@ -126,7 +138,11 @@ impl ContactGroups {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -138,7 +154,7 @@ impl ContactGroups {
     ) -> Result<crate::types::ListTeammateGroupsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", teammate_id)
@@ -156,7 +172,11 @@ impl ContactGroups {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -169,7 +189,7 @@ impl ContactGroups {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/contact_groups".replace("{teammate_id}", teammate_id)
@@ -182,7 +202,11 @@ impl ContactGroups {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -198,7 +222,7 @@ impl ContactGroups {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}"
@@ -211,7 +235,11 @@ impl ContactGroups {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -225,7 +253,7 @@ impl ContactGroups {
     ) -> Result<crate::types::ListGroupContactsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}/contacts"
@@ -254,7 +282,11 @@ impl ContactGroups {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -267,7 +299,7 @@ impl ContactGroups {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "contact_groups/{contact_group_id}/contacts"
@@ -281,7 +313,11 @@ impl ContactGroups {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

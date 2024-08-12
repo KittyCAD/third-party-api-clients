@@ -12,7 +12,7 @@ impl Messages {
         Self { client }
     }
 
-    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &front_api::types::OutboundReplyMessage {\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                channel_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::OutboundReplyMessageOptions {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: Some(false),\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Reply to conversation\n\nReply to a conversation by sending a message and appending it to the conversation.\n\n**Parameters:**\n\n- `conversation_id: &'astr`: The conversation ID (required)\n\n```rust,no_run\nasync fn example_messages_reply_to_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .reply_to_conversation(\n            \"some-string\",\n            &front_api::types::OutboundReplyMessage {\n                to: Some(vec![\"some-string\".to_string()]),\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                channel_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::OutboundReplyMessageOptions {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: false,\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn reply_to_conversation<'a>(
         &'a self,
@@ -21,7 +21,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/messages"
@@ -41,7 +41,11 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -58,7 +62,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}".replace("{message_id}", message_id)
@@ -76,7 +80,11 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -97,7 +105,7 @@ impl Messages {
     ) -> Result<crate::types::GetMessageSeenStatusResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}/seen".replace("{message_id}", message_id)
@@ -115,7 +123,11 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -136,7 +148,7 @@ impl Messages {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "messages/{message_id}/seen".replace("{message_id}", message_id)
@@ -149,11 +161,15 @@ impl Messages {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &front_api::types::OutboundMessage {\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::Options {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: Some(false),\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create conversation\n\nSend a new message from a channel.\n\n**Parameters:**\n\n- `channel_id: &'astr`: The sending channel ID (required)\n\n```rust,no_run\nasync fn example_messages_create_conversation() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::MessageResponse = client\n        .messages()\n        .create_conversation(\n            \"some-string\",\n            &front_api::types::OutboundMessage {\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                sender_name: Some(\"some-string\".to_string()),\n                subject: Some(\"some-string\".to_string()),\n                author_id: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                text: Some(\"some-string\".to_string()),\n                options: Some(front_api::types::Options {\n                    tag_ids: Some(vec![\"some-string\".to_string()]),\n                    archive: false,\n                }),\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n                signature_id: Some(\"some-string\".to_string()),\n                should_add_default_signature: Some(false),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_conversation<'a>(
         &'a self,
@@ -162,7 +178,7 @@ impl Messages {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/messages".replace("{channel_id}", channel_id)
@@ -181,7 +197,11 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -194,7 +214,7 @@ impl Messages {
     ) -> Result<crate::types::ReceiveCustomMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/incoming_messages".replace("{channel_id}", channel_id)
@@ -213,11 +233,15 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Import message\n\nImport a new message in an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_messages_import_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ImportInboxMessageResponse = client\n        .messages()\n        .import_inbox(\n            \"some-string\",\n            &front_api::types::ImportMessage {\n                sender: front_api::types::ImportMessageSender {\n                    author_id: Some(\"some-string\".to_string()),\n                    name: Some(\"some-string\".to_string()),\n                    handle: \"some-string\".to_string(),\n                },\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                body_format: Some(front_api::types::ImportMessageBodyFormat::Markdown),\n                external_id: \"some-string\".to_string(),\n                created_at: 4 as i64,\n                type_: Some(front_api::types::ImportMessageType::Custom),\n                assignee_id: Some(\"some-string\".to_string()),\n                tags: Some(vec![\"some-string\".to_string()]),\n                metadata: front_api::types::ImportMessageMetadata {\n                    thread_ref: Some(\"some-string\".to_string()),\n                    is_inbound: false,\n                    is_archived: Some(false),\n                    should_skip_rules: Some(false),\n                },\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Import message\n\nImport a new message in an inbox.\n\n**Parameters:**\n\n- `inbox_id: &'astr`: The Inbox ID (required)\n\n```rust,no_run\nasync fn example_messages_import_inbox() -> anyhow::Result<()> {\n    let client = front_api::Client::new_from_env();\n    let result: front_api::types::ImportInboxMessageResponse = client\n        .messages()\n        .import_inbox(\n            \"some-string\",\n            &front_api::types::ImportMessage {\n                sender: front_api::types::ImportMessageSender {\n                    author_id: Some(\"some-string\".to_string()),\n                    name: Some(\"some-string\".to_string()),\n                    handle: \"some-string\".to_string(),\n                },\n                to: vec![\"some-string\".to_string()],\n                cc: Some(vec![\"some-string\".to_string()]),\n                bcc: Some(vec![\"some-string\".to_string()]),\n                subject: Some(\"some-string\".to_string()),\n                body: \"some-string\".to_string(),\n                body_format: Some(front_api::types::ImportMessageBodyFormat::Markdown),\n                external_id: \"some-string\".to_string(),\n                created_at: 4 as i64,\n                type_: Some(front_api::types::ImportMessageType::Custom),\n                assignee_id: Some(\"some-string\".to_string()),\n                tags: Some(vec![\"some-string\".to_string()]),\n                metadata: front_api::types::ImportMessageMetadata {\n                    thread_ref: Some(\"some-string\".to_string()),\n                    is_inbound: false,\n                    is_archived: Some(false),\n                    should_skip_rules: false,\n                },\n                attachments: Some(vec![bytes::Bytes::from(\"some-string\")]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn import_inbox<'a>(
         &'a self,
@@ -226,7 +250,7 @@ impl Messages {
     ) -> Result<crate::types::ImportInboxMessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/imported_messages".replace("{inbox_id}", inbox_id)
@@ -245,7 +269,11 @@ impl Messages {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

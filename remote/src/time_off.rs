@@ -26,7 +26,7 @@ impl TimeOff {
     ) -> Result<crate::types::ListTimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "v1/timeoff"),
+            &format!("{}/{}", self.client.base_url, "v1/timeoff"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -70,16 +70,15 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Create Time Off\n\nCreates a Time Off record\n\n```rust,no_run\nasync fn \
-             example_time_off_post_create_timeoff() -> anyhow::Result<()> {\n    let client = \
-             remote_api::Client::new_from_env();\n    let result: \
-             remote_api::types::TimeoffResponse = client\n        .time_off()\n        \
-             .post_create_timeoff(&remote_api::types::CreateApprovedTimeoffParams {})\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create Time Off\n\nCreates a Time Off record\n\n```rust,no_run\nasync fn example_time_off_post_create_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .post_create_timeoff(&remote_api::types::CreateApprovedTimeoffParams {\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            employment_id: \"some-string\".to_string(),\n            end_date: chrono::Utc::now().date_naive(),\n            notes: Some(\"some-string\".to_string()),\n            start_date: chrono::Utc::now().date_naive(),\n            timeoff_days: vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date_naive()),\n                hours: Some(4 as i64),\n            }],\n            timeoff_type: remote_api::types::TimeoffType::MilitaryLeave,\n            timezone: \"some-string\".to_string(),\n            approved_at: Some(chrono::Utc::now()),\n            approver_id: Some(\"some-string\".to_string()),\n            status: Some(remote_api::types::CreateApprovedTimeoffParamsStatus::Approved),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_create_timeoff<'a>(
         &'a self,
@@ -87,7 +86,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "v1/timeoff"),
+            &format!("{}/{}", self.client.base_url, "v1/timeoff"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -102,7 +101,11 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -119,7 +122,7 @@ impl TimeOff {
     ) -> Result<crate::types::ListTimeoffTypesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "v1/timeoff/types"),
+            &format!("{}/{}", self.client.base_url, "v1/timeoff/types"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -133,7 +136,11 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -151,7 +158,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/timeoff/{id}".replace("{timeoff_id}", timeoff_id)
@@ -169,11 +176,15 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Update Time Off\n\nUpdates a Time Off record. This endpoint can also be used for cancelling a time off.\n\n```rust,no_run\nasync fn example_time_off_patch_update_timeoff_2() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff_2(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(serde_json::Value::String(\"some-string\".to_string())),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date().naive_utc()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date().naive_utc()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date().naive_utc()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::MilitaryLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update Time Off\n\nUpdates a Time Off record. This endpoint can also be used for cancelling a time off.\n\n```rust,no_run\nasync fn example_time_off_patch_update_timeoff_2() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff_2(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(chrono::Utc::now()),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date_naive()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::MilitaryLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn patch_update_timeoff_2<'a>(
         &'a self,
@@ -181,7 +192,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
+            &format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -196,11 +207,15 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
-    #[doc = "Update Time Off\n\nUpdates a Time Off record. This endpoint can also be used for cancelling a time off.\n\n```rust,no_run\nasync fn example_time_off_patch_update_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(serde_json::Value::String(\"some-string\".to_string())),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date().naive_utc()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date().naive_utc()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date().naive_utc()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::MilitaryLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update Time Off\n\nUpdates a Time Off record. This endpoint can also be used for cancelling a time off.\n\n```rust,no_run\nasync fn example_time_off_patch_update_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::TimeoffResponse = client\n        .time_off()\n        .patch_update_timeoff(&remote_api::types::UpdateApprovedTimeoffParams {\n            approved_at: Some(chrono::Utc::now()),\n            approver_id: Some(\"some-string\".to_string()),\n            cancel_reason: \"some-string\".to_string(),\n            document: Some(remote_api::types::TimeoffDocumentParams {\n                content: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n            }),\n            edit_reason: \"some-string\".to_string(),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            notes: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n            status: Some(remote_api::types::UpdateApprovedTimeoffParamsStatus::Cancelled),\n            timeoff_days: Some(vec![remote_api::types::TimeoffDaysParams {\n                day: Some(chrono::Utc::now().date_naive()),\n                hours: Some(4 as i64),\n            }]),\n            timeoff_type: Some(remote_api::types::TimeoffType::MilitaryLeave),\n            timezone: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn patch_update_timeoff<'a>(
         &'a self,
@@ -208,7 +223,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
+            &format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -223,7 +238,11 @@ impl TimeOff {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

@@ -22,7 +22,7 @@ impl Shifts {
     ) -> Result<crate::types::ListShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "shifts"),
+            &format!("{}/{}", self.client.base_url, "shifts"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -36,7 +36,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -48,7 +52,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "shifts"),
+            &format!("{}/{}", self.client.base_url, "shifts"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -63,7 +67,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -75,7 +83,7 @@ impl Shifts {
     ) -> Result<crate::types::ListTeamShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/shifts".replace("{team_id}", team_id)
@@ -93,7 +101,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -106,7 +118,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/shifts".replace("{team_id}", team_id)
@@ -125,7 +137,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -143,7 +159,7 @@ impl Shifts {
     ) -> Result<crate::types::ListTeammateShiftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/shifts".replace("{teammate_id}", teammate_id)
@@ -161,7 +177,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -173,7 +193,7 @@ impl Shifts {
     ) -> Result<crate::types::ShiftResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}".replace("{shift_id}", shift_id)
@@ -191,7 +211,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -209,7 +233,7 @@ impl Shifts {
     ) -> Result<crate::types::ListShiftTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -227,7 +251,11 @@ impl Shifts {
                 )
             })
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -240,7 +268,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -253,7 +281,11 @@ impl Shifts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -273,7 +305,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "shift/{shift_id}/teammates".replace("{shift_id}", shift_id)
@@ -286,7 +318,11 @@ impl Shifts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 
@@ -299,7 +335,7 @@ impl Shifts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            format!(
+            &format!(
                 "{}/{}",
                 self.client.base_url,
                 "shifts/{shift_id}".replace("{shift_id}", shift_id)
@@ -312,7 +348,11 @@ impl Shifts {
         if status.is_success() {
             Ok(())
         } else {
-            Err(crate::types::error::Error::UnexpectedResponse(resp))
+            let text = resp.text().await.unwrap_or_default();
+            return Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            });
         }
     }
 }

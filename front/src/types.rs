@@ -133,6 +133,62 @@ pub mod base64 {
     }
 }
 
+#[cfg(feature = "requests")]
+pub mod multipart {
+    #![doc = " Multipart form data types."]
+    #[doc = " An attachement to a multipart form."]
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct Attachment {
+        #[doc = " The name of the field."]
+        pub name: String,
+        #[doc = " The filename of the attachment."]
+        pub filename: Option<String>,
+        #[doc = " The content type of the attachment."]
+        pub content_type: Option<String>,
+        #[doc = " The data of the attachment."]
+        pub data: Vec<u8>,
+    }
+
+    impl std::convert::TryFrom<Attachment> for reqwest::multipart::Part {
+        type Error = reqwest::Error;
+        fn try_from(attachment: Attachment) -> Result<Self, Self::Error> {
+            let mut part = reqwest::multipart::Part::bytes(attachment.data);
+            if let Some(filename) = attachment.filename {
+                part = part.file_name(filename);
+            }
+            if let Some(content_type) = attachment.content_type {
+                part = part.mime_str(&content_type)?;
+            }
+            Ok(part)
+        }
+    }
+
+    impl std::convert::TryFrom<std::path::PathBuf> for Attachment {
+        type Error = std::io::Error;
+        fn try_from(path: std::path::PathBuf) -> Result<Self, Self::Error> {
+            let filename = path
+                .file_name()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_str()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_string();
+            let content_type = mime_guess::from_path(&path).first_raw();
+            let data = std::fs::read(path)?;
+            Ok(Attachment {
+                name: "file".to_string(),
+                filename: Some(filename),
+                content_type: content_type.map(|s| s.to_string()),
+                data,
+            })
+        }
+    }
+}
+
+#[cfg(feature = "requests")]
 pub mod paginate {
     #![doc = " Utility functions used for pagination."]
     use anyhow::Result;
@@ -142,6 +198,8 @@ pub mod paginate {
         type Item: serde::de::DeserializeOwned;
         #[doc = " Returns true if the response has more pages."]
         fn has_more_pages(&self) -> bool;
+        #[doc = " Returns the next page token."]
+        fn next_page_token(&self) -> Option<String>;
         #[doc = " Modify a request to get the next page."]
         fn next_page(
             &self,
@@ -298,12 +356,14 @@ pub mod phone_number {
     }
 }
 
+#[cfg(feature = "requests")]
 pub mod error {
     #![doc = " Error methods."]
     #[doc = " Error produced by generated client methods."]
     pub enum Error {
         #[doc = " The request did not conform to API requirements."]
         InvalidRequest(String),
+        #[cfg(feature = "retry")]
         #[doc = " A server error either due to the data, or with the connection."]
         CommunicationError(reqwest_middleware::Error),
         #[doc = " A request error, caused when building the request."]
@@ -317,10 +377,21 @@ pub mod error {
         },
         #[doc = " An expected error response."]
         InvalidResponsePayload {
+            #[cfg(feature = "retry")]
             #[doc = " The error."]
             error: reqwest_middleware::Error,
+            #[cfg(not(feature = "retry"))]
+            #[doc = " The error."]
+            error: reqwest::Error,
             #[doc = " The full response."]
             response: reqwest::Response,
+        },
+        #[doc = " An error from the server."]
+        Server {
+            #[doc = " The text from the body."]
+            body: String,
+            #[doc = " The response status."]
+            status: reqwest::StatusCode,
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
@@ -333,10 +404,13 @@ pub mod error {
             match self {
                 Error::InvalidRequest(_) => None,
                 Error::RequestError(e) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Reqwest(e)) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Middleware(_)) => None,
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
+                Error::Server { body: _, status } => Some(*status),
                 Error::UnexpectedResponse(r) => Some(r.status()),
             }
         }
@@ -350,6 +424,7 @@ pub mod error {
         }
     }
 
+    #[cfg(feature = "retry")]
     impl From<reqwest_middleware::Error> for Error {
         fn from(e: reqwest_middleware::Error) -> Self {
             Self::CommunicationError(e)
@@ -362,12 +437,22 @@ pub mod error {
         }
     }
 
+    impl From<serde_json::Error> for Error {
+        fn from(e: serde_json::Error) -> Self {
+            Self::SerdeError {
+                error: format_serde_error::SerdeError::new(String::new(), e),
+                status: reqwest::StatusCode::INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
     impl std::fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
                     write!(f, "Invalid Request: {}", s)
                 }
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => {
                     write!(f, "Communication Error: {}", e)
                 }
@@ -380,15 +465,14 @@ pub mod error {
                 Error::InvalidResponsePayload { error, response: _ } => {
                     write!(f, "Invalid Response Payload: {}", error)
                 }
+                Error::Server { body, status } => {
+                    write!(f, "Server Error: {} {}", status, body)
+                }
                 Error::UnexpectedResponse(r) => {
                     write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
-    }
-
-    trait ErrorFormat {
-        fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     }
 
     impl std::fmt::Debug for Error {
@@ -400,6 +484,7 @@ pub mod error {
     impl std::error::Error for Error {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => Some(e),
                 Error::SerdeError { error, status: _ } => Some(error),
                 Error::InvalidResponsePayload { error, response: _ } => Some(error),
@@ -1871,8 +1956,8 @@ pub struct DeleteContactHandle {
              `front_chat`, or `custom`."]
     pub source: Source,
     #[doc = "Force the deletetion of the contact if the handle is the last one"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub force: Option<bool>,
+    #[serde(default)]
+    pub force: bool,
 }
 
 impl std::fmt::Display for DeleteContactHandle {
@@ -1892,11 +1977,7 @@ impl tabled::Tabled for DeleteContactHandle {
         vec![
             self.handle.clone().into(),
             format!("{:?}", self.source).into(),
-            if let Some(force) = &self.force {
-                format!("{:?}", force).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.force).into(),
         ]
     }
 
@@ -2239,7 +2320,6 @@ pub enum CreateConversationType {
     #[default]
     Discussion,
 }
-
 
 
 #[doc = "Details for the starter comment"]
@@ -2589,7 +2669,6 @@ pub enum Mode {
 }
 
 
-
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -2817,156 +2896,20 @@ impl tabled::Tabled for ReplyDraft {
     }
 }
 
-#[doc = "Mode of the draft to update. Can only be 'shared' (draft is visible to all teammates with \
-         access to the conversation)."]
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Hash,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    parse_display :: FromStr,
-    parse_display :: Display,
-)]
-#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
-#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
-pub enum EditDraftMode {
-    #[serde(rename = "shared")]
-    #[display("shared")]
-    #[default]
-    Shared,
-}
-
-
-
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct EditDraft {
-    #[doc = "ID of the teammate on behalf of whom the draft will be created"]
-    pub author_id: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub to: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub cc: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub bcc: Option<Vec<String>>,
-    #[doc = "Subject of the draft."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub subject: Option<String>,
-    #[doc = "Body of the draft"]
-    pub body: String,
-    #[doc = "Binary data of attached files. Must use `Content-Type: multipart/form-data` if specified. See [example](https://gist.github.com/hdornier/e04d04921032e98271f46ff8a539a4cb)."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub attachments: Option<Vec<bytes::Bytes>>,
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+#[serde(tag = "mode")]
+pub enum EditDraft {
     #[doc = "Mode of the draft to update. Can only be 'shared' (draft is visible to all teammates \
              with access to the conversation)."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub mode: Option<EditDraftMode>,
-    #[doc = "ID of the signature to attach to this draft. If null, no signature is attached."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub signature_id: Option<String>,
-    #[doc = "Whether or not Front should try to resolve a signature for the message. Is ignored \
-             if signature_id is included. Default false;"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub should_add_default_signature: Option<bool>,
-    #[doc = "ID of the channel from which the draft will be sent"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub channel_id: Option<String>,
-    #[doc = "Version of the draft"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub version: Option<String>,
-}
-
-impl std::fmt::Display for EditDraft {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-#[cfg(feature = "tabled")]
-impl tabled::Tabled for EditDraft {
-    const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            self.author_id.clone().into(),
-            if let Some(to) = &self.to {
-                format!("{:?}", to).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(cc) = &self.cc {
-                format!("{:?}", cc).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(bcc) = &self.bcc {
-                format!("{:?}", bcc).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(subject) = &self.subject {
-                format!("{:?}", subject).into()
-            } else {
-                String::new().into()
-            },
-            self.body.clone().into(),
-            if let Some(attachments) = &self.attachments {
-                format!("{:?}", attachments).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(mode) = &self.mode {
-                format!("{:?}", mode).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(signature_id) = &self.signature_id {
-                format!("{:?}", signature_id).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(should_add_default_signature) = &self.should_add_default_signature {
-                format!("{:?}", should_add_default_signature).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(channel_id) = &self.channel_id {
-                format!("{:?}", channel_id).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(version) = &self.version {
-                format!("{:?}", version).into()
-            } else {
-                String::new().into()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            "author_id".into(),
-            "to".into(),
-            "cc".into(),
-            "bcc".into(),
-            "subject".into(),
-            "body".into(),
-            "attachments".into(),
-            "mode".into(),
-            "signature_id".into(),
-            "should_add_default_signature".into(),
-            "channel_id".into(),
-            "version".into(),
-        ]
-    }
+    #[serde(rename = "shared")]
+    Shared {
+        #[doc = "Version of the draft"]
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        version: Option<String>,
+    },
 }
 
 #[derive(
@@ -3044,8 +2987,8 @@ pub struct Options {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tag_ids: Option<Vec<String>>,
     #[doc = "Archive the conversation right when sending the message"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub archive: Option<bool>,
+    #[serde(default)]
+    pub archive: bool,
 }
 
 impl std::fmt::Display for Options {
@@ -3068,11 +3011,7 @@ impl tabled::Tabled for Options {
             } else {
                 String::new().into()
             },
-            if let Some(archive) = &self.archive {
-                format!("{:?}", archive).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.archive).into(),
         ]
     }
 
@@ -3213,8 +3152,8 @@ pub struct OutboundReplyMessageOptions {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tag_ids: Option<Vec<String>>,
     #[doc = "Archive the conversation right when sending the message. `true` by default"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub archive: Option<bool>,
+    #[serde(default)]
+    pub archive: bool,
 }
 
 impl std::fmt::Display for OutboundReplyMessageOptions {
@@ -3237,11 +3176,7 @@ impl tabled::Tabled for OutboundReplyMessageOptions {
             } else {
                 String::new().into()
             },
-            if let Some(archive) = &self.archive {
-                format!("{:?}", archive).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.archive).into(),
         ]
     }
 
@@ -3464,7 +3399,6 @@ pub enum BodyFormat {
 }
 
 
-
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3661,7 +3595,6 @@ pub enum ImportMessageBodyFormat {
 }
 
 
-
 #[doc = "Type of the message to import. Default is `email`."]
 #[derive(
     serde :: Serialize,
@@ -3694,7 +3627,6 @@ pub enum ImportMessageType {
 }
 
 
-
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3709,8 +3641,8 @@ pub struct ImportMessageMetadata {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_archived: Option<bool>,
     #[doc = "Determines if rules should be skipped. `true` by default."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub should_skip_rules: Option<bool>,
+    #[serde(default)]
+    pub should_skip_rules: bool,
 }
 
 impl std::fmt::Display for ImportMessageMetadata {
@@ -3739,11 +3671,7 @@ impl tabled::Tabled for ImportMessageMetadata {
             } else {
                 String::new().into()
             },
-            if let Some(should_skip_rules) = &self.should_skip_rules {
-                format!("{:?}", should_skip_rules).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.should_skip_rules).into(),
         ]
     }
 
@@ -4063,8 +3991,8 @@ pub struct CreatePrivateSignature {
     #[doc = "Body of the signature"]
     pub body: String,
     #[doc = "If true, the signature will be set as the default signature for the teammate."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_default: Option<bool>,
+    #[serde(default)]
+    pub is_default: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub channel_ids: Option<Vec<String>>,
 }
@@ -4091,11 +4019,7 @@ impl tabled::Tabled for CreatePrivateSignature {
                 String::new().into()
             },
             self.body.clone().into(),
-            if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_default).into(),
             if let Some(channel_ids) = &self.channel_ids {
                 format!("{:?}", channel_ids).into()
             } else {
@@ -4132,8 +4056,8 @@ pub struct CreateSharedSignature {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_visible_for_all_teammate_channels: Option<bool>,
     #[doc = "If true, the signature will be set as the default signature for the team."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_default: Option<bool>,
+    #[serde(default)]
+    pub is_default: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub channel_ids: Option<Vec<String>>,
 }
@@ -4167,11 +4091,7 @@ impl tabled::Tabled for CreateSharedSignature {
             } else {
                 String::new().into()
             },
-            if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_default).into(),
             if let Some(channel_ids) = &self.channel_ids {
                 format!("{:?}", channel_ids).into()
             } else {
@@ -4211,8 +4131,8 @@ pub struct UpdateSignature {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_visible_for_all_teammate_channels: Option<bool>,
     #[doc = "If true, the signature will be set as the default signature for the team or teammate."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_default: Option<bool>,
+    #[serde(default)]
+    pub is_default: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub channel_ids: Option<Vec<String>>,
 }
@@ -4254,11 +4174,7 @@ impl tabled::Tabled for UpdateSignature {
             } else {
                 String::new().into()
             },
-            if let Some(is_default) = &self.is_default {
-                format!("{:?}", is_default).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_default).into(),
             if let Some(channel_ids) = &self.channel_ids {
                 format!("{:?}", channel_ids).into()
             } else {
@@ -4334,8 +4250,8 @@ pub struct CreateTag {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub highlight: Option<Highlight>,
     #[doc = "Whether the tag is visible in conversation lists."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_visible_in_conversation_lists: Option<bool>,
+    #[serde(default)]
+    pub is_visible_in_conversation_lists: bool,
 }
 
 impl std::fmt::Display for CreateTag {
@@ -4359,11 +4275,7 @@ impl tabled::Tabled for CreateTag {
             } else {
                 String::new().into()
             },
-            if let Some(is_visible_in_conversation_lists) = &self.is_visible_in_conversation_lists {
-                format!("{:?}", is_visible_in_conversation_lists).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_visible_in_conversation_lists).into(),
         ]
     }
 
@@ -4952,6 +4864,7 @@ impl tabled::Tabled for Meta {
 pub enum Data {
     RuleResponse(RuleResponse),
     TeammateResponse(TeammateResponse),
+    InboxResponse(Vec<InboxResponse>),
 }
 
 #[doc = "Event source"]
@@ -6701,11 +6614,11 @@ pub struct ChannelResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub settings: Option<ChannelResponseSettings>,
     #[doc = "Whether or not the channel is individual"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_private: Option<bool>,
+    #[serde(default)]
+    pub is_private: bool,
     #[doc = "Whether or not the channel configuration is valid"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_valid: Option<bool>,
+    #[serde(default)]
+    pub is_valid: bool,
 }
 
 impl std::fmt::Display for ChannelResponse {
@@ -6753,16 +6666,8 @@ impl tabled::Tabled for ChannelResponse {
             } else {
                 String::new().into()
             },
-            if let Some(is_private) = &self.is_private {
-                format!("{:?}", is_private).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(is_valid) = &self.is_valid {
-                format!("{:?}", is_valid).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.is_private).into(),
+            format!("{:?}", self.is_valid).into(),
         ]
     }
 
@@ -9110,7 +9015,6 @@ pub enum ShiftResponseColor {
     #[default]
     Black,
 }
-
 
 
 #[derive(

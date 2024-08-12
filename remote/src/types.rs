@@ -1,6 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-#[cfg(feature = "tabled")]
-use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -133,6 +131,62 @@ pub mod base64 {
     }
 }
 
+#[cfg(feature = "requests")]
+pub mod multipart {
+    #![doc = " Multipart form data types."]
+    #[doc = " An attachement to a multipart form."]
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct Attachment {
+        #[doc = " The name of the field."]
+        pub name: String,
+        #[doc = " The filename of the attachment."]
+        pub filename: Option<String>,
+        #[doc = " The content type of the attachment."]
+        pub content_type: Option<String>,
+        #[doc = " The data of the attachment."]
+        pub data: Vec<u8>,
+    }
+
+    impl std::convert::TryFrom<Attachment> for reqwest::multipart::Part {
+        type Error = reqwest::Error;
+        fn try_from(attachment: Attachment) -> Result<Self, Self::Error> {
+            let mut part = reqwest::multipart::Part::bytes(attachment.data);
+            if let Some(filename) = attachment.filename {
+                part = part.file_name(filename);
+            }
+            if let Some(content_type) = attachment.content_type {
+                part = part.mime_str(&content_type)?;
+            }
+            Ok(part)
+        }
+    }
+
+    impl std::convert::TryFrom<std::path::PathBuf> for Attachment {
+        type Error = std::io::Error;
+        fn try_from(path: std::path::PathBuf) -> Result<Self, Self::Error> {
+            let filename = path
+                .file_name()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_str()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_string();
+            let content_type = mime_guess::from_path(&path).first_raw();
+            let data = std::fs::read(path)?;
+            Ok(Attachment {
+                name: "file".to_string(),
+                filename: Some(filename),
+                content_type: content_type.map(|s| s.to_string()),
+                data,
+            })
+        }
+    }
+}
+
+#[cfg(feature = "requests")]
 pub mod paginate {
     #![doc = " Utility functions used for pagination."]
     use anyhow::Result;
@@ -142,6 +196,8 @@ pub mod paginate {
         type Item: serde::de::DeserializeOwned;
         #[doc = " Returns true if the response has more pages."]
         fn has_more_pages(&self) -> bool;
+        #[doc = " Returns the next page token."]
+        fn next_page_token(&self) -> Option<String>;
         #[doc = " Modify a request to get the next page."]
         fn next_page(
             &self,
@@ -298,12 +354,14 @@ pub mod phone_number {
     }
 }
 
+#[cfg(feature = "requests")]
 pub mod error {
     #![doc = " Error methods."]
     #[doc = " Error produced by generated client methods."]
     pub enum Error {
         #[doc = " The request did not conform to API requirements."]
         InvalidRequest(String),
+        #[cfg(feature = "retry")]
         #[doc = " A server error either due to the data, or with the connection."]
         CommunicationError(reqwest_middleware::Error),
         #[doc = " A request error, caused when building the request."]
@@ -317,10 +375,21 @@ pub mod error {
         },
         #[doc = " An expected error response."]
         InvalidResponsePayload {
+            #[cfg(feature = "retry")]
             #[doc = " The error."]
             error: reqwest_middleware::Error,
+            #[cfg(not(feature = "retry"))]
+            #[doc = " The error."]
+            error: reqwest::Error,
             #[doc = " The full response."]
             response: reqwest::Response,
+        },
+        #[doc = " An error from the server."]
+        Server {
+            #[doc = " The text from the body."]
+            body: String,
+            #[doc = " The response status."]
+            status: reqwest::StatusCode,
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
@@ -333,10 +402,13 @@ pub mod error {
             match self {
                 Error::InvalidRequest(_) => None,
                 Error::RequestError(e) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Reqwest(e)) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Middleware(_)) => None,
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
+                Error::Server { body: _, status } => Some(*status),
                 Error::UnexpectedResponse(r) => Some(r.status()),
             }
         }
@@ -350,6 +422,7 @@ pub mod error {
         }
     }
 
+    #[cfg(feature = "retry")]
     impl From<reqwest_middleware::Error> for Error {
         fn from(e: reqwest_middleware::Error) -> Self {
             Self::CommunicationError(e)
@@ -362,12 +435,22 @@ pub mod error {
         }
     }
 
+    impl From<serde_json::Error> for Error {
+        fn from(e: serde_json::Error) -> Self {
+            Self::SerdeError {
+                error: format_serde_error::SerdeError::new(String::new(), e),
+                status: reqwest::StatusCode::INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
     impl std::fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
                     write!(f, "Invalid Request: {}", s)
                 }
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => {
                     write!(f, "Communication Error: {}", e)
                 }
@@ -380,15 +463,14 @@ pub mod error {
                 Error::InvalidResponsePayload { error, response: _ } => {
                     write!(f, "Invalid Response Payload: {}", error)
                 }
+                Error::Server { body, status } => {
+                    write!(f, "Server Error: {} {}", status, body)
+                }
                 Error::UnexpectedResponse(r) => {
                     write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
-    }
-
-    trait ErrorFormat {
-        fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     }
 
     impl std::fmt::Debug for Error {
@@ -400,6 +482,7 @@ pub mod error {
     impl std::error::Error for Error {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => Some(e),
                 Error::SerdeError { error, status: _ } => Some(error),
                 Error::InvalidResponsePayload { error, response: _ } => Some(error),
@@ -780,7 +863,7 @@ pub struct PayrollRun {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub field_for_employment_matching: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub inserted_at: Option<serde_json::Value>,
+    pub inserted_at: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_editor: Option<LastEditor>,
     pub legal_entity: RemoteEntity,
@@ -1411,11 +1494,54 @@ impl tabled::Tabled for ListTimeoffTypesResponse {
     }
 }
 
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+#[derive(Default)]
+pub enum CreateApprovedTimeoffParamsStatus {
+    #[serde(rename = "approved")]
+    #[display("approved")]
+    #[default]
+    Approved,
+}
+
+
 #[doc = "Approved timeoff creation params"]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct CreateApprovedTimeoffParams {}
+pub struct CreateApprovedTimeoffParams {
+    #[doc = "Timeoff document params"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub document: Option<TimeoffDocumentParams>,
+    pub employment_id: String,
+    #[doc = "UTC date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format"]
+    pub end_date: chrono::NaiveDate,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub notes: Option<String>,
+    #[doc = "UTC date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format"]
+    pub start_date: chrono::NaiveDate,
+    pub timeoff_days: Vec<TimeoffDaysParams>,
+    pub timeoff_type: TimeoffType,
+    pub timezone: String,
+    #[doc = "UTC date time in YYYY-MM-DDTHH:mm:ss format"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub approved_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub approver_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<CreateApprovedTimeoffParamsStatus>,
+}
 
 impl std::fmt::Display for CreateApprovedTimeoffParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -1429,13 +1555,57 @@ impl std::fmt::Display for CreateApprovedTimeoffParams {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateApprovedTimeoffParams {
-    const LENGTH: usize = 0;
+    const LENGTH: usize = 11;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
+        vec![
+            if let Some(document) = &self.document {
+                format!("{:?}", document).into()
+            } else {
+                String::new().into()
+            },
+            self.employment_id.clone().into(),
+            format!("{:?}", self.end_date).into(),
+            if let Some(notes) = &self.notes {
+                format!("{:?}", notes).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.start_date).into(),
+            format!("{:?}", self.timeoff_days).into(),
+            format!("{:?}", self.timeoff_type).into(),
+            self.timezone.clone().into(),
+            if let Some(approved_at) = &self.approved_at {
+                format!("{:?}", approved_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(approver_id) = &self.approver_id {
+                format!("{:?}", approver_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(status) = &self.status {
+                format!("{:?}", status).into()
+            } else {
+                String::new().into()
+            },
+        ]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
+        vec![
+            "document".into(),
+            "employment_id".into(),
+            "end_date".into(),
+            "notes".into(),
+            "start_date".into(),
+            "timeoff_days".into(),
+            "timeoff_type".into(),
+            "timezone".into(),
+            "approved_at".into(),
+            "approver_id".into(),
+            "status".into(),
+        ]
     }
 }
 
@@ -1521,10 +1691,81 @@ impl tabled::Tabled for EmploymentBasicParams {
     }
 }
 
+#[doc = "Status of the payroll"]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum PayrollRunWithLegalEntityStatus {
+    #[serde(rename = "preparing")]
+    #[display("preparing")]
+    Preparing,
+    #[serde(rename = "processing")]
+    #[display("processing")]
+    Processing,
+    #[serde(rename = "waiting_for_customer_approval")]
+    #[display("waiting_for_customer_approval")]
+    WaitingForCustomerApproval,
+    #[serde(rename = "completed")]
+    #[display("completed")]
+    Completed,
+    #[serde(rename = "finalized")]
+    #[display("finalized")]
+    Finalized,
+    #[serde(rename = "rejected")]
+    #[display("rejected")]
+    Rejected,
+}
+
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct PayrollRunWithLegalEntity {}
+pub struct PayrollRunWithLegalEntity {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub creator: Option<Creator>,
+    #[doc = "Indicates if an Employer has completed the Payroll Inputs review flow"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub customer_inputs_reviewed: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub field_for_employment_matching: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub inserted_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub last_editor: Option<LastEditor>,
+    pub legal_entity: RemoteEntity,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mapping_rules: Option<Vec<String>>,
+    #[doc = "Name of the payroll_run to be displayed for users"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub net_pay_extraction_expression: Option<String>,
+    #[doc = "The end date the payroll run is for"]
+    pub period_end: chrono::NaiveDate,
+    #[doc = "The start date the payroll run is for"]
+    pub period_start: chrono::NaiveDate,
+    #[doc = "Payroll run product type"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub product_type: Option<ProductType>,
+    pub slug: String,
+    #[doc = "Status of the payroll"]
+    pub status: PayrollRunWithLegalEntityStatus,
+    pub summarize_automatically: bool,
+    #[doc = "Payroll Run type"]
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<Type>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub validations: Option<serde_json::Value>,
+}
 
 impl std::fmt::Display for PayrollRunWithLegalEntity {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -1538,13 +1779,93 @@ impl std::fmt::Display for PayrollRunWithLegalEntity {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for PayrollRunWithLegalEntity {
-    const LENGTH: usize = 0;
+    const LENGTH: usize = 17;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
+        vec![
+            if let Some(creator) = &self.creator {
+                format!("{:?}", creator).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(customer_inputs_reviewed) = &self.customer_inputs_reviewed {
+                format!("{:?}", customer_inputs_reviewed).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(field_for_employment_matching) = &self.field_for_employment_matching {
+                format!("{:?}", field_for_employment_matching).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(inserted_at) = &self.inserted_at {
+                format!("{:?}", inserted_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(last_editor) = &self.last_editor {
+                format!("{:?}", last_editor).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.legal_entity).into(),
+            if let Some(mapping_rules) = &self.mapping_rules {
+                format!("{:?}", mapping_rules).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(net_pay_extraction_expression) = &self.net_pay_extraction_expression {
+                format!("{:?}", net_pay_extraction_expression).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.period_end).into(),
+            format!("{:?}", self.period_start).into(),
+            if let Some(product_type) = &self.product_type {
+                format!("{:?}", product_type).into()
+            } else {
+                String::new().into()
+            },
+            self.slug.clone().into(),
+            format!("{:?}", self.status).into(),
+            format!("{:?}", self.summarize_automatically).into(),
+            if let Some(type_) = &self.type_ {
+                format!("{:?}", type_).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(validations) = &self.validations {
+                format!("{:?}", validations).into()
+            } else {
+                String::new().into()
+            },
+        ]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
+        vec![
+            "creator".into(),
+            "customer_inputs_reviewed".into(),
+            "field_for_employment_matching".into(),
+            "inserted_at".into(),
+            "last_editor".into(),
+            "legal_entity".into(),
+            "mapping_rules".into(),
+            "name".into(),
+            "net_pay_extraction_expression".into(),
+            "period_end".into(),
+            "period_start".into(),
+            "product_type".into(),
+            "slug".into(),
+            "status".into(),
+            "summarize_automatically".into(),
+            "type_".into(),
+            "validations".into(),
+        ]
     }
 }
 
@@ -1647,7 +1968,7 @@ pub enum UpdateApprovedTimeoffParamsStatus {
 pub struct UpdateApprovedTimeoffParams {
     #[doc = "UTC date time in YYYY-MM-DDTHH:mm:ss format"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub approved_at: Option<serde_json::Value>,
+    pub approved_at: Option<chrono::DateTime<chrono::Utc>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub approver_id: Option<String>,
     #[doc = "The reason for cancelling a time off. Required when updating to status `cancelled`."]
@@ -2056,7 +2377,7 @@ pub struct Timeoff {
     pub cancel_reason: Option<String>,
     #[doc = "Optional UTC date time in YYYY-MM-DDTHH:mm:ss format"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub cancelled_at: Option<serde_json::Value>,
+    pub cancelled_at: Option<chrono::DateTime<chrono::Utc>>,
     #[doc = "A supported file"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub document: Option<File>,
@@ -2867,28 +3188,8 @@ impl tabled::Tabled for MinimalCompany {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct UnprocessableEntityResponse {}
-
-impl std::fmt::Display for UnprocessableEntityResponse {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-#[cfg(feature = "tabled")]
-impl tabled::Tabled for UnprocessableEntityResponse {
-    const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
-    }
-
-    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec![]
-    }
+pub enum UnprocessableEntityResponse {
+    Errors {},
 }
 
 #[derive(
