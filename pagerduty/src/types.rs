@@ -118,11 +118,14 @@ pub struct Service {
 }
 
 /// The state of the service.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum Status {
     /// Active.
+    #[default]
     Active,
     /// Warning.
     Warning,
@@ -134,27 +137,18 @@ pub enum Status {
     Disabled,
 }
 
-impl Default for Status {
-    fn default() -> Self {
-        Status::Active
-    }
-}
-
 /// How a service creates incidents.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum AlertCreation {
     /// Create incidents.
     CreateIncidents,
     /// Create alerts and incidents.
+    #[default]
     CreateAlertsAndIncidents,
-}
-
-impl Default for AlertCreation {
-    fn default() -> Self {
-        AlertCreation::CreateAlertsAndIncidents
-    }
 }
 
 /// An escalation policy.
@@ -209,20 +203,17 @@ pub struct EscalationPolicy {
 }
 
 /// The type of escalation_policy.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum EscalationPolicyType {
     /// A reference to an escalation policy.
+    #[default]
     EscalationPolicyReference,
     /// An escalation policy object.
     EscalationPolicy,
-}
-
-impl Default for EscalationPolicyType {
-    fn default() -> Self {
-        EscalationPolicyType::EscalationPolicyReference
-    }
 }
 
 /// An incident urgency rule.
@@ -254,39 +245,33 @@ impl Default for IncidentUrgencyRule {
 }
 
 /// The type of incident urgency rule.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum IncidentUrgencyRuleType {
     /// Constant.
+    #[default]
     Constant,
     /// Use support hours.
     UseSupportHours,
 }
 
-impl Default for IncidentUrgencyRuleType {
-    fn default() -> Self {
-        IncidentUrgencyRuleType::Constant
-    }
-}
-
 /// The incidents' urgency, if type is constant.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum Urgency {
     /// Low.
     Low,
     /// High.
+    #[default]
     High,
     /// Severity based.
     SeverityBased,
-}
-
-impl Default for Urgency {
-    fn default() -> Self {
-        Urgency::High
-    }
 }
 
 /// The support hours.
@@ -320,18 +305,15 @@ pub struct SupportHours {
 }
 
 /// The type of support hours.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum SupportHoursType {
     /// Fixed time per day.
+    #[default]
     FixedTimePerDay,
-}
-
-impl Default for SupportHoursType {
-    fn default() -> Self {
-        SupportHoursType::FixedTimePerDay
-    }
 }
 
 /// A scheduled action.
@@ -349,18 +331,15 @@ pub struct ScheduledAction {
 }
 
 /// The type of scheduled action.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum ScheduledActionType {
     /// Urgency change.
+    #[default]
     UrgencyChange,
-}
-
-impl Default for ScheduledActionType {
-    fn default() -> Self {
-        ScheduledActionType::UrgencyChange
-    }
 }
 
 /// Represents when scheduled action will occur.
@@ -375,35 +354,29 @@ pub struct ScheduledActionAt {
 }
 
 /// The type of scheduled action at.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum ScheduledActionAtType {
     /// Named time.
+    #[default]
     NamedTime,
 }
 
-impl Default for ScheduledActionAtType {
-    fn default() -> Self {
-        ScheduledActionAtType::NamedTime
-    }
-}
-
 /// Designates either the start or the end of support hours.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum ScheduledActionAtName {
     /// Support hours start.
+    #[default]
     SupportHoursStart,
     /// Support hours end.
     SupportHoursEnd,
-}
-
-impl Default for ScheduledActionAtName {
-    fn default() -> Self {
-        ScheduledActionAtName::SupportHoursStart
-    }
 }
 
 /// Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans.
@@ -415,22 +388,19 @@ pub struct AlertGroupingParameters {
 }
 
 /// The type of alert grouping.
-#[derive(Display, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone)]
+#[derive(
+    Display, Default, FromStr, PartialEq, Debug, JsonSchema, Deserialize, Serialize, Clone,
+)]
 #[display(style = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum AlertGroupingType {
     /// Time.
     Time,
     /// Intelligent.
+    #[default]
     Intelligent,
     /// Content based.
     ContentBased,
-}
-
-impl Default for AlertGroupingType {
-    fn default() -> Self {
-        AlertGroupingType::Intelligent
-    }
 }
 
 /// Defines how alerts on this service are automatically suspended for a period of time before triggering, when identified as likely being transient. Note that automatically pausing notifications is only available on certain plans.

@@ -565,7 +565,7 @@ pub struct Employee {
     pub ssn: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub phone: Option<String>,
-    #[doc = ""]
+    #[doc = "preferred_first_name."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub preferred_first_name: Option<String>,
     #[doc = "The work email address of the employee. This is provided to support syncing users \
@@ -2838,7 +2838,7 @@ impl tabled::Tabled for Total {
     }
 }
 
-#[doc = ""]
+#[doc = "ContractorPayments."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3012,7 +3012,7 @@ pub enum RequestType {
     Sick,
 }
 
-#[doc = ""]
+#[doc = "TimeOffRequestEmployee."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3058,7 +3058,7 @@ impl tabled::Tabled for TimeOffRequestEmployee {
     }
 }
 
-#[doc = ""]
+#[doc = "Initiator."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3176,10 +3176,10 @@ pub struct TimeOffRequest {
              a numeric decimal to the thousands place."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub days: Option<std::collections::HashMap<String, String>>,
-    #[doc = ""]
+    #[doc = "employee."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub employee: Option<TimeOffRequestEmployee>,
-    #[doc = ""]
+    #[doc = "initiator."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub initiator: Option<Initiator>,
     #[doc = "This value will be null if the request has not been approved."]
@@ -3402,7 +3402,7 @@ impl tabled::Tabled for Roles {
     }
 }
 
-#[doc = ""]
+#[doc = "CurrentUser."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3727,7 +3727,7 @@ impl tabled::Tabled for CompanyBankAccount {
     }
 }
 
-#[doc = ""]
+#[doc = "SupportedBenefit."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3960,7 +3960,7 @@ impl tabled::Tabled for CompanyBenefit {
     }
 }
 
-#[doc = ""]
+#[doc = "EarningType."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5128,7 +5128,7 @@ impl tabled::Tabled for EmployeeCompensations {
     }
 }
 
-#[doc = ""]
+#[doc = "Payroll."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5847,7 +5847,7 @@ pub enum GetInclude {
 }
 
 
-#[doc = ""]
+#[doc = "PutEmployeesRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5988,7 +5988,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdEmployeesRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostEmployeesRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6067,7 +6067,7 @@ impl tabled::Tabled for PostEmployeesRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutJobsJobIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6127,7 +6127,7 @@ impl tabled::Tabled for PutJobsJobIdRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostJobsJobIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6178,7 +6178,7 @@ impl tabled::Tabled for PostJobsJobIdRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdLocationsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6258,7 +6258,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdLocationsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutLocationsLocationIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6382,7 +6382,7 @@ pub enum PutContractorsContractorIdRequestBodyWageType {
     Hourly,
 }
 
-#[doc = ""]
+#[doc = "PutContractorsContractorIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6539,7 +6539,7 @@ pub enum PostCompaniesCompanyIdContractorsRequestBodyWageType {
     Fixed,
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdContractorsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6650,7 +6650,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdContractorsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompensationsCompensationIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6719,7 +6719,7 @@ impl tabled::Tabled for PutCompensationsCompensationIdRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostJobsJobIdCompensationsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6778,7 +6778,7 @@ impl tabled::Tabled for PostJobsJobIdCompensationsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostEmployeesEmployeeIdGarnishmentsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6973,7 +6973,7 @@ impl tabled::Tabled for PutGarnishmentsGarnishmentIdRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostEmployeesEmployeeIdTerminationsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7020,7 +7020,7 @@ impl tabled::Tabled for PostEmployeesEmployeeIdTerminationsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutEmployeesEmployeeIdHomeAddressRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7096,7 +7096,7 @@ impl tabled::Tabled for PutEmployeesEmployeeIdHomeAddressRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompaniesCompanyIdPaySchedulesPayScheduleIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7158,7 +7158,7 @@ pub enum PostCompaniesCompanyIdBankAccountsRequestBodyAccountType {
     Savings,
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdBankAccountsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7216,7 +7216,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdBankAccountsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompaniesCompanyIdBankAccountsVerifyRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7262,7 +7262,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdBankAccountsVerifyRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdCompanyBenefitsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7332,7 +7332,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdCompanyBenefitsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompanyBenefitsCompanyBenefitIdRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7523,7 +7523,7 @@ pub enum PostEmployeesEmployeeIdEmployeeBenefitsRequestBodyDeductionReducesTaxab
     DoesNotReduceTaxableIncome,
 }
 
-#[doc = ""]
+#[doc = "PostEmployeesEmployeeIdEmployeeBenefitsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8159,7 +8159,7 @@ impl tabled::Tabled for PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensa
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompaniesCompanyIdPayrollsRequestBodyEmployeeCompensations."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8326,7 +8326,7 @@ impl std :: fmt :: Display for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePa
 #[cfg(feature = "tabled")]
 impl tabled :: Tabled for PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensationsPaidTimeOff { const LENGTH : usize = 2 ; fn fields (& self) -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! [if let Some (name) = & self . name { format ! ("{:?}" , name) . into () } else { String :: new () . into () } , if let Some (hours) = & self . hours { format ! ("{:?}" , hours) . into () } else { String :: new () . into () }] } fn headers () -> Vec < std :: borrow :: Cow < 'static , str >> { vec ! ["name" . into () , "hours" . into ()] } }
 
-#[doc = ""]
+#[doc = "PutCompaniesCompanyIdPayrollsPayPeriodStartDatePayPeriodEndDateRequestBodyEmployeeCompensations."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8470,7 +8470,7 @@ impl tabled::Tabled for PostPartnerManagedCompaniesRequestBodyCompany {
     }
 }
 
-#[doc = ""]
+#[doc = "PostPartnerManagedCompaniesRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8506,7 +8506,7 @@ impl tabled::Tabled for PostPartnerManagedCompaniesRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostPartnerManagedCompaniesResponse."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8736,7 +8736,7 @@ impl tabled::Tabled for PostProvisionRequestBodyCompany {
     }
 }
 
-#[doc = ""]
+#[doc = "PostProvisionRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8772,7 +8772,7 @@ impl tabled::Tabled for PostProvisionRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PostProvisionResponse."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8896,7 +8896,7 @@ pub enum OnboardingPersonType {
     Contractor,
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdJobApplicantsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8986,7 +8986,7 @@ impl tabled::Tabled for PostCompaniesCompanyIdJobApplicantsRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "PutCompaniesCompanyIdJobApplicantsJobApplicantUuidRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -9175,7 +9175,7 @@ impl tabled::Tabled for GetCompaniesCompanyIdOrUuidPayrollReversalsResponse {
     }
 }
 
-#[doc = ""]
+#[doc = "PostCompaniesCompanyIdAdminsRequestBody."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]

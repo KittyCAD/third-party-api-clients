@@ -34169,7 +34169,7 @@ impl tabled::Tabled for ListShortCodeResponse {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct UpdateSigningKeyRequest {
-    #[doc = ""]
+    #[doc = "friendly_name."]
     #[serde(
         rename = "FriendlyName",
         default,

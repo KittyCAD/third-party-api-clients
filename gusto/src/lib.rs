@@ -65,6 +65,7 @@
 //! ```
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
+#![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "requests")]

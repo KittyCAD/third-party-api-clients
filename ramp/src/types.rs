@@ -3767,7 +3767,7 @@ pub struct ApiSalesLeadBusinessDump {
     #[doc = "The state in which the business is incorporated."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state_of_incorporation: Option<String>,
-    #[doc = ""]
+    #[doc = "sub_industry."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sub_industry: Option<String>,
 }
@@ -4041,7 +4041,7 @@ impl tabled::Tabled for ApiSalesLeadBusinessRequestBody {
     }
 }
 
-#[doc = ""]
+#[doc = "Source."]
 #[derive(
     serde :: Serialize,
     serde :: Deserialize,
@@ -4064,23 +4064,23 @@ pub enum Source {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ApiSalesLeadCreateRequestBody {
-    #[doc = ""]
+    #[doc = "business_info."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub business_info: Option<ApiSalesLeadBusinessRequestBody>,
-    #[doc = ""]
+    #[doc = "email."]
     pub email: String,
-    #[doc = ""]
+    #[doc = "external_id."]
     pub external_id: String,
-    #[doc = ""]
+    #[doc = "first_name."]
     pub first_name: String,
-    #[doc = ""]
+    #[doc = "last_name."]
     pub last_name: String,
-    #[doc = ""]
+    #[doc = "phone."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub phone: Option<String>,
-    #[doc = ""]
+    #[doc = "redirect_uri."]
     pub redirect_uri: String,
-    #[doc = ""]
+    #[doc = "source."]
     pub source: Source,
     pub state: String,
 }

@@ -34,8 +34,8 @@ impl TimeOffRequests {
              String::from(\"refresh-token\"));\n    let result: \
              Vec<gusto_api::types::TimeOffRequest> = client\n        .time_off_requests()\n        \
              .get_companies_company_id(\n            \"some-string\",\n            \
-             Some(chrono::Utc::now().date().naive_utc()),\n            \
-             Some(chrono::Utc::now().date().naive_utc()),\n        )\n        .await?;\n    \
+             Some(chrono::Utc::now().date_naive()),\n            \
+             Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_companies_company_id<'a>(

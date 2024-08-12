@@ -40,14 +40,15 @@ async fn test_front_contacts() {
     client
         .contacts()
         .update(&contact_id, &updated_contact_body)
-        .await;
+        .await
+        .unwrap();
     let updated_contact = client.contacts().get(&contact_id).await.unwrap();
 
     if let Some(name) = updated_contact.name {
         assert_eq!(name, "update_name".to_string());
     }
 
-    client.contacts().delete(&contact_id).await;
+    client.contacts().delete(&contact_id).await.unwrap();
 
     let deleted_contact = client.contacts().get(&contact_id).await;
 

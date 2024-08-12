@@ -57,6 +57,7 @@
 //! ```
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
+#![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "requests")]
@@ -132,12 +133,14 @@ pub struct Client {
     client: reqwest_middleware::ClientWithMiddleware,
     #[cfg(feature = "retry")]
     #[cfg(not(target_arch = "wasm32"))]
+    #[allow(dead_code)]
     client_http1_only: reqwest_middleware::ClientWithMiddleware,
 
     #[cfg(not(feature = "retry"))]
     client: reqwest::Client,
     #[cfg(not(feature = "retry"))]
     #[cfg(not(target_arch = "wasm32"))]
+    #[allow(dead_code)]
     client_http1_only: reqwest::Client,
 }
 

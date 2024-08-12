@@ -21,7 +21,7 @@ async fn search_test_service(client: &crate::Client) -> Result<crate::types::Ser
 /// Ensure our state is clean before we start.
 async fn pre_start_cleanup(client: &crate::Client) -> Result<()> {
     // Delete the test service if it exists.
-    match search_test_service(&client).await {
+    match search_test_service(client).await {
         Ok(service) => client.delete_service(&service.id.to_string()).await?,
         Err(err) => {
             if err.to_string() != "Expected 1 service, got 0: []" {
@@ -51,7 +51,7 @@ async fn test_services() {
         }
     }
 
-    assert!(default_escalation_policy.len() > 0);
+    assert!(!default_escalation_policy.is_empty());
 
     // Let's create a new service.
     let new_service = crate::types::Service {
@@ -68,7 +68,7 @@ async fn test_services() {
 
     assert_eq!(service.name, TEST_SERVICE_NAME);
 
-    assert!(service.id.len() > 0);
+    assert!(!service.id.is_empty());
 
     // Let's update the service.
     service.description = "Updated".to_string();

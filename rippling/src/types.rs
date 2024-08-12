@@ -716,7 +716,7 @@ pub enum Status {
     Canceled,
 }
 
-#[doc = ""]
+#[doc = "LeaveRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -911,7 +911,7 @@ impl tabled::Tabled for LeaveRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "LeaveRequestRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -1058,7 +1058,7 @@ impl tabled::Tabled for LeaveRequestRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "DayOff."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -1094,7 +1094,7 @@ impl tabled::Tabled for DayOff {
     }
 }
 
-#[doc = ""]
+#[doc = "DayOffRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -2798,7 +2798,7 @@ pub enum Citizenship {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "Worker."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -3899,7 +3899,7 @@ pub enum WorkerRequestStatus {
     Terminated,
 }
 
-#[doc = ""]
+#[doc = "WorkerRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4170,7 +4170,7 @@ pub enum Type {
     Renege,
 }
 
-#[doc = ""]
+#[doc = "TerminationDetails."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4216,7 +4216,7 @@ impl tabled::Tabled for TerminationDetails {
     }
 }
 
-#[doc = ""]
+#[doc = "TerminationDetailsRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4262,7 +4262,7 @@ impl tabled::Tabled for TerminationDetailsRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Level."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4376,7 +4376,7 @@ impl tabled::Tabled for Level {
     }
 }
 
-#[doc = ""]
+#[doc = "LevelRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4460,7 +4460,7 @@ impl tabled::Tabled for LevelRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Track."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4507,7 +4507,7 @@ impl tabled::Tabled for Track {
     }
 }
 
-#[doc = ""]
+#[doc = "TrackRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4538,7 +4538,7 @@ impl tabled::Tabled for TrackRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Team."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4603,7 +4603,7 @@ impl tabled::Tabled for Team {
     }
 }
 
-#[doc = ""]
+#[doc = "TeamRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4644,7 +4644,7 @@ impl tabled::Tabled for TeamRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Department."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4709,7 +4709,7 @@ impl tabled::Tabled for Department {
     }
 }
 
-#[doc = ""]
+#[doc = "DepartmentRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4750,7 +4750,7 @@ impl tabled::Tabled for DepartmentRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Compensation."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -4926,7 +4926,7 @@ impl tabled::Tabled for Compensation {
     }
 }
 
-#[doc = ""]
+#[doc = "CompensationRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5090,7 +5090,7 @@ impl tabled::Tabled for CompensationRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Currency."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5136,7 +5136,7 @@ impl tabled::Tabled for Currency {
     }
 }
 
-#[doc = ""]
+#[doc = "CurrencyRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5264,7 +5264,7 @@ pub enum AmountWorked {
     Temporary,
 }
 
-#[doc = ""]
+#[doc = "CompanyEmploymentType."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5385,7 +5385,7 @@ pub enum CompanyEmploymentTypeRequestType {
     Employee,
 }
 
-#[doc = ""]
+#[doc = "CompanyEmploymentTypeRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5490,7 +5490,7 @@ pub enum WorkerLocationType {
     Work,
 }
 
-#[doc = ""]
+#[doc = "WorkerLocation."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5550,7 +5550,7 @@ pub enum WorkerLocationRequestType {
     Work,
 }
 
-#[doc = ""]
+#[doc = "WorkerLocationRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5642,7 +5642,7 @@ pub enum ManagementType {
     Eor,
 }
 
-#[doc = ""]
+#[doc = "LegalEntity."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5790,7 +5790,7 @@ impl tabled::Tabled for LegalEntity {
     }
 }
 
-#[doc = ""]
+#[doc = "LegalEntityRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -5917,7 +5917,7 @@ impl tabled::Tabled for LegalEntityRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Company."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6026,7 +6026,7 @@ impl tabled::Tabled for Company {
     }
 }
 
-#[doc = ""]
+#[doc = "CompanyRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -6903,7 +6903,7 @@ pub enum AddressCountry {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "Address."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -7783,7 +7783,7 @@ pub enum AddressRequestCountry {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "AddressRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8637,7 +8637,7 @@ pub enum Code {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "Country."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8668,7 +8668,7 @@ impl tabled::Tabled for Country {
     }
 }
 
-#[doc = ""]
+#[doc = "CountryRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8699,7 +8699,7 @@ impl tabled::Tabled for CountryRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "User."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -8846,7 +8846,7 @@ impl tabled::Tabled for User {
     }
 }
 
-#[doc = ""]
+#[doc = "UserRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -9004,7 +9004,7 @@ pub enum UserPhotoType {
     Thumbnail,
 }
 
-#[doc = ""]
+#[doc = "UserPhoto."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -9073,7 +9073,7 @@ pub enum UserPhotoRequestType {
     Thumbnail,
 }
 
-#[doc = ""]
+#[doc = "UserPhotoRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -9903,7 +9903,7 @@ pub enum UserAddressCountry {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "UserAddress."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -10783,7 +10783,7 @@ pub enum UserAddressRequestCountry {
     Zw,
 }
 
-#[doc = ""]
+#[doc = "UserAddressRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -10911,7 +10911,7 @@ pub enum UserPhoneNumberType {
     Other,
 }
 
-#[doc = ""]
+#[doc = "UserPhoneNumber."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -10997,7 +10997,7 @@ pub enum UserPhoneNumberRequestType {
     Other,
 }
 
-#[doc = ""]
+#[doc = "UserPhoneNumberRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11077,7 +11077,7 @@ pub enum EmailType {
     Other,
 }
 
-#[doc = ""]
+#[doc = "Email."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11157,7 +11157,7 @@ pub enum EmailRequestType {
     Other,
 }
 
-#[doc = ""]
+#[doc = "EmailRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11211,7 +11211,7 @@ impl tabled::Tabled for EmailRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "UserName."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11296,7 +11296,7 @@ impl tabled::Tabled for UserName {
     }
 }
 
-#[doc = ""]
+#[doc = "UserNameRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11410,7 +11410,7 @@ pub enum ApplicationStatus {
     Archived,
 }
 
-#[doc = ""]
+#[doc = "Application."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11536,7 +11536,7 @@ pub enum ApplicationRequestStatus {
     Archived,
 }
 
-#[doc = ""]
+#[doc = "ApplicationRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11644,7 +11644,7 @@ pub enum JobRequisitionStatus {
     Archived,
 }
 
-#[doc = ""]
+#[doc = "JobRequisition."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11727,7 +11727,7 @@ pub enum JobRequisitionRequestStatus {
     Archived,
 }
 
-#[doc = ""]
+#[doc = "JobRequisitionRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11763,7 +11763,7 @@ impl tabled::Tabled for JobRequisitionRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Candidate."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -11851,7 +11851,7 @@ impl tabled::Tabled for Candidate {
     }
 }
 
-#[doc = ""]
+#[doc = "CandidateRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12001,7 +12001,7 @@ pub enum CustomFieldType {
     Url,
 }
 
-#[doc = ""]
+#[doc = "CustomField."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12135,7 +12135,7 @@ pub enum CustomFieldRequestType {
     Url,
 }
 
-#[doc = ""]
+#[doc = "CustomFieldRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12183,7 +12183,7 @@ impl tabled::Tabled for CustomFieldRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "JobCode."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12261,7 +12261,7 @@ impl tabled::Tabled for JobCode {
     }
 }
 
-#[doc = ""]
+#[doc = "JobCodeRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12309,7 +12309,7 @@ impl tabled::Tabled for JobCodeRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "JobDimension."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12365,7 +12365,7 @@ impl tabled::Tabled for JobDimension {
     }
 }
 
-#[doc = ""]
+#[doc = "JobDimensionRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12406,7 +12406,7 @@ impl tabled::Tabled for JobDimensionRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeCard."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12480,7 +12480,7 @@ impl tabled::Tabled for TimeCard {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeCardRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12529,7 +12529,7 @@ impl tabled::Tabled for TimeCardRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeCardSummary."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12668,7 +12668,7 @@ impl tabled::Tabled for TimeCardSummary {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeCardSummaryRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12807,7 +12807,7 @@ impl tabled::Tabled for TimeCardSummaryRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "JobCodeSummary."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12865,7 +12865,7 @@ impl tabled::Tabled for JobCodeSummary {
     }
 }
 
-#[doc = ""]
+#[doc = "JobCodeSummaryRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12911,7 +12911,7 @@ impl tabled::Tabled for JobCodeSummaryRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "PayPeriod."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -12969,7 +12969,7 @@ impl tabled::Tabled for PayPeriod {
     }
 }
 
-#[doc = ""]
+#[doc = "PayPeriodRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13027,7 +13027,7 @@ impl tabled::Tabled for PayPeriodRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "ShiftInput."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13114,7 +13114,7 @@ impl tabled::Tabled for ShiftInput {
     }
 }
 
-#[doc = ""]
+#[doc = "ShiftInputRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13200,7 +13200,7 @@ pub enum TimeEntryStatus {
     Finalized,
 }
 
-#[doc = ""]
+#[doc = "TimeEntry."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13412,7 +13412,7 @@ pub enum TimeEntryRequestStatus {
     Finalized,
 }
 
-#[doc = ""]
+#[doc = "TimeEntryRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13538,7 +13538,7 @@ impl tabled::Tabled for TimeEntryRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "ShiftInputValue."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13595,7 +13595,7 @@ impl tabled::Tabled for ShiftInputValue {
     }
 }
 
-#[doc = ""]
+#[doc = "ShiftInputValueRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13773,7 +13773,7 @@ impl tabled::Tabled for TimeEntrySummaryRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Break."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13860,7 +13860,7 @@ impl tabled::Tabled for Break {
     }
 }
 
-#[doc = ""]
+#[doc = "BreakRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13918,7 +13918,7 @@ impl tabled::Tabled for BreakRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "BreakType."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -13988,7 +13988,7 @@ impl tabled::Tabled for BreakType {
     }
 }
 
-#[doc = ""]
+#[doc = "BreakTypeRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14046,7 +14046,7 @@ impl tabled::Tabled for BreakTypeRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "JobShift."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14142,7 +14142,7 @@ impl tabled::Tabled for JobShift {
     }
 }
 
-#[doc = ""]
+#[doc = "JobShiftRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14229,7 +14229,7 @@ impl tabled::Tabled for JobShiftRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeEntryComment."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14296,7 +14296,7 @@ impl tabled::Tabled for TimeEntryComment {
     }
 }
 
-#[doc = ""]
+#[doc = "TimeEntryCommentRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14332,7 +14332,7 @@ impl tabled::Tabled for TimeEntryCommentRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "EntitlementModel."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14371,7 +14371,7 @@ impl tabled::Tabled for EntitlementModel {
     }
 }
 
-#[doc = ""]
+#[doc = "EntitlementModelRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14407,7 +14407,7 @@ impl tabled::Tabled for EntitlementModelRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "Ssome."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14477,7 +14477,7 @@ impl tabled::Tabled for Ssome {
     }
 }
 
-#[doc = ""]
+#[doc = "SsomeRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14523,7 +14523,7 @@ impl tabled::Tabled for SsomeRequest {
     }
 }
 
-#[doc = ""]
+#[doc = "WorkLocation."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -14574,7 +14574,7 @@ impl tabled::Tabled for WorkLocation {
     }
 }
 
-#[doc = ""]
+#[doc = "WorkLocationRequest."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
