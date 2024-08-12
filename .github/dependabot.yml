@@ -10,5 +10,14 @@ updates:
     schedule:
       interval: "daily"
     reviewers:
-      - jessfraz
-      - adamchalmers
+        - 'jessfraz'
+        - 'adamchalmers'
+        - 'iterion'
+  - package-ecosystem: "gitsubmodule" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    reviewers:
+        - 'jessfraz'
+        - 'adamchalmers'
+        - 'iterion'
