@@ -8,4 +8,5 @@ members = [
 	"remote",
 	"rippling",
 	"twilio",
+	"vercel",
 ]

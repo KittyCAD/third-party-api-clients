@@ -2679,6 +2679,47 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "830b7e5d4d90034032940e4ace0d9a9a057e7a45cd94e6c007832e39edb82f6d"
 
 [[package]]
+name = "vercel-api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "bytes",
+ "chrono",
+ "clap",
+ "data-encoding",
+ "dirs",
+ "expectorate",
+ "format_serde_error",
+ "futures",
+ "futures-util",
+ "http",
+ "itertools",
+ "log",
+ "mime",
+ "parse-display",
+ "percent-encoding",
+ "phonenumber",
+ "pretty_assertions",
+ "rand",
+ "reqwest",
+ "reqwest-conditional-middleware",
+ "reqwest-middleware",
+ "reqwest-retry",
+ "reqwest-tracing",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "tabled",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
