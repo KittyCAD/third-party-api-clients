@@ -110,6 +110,7 @@ vercel:
 		--output ./vercel \
 		--name vercel-api \
 		--description "A fully generated & opinionated API client for the Vercel API." \
+		--request-timeout-seconds 60 \
 		--base-url "https://api.vercel.com"  $(EXTRA_ARGS)
 
 
