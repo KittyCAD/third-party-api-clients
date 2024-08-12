@@ -43,29 +43,11 @@ dependencies = [
 
 [[package]]
 name = "ansi-str"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e50acdf02a3ac61856d5c8d576a8b5fb452a6549f667ca29fefaa18c2cd05135"
-dependencies = [
- "ansitok 0.1.0",
-]
-
-[[package]]
-name = "ansi-str"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1cf4578926a981ab0ca955dc023541d19de37112bc24c1a197bd806d3d86ad1d"
 dependencies = [
- "ansitok 0.2.0",
-]
-
-[[package]]
-name = "ansitok"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2c6eb31f539d8fc1df948eb26452d6c781be4c9883663e7acb258644b71d5b1"
-dependencies = [
- "nom",
+ "ansitok",
 ]
 
 [[package]]
@@ -364,7 +346,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -378,7 +360,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -387,7 +369,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -487,31 +469,11 @@ dependencies = [
 
 [[package]]
 name = "dirs"
-version = "4.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
-dependencies = [
- "dirs-sys 0.3.7",
-]
-
-[[package]]
-name = "dirs"
 version = "5.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "44c45a9d03d6676652bcb5e724c7e988de1acad23a711b5217ab9cbecbec2225"
 dependencies = [
- "dirs-sys 0.4.1",
-]
-
-[[package]]
-name = "dirs-sys"
-version = "0.3.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b1d1d91c932ef41c0f2663aa8b0ca0342d444d842c06914aa0a7e352d0bada6"
-dependencies = [
- "libc",
- "redox_users",
- "winapi",
+ "dirs-sys",
 ]
 
 [[package]]
@@ -625,7 +587,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -639,7 +601,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -648,7 +610,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -787,7 +749,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -801,7 +763,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -810,7 +772,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -1278,25 +1240,12 @@ dependencies = [
 
 [[package]]
 name = "papergrid"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "453cf71f2a37af495a1a124bf30d4d7469cfbea58e9f2479be9d222396a518a2"
-dependencies = [
- "ansi-str 0.3.0",
- "bytecount",
- "fnv",
- "strip-ansi-escapes",
- "unicode-width",
-]
-
-[[package]]
-name = "papergrid"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ad43c07024ef767f9160710b3a6773976194758c7919b17e63b863db0bdf7fb"
 dependencies = [
- "ansi-str 0.8.0",
- "ansitok 0.2.0",
+ "ansi-str",
+ "ansitok",
  "bytecount",
  "fnv",
  "unicode-width",
@@ -1539,7 +1488,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -1553,7 +1502,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -1562,7 +1511,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -1689,7 +1638,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -1703,7 +1652,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -1712,7 +1661,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -1761,18 +1710,6 @@ dependencies = [
  "web-sys",
  "webpki-roots",
  "winreg",
-]
-
-[[package]]
-name = "reqwest-conditional-middleware"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bce134f515eb4c2748bbd928086e7b0aae0d1568daf6c63b51e829aa6f2cf464"
-dependencies = [
- "async-trait",
- "reqwest",
- "reqwest-middleware 0.1.6",
- "task-local-extensions",
 ]
 
 [[package]]
@@ -1933,7 +1870,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -1947,7 +1884,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -1956,7 +1893,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -2224,15 +2161,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
-name = "strip-ansi-escapes"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "011cbb39cf7c1f62871aea3cc46e5817b0937b49e9447370c93cacbe93a766d8"
-dependencies = [
- "vte",
-]
-
-[[package]]
 name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2357,40 +2285,15 @@ dependencies = [
 
 [[package]]
 name = "tabled"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5b2f8c37d26d87d2252187b0a45ea3cbf42baca10377c7e7eaaa2800fa9bf97"
-dependencies = [
- "ansi-str 0.3.0",
- "papergrid 0.5.1",
- "tabled_derive 0.4.0",
- "unicode-width",
-]
-
-[[package]]
-name = "tabled"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c998b0c8b921495196a48aabaf1901ff28be0760136e31604f7967b0792050e"
 dependencies = [
- "ansi-str 0.8.0",
- "ansitok 0.2.0",
- "papergrid 0.11.0",
- "tabled_derive 0.7.0",
+ "ansi-str",
+ "ansitok",
+ "papergrid",
+ "tabled_derive",
  "unicode-width",
-]
-
-[[package]]
-name = "tabled_derive"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9ee618502f497abf593e1c5c9577f34775b111480009ffccd7ad70d23fcaba8"
-dependencies = [
- "heck 0.4.1",
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -2647,7 +2550,7 @@ dependencies = [
  "chrono",
  "clap",
  "data-encoding",
- "dirs 5.0.1",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
@@ -2661,7 +2564,7 @@ dependencies = [
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.2.1",
+ "reqwest-conditional-middleware",
  "reqwest-middleware 0.2.3",
  "reqwest-retry 0.2.2",
  "reqwest-tracing 0.4.5",
@@ -2670,7 +2573,7 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
  "tokio-tungstenite",
@@ -2781,36 +2684,39 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
+ "base64 0.22.1",
+ "bigdecimal",
  "bytes",
  "chrono",
  "clap",
  "data-encoding",
- "dirs 4.0.0",
+ "dirs",
  "expectorate",
  "format_serde_error",
  "futures",
  "futures-util",
  "http 0.2.9",
- "itertools 0.10.5",
+ "itertools 0.13.0",
  "log",
- "mime",
- "parse-display 0.5.5",
- "percent-encoding",
+ "mime_guess",
+ "parse-display 0.9.1",
  "phonenumber",
  "pretty_assertions",
  "rand",
  "reqwest",
- "reqwest-conditional-middleware 0.1.0",
- "reqwest-middleware 0.1.6",
- "reqwest-retry 0.1.5",
- "reqwest-tracing 0.3.1",
+ "reqwest-conditional-middleware",
+ "reqwest-middleware 0.2.3",
+ "reqwest-retry 0.2.2",
+ "reqwest-tracing 0.4.5",
  "schemars",
  "serde",
+ "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.8.0",
+ "tabled",
  "thiserror",
  "tokio",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",

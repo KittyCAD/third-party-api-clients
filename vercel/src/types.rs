@@ -1,5 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -132,6 +131,62 @@ pub mod base64 {
     }
 }
 
+#[cfg(feature = "requests")]
+pub mod multipart {
+    #![doc = " Multipart form data types."]
+    #[doc = " An attachement to a multipart form."]
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct Attachment {
+        #[doc = " The name of the field."]
+        pub name: String,
+        #[doc = " The filename of the attachment."]
+        pub filename: Option<String>,
+        #[doc = " The content type of the attachment."]
+        pub content_type: Option<String>,
+        #[doc = " The data of the attachment."]
+        pub data: Vec<u8>,
+    }
+
+    impl std::convert::TryFrom<Attachment> for reqwest::multipart::Part {
+        type Error = reqwest::Error;
+        fn try_from(attachment: Attachment) -> Result<Self, Self::Error> {
+            let mut part = reqwest::multipart::Part::bytes(attachment.data);
+            if let Some(filename) = attachment.filename {
+                part = part.file_name(filename);
+            }
+            if let Some(content_type) = attachment.content_type {
+                part = part.mime_str(&content_type)?;
+            }
+            Ok(part)
+        }
+    }
+
+    impl std::convert::TryFrom<std::path::PathBuf> for Attachment {
+        type Error = std::io::Error;
+        fn try_from(path: std::path::PathBuf) -> Result<Self, Self::Error> {
+            let filename = path
+                .file_name()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_str()
+                .ok_or_else(|| {
+                    std::io::Error::new(std::io::ErrorKind::InvalidData, "invalid filename")
+                })?
+                .to_string();
+            let content_type = mime_guess::from_path(&path).first_raw();
+            let data = std::fs::read(path)?;
+            Ok(Attachment {
+                name: "file".to_string(),
+                filename: Some(filename),
+                content_type: content_type.map(|s| s.to_string()),
+                data,
+            })
+        }
+    }
+}
+
+#[cfg(feature = "requests")]
 pub mod paginate {
     #![doc = " Utility functions used for pagination."]
     use anyhow::Result;
@@ -141,6 +196,8 @@ pub mod paginate {
         type Item: serde::de::DeserializeOwned;
         #[doc = " Returns true if the response has more pages."]
         fn has_more_pages(&self) -> bool;
+        #[doc = " Returns the next page token."]
+        fn next_page_token(&self) -> Option<String>;
         #[doc = " Modify a request to get the next page."]
         fn next_page(
             &self,
@@ -297,12 +354,14 @@ pub mod phone_number {
     }
 }
 
+#[cfg(feature = "requests")]
 pub mod error {
     #![doc = " Error methods."]
     #[doc = " Error produced by generated client methods."]
     pub enum Error {
         #[doc = " The request did not conform to API requirements."]
         InvalidRequest(String),
+        #[cfg(feature = "retry")]
         #[doc = " A server error either due to the data, or with the connection."]
         CommunicationError(reqwest_middleware::Error),
         #[doc = " A request error, caused when building the request."]
@@ -316,10 +375,21 @@ pub mod error {
         },
         #[doc = " An expected error response."]
         InvalidResponsePayload {
+            #[cfg(feature = "retry")]
             #[doc = " The error."]
             error: reqwest_middleware::Error,
+            #[cfg(not(feature = "retry"))]
+            #[doc = " The error."]
+            error: reqwest::Error,
             #[doc = " The full response."]
             response: reqwest::Response,
+        },
+        #[doc = " An error from the server."]
+        Server {
+            #[doc = " The text from the body."]
+            body: String,
+            #[doc = " The response status."]
+            status: reqwest::StatusCode,
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
@@ -332,10 +402,13 @@ pub mod error {
             match self {
                 Error::InvalidRequest(_) => None,
                 Error::RequestError(e) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Reqwest(e)) => e.status(),
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(reqwest_middleware::Error::Middleware(_)) => None,
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
+                Error::Server { body: _, status } => Some(*status),
                 Error::UnexpectedResponse(r) => Some(r.status()),
             }
         }
@@ -349,6 +422,7 @@ pub mod error {
         }
     }
 
+    #[cfg(feature = "retry")]
     impl From<reqwest_middleware::Error> for Error {
         fn from(e: reqwest_middleware::Error) -> Self {
             Self::CommunicationError(e)
@@ -361,12 +435,22 @@ pub mod error {
         }
     }
 
+    impl From<serde_json::Error> for Error {
+        fn from(e: serde_json::Error) -> Self {
+            Self::SerdeError {
+                error: format_serde_error::SerdeError::new(String::new(), e),
+                status: reqwest::StatusCode::INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
     impl std::fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
                 Error::InvalidRequest(s) => {
                     write!(f, "Invalid Request: {}", s)
                 }
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => {
                     write!(f, "Communication Error: {}", e)
                 }
@@ -379,15 +463,14 @@ pub mod error {
                 Error::InvalidResponsePayload { error, response: _ } => {
                     write!(f, "Invalid Response Payload: {}", error)
                 }
+                Error::Server { body, status } => {
+                    write!(f, "Server Error: {} {}", status, body)
+                }
                 Error::UnexpectedResponse(r) => {
                     write!(f, "Unexpected Response: {:?}", r)
                 }
             }
         }
-    }
-
-    trait ErrorFormat {
-        fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     }
 
     impl std::fmt::Debug for Error {
@@ -399,6 +482,7 @@ pub mod error {
     impl std::error::Error for Error {
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
             match self {
+                #[cfg(feature = "retry")]
                 Error::CommunicationError(e) => Some(e),
                 Error::SerdeError { error, status: _ } => Some(error),
                 Error::InvalidResponsePayload { error, response: _ } => Some(error),
@@ -406,6 +490,116 @@ pub mod error {
             }
         }
     }
+}
+
+#[doc = "Represents an Access Group."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct AccessGroup {
+    #[doc = "The name of this access group."]
+    pub name: String,
+    #[doc = "Timestamp in milliseconds when the access group was created."]
+    #[serde(rename = "createdAt")]
+    pub created_at: String,
+    #[doc = "ID of the team that this access group belongs to."]
+    #[serde(rename = "teamId")]
+    pub team_id: String,
+    #[doc = "Timestamp in milliseconds when the access group was last updated."]
+    #[serde(rename = "updatedAt")]
+    pub updated_at: String,
+    #[doc = "ID of the access group."]
+    #[serde(rename = "accessGroupId")]
+    pub access_group_id: String,
+    #[doc = "Number of members in the access group."]
+    #[serde(rename = "membersCount")]
+    pub members_count: f64,
+    #[doc = "Number of projects in the access group."]
+    #[serde(rename = "projectsCount")]
+    pub projects_count: f64,
+}
+
+impl std::fmt::Display for AccessGroup {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for AccessGroup {
+    const LENGTH: usize = 7;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.name.clone().into(),
+            self.created_at.clone().into(),
+            self.team_id.clone().into(),
+            self.updated_at.clone().into(),
+            self.access_group_id.clone().into(),
+            format!("{:?}", self.members_count).into(),
+            format!("{:?}", self.projects_count).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "name".into(),
+            "created_at".into(),
+            "team_id".into(),
+            "updated_at".into(),
+            "access_group_id".into(),
+            "members_count".into(),
+            "projects_count".into(),
+        ]
+    }
+}
+
+#[doc = "Enum containing the actions that can be performed against a resource. Group operations \
+         are included."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum Aclaction {
+    #[serde(rename = "create")]
+    #[display("create")]
+    Create,
+    #[serde(rename = "delete")]
+    #[display("delete")]
+    Delete,
+    #[serde(rename = "read")]
+    #[display("read")]
+    Read,
+    #[serde(rename = "update")]
+    #[display("update")]
+    Update,
+    #[serde(rename = "list")]
+    #[display("list")]
+    List,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum FlagJSONValue {
+    String(String),
+    F64(f64),
+    Bool(bool),
+    FlagJSONValue(Vec<FlagJSONValue>),
+    StdCollectionsHashMapStringFlagJSONValue(std::collections::HashMap<String, FlagJSONValue>),
 }
 
 #[doc = "This object contains information related to the pagination of the current request, \
@@ -434,30 +628,26 @@ impl std::fmt::Display for Pagination {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Pagination {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.count),
-            format!("{:?}", self.next),
-            format!("{:?}", self.prev),
+            format!("{:?}", self.count).into(),
+            format!("{:?}", self.next).into(),
+            format!("{:?}", self.prev).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["count".to_string(), "next".to_string(), "prev".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["count".into(), "next".into(), "prev".into()]
     }
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum EdgeConfigItemValue {
     String(String),
     F64(f64),
@@ -475,6 +665,8 @@ pub enum EdgeConfigItemValue {
 pub struct EdgeConfigItem {
     pub key: String,
     pub value: EdgeConfigItemValue,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     #[serde(rename = "edgeConfigId")]
     pub edge_config_id: String,
     #[serde(rename = "createdAt")]
@@ -493,25 +685,32 @@ impl std::fmt::Display for EdgeConfigItem {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EdgeConfigItem {
-    const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 6;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.key.clone(),
-            format!("{:?}", self.value),
-            self.edge_config_id.clone(),
-            format!("{:?}", self.created_at),
-            format!("{:?}", self.updated_at),
+            self.key.clone().into(),
+            format!("{:?}", self.value).into(),
+            if let Some(description) = &self.description {
+                format!("{:?}", description).into()
+            } else {
+                String::new().into()
+            },
+            self.edge_config_id.clone().into(),
+            format!("{:?}", self.created_at).into(),
+            format!("{:?}", self.updated_at).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "key".to_string(),
-            "value".to_string(),
-            "edge_config_id".to_string(),
-            "created_at".to_string(),
-            "updated_at".to_string(),
+            "key".into(),
+            "value".into(),
+            "description".into(),
+            "edge_config_id".into(),
+            "created_at".into(),
+            "updated_at".into(),
         ]
     }
 }
@@ -541,25 +740,26 @@ impl std::fmt::Display for EdgeConfigToken {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EdgeConfigToken {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.token.clone(),
-            self.label.clone(),
-            self.id.clone(),
-            self.edge_config_id.clone(),
-            format!("{:?}", self.created_at),
+            self.token.clone().into(),
+            self.label.clone().into(),
+            self.id.clone().into(),
+            self.edge_config_id.clone().into(),
+            format!("{:?}", self.created_at).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "token".to_string(),
-            "label".to_string(),
-            "id".to_string(),
-            "edge_config_id".to_string(),
-            "created_at".to_string(),
+            "token".into(),
+            "label".into(),
+            "id".into(),
+            "edge_config_id".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -573,27 +773,21 @@ impl tabled::Tabled for EdgeConfigToken {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Type {
-    #[serde(rename = "target")]
-    #[display("target")]
-    Target,
-    #[serde(rename = "bold")]
-    #[display("bold")]
-    Bold,
-    #[serde(rename = "link")]
-    #[display("link")]
-    Link,
     #[serde(rename = "author")]
     #[display("author")]
     Author,
     #[serde(rename = "bitbucket_login")]
     #[display("bitbucket_login")]
     BitbucketLogin,
+    #[serde(rename = "bold")]
+    #[display("bold")]
+    Bold,
     #[serde(rename = "deployment_host")]
     #[display("deployment_host")]
     DeploymentHost,
@@ -618,6 +812,9 @@ pub enum Type {
     #[serde(rename = "edge-config")]
     #[display("edge-config")]
     EdgeConfig,
+    #[serde(rename = "link")]
+    #[display("link")]
+    Link,
     #[serde(rename = "project_name")]
     #[display("project_name")]
     ProjectName,
@@ -627,6 +824,12 @@ pub enum Type {
     #[serde(rename = "env_var_name")]
     #[display("env_var_name")]
     EnvVarName,
+    #[serde(rename = "target")]
+    #[display("target")]
+    Target,
+    #[serde(rename = "store")]
+    #[display("store")]
+    Store,
     #[serde(rename = "system")]
     #[display("system")]
     System,
@@ -657,18 +860,19 @@ impl std::fmt::Display for Entities {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Entities {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.type_),
-            format!("{:?}", self.start),
-            format!("{:?}", self.end),
+            format!("{:?}", self.type_).into(),
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "start".into(), "end".into()]
     }
 }
 
@@ -695,29 +899,30 @@ impl std::fmt::Display for User {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for User {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.avatar.clone(),
-            self.email.clone(),
+            self.avatar.clone().into(),
+            self.email.clone().into(),
             if let Some(slug) = &self.slug {
-                format!("{:?}", slug)
+                format!("{:?}", slug).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.uid.clone(),
-            self.username.clone(),
+            self.uid.clone().into(),
+            self.username.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "avatar".to_string(),
-            "email".to_string(),
-            "slug".to_string(),
-            "uid".to_string(),
-            "username".to_string(),
+            "avatar".into(),
+            "email".into(),
+            "slug".into(),
+            "uid".into(),
+            "username".into(),
         ]
     }
 }
@@ -755,69 +960,34 @@ impl std::fmt::Display for UserEvent {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for UserEvent {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            self.text.clone(),
-            format!("{:?}", self.entities),
-            format!("{:?}", self.created_at),
+            self.id.clone().into(),
+            self.text.clone().into(),
+            format!("{:?}", self.entities).into(),
+            format!("{:?}", self.created_at).into(),
             if let Some(user) = &self.user {
-                format!("{:?}", user)
+                format!("{:?}", user).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.user_id.clone(),
+            self.user_id.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "text".to_string(),
-            "entities".to_string(),
-            "created_at".to_string(),
-            "user".to_string(),
-            "user_id".to_string(),
+            "id".into(),
+            "text".into(),
+            "entities".into(),
+            "created_at".into(),
+            "user".into(),
+            "user_id".into(),
         ]
     }
-}
-
-#[doc = "Enum containing the actions that can be performed against a resource. Group operations \
-         are included."]
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Hash,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
-    parse_display :: FromStr,
-    parse_display :: Display,
-)]
-pub enum Aclaction {
-    #[serde(rename = "create")]
-    #[display("create")]
-    Create,
-    #[serde(rename = "delete")]
-    #[display("delete")]
-    Delete,
-    #[serde(rename = "read")]
-    #[display("read")]
-    Read,
-    #[serde(rename = "update")]
-    #[display("update")]
-    Update,
-    #[serde(rename = "list")]
-    #[display("list")]
-    List,
-    #[serde(rename = "count")]
-    #[display("count")]
-    Count,
 }
 
 #[doc = "Data representing a Team."]
@@ -836,13 +1006,14 @@ impl std::fmt::Display for Team {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Team {
     const LENGTH: usize = 0;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![]
     }
 }
@@ -881,34 +1052,35 @@ impl std::fmt::Display for Connection {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Connection {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.type_.clone(),
-            self.status.clone(),
-            self.state.clone(),
-            format!("{:?}", self.connected_at),
+            self.type_.clone().into(),
+            self.status.clone().into(),
+            self.state.clone().into(),
+            format!("{:?}", self.connected_at).into(),
             if let Some(last_received_webhook_event) = &self.last_received_webhook_event {
-                format!("{:?}", last_received_webhook_event)
+                format!("{:?}", last_received_webhook_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "type_".to_string(),
-            "status".to_string(),
-            "state".to_string(),
-            "connected_at".to_string(),
-            "last_received_webhook_event".to_string(),
+            "type_".into(),
+            "status".into(),
+            "state".into(),
+            "connected_at".into(),
+            "last_received_webhook_event".into(),
         ]
     }
 }
 
-#[doc = "Information for the SAML Single Sign-On configuration."]
+#[doc = "Information for the Directory Sync configuration."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
@@ -916,8 +1088,6 @@ pub struct Directory {
     #[doc = "The Identity Provider \"type\", for example Okta."]
     #[serde(rename = "type")]
     pub type_: String,
-    #[doc = "Current status of the connection."]
-    pub status: String,
     #[doc = "Current state of the connection."]
     pub state: String,
     #[doc = "Timestamp (in milliseconds) of when the configuration was connected."]
@@ -942,29 +1112,28 @@ impl std::fmt::Display for Directory {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Directory {
-    const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 4;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.type_.clone(),
-            self.status.clone(),
-            self.state.clone(),
-            format!("{:?}", self.connected_at),
+            self.type_.clone().into(),
+            self.state.clone().into(),
+            format!("{:?}", self.connected_at).into(),
             if let Some(last_received_webhook_event) = &self.last_received_webhook_event {
-                format!("{:?}", last_received_webhook_event)
+                format!("{:?}", last_received_webhook_event).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "type_".to_string(),
-            "status".to_string(),
-            "state".to_string(),
-            "connected_at".to_string(),
-            "last_received_webhook_event".to_string(),
+            "type_".into(),
+            "state".into(),
+            "connected_at".into(),
+            "last_received_webhook_event".into(),
         ]
     }
 }
@@ -978,7 +1147,7 @@ pub struct Saml {
     #[doc = "Information for the SAML Single Sign-On configuration."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connection: Option<Connection>,
-    #[doc = "Information for the SAML Single Sign-On configuration."]
+    #[doc = "Information for the Directory Sync configuration."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub directory: Option<Directory>,
     #[doc = "When `true`, interactions with the Team **must** be done with an authentication \
@@ -996,30 +1165,27 @@ impl std::fmt::Display for Saml {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Saml {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(connection) = &self.connection {
-                format!("{:?}", connection)
+                format!("{:?}", connection).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(directory) = &self.directory {
-                format!("{:?}", directory)
+                format!("{:?}", directory).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.enforced),
+            format!("{:?}", self.enforced).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "connection".to_string(),
-            "directory".to_string(),
-            "enforced".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["connection".into(), "directory".into(), "enforced".into()]
     }
 }
 
@@ -1031,27 +1197,30 @@ impl tabled::Tabled for Saml {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Role {
-    #[serde(rename = "MEMBER")]
-    #[display("MEMBER")]
-    Member,
     #[serde(rename = "OWNER")]
     #[display("OWNER")]
     Owner,
-    #[serde(rename = "VIEWER")]
-    #[display("VIEWER")]
-    Viewer,
+    #[serde(rename = "MEMBER")]
+    #[display("MEMBER")]
+    Member,
     #[serde(rename = "DEVELOPER")]
     #[display("DEVELOPER")]
     Developer,
     #[serde(rename = "BILLING")]
     #[display("BILLING")]
     Billing,
+    #[serde(rename = "VIEWER")]
+    #[display("VIEWER")]
+    Viewer,
+    #[serde(rename = "CONTRIBUTOR")]
+    #[display("CONTRIBUTOR")]
+    Contributor,
 }
 
 #[derive(
@@ -1062,24 +1231,24 @@ pub enum Role {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Origin {
     #[serde(rename = "link")]
     #[display("link")]
     Link,
-    #[serde(rename = "import")]
-    #[display("import")]
-    Import,
     #[serde(rename = "saml")]
     #[display("saml")]
     Saml,
     #[serde(rename = "mail")]
     #[display("mail")]
     Mail,
+    #[serde(rename = "import")]
+    #[display("import")]
+    Import,
     #[serde(rename = "teams")]
     #[display("teams")]
     Teams,
@@ -1104,14 +1273,9 @@ pub enum Origin {
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum GitUserId {
     String(String),
     F64(f64),
@@ -1170,77 +1334,78 @@ impl std::fmt::Display for JoinedFrom {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for JoinedFrom {
     const LENGTH: usize = 11;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.origin),
+            format!("{:?}", self.origin).into(),
             if let Some(commit_id) = &self.commit_id {
-                format!("{:?}", commit_id)
+                format!("{:?}", commit_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(repo_id) = &self.repo_id {
-                format!("{:?}", repo_id)
+                format!("{:?}", repo_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(repo_path) = &self.repo_path {
-                format!("{:?}", repo_path)
+                format!("{:?}", repo_path).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(git_user_id) = &self.git_user_id {
-                format!("{:?}", git_user_id)
+                format!("{:?}", git_user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(git_user_login) = &self.git_user_login {
-                format!("{:?}", git_user_login)
+                format!("{:?}", git_user_login).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sso_user_id) = &self.sso_user_id {
-                format!("{:?}", sso_user_id)
+                format!("{:?}", sso_user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(sso_connected_at) = &self.sso_connected_at {
-                format!("{:?}", sso_connected_at)
+                format!("{:?}", sso_connected_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(idp_user_id) = &self.idp_user_id {
-                format!("{:?}", idp_user_id)
+                format!("{:?}", idp_user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(dsync_user_id) = &self.dsync_user_id {
-                format!("{:?}", dsync_user_id)
+                format!("{:?}", dsync_user_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(dsync_connected_at) = &self.dsync_connected_at {
-                format!("{:?}", dsync_connected_at)
+                format!("{:?}", dsync_connected_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "origin".to_string(),
-            "commit_id".to_string(),
-            "repo_id".to_string(),
-            "repo_path".to_string(),
-            "git_user_id".to_string(),
-            "git_user_login".to_string(),
-            "sso_user_id".to_string(),
-            "sso_connected_at".to_string(),
-            "idp_user_id".to_string(),
-            "dsync_user_id".to_string(),
-            "dsync_connected_at".to_string(),
+            "origin".into(),
+            "commit_id".into(),
+            "repo_id".into(),
+            "repo_path".into(),
+            "git_user_id".into(),
+            "git_user_login".into(),
+            "sso_user_id".into(),
+            "sso_connected_at".into(),
+            "idp_user_id".into(),
+            "dsync_user_id".into(),
+            "dsync_connected_at".into(),
         ]
     }
 }
@@ -1249,114 +1414,40 @@ impl tabled::Tabled for JoinedFrom {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct MembershipOneOf {
-    pub confirmed: bool,
-    #[serde(rename = "confirmedAt")]
-    pub confirmed_at: f64,
-    #[serde(
-        rename = "accessRequestedAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub access_requested_at: Option<f64>,
-    pub role: Role,
-    #[serde(rename = "teamId", default, skip_serializing_if = "Option::is_none")]
-    pub team_id: Option<String>,
-    pub uid: String,
-    #[serde(rename = "createdAt")]
-    pub created_at: f64,
-    pub created: f64,
-    #[serde(
-        rename = "joinedFrom",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub joined_from: Option<JoinedFrom>,
-}
-
-impl std::fmt::Display for MembershipOneOf {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for MembershipOneOf {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            format!("{:?}", self.confirmed),
-            format!("{:?}", self.confirmed_at),
-            if let Some(access_requested_at) = &self.access_requested_at {
-                format!("{:?}", access_requested_at)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.role),
-            if let Some(team_id) = &self.team_id {
-                format!("{:?}", team_id)
-            } else {
-                String::new()
-            },
-            self.uid.clone(),
-            format!("{:?}", self.created_at),
-            format!("{:?}", self.created),
-            if let Some(joined_from) = &self.joined_from {
-                format!("{:?}", joined_from)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "confirmed".to_string(),
-            "confirmed_at".to_string(),
-            "access_requested_at".to_string(),
-            "role".to_string(),
-            "team_id".to_string(),
-            "uid".to_string(),
-            "created_at".to_string(),
-            "created".to_string(),
-            "joined_from".to_string(),
-        ]
-    }
-}
-
-#[doc = "The membership of the authenticated User in relation to the Team."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct MembershipOneOfOneOf {
-    pub confirmed: bool,
+pub struct Membership {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub confirmed: Option<bool>,
     #[serde(
         rename = "confirmedAt",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub confirmed_at: Option<f64>,
-    #[serde(rename = "accessRequestedAt")]
-    pub access_requested_at: f64,
-    pub role: Role,
+    #[serde(
+        rename = "accessRequestedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub access_requested_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub role: Option<Role>,
     #[serde(rename = "teamId", default, skip_serializing_if = "Option::is_none")]
     pub team_id: Option<String>,
-    pub uid: String,
-    #[serde(rename = "createdAt")]
-    pub created_at: f64,
-    pub created: f64,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub created: Option<f64>,
     #[serde(
         rename = "joinedFrom",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub joined_from: Option<JoinedFrom>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub uid: Option<String>,
 }
 
-impl std::fmt::Display for MembershipOneOfOneOf {
+impl std::fmt::Display for Membership {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -1366,61 +1457,72 @@ impl std::fmt::Display for MembershipOneOfOneOf {
     }
 }
 
-impl tabled::Tabled for MembershipOneOfOneOf {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Membership {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.confirmed),
+            if let Some(confirmed) = &self.confirmed {
+                format!("{:?}", confirmed).into()
+            } else {
+                String::new().into()
+            },
             if let Some(confirmed_at) = &self.confirmed_at {
-                format!("{:?}", confirmed_at)
+                format!("{:?}", confirmed_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.access_requested_at),
-            format!("{:?}", self.role),
+            if let Some(access_requested_at) = &self.access_requested_at {
+                format!("{:?}", access_requested_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(role) = &self.role {
+                format!("{:?}", role).into()
+            } else {
+                String::new().into()
+            },
             if let Some(team_id) = &self.team_id {
-                format!("{:?}", team_id)
+                format!("{:?}", team_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.uid.clone(),
-            format!("{:?}", self.created_at),
-            format!("{:?}", self.created),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(created) = &self.created {
+                format!("{:?}", created).into()
+            } else {
+                String::new().into()
+            },
             if let Some(joined_from) = &self.joined_from {
-                format!("{:?}", joined_from)
+                format!("{:?}", joined_from).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(uid) = &self.uid {
+                format!("{:?}", uid).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "confirmed".to_string(),
-            "confirmed_at".to_string(),
-            "access_requested_at".to_string(),
-            "role".to_string(),
-            "team_id".to_string(),
-            "uid".to_string(),
-            "created_at".to_string(),
-            "created".to_string(),
-            "joined_from".to_string(),
+            "confirmed".into(),
+            "confirmed_at".into(),
+            "access_requested_at".into(),
+            "role".into(),
+            "team_id".into(),
+            "created_at".into(),
+            "created".into(),
+            "joined_from".into(),
+            "uid".into(),
         ]
     }
-}
-
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
-)]
-pub enum Membership {
-    MembershipOneOf(MembershipOneOf),
-    MembershipOneOfOneOf(MembershipOneOfOneOf),
 }
 
 #[doc = "A limited form of data representing a Team, due to the authentication token missing \
@@ -1448,6 +1550,7 @@ pub struct TeamLimited {
     #[doc = "The ID of the file used as avatar for this Team."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
+    #[doc = "The membership of the authenticated User in relation to the Team."]
     pub membership: Membership,
     #[doc = "Will remain undocumented. Remove in v3 API."]
     pub created: String,
@@ -1466,37 +1569,38 @@ impl std::fmt::Display for TeamLimited {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for TeamLimited {
     const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.limited),
+            format!("{:?}", self.limited).into(),
             if let Some(saml) = &self.saml {
-                format!("{:?}", saml)
+                format!("{:?}", saml).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.id.clone(),
-            self.slug.clone(),
-            format!("{:?}", self.name),
-            format!("{:?}", self.avatar),
-            format!("{:?}", self.membership),
-            self.created.clone(),
-            format!("{:?}", self.created_at),
+            self.id.clone().into(),
+            self.slug.clone().into(),
+            format!("{:?}", self.name).into(),
+            format!("{:?}", self.avatar).into(),
+            format!("{:?}", self.membership).into(),
+            self.created.clone().into(),
+            format!("{:?}", self.created_at).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "limited".to_string(),
-            "saml".to_string(),
-            "id".to_string(),
-            "slug".to_string(),
-            "name".to_string(),
-            "avatar".to_string(),
-            "membership".to_string(),
-            "created".to_string(),
-            "created_at".to_string(),
+            "limited".into(),
+            "saml".into(),
+            "id".into(),
+            "slug".into(),
+            "name".into(),
+            "avatar".into(),
+            "membership".into(),
+            "created".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -1509,30 +1613,160 @@ impl tabled::Tabled for TeamLimited {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Reason {
-    #[serde(rename = "FAIR_USE_LIMITS_EXCEEDED")]
-    #[display("FAIR_USE_LIMITS_EXCEEDED")]
-    FairUseLimitsExceeded,
-    #[serde(rename = "ENTERPRISE_TRIAL_ENDED")]
-    #[display("ENTERPRISE_TRIAL_ENDED")]
-    EnterpriseTrialEnded,
-    #[serde(rename = "BLOCKED_FOR_PLATFORM_ABUSE")]
-    #[display("BLOCKED_FOR_PLATFORM_ABUSE")]
-    BlockedForPlatformAbuse,
-    #[serde(rename = "UNPAID_INVOICE")]
-    #[display("UNPAID_INVOICE")]
-    UnpaidInvoice,
-    #[serde(rename = "SUBSCRIPTION_EXPIRED")]
-    #[display("SUBSCRIPTION_EXPIRED")]
-    SubscriptionExpired,
     #[serde(rename = "SUBSCRIPTION_CANCELED")]
     #[display("SUBSCRIPTION_CANCELED")]
     SubscriptionCanceled,
+    #[serde(rename = "SUBSCRIPTION_EXPIRED")]
+    #[display("SUBSCRIPTION_EXPIRED")]
+    SubscriptionExpired,
+    #[serde(rename = "UNPAID_INVOICE")]
+    #[display("UNPAID_INVOICE")]
+    UnpaidInvoice,
+    #[serde(rename = "ENTERPRISE_TRIAL_ENDED")]
+    #[display("ENTERPRISE_TRIAL_ENDED")]
+    EnterpriseTrialEnded,
+    #[serde(rename = "FAIR_USE_LIMITS_EXCEEDED")]
+    #[display("FAIR_USE_LIMITS_EXCEEDED")]
+    FairUseLimitsExceeded,
+    #[serde(rename = "BLOCKED_FOR_PLATFORM_ABUSE")]
+    #[display("BLOCKED_FOR_PLATFORM_ABUSE")]
+    BlockedForPlatformAbuse,
+}
+
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum BlockedDueToOverageType {
+    #[serde(rename = "analyticsUsage")]
+    #[display("analyticsUsage")]
+    AnalyticsUsage,
+    #[serde(rename = "artifacts")]
+    #[display("artifacts")]
+    Artifacts,
+    #[serde(rename = "bandwidth")]
+    #[display("bandwidth")]
+    Bandwidth,
+    #[serde(rename = "blobStores")]
+    #[display("blobStores")]
+    BlobStores,
+    #[serde(rename = "blobTotalAdvancedRequests")]
+    #[display("blobTotalAdvancedRequests")]
+    BlobTotalAdvancedRequests,
+    #[serde(rename = "blobTotalAvgSizeInBytes")]
+    #[display("blobTotalAvgSizeInBytes")]
+    BlobTotalAvgSizeInBytes,
+    #[serde(rename = "blobTotalGetResponseObjectSizeInBytes")]
+    #[display("blobTotalGetResponseObjectSizeInBytes")]
+    BlobTotalGetResponseObjectSizeInBytes,
+    #[serde(rename = "blobTotalSimpleRequests")]
+    #[display("blobTotalSimpleRequests")]
+    BlobTotalSimpleRequests,
+    #[serde(rename = "buildMinute")]
+    #[display("buildMinute")]
+    BuildMinute,
+    #[serde(rename = "dataCacheRead")]
+    #[display("dataCacheRead")]
+    DataCacheRead,
+    #[serde(rename = "dataCacheRevalidation")]
+    #[display("dataCacheRevalidation")]
+    DataCacheRevalidation,
+    #[serde(rename = "dataCacheWrite")]
+    #[display("dataCacheWrite")]
+    DataCacheWrite,
+    #[serde(rename = "edgeConfigRead")]
+    #[display("edgeConfigRead")]
+    EdgeConfigRead,
+    #[serde(rename = "edgeConfigWrite")]
+    #[display("edgeConfigWrite")]
+    EdgeConfigWrite,
+    #[serde(rename = "edgeFunctionExecutionUnits")]
+    #[display("edgeFunctionExecutionUnits")]
+    EdgeFunctionExecutionUnits,
+    #[serde(rename = "edgeMiddlewareInvocations")]
+    #[display("edgeMiddlewareInvocations")]
+    EdgeMiddlewareInvocations,
+    #[serde(rename = "edgeRequest")]
+    #[display("edgeRequest")]
+    EdgeRequest,
+    #[serde(rename = "edgeRequestAdditionalCpuDuration")]
+    #[display("edgeRequestAdditionalCpuDuration")]
+    EdgeRequestAdditionalCpuDuration,
+    #[serde(rename = "fastDataTransfer")]
+    #[display("fastDataTransfer")]
+    FastDataTransfer,
+    #[serde(rename = "fastOriginTransfer")]
+    #[display("fastOriginTransfer")]
+    FastOriginTransfer,
+    #[serde(rename = "functionDuration")]
+    #[display("functionDuration")]
+    FunctionDuration,
+    #[serde(rename = "functionInvocation")]
+    #[display("functionInvocation")]
+    FunctionInvocation,
+    #[serde(rename = "logDrainsVolume")]
+    #[display("logDrainsVolume")]
+    LogDrainsVolume,
+    #[serde(rename = "monitoringMetric")]
+    #[display("monitoringMetric")]
+    MonitoringMetric,
+    #[serde(rename = "postgresComputeTime")]
+    #[display("postgresComputeTime")]
+    PostgresComputeTime,
+    #[serde(rename = "postgresDataStorage")]
+    #[display("postgresDataStorage")]
+    PostgresDataStorage,
+    #[serde(rename = "postgresDataTransfer")]
+    #[display("postgresDataTransfer")]
+    PostgresDataTransfer,
+    #[serde(rename = "postgresDatabase")]
+    #[display("postgresDatabase")]
+    PostgresDatabase,
+    #[serde(rename = "postgresWrittenData")]
+    #[display("postgresWrittenData")]
+    PostgresWrittenData,
+    #[serde(rename = "serverlessFunctionExecution")]
+    #[display("serverlessFunctionExecution")]
+    ServerlessFunctionExecution,
+    #[serde(rename = "sourceImages")]
+    #[display("sourceImages")]
+    SourceImages,
+    #[serde(rename = "storageRedisTotalBandwidthInBytes")]
+    #[display("storageRedisTotalBandwidthInBytes")]
+    StorageRedisTotalBandwidthInBytes,
+    #[serde(rename = "storageRedisTotalCommands")]
+    #[display("storageRedisTotalCommands")]
+    StorageRedisTotalCommands,
+    #[serde(rename = "storageRedisTotalDailyAvgStorageInBytes")]
+    #[display("storageRedisTotalDailyAvgStorageInBytes")]
+    StorageRedisTotalDailyAvgStorageInBytes,
+    #[serde(rename = "storageRedisTotalDatabases")]
+    #[display("storageRedisTotalDatabases")]
+    StorageRedisTotalDatabases,
+    #[serde(rename = "wafOwaspExcessBytes")]
+    #[display("wafOwaspExcessBytes")]
+    WafOwaspExcessBytes,
+    #[serde(rename = "wafOwaspRequests")]
+    #[display("wafOwaspRequests")]
+    WafOwaspRequests,
+    #[serde(rename = "webAnalyticsEvent")]
+    #[display("webAnalyticsEvent")]
+    WebAnalyticsEvent,
 }
 
 #[doc = "When the User account has been \"soft blocked\", this property will contain the date when \
@@ -1544,6 +1778,12 @@ pub struct SoftBlock {
     #[serde(rename = "blockedAt")]
     pub blocked_at: f64,
     pub reason: Reason,
+    #[serde(
+        rename = "blockedDueToOverageType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub blocked_due_to_overage_type: Option<BlockedDueToOverageType>,
 }
 
 impl std::fmt::Display for SoftBlock {
@@ -1556,17 +1796,27 @@ impl std::fmt::Display for SoftBlock {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SoftBlock {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.blocked_at),
-            format!("{:?}", self.reason),
+            format!("{:?}", self.blocked_at).into(),
+            format!("{:?}", self.reason).into(),
+            if let Some(blocked_due_to_overage_type) = &self.blocked_due_to_overage_type {
+                format!("{:?}", blocked_due_to_overage_type).into()
+            } else {
+                String::new().into()
+            },
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["blocked_at".to_string(), "reason".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "blocked_at".into(),
+            "reason".into(),
+            "blocked_due_to_overage_type".into(),
+        ]
     }
 }
 
@@ -1578,11 +1828,11 @@ impl tabled::Tabled for SoftBlock {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Currency {
     #[serde(rename = "usd")]
     #[display("usd")]
@@ -1590,28 +1840,6 @@ pub enum Currency {
     #[serde(rename = "eur")]
     #[display("eur")]
     Eur,
-}
-
-#[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Hash,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
-    parse_display :: FromStr,
-    parse_display :: Display,
-)]
-pub enum Addons {
-    #[serde(rename = "custom-deployment-suffix")]
-    #[display("custom-deployment-suffix")]
-    CustomDeploymentSuffix,
-    #[serde(rename = "live-support")]
-    #[display("live-support")]
-    LiveSupport,
 }
 
 #[derive(
@@ -1632,14 +1860,18 @@ impl std::fmt::Display for Period {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Period {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.start), format!("{:?}", self.end)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["start".into(), "end".into()]
     }
 }
 
@@ -1661,14 +1893,18 @@ impl std::fmt::Display for Contract {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Contract {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.start), format!("{:?}", self.end)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["start".into(), "end".into()]
     }
 }
 
@@ -1680,21 +1916,21 @@ impl tabled::Tabled for Contract {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Plan {
-    #[serde(rename = "hobby")]
-    #[display("hobby")]
-    Hobby,
-    #[serde(rename = "enterprise")]
-    #[display("enterprise")]
-    Enterprise,
     #[serde(rename = "pro")]
     #[display("pro")]
     Pro,
+    #[serde(rename = "enterprise")]
+    #[display("enterprise")]
+    Enterprise,
+    #[serde(rename = "hobby")]
+    #[display("hobby")]
+    Hobby,
 }
 
 #[derive(
@@ -1705,11 +1941,11 @@ pub enum Plan {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Platform {
     #[serde(rename = "stripe")]
     #[display("stripe")]
@@ -1727,11 +1963,11 @@ pub enum Platform {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ProgramType {
     #[serde(rename = "startup")]
     #[display("startup")]
@@ -1759,14 +1995,18 @@ impl std::fmt::Display for Trial {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Trial {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.start), format!("{:?}", self.end)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["start".into(), "end".into()]
     }
 }
 
@@ -1789,14 +2029,15 @@ impl std::fmt::Display for Tax {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Tax {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.type_.clone(), self.id.clone()]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.type_.clone().into(), self.id.clone().into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["type_".to_string(), "id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "id".into()]
     }
 }
 
@@ -1804,8 +2045,8 @@ impl tabled::Tabled for Tax {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Address {
-    #[serde(rename = "line1")]
-    pub line_1: String,
+    #[serde(rename = "line1", default, skip_serializing_if = "Option::is_none")]
+    pub line_1: Option<String>,
     #[serde(rename = "line2", default, skip_serializing_if = "Option::is_none")]
     pub line_2: Option<String>,
     #[serde(
@@ -1832,47 +2073,52 @@ impl std::fmt::Display for Address {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Address {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.line_1.clone(),
-            if let Some(line_2) = &self.line_2 {
-                format!("{:?}", line_2)
+            if let Some(line_1) = &self.line_1 {
+                format!("{:?}", line_1).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(line_2) = &self.line_2 {
+                format!("{:?}", line_2).into()
+            } else {
+                String::new().into()
             },
             if let Some(postal_code) = &self.postal_code {
-                format!("{:?}", postal_code)
+                format!("{:?}", postal_code).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(city) = &self.city {
-                format!("{:?}", city)
+                format!("{:?}", city).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(country) = &self.country {
-                format!("{:?}", country)
+                format!("{:?}", country).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(state) = &self.state {
-                format!("{:?}", state)
+                format!("{:?}", state).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "line_1".to_string(),
-            "line_2".to_string(),
-            "postal_code".to_string(),
-            "city".to_string(),
-            "country".to_string(),
-            "state".to_string(),
+            "line_1".into(),
+            "line_2".into(),
+            "postal_code".into(),
+            "city".into(),
+            "country".into(),
+            "state".into(),
         ]
     }
 }
@@ -1885,11 +2131,11 @@ impl tabled::Tabled for Address {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum Interval {
     #[serde(rename = "month")]
@@ -1897,7 +2143,6 @@ pub enum Interval {
     #[default]
     Month,
 }
-
 
 
 #[derive(
@@ -1919,207 +2164,18 @@ impl std::fmt::Display for Frequency {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Frequency {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.interval),
-            format!("{:?}", self.interval_count),
+            format!("{:?}", self.interval).into(),
+            format!("{:?}", self.interval_count).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["interval".to_string(), "interval_count".to_string()]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct Pro {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for Pro {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for Pro {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct Enterprise {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for Enterprise {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for Enterprise {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["interval".into(), "interval_count".into()]
     }
 }
 
@@ -2132,6 +2188,14 @@ pub struct ConcurrentBuilds {
     pub tier: Option<f64>,
     pub price: f64,
     pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     pub hidden: bool,
@@ -2163,817 +2227,64 @@ impl std::fmt::Display for ConcurrentBuilds {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ConcurrentBuilds {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
+                format!("{:?}", frequency).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
+                format!("{:?}", max_quantity).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct InvoiceItemsSaml {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for InvoiceItemsSaml {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for InvoiceItemsSaml {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct TeamSeats {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for TeamSeats {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for TeamSeats {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct CustomCerts {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for CustomCerts {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for CustomCerts {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct PreviewDeploymentSuffix {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for PreviewDeploymentSuffix {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for PreviewDeploymentSuffix {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct PasswordProtection {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for PasswordProtection {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for PasswordProtection {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct SsoProtection {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for SsoProtection {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for SsoProtection {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct Analytics {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for Analytics {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for Analytics {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
-        ]
-    }
-}
-
-#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct Monitoring {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub tier: Option<f64>,
-    pub price: f64,
-    pub quantity: f64,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    pub hidden: bool,
-    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<f64>,
-    #[serde(
-        rename = "disabledAt",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disabled_at: Option<f64>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<Frequency>,
-    #[serde(
-        rename = "maxQuantity",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub max_quantity: Option<f64>,
-}
-
-impl std::fmt::Display for Monitoring {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-impl tabled::Tabled for Monitoring {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
-        vec![
-            if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
-            if let Some(name) = &self.name {
-                format!("{:?}", name)
-            } else {
-                String::new()
-            },
-            format!("{:?}", self.hidden),
-            if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
-            } else {
-                String::new()
-            },
-            if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
-            } else {
-                String::new()
-            },
-            if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
-            } else {
-                String::new()
-            },
-            if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
-            } else {
-                String::new()
-            },
-        ]
-    }
-
-    fn headers() -> Vec<String> {
-        vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
         ]
     }
 }
@@ -2987,6 +2298,14 @@ pub struct WebAnalytics {
     pub tier: Option<f64>,
     pub price: f64,
     pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     pub hidden: bool,
@@ -3018,57 +2337,1384 @@ impl std::fmt::Display for WebAnalytics {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for WebAnalytics {
-    const LENGTH: usize = 9;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.quantity),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(created_at) = &self.created_at {
-                format!("{:?}", created_at)
+                format!("{:?}", created_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(frequency) = &self.frequency {
-                format!("{:?}", frequency)
+                format!("{:?}", frequency).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(max_quantity) = &self.max_quantity {
-                format!("{:?}", max_quantity)
+                format!("{:?}", max_quantity).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "quantity".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "created_at".to_string(),
-            "disabled_at".to_string(),
-            "frequency".to_string(),
-            "max_quantity".to_string(),
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Pro {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for Pro {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Pro {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Enterprise {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for Enterprise {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Enterprise {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Analytics {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for Analytics {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Analytics {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct DeveloperExperiencePlatform {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for DeveloperExperiencePlatform {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for DeveloperExperiencePlatform {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct IncludedAllocationMiu {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for IncludedAllocationMiu {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for IncludedAllocationMiu {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ManagedInfrastructureCommitment {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for ManagedInfrastructureCommitment {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ManagedInfrastructureCommitment {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Monitoring {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for Monitoring {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Monitoring {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct PasswordProtection {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for PasswordProtection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for PasswordProtection {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct PreviewDeploymentSuffix {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for PreviewDeploymentSuffix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for PreviewDeploymentSuffix {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct InvoiceItemsSaml {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for InvoiceItemsSaml {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for InvoiceItemsSaml {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct TeamSeats {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for TeamSeats {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for TeamSeats {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
+        ]
+    }
+}
+
+#[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct VercelMarketplace {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub quantity: f64,
+    #[doc = "The highest quantity in the current period. Used to render the correct \
+             enable/disable UI for add-ons."]
+    #[serde(
+        rename = "highestQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub highest_quantity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<f64>,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<Frequency>,
+    #[serde(
+        rename = "maxQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_quantity: Option<f64>,
+}
+
+impl std::fmt::Display for VercelMarketplace {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for VercelMarketplace {
+    const LENGTH: usize = 10;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.quantity).into(),
+            if let Some(highest_quantity) = &self.highest_quantity {
+                format!("{:?}", highest_quantity).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(created_at) = &self.created_at {
+                format!("{:?}", created_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(frequency) = &self.frequency {
+                format!("{:?}", frequency).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(max_quantity) = &self.max_quantity {
+                format!("{:?}", max_quantity).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "tier".into(),
+            "price".into(),
+            "quantity".into(),
+            "highest_quantity".into(),
+            "name".into(),
+            "hidden".into(),
+            "created_at".into(),
+            "disabled_at".into(),
+            "frequency".into(),
+            "max_quantity".into(),
         ]
     }
 }
@@ -3076,7 +3722,44 @@ impl tabled::Tabled for WebAnalytics {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct Matrix {
+    #[serde(rename = "defaultUnitPrice")]
+    pub default_unit_price: String,
+    #[serde(rename = "dimensionPrices")]
+    pub dimension_prices: std::collections::HashMap<String, String>,
+}
+
+impl std::fmt::Display for Matrix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Matrix {
+    const LENGTH: usize = 2;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.default_unit_price.clone().into(),
+            format!("{:?}", self.dimension_prices).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["default_unit_price".into(), "dimension_prices".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct AnalyticsUsage {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3091,6 +3774,8 @@ pub struct AnalyticsUsage {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for AnalyticsUsage {
@@ -3103,41 +3788,54 @@ impl std::fmt::Display for AnalyticsUsage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AnalyticsUsage {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3146,6 +3844,8 @@ impl tabled::Tabled for AnalyticsUsage {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Artifacts {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3160,6 +3860,8 @@ pub struct Artifacts {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for Artifacts {
@@ -3172,41 +3874,54 @@ impl std::fmt::Display for Artifacts {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Artifacts {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3215,6 +3930,8 @@ impl tabled::Tabled for Artifacts {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct Bandwidth {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3229,6 +3946,8 @@ pub struct Bandwidth {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for Bandwidth {
@@ -3241,41 +3960,54 @@ impl std::fmt::Display for Bandwidth {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Bandwidth {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3283,7 +4015,9 @@ impl tabled::Tabled for Bandwidth {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct Builds {
+pub struct BlobStores {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3298,9 +4032,11 @@ pub struct Builds {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for Builds {
+impl std::fmt::Display for BlobStores {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3310,41 +4046,54 @@ impl std::fmt::Display for Builds {
     }
 }
 
-impl tabled::Tabled for Builds {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BlobStores {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3352,7 +4101,9 @@ impl tabled::Tabled for Builds {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct EdgeMiddlewareInvocations {
+pub struct BlobTotalAdvancedRequests {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3367,9 +4118,11 @@ pub struct EdgeMiddlewareInvocations {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for EdgeMiddlewareInvocations {
+impl std::fmt::Display for BlobTotalAdvancedRequests {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3379,41 +4132,54 @@ impl std::fmt::Display for EdgeMiddlewareInvocations {
     }
 }
 
-impl tabled::Tabled for EdgeMiddlewareInvocations {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BlobTotalAdvancedRequests {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3421,7 +4187,9 @@ impl tabled::Tabled for EdgeMiddlewareInvocations {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct EdgeFunctionExecutionUnits {
+pub struct BlobTotalAvgSizeInBytes {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3436,9 +4204,11 @@ pub struct EdgeFunctionExecutionUnits {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for EdgeFunctionExecutionUnits {
+impl std::fmt::Display for BlobTotalAvgSizeInBytes {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3448,41 +4218,54 @@ impl std::fmt::Display for EdgeFunctionExecutionUnits {
     }
 }
 
-impl tabled::Tabled for EdgeFunctionExecutionUnits {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BlobTotalAvgSizeInBytes {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3490,7 +4273,9 @@ impl tabled::Tabled for EdgeFunctionExecutionUnits {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct MonitoringMetric {
+pub struct BlobTotalGetResponseObjectSizeInBytes {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3505,9 +4290,11 @@ pub struct MonitoringMetric {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for MonitoringMetric {
+impl std::fmt::Display for BlobTotalGetResponseObjectSizeInBytes {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3517,41 +4304,54 @@ impl std::fmt::Display for MonitoringMetric {
     }
 }
 
-impl tabled::Tabled for MonitoringMetric {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BlobTotalGetResponseObjectSizeInBytes {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3559,7 +4359,9 @@ impl tabled::Tabled for MonitoringMetric {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct ServerlessFunctionExecution {
+pub struct BlobTotalSimpleRequests {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3574,9 +4376,11 @@ pub struct ServerlessFunctionExecution {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for ServerlessFunctionExecution {
+impl std::fmt::Display for BlobTotalSimpleRequests {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3586,41 +4390,54 @@ impl std::fmt::Display for ServerlessFunctionExecution {
     }
 }
 
-impl tabled::Tabled for ServerlessFunctionExecution {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BlobTotalSimpleRequests {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3628,7 +4445,9 @@ impl tabled::Tabled for ServerlessFunctionExecution {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct SourceImages {
+pub struct BuildMinute {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3643,9 +4462,11 @@ pub struct SourceImages {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for SourceImages {
+impl std::fmt::Display for BuildMinute {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3655,41 +4476,54 @@ impl std::fmt::Display for SourceImages {
     }
 }
 
-impl tabled::Tabled for SourceImages {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BuildMinute {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3697,7 +4531,9 @@ impl tabled::Tabled for SourceImages {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct WebAnalyticsEvent {
+pub struct DataCacheRead {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3712,9 +4548,11 @@ pub struct WebAnalyticsEvent {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for WebAnalyticsEvent {
+impl std::fmt::Display for DataCacheRead {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3724,41 +4562,226 @@ impl std::fmt::Display for WebAnalyticsEvent {
     }
 }
 
-impl tabled::Tabled for WebAnalyticsEvent {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for DataCacheRead {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct DataCacheRevalidation {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for DataCacheRevalidation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for DataCacheRevalidation {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct DataCacheWrite {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for DataCacheWrite {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for DataCacheWrite {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3768,6 +4791,8 @@ impl tabled::Tabled for WebAnalyticsEvent {
 )]
 pub struct EdgeConfigRead {
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
     pub batch: f64,
@@ -3781,6 +4806,8 @@ pub struct EdgeConfigRead {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for EdgeConfigRead {
@@ -3793,41 +4820,54 @@ impl std::fmt::Display for EdgeConfigRead {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EdgeConfigRead {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3836,6 +4876,8 @@ impl tabled::Tabled for EdgeConfigRead {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct EdgeConfigWrite {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3850,6 +4892,8 @@ pub struct EdgeConfigWrite {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for EdgeConfigWrite {
@@ -3862,41 +4906,54 @@ impl std::fmt::Display for EdgeConfigWrite {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for EdgeConfigWrite {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3904,7 +4961,9 @@ impl tabled::Tabled for EdgeConfigWrite {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct CronJobInvocation {
+pub struct EdgeFunctionExecutionUnits {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3919,9 +4978,11 @@ pub struct CronJobInvocation {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for CronJobInvocation {
+impl std::fmt::Display for EdgeFunctionExecutionUnits {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -3931,41 +4992,54 @@ impl std::fmt::Display for CronJobInvocation {
     }
 }
 
-impl tabled::Tabled for CronJobInvocation {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for EdgeFunctionExecutionUnits {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -3973,7 +5047,9 @@ impl tabled::Tabled for CronJobInvocation {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct PostgresComputeTime {
+pub struct EdgeMiddlewareInvocations {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -3988,6 +5064,782 @@ pub struct PostgresComputeTime {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for EdgeMiddlewareInvocations {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for EdgeMiddlewareInvocations {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct EdgeRequest {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for EdgeRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for EdgeRequest {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct EdgeRequestAdditionalCpuDuration {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for EdgeRequestAdditionalCpuDuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for EdgeRequestAdditionalCpuDuration {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FastDataTransfer {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for FastDataTransfer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FastDataTransfer {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FastOriginTransfer {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for FastOriginTransfer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FastOriginTransfer {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FunctionDuration {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for FunctionDuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FunctionDuration {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FunctionInvocation {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for FunctionInvocation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FunctionInvocation {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct LogDrainsVolume {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for LogDrainsVolume {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for LogDrainsVolume {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct MonitoringMetric {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for MonitoringMetric {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for MonitoringMetric {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct PostgresComputeTime {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for PostgresComputeTime {
@@ -4000,41 +5852,54 @@ impl std::fmt::Display for PostgresComputeTime {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PostgresComputeTime {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4043,6 +5908,8 @@ impl tabled::Tabled for PostgresComputeTime {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostgresDataStorage {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4057,6 +5924,8 @@ pub struct PostgresDataStorage {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for PostgresDataStorage {
@@ -4069,41 +5938,54 @@ impl std::fmt::Display for PostgresDataStorage {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PostgresDataStorage {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4112,6 +5994,8 @@ impl tabled::Tabled for PostgresDataStorage {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct PostgresDataTransfer {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4126,6 +6010,8 @@ pub struct PostgresDataTransfer {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for PostgresDataTransfer {
@@ -4138,41 +6024,54 @@ impl std::fmt::Display for PostgresDataTransfer {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PostgresDataTransfer {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4180,7 +6079,9 @@ impl tabled::Tabled for PostgresDataTransfer {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct PostgresWrittenData {
+pub struct PostgresDatabase {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4195,6 +6096,94 @@ pub struct PostgresWrittenData {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for PostgresDatabase {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for PostgresDatabase {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct PostgresWrittenData {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for PostgresWrittenData {
@@ -4207,41 +6196,54 @@ impl std::fmt::Display for PostgresWrittenData {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PostgresWrittenData {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4249,7 +6251,9 @@ impl tabled::Tabled for PostgresWrittenData {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct StorageRedisTotalCommands {
+pub struct ServerlessFunctionExecution {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4264,9 +6268,11 @@ pub struct StorageRedisTotalCommands {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
-impl std::fmt::Display for StorageRedisTotalCommands {
+impl std::fmt::Display for ServerlessFunctionExecution {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -4276,41 +6282,54 @@ impl std::fmt::Display for StorageRedisTotalCommands {
     }
 }
 
-impl tabled::Tabled for StorageRedisTotalCommands {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ServerlessFunctionExecution {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4318,7 +6337,9 @@ impl tabled::Tabled for StorageRedisTotalCommands {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct StorageRedisTotalBandwidthInBytes {
+pub struct SourceImages {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4333,6 +6354,94 @@ pub struct StorageRedisTotalBandwidthInBytes {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for SourceImages {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for SourceImages {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct StorageRedisTotalBandwidthInBytes {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for StorageRedisTotalBandwidthInBytes {
@@ -4345,41 +6454,54 @@ impl std::fmt::Display for StorageRedisTotalBandwidthInBytes {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for StorageRedisTotalBandwidthInBytes {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4387,7 +6509,9 @@ impl tabled::Tabled for StorageRedisTotalBandwidthInBytes {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct StorageRedisTotalDailyAvgStorageInBytes {
+pub struct StorageRedisTotalCommands {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4402,6 +6526,94 @@ pub struct StorageRedisTotalDailyAvgStorageInBytes {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for StorageRedisTotalCommands {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for StorageRedisTotalCommands {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct StorageRedisTotalDailyAvgStorageInBytes {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for StorageRedisTotalDailyAvgStorageInBytes {
@@ -4414,41 +6626,54 @@ impl std::fmt::Display for StorageRedisTotalDailyAvgStorageInBytes {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for StorageRedisTotalDailyAvgStorageInBytes {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4457,6 +6682,8 @@ impl tabled::Tabled for StorageRedisTotalDailyAvgStorageInBytes {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct StorageRedisTotalDatabases {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tier: Option<f64>,
     pub price: f64,
@@ -4471,6 +6698,8 @@ pub struct StorageRedisTotalDatabases {
         skip_serializing_if = "Option::is_none"
     )]
     pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
 }
 
 impl std::fmt::Display for StorageRedisTotalDatabases {
@@ -4483,41 +6712,312 @@ impl std::fmt::Display for StorageRedisTotalDatabases {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for StorageRedisTotalDatabases {
-    const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
             if let Some(tier) = &self.tier {
-                format!("{:?}", tier)
+                format!("{:?}", tier).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.price),
-            format!("{:?}", self.batch),
-            format!("{:?}", self.threshold),
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.hidden),
+            format!("{:?}", self.hidden).into(),
             if let Some(disabled_at) = &self.disabled_at {
-                format!("{:?}", disabled_at)
+                format!("{:?}", disabled_at).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "tier".to_string(),
-            "price".to_string(),
-            "batch".to_string(),
-            "threshold".to_string(),
-            "name".to_string(),
-            "hidden".to_string(),
-            "disabled_at".to_string(),
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct WafOwaspExcessBytes {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for WafOwaspExcessBytes {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for WafOwaspExcessBytes {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct WafOwaspRequests {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for WafOwaspRequests {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for WafOwaspRequests {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct WebAnalyticsEvent {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub matrix: Option<Matrix>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<f64>,
+    pub price: f64,
+    pub batch: f64,
+    pub threshold: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub hidden: bool,
+    #[serde(
+        rename = "disabledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub disabled_at: Option<f64>,
+    #[serde(rename = "enabledAt", default, skip_serializing_if = "Option::is_none")]
+    pub enabled_at: Option<f64>,
+}
+
+impl std::fmt::Display for WebAnalyticsEvent {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for WebAnalyticsEvent {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(matrix) = &self.matrix {
+                format!("{:?}", matrix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tier) = &self.tier {
+                format!("{:?}", tier).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.price).into(),
+            format!("{:?}", self.batch).into(),
+            format!("{:?}", self.threshold).into(),
+            if let Some(name) = &self.name {
+                format!("{:?}", name).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.hidden).into(),
+            if let Some(disabled_at) = &self.disabled_at {
+                format!("{:?}", disabled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enabled_at) = &self.enabled_at {
+                format!("{:?}", enabled_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "matrix".into(),
+            "tier".into(),
+            "price".into(),
+            "batch".into(),
+            "threshold".into(),
+            "name".into(),
+            "hidden".into(),
+            "disabled_at".into(),
+            "enabled_at".into(),
         ]
     }
 }
@@ -4527,12 +7027,6 @@ impl tabled::Tabled for StorageRedisTotalDatabases {
 )]
 pub struct InvoiceItems {
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pro: Option<Pro>,
-    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub enterprise: Option<Enterprise>,
-    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
         rename = "concurrentBuilds",
         default,
@@ -4540,25 +7034,45 @@ pub struct InvoiceItems {
     )]
     pub concurrent_builds: Option<ConcurrentBuilds>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+    #[serde(
+        rename = "webAnalytics",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub web_analytics: Option<WebAnalytics>,
+    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub saml: Option<InvoiceItemsSaml>,
+    pub pro: Option<Pro>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-    #[serde(rename = "teamSeats", default, skip_serializing_if = "Option::is_none")]
-    pub team_seats: Option<TeamSeats>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enterprise: Option<Enterprise>,
+    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub analytics: Option<Analytics>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
-        rename = "customCerts",
+        rename = "developerExperiencePlatform",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub custom_certs: Option<CustomCerts>,
+    pub developer_experience_platform: Option<DeveloperExperiencePlatform>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
-        rename = "previewDeploymentSuffix",
+        rename = "includedAllocationMiu",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub preview_deployment_suffix: Option<PreviewDeploymentSuffix>,
+    pub included_allocation_miu: Option<IncludedAllocationMiu>,
+    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+    #[serde(
+        rename = "managedInfrastructureCommitment",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub managed_infrastructure_commitment: Option<ManagedInfrastructureCommitment>,
+    #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub monitoring: Option<Monitoring>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
         rename = "passwordProtection",
@@ -4568,24 +7082,24 @@ pub struct InvoiceItems {
     pub password_protection: Option<PasswordProtection>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
-        rename = "ssoProtection",
+        rename = "previewDeploymentSuffix",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub sso_protection: Option<SsoProtection>,
+    pub preview_deployment_suffix: Option<PreviewDeploymentSuffix>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub analytics: Option<Analytics>,
+    pub saml: Option<InvoiceItemsSaml>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub monitoring: Option<Monitoring>,
+    #[serde(rename = "teamSeats", default, skip_serializing_if = "Option::is_none")]
+    pub team_seats: Option<TeamSeats>,
     #[doc = "Will be used to create an invoice item. The price must be in cents: 2000 for $20."]
     #[serde(
-        rename = "webAnalytics",
+        rename = "vercelMarketplace",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub web_analytics: Option<WebAnalytics>,
+    pub vercel_marketplace: Option<VercelMarketplace>,
     #[serde(
         rename = "analyticsUsage",
         default,
@@ -4596,44 +7110,60 @@ pub struct InvoiceItems {
     pub artifacts: Option<Artifacts>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bandwidth: Option<Bandwidth>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub builds: Option<Builds>,
     #[serde(
-        rename = "edgeMiddlewareInvocations",
+        rename = "blobStores",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub edge_middleware_invocations: Option<EdgeMiddlewareInvocations>,
+    pub blob_stores: Option<BlobStores>,
     #[serde(
-        rename = "edgeFunctionExecutionUnits",
+        rename = "blobTotalAdvancedRequests",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub edge_function_execution_units: Option<EdgeFunctionExecutionUnits>,
+    pub blob_total_advanced_requests: Option<BlobTotalAdvancedRequests>,
     #[serde(
-        rename = "monitoringMetric",
+        rename = "blobTotalAvgSizeInBytes",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub monitoring_metric: Option<MonitoringMetric>,
+    pub blob_total_avg_size_in_bytes: Option<BlobTotalAvgSizeInBytes>,
     #[serde(
-        rename = "serverlessFunctionExecution",
+        rename = "blobTotalGetResponseObjectSizeInBytes",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub serverless_function_execution: Option<ServerlessFunctionExecution>,
+    pub blob_total_get_response_object_size_in_bytes: Option<BlobTotalGetResponseObjectSizeInBytes>,
     #[serde(
-        rename = "sourceImages",
+        rename = "blobTotalSimpleRequests",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub source_images: Option<SourceImages>,
+    pub blob_total_simple_requests: Option<BlobTotalSimpleRequests>,
     #[serde(
-        rename = "webAnalyticsEvent",
+        rename = "buildMinute",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub web_analytics_event: Option<WebAnalyticsEvent>,
+    pub build_minute: Option<BuildMinute>,
+    #[serde(
+        rename = "dataCacheRead",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub data_cache_read: Option<DataCacheRead>,
+    #[serde(
+        rename = "dataCacheRevalidation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub data_cache_revalidation: Option<DataCacheRevalidation>,
+    #[serde(
+        rename = "dataCacheWrite",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub data_cache_write: Option<DataCacheWrite>,
     #[serde(
         rename = "edgeConfigRead",
         default,
@@ -4647,11 +7177,65 @@ pub struct InvoiceItems {
     )]
     pub edge_config_write: Option<EdgeConfigWrite>,
     #[serde(
-        rename = "cronJobInvocation",
+        rename = "edgeFunctionExecutionUnits",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub cron_job_invocation: Option<CronJobInvocation>,
+    pub edge_function_execution_units: Option<EdgeFunctionExecutionUnits>,
+    #[serde(
+        rename = "edgeMiddlewareInvocations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub edge_middleware_invocations: Option<EdgeMiddlewareInvocations>,
+    #[serde(
+        rename = "edgeRequest",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub edge_request: Option<EdgeRequest>,
+    #[serde(
+        rename = "edgeRequestAdditionalCpuDuration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub edge_request_additional_cpu_duration: Option<EdgeRequestAdditionalCpuDuration>,
+    #[serde(
+        rename = "fastDataTransfer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub fast_data_transfer: Option<FastDataTransfer>,
+    #[serde(
+        rename = "fastOriginTransfer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub fast_origin_transfer: Option<FastOriginTransfer>,
+    #[serde(
+        rename = "functionDuration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub function_duration: Option<FunctionDuration>,
+    #[serde(
+        rename = "functionInvocation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub function_invocation: Option<FunctionInvocation>,
+    #[serde(
+        rename = "logDrainsVolume",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub log_drains_volume: Option<LogDrainsVolume>,
+    #[serde(
+        rename = "monitoringMetric",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub monitoring_metric: Option<MonitoringMetric>,
     #[serde(
         rename = "postgresComputeTime",
         default,
@@ -4671,23 +7255,41 @@ pub struct InvoiceItems {
     )]
     pub postgres_data_transfer: Option<PostgresDataTransfer>,
     #[serde(
+        rename = "postgresDatabase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub postgres_database: Option<PostgresDatabase>,
+    #[serde(
         rename = "postgresWrittenData",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub postgres_written_data: Option<PostgresWrittenData>,
     #[serde(
-        rename = "storageRedisTotalCommands",
+        rename = "serverlessFunctionExecution",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub storage_redis_total_commands: Option<StorageRedisTotalCommands>,
+    pub serverless_function_execution: Option<ServerlessFunctionExecution>,
+    #[serde(
+        rename = "sourceImages",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_images: Option<SourceImages>,
     #[serde(
         rename = "storageRedisTotalBandwidthInBytes",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub storage_redis_total_bandwidth_in_bytes: Option<StorageRedisTotalBandwidthInBytes>,
+    #[serde(
+        rename = "storageRedisTotalCommands",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub storage_redis_total_commands: Option<StorageRedisTotalCommands>,
     #[serde(
         rename = "storageRedisTotalDailyAvgStorageInBytes",
         default,
@@ -4701,6 +7303,24 @@ pub struct InvoiceItems {
         skip_serializing_if = "Option::is_none"
     )]
     pub storage_redis_total_databases: Option<StorageRedisTotalDatabases>,
+    #[serde(
+        rename = "wafOwaspExcessBytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub waf_owasp_excess_bytes: Option<WafOwaspExcessBytes>,
+    #[serde(
+        rename = "wafOwaspRequests",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub waf_owasp_requests: Option<WafOwaspRequests>,
+    #[serde(
+        rename = "webAnalyticsEvent",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub web_analytics_event: Option<WebAnalyticsEvent>,
 }
 
 impl std::fmt::Display for InvoiceItems {
@@ -4713,217 +7333,337 @@ impl std::fmt::Display for InvoiceItems {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InvoiceItems {
-    const LENGTH: usize = 33;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 52;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(pro) = &self.pro {
-                format!("{:?}", pro)
-            } else {
-                String::new()
-            },
-            if let Some(enterprise) = &self.enterprise {
-                format!("{:?}", enterprise)
-            } else {
-                String::new()
-            },
             if let Some(concurrent_builds) = &self.concurrent_builds {
-                format!("{:?}", concurrent_builds)
+                format!("{:?}", concurrent_builds).into()
             } else {
-                String::new()
-            },
-            if let Some(saml) = &self.saml {
-                format!("{:?}", saml)
-            } else {
-                String::new()
-            },
-            if let Some(team_seats) = &self.team_seats {
-                format!("{:?}", team_seats)
-            } else {
-                String::new()
-            },
-            if let Some(custom_certs) = &self.custom_certs {
-                format!("{:?}", custom_certs)
-            } else {
-                String::new()
-            },
-            if let Some(preview_deployment_suffix) = &self.preview_deployment_suffix {
-                format!("{:?}", preview_deployment_suffix)
-            } else {
-                String::new()
-            },
-            if let Some(password_protection) = &self.password_protection {
-                format!("{:?}", password_protection)
-            } else {
-                String::new()
-            },
-            if let Some(sso_protection) = &self.sso_protection {
-                format!("{:?}", sso_protection)
-            } else {
-                String::new()
-            },
-            if let Some(analytics) = &self.analytics {
-                format!("{:?}", analytics)
-            } else {
-                String::new()
-            },
-            if let Some(monitoring) = &self.monitoring {
-                format!("{:?}", monitoring)
-            } else {
-                String::new()
+                String::new().into()
             },
             if let Some(web_analytics) = &self.web_analytics {
-                format!("{:?}", web_analytics)
+                format!("{:?}", web_analytics).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(pro) = &self.pro {
+                format!("{:?}", pro).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(enterprise) = &self.enterprise {
+                format!("{:?}", enterprise).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(analytics) = &self.analytics {
+                format!("{:?}", analytics).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(developer_experience_platform) = &self.developer_experience_platform {
+                format!("{:?}", developer_experience_platform).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(included_allocation_miu) = &self.included_allocation_miu {
+                format!("{:?}", included_allocation_miu).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(managed_infrastructure_commitment) = &self.managed_infrastructure_commitment
+            {
+                format!("{:?}", managed_infrastructure_commitment).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(monitoring) = &self.monitoring {
+                format!("{:?}", monitoring).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(password_protection) = &self.password_protection {
+                format!("{:?}", password_protection).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(preview_deployment_suffix) = &self.preview_deployment_suffix {
+                format!("{:?}", preview_deployment_suffix).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(saml) = &self.saml {
+                format!("{:?}", saml).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(team_seats) = &self.team_seats {
+                format!("{:?}", team_seats).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(vercel_marketplace) = &self.vercel_marketplace {
+                format!("{:?}", vercel_marketplace).into()
+            } else {
+                String::new().into()
             },
             if let Some(analytics_usage) = &self.analytics_usage {
-                format!("{:?}", analytics_usage)
+                format!("{:?}", analytics_usage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(artifacts) = &self.artifacts {
-                format!("{:?}", artifacts)
+                format!("{:?}", artifacts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(bandwidth) = &self.bandwidth {
-                format!("{:?}", bandwidth)
+                format!("{:?}", bandwidth).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(builds) = &self.builds {
-                format!("{:?}", builds)
+            if let Some(blob_stores) = &self.blob_stores {
+                format!("{:?}", blob_stores).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(edge_middleware_invocations) = &self.edge_middleware_invocations {
-                format!("{:?}", edge_middleware_invocations)
+            if let Some(blob_total_advanced_requests) = &self.blob_total_advanced_requests {
+                format!("{:?}", blob_total_advanced_requests).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(edge_function_execution_units) = &self.edge_function_execution_units {
-                format!("{:?}", edge_function_execution_units)
+            if let Some(blob_total_avg_size_in_bytes) = &self.blob_total_avg_size_in_bytes {
+                format!("{:?}", blob_total_avg_size_in_bytes).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(monitoring_metric) = &self.monitoring_metric {
-                format!("{:?}", monitoring_metric)
+            if let Some(blob_total_get_response_object_size_in_bytes) =
+                &self.blob_total_get_response_object_size_in_bytes
+            {
+                format!("{:?}", blob_total_get_response_object_size_in_bytes).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(serverless_function_execution) = &self.serverless_function_execution {
-                format!("{:?}", serverless_function_execution)
+            if let Some(blob_total_simple_requests) = &self.blob_total_simple_requests {
+                format!("{:?}", blob_total_simple_requests).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(source_images) = &self.source_images {
-                format!("{:?}", source_images)
+            if let Some(build_minute) = &self.build_minute {
+                format!("{:?}", build_minute).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(web_analytics_event) = &self.web_analytics_event {
-                format!("{:?}", web_analytics_event)
+            if let Some(data_cache_read) = &self.data_cache_read {
+                format!("{:?}", data_cache_read).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(data_cache_revalidation) = &self.data_cache_revalidation {
+                format!("{:?}", data_cache_revalidation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(data_cache_write) = &self.data_cache_write {
+                format!("{:?}", data_cache_write).into()
+            } else {
+                String::new().into()
             },
             if let Some(edge_config_read) = &self.edge_config_read {
-                format!("{:?}", edge_config_read)
+                format!("{:?}", edge_config_read).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(edge_config_write) = &self.edge_config_write {
-                format!("{:?}", edge_config_write)
+                format!("{:?}", edge_config_write).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(cron_job_invocation) = &self.cron_job_invocation {
-                format!("{:?}", cron_job_invocation)
+            if let Some(edge_function_execution_units) = &self.edge_function_execution_units {
+                format!("{:?}", edge_function_execution_units).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(edge_middleware_invocations) = &self.edge_middleware_invocations {
+                format!("{:?}", edge_middleware_invocations).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(edge_request) = &self.edge_request {
+                format!("{:?}", edge_request).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(edge_request_additional_cpu_duration) =
+                &self.edge_request_additional_cpu_duration
+            {
+                format!("{:?}", edge_request_additional_cpu_duration).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(fast_data_transfer) = &self.fast_data_transfer {
+                format!("{:?}", fast_data_transfer).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(fast_origin_transfer) = &self.fast_origin_transfer {
+                format!("{:?}", fast_origin_transfer).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(function_duration) = &self.function_duration {
+                format!("{:?}", function_duration).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(function_invocation) = &self.function_invocation {
+                format!("{:?}", function_invocation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(log_drains_volume) = &self.log_drains_volume {
+                format!("{:?}", log_drains_volume).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(monitoring_metric) = &self.monitoring_metric {
+                format!("{:?}", monitoring_metric).into()
+            } else {
+                String::new().into()
             },
             if let Some(postgres_compute_time) = &self.postgres_compute_time {
-                format!("{:?}", postgres_compute_time)
+                format!("{:?}", postgres_compute_time).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postgres_data_storage) = &self.postgres_data_storage {
-                format!("{:?}", postgres_data_storage)
+                format!("{:?}", postgres_data_storage).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postgres_data_transfer) = &self.postgres_data_transfer {
-                format!("{:?}", postgres_data_transfer)
+                format!("{:?}", postgres_data_transfer).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(postgres_database) = &self.postgres_database {
+                format!("{:?}", postgres_database).into()
+            } else {
+                String::new().into()
             },
             if let Some(postgres_written_data) = &self.postgres_written_data {
-                format!("{:?}", postgres_written_data)
+                format!("{:?}", postgres_written_data).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(storage_redis_total_commands) = &self.storage_redis_total_commands {
-                format!("{:?}", storage_redis_total_commands)
+            if let Some(serverless_function_execution) = &self.serverless_function_execution {
+                format!("{:?}", serverless_function_execution).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(source_images) = &self.source_images {
+                format!("{:?}", source_images).into()
+            } else {
+                String::new().into()
             },
             if let Some(storage_redis_total_bandwidth_in_bytes) =
                 &self.storage_redis_total_bandwidth_in_bytes
             {
-                format!("{:?}", storage_redis_total_bandwidth_in_bytes)
+                format!("{:?}", storage_redis_total_bandwidth_in_bytes).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(storage_redis_total_commands) = &self.storage_redis_total_commands {
+                format!("{:?}", storage_redis_total_commands).into()
+            } else {
+                String::new().into()
             },
             if let Some(storage_redis_total_daily_avg_storage_in_bytes) =
                 &self.storage_redis_total_daily_avg_storage_in_bytes
             {
-                format!("{:?}", storage_redis_total_daily_avg_storage_in_bytes)
+                format!("{:?}", storage_redis_total_daily_avg_storage_in_bytes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(storage_redis_total_databases) = &self.storage_redis_total_databases {
-                format!("{:?}", storage_redis_total_databases)
+                format!("{:?}", storage_redis_total_databases).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(waf_owasp_excess_bytes) = &self.waf_owasp_excess_bytes {
+                format!("{:?}", waf_owasp_excess_bytes).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(waf_owasp_requests) = &self.waf_owasp_requests {
+                format!("{:?}", waf_owasp_requests).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(web_analytics_event) = &self.web_analytics_event {
+                format!("{:?}", web_analytics_event).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "pro".to_string(),
-            "enterprise".to_string(),
-            "concurrent_builds".to_string(),
-            "saml".to_string(),
-            "team_seats".to_string(),
-            "custom_certs".to_string(),
-            "preview_deployment_suffix".to_string(),
-            "password_protection".to_string(),
-            "sso_protection".to_string(),
-            "analytics".to_string(),
-            "monitoring".to_string(),
-            "web_analytics".to_string(),
-            "analytics_usage".to_string(),
-            "artifacts".to_string(),
-            "bandwidth".to_string(),
-            "builds".to_string(),
-            "edge_middleware_invocations".to_string(),
-            "edge_function_execution_units".to_string(),
-            "monitoring_metric".to_string(),
-            "serverless_function_execution".to_string(),
-            "source_images".to_string(),
-            "web_analytics_event".to_string(),
-            "edge_config_read".to_string(),
-            "edge_config_write".to_string(),
-            "cron_job_invocation".to_string(),
-            "postgres_compute_time".to_string(),
-            "postgres_data_storage".to_string(),
-            "postgres_data_transfer".to_string(),
-            "postgres_written_data".to_string(),
-            "storage_redis_total_commands".to_string(),
-            "storage_redis_total_bandwidth_in_bytes".to_string(),
-            "storage_redis_total_daily_avg_storage_in_bytes".to_string(),
-            "storage_redis_total_databases".to_string(),
+            "concurrent_builds".into(),
+            "web_analytics".into(),
+            "pro".into(),
+            "enterprise".into(),
+            "analytics".into(),
+            "developer_experience_platform".into(),
+            "included_allocation_miu".into(),
+            "managed_infrastructure_commitment".into(),
+            "monitoring".into(),
+            "password_protection".into(),
+            "preview_deployment_suffix".into(),
+            "saml".into(),
+            "team_seats".into(),
+            "vercel_marketplace".into(),
+            "analytics_usage".into(),
+            "artifacts".into(),
+            "bandwidth".into(),
+            "blob_stores".into(),
+            "blob_total_advanced_requests".into(),
+            "blob_total_avg_size_in_bytes".into(),
+            "blob_total_get_response_object_size_in_bytes".into(),
+            "blob_total_simple_requests".into(),
+            "build_minute".into(),
+            "data_cache_read".into(),
+            "data_cache_revalidation".into(),
+            "data_cache_write".into(),
+            "edge_config_read".into(),
+            "edge_config_write".into(),
+            "edge_function_execution_units".into(),
+            "edge_middleware_invocations".into(),
+            "edge_request".into(),
+            "edge_request_additional_cpu_duration".into(),
+            "fast_data_transfer".into(),
+            "fast_origin_transfer".into(),
+            "function_duration".into(),
+            "function_invocation".into(),
+            "log_drains_volume".into(),
+            "monitoring_metric".into(),
+            "postgres_compute_time".into(),
+            "postgres_data_storage".into(),
+            "postgres_data_transfer".into(),
+            "postgres_database".into(),
+            "postgres_written_data".into(),
+            "serverless_function_execution".into(),
+            "source_images".into(),
+            "storage_redis_total_bandwidth_in_bytes".into(),
+            "storage_redis_total_commands".into(),
+            "storage_redis_total_daily_avg_storage_in_bytes".into(),
+            "storage_redis_total_databases".into(),
+            "waf_owasp_excess_bytes".into(),
+            "waf_owasp_requests".into(),
+            "web_analytics_event".into(),
         ]
     }
 }
@@ -4946,18 +7686,19 @@ impl std::fmt::Display for InvoiceSettings {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for InvoiceSettings {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(footer) = &self.footer {
-            format!("{:?}", footer)
+            format!("{:?}", footer).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["footer".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["footer".into()]
     }
 }
 
@@ -4979,14 +7720,18 @@ impl std::fmt::Display for SubscriptionsPeriod {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SubscriptionsPeriod {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![format!("{:?}", self.start), format!("{:?}", self.end)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.start).into(),
+            format!("{:?}", self.end).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["start".to_string(), "end".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["start".into(), "end".into()]
     }
 }
 
@@ -4998,11 +7743,11 @@ impl tabled::Tabled for SubscriptionsPeriod {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum SubscriptionsFrequencyInterval {
     #[serde(rename = "month")]
     #[display("month")]
@@ -5037,17 +7782,18 @@ impl std::fmt::Display for SubscriptionsFrequency {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for SubscriptionsFrequency {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.interval),
-            format!("{:?}", self.interval_count),
+            format!("{:?}", self.interval).into(),
+            format!("{:?}", self.interval_count).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["interval".to_string(), "interval_count".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["interval".into(), "interval_count".into()]
     }
 }
 
@@ -5059,11 +7805,11 @@ impl tabled::Tabled for SubscriptionsFrequency {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Duration {
     #[serde(rename = "forever")]
     #[display("forever")]
@@ -5110,27 +7856,28 @@ impl std::fmt::Display for Coupon {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Coupon {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            format!("{:?}", self.name),
-            format!("{:?}", self.amount_off),
-            format!("{:?}", self.percentage_off),
-            format!("{:?}", self.duration_in_months),
-            format!("{:?}", self.duration),
+            self.id.clone().into(),
+            format!("{:?}", self.name).into(),
+            format!("{:?}", self.amount_off).into(),
+            format!("{:?}", self.percentage_off).into(),
+            format!("{:?}", self.duration_in_months).into(),
+            format!("{:?}", self.duration).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "name".to_string(),
-            "amount_off".to_string(),
-            "percentage_off".to_string(),
-            "duration_in_months".to_string(),
-            "duration".to_string(),
+            "id".into(),
+            "name".into(),
+            "amount_off".into(),
+            "percentage_off".into(),
+            "duration_in_months".into(),
+            "duration".into(),
         ]
     }
 }
@@ -5153,14 +7900,15 @@ impl std::fmt::Display for Discount {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Discount {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.id.clone(), format!("{:?}", self.coupon)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![self.id.clone().into(), format!("{:?}", self.coupon).into()]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["id".to_string(), "coupon".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["id".into(), "coupon".into()]
     }
 }
 
@@ -5187,25 +7935,26 @@ impl std::fmt::Display for Items {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Items {
     const LENGTH: usize = 5;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            self.price_id.clone(),
-            self.product_id.clone(),
-            format!("{:?}", self.amount),
-            format!("{:?}", self.quantity),
+            self.id.clone().into(),
+            self.price_id.clone().into(),
+            self.product_id.clone().into(),
+            format!("{:?}", self.amount).into(),
+            format!("{:?}", self.quantity).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "price_id".to_string(),
-            "product_id".to_string(),
-            "amount".to_string(),
-            "quantity".to_string(),
+            "id".into(),
+            "price_id".into(),
+            "product_id".into(),
+            "amount".into(),
+            "quantity".into(),
         ]
     }
 }
@@ -5234,27 +7983,28 @@ impl std::fmt::Display for Subscriptions {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Subscriptions {
     const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            format!("{:?}", self.trial),
-            format!("{:?}", self.period),
-            format!("{:?}", self.frequency),
-            format!("{:?}", self.discount),
-            format!("{:?}", self.items),
+            self.id.clone().into(),
+            format!("{:?}", self.trial).into(),
+            format!("{:?}", self.period).into(),
+            format!("{:?}", self.frequency).into(),
+            format!("{:?}", self.discount).into(),
+            format!("{:?}", self.items).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "trial".to_string(),
-            "period".to_string(),
-            "frequency".to_string(),
-            "discount".to_string(),
-            "items".to_string(),
+            "id".into(),
+            "trial".into(),
+            "period".into(),
+            "frequency".into(),
+            "discount".into(),
+            "items".into(),
         ]
     }
 }
@@ -5287,27 +8037,28 @@ impl std::fmt::Display for Controls {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Controls {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(analytics_sample_rate_in_percent) = &self.analytics_sample_rate_in_percent {
-                format!("{:?}", analytics_sample_rate_in_percent)
+                format!("{:?}", analytics_sample_rate_in_percent).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(analytics_spend_limit_in_dollars) = &self.analytics_spend_limit_in_dollars {
-                format!("{:?}", analytics_spend_limit_in_dollars)
+                format!("{:?}", analytics_spend_limit_in_dollars).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "analytics_sample_rate_in_percent".to_string(),
-            "analytics_spend_limit_in_dollars".to_string(),
+            "analytics_sample_rate_in_percent".into(),
+            "analytics_spend_limit_in_dollars".into(),
         ]
     }
 }
@@ -5320,18 +8071,15 @@ impl tabled::Tabled for Controls {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum Status {
     #[serde(rename = "active")]
     #[display("active")]
     Active,
-    #[serde(rename = "canceled")]
-    #[display("canceled")]
-    Canceled,
     #[serde(rename = "trialing")]
     #[display("trialing")]
     Trialing,
@@ -5341,6 +8089,9 @@ pub enum Status {
     #[serde(rename = "expired")]
     #[display("expired")]
     Expired,
+    #[serde(rename = "canceled")]
+    #[display("canceled")]
+    Canceled,
 }
 
 #[derive(
@@ -5351,11 +8102,11 @@ pub enum Status {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[derive(Default)]
 pub enum PricingExperiment {
     #[serde(rename = "august-2022")]
@@ -5365,6 +8116,51 @@ pub enum PricingExperiment {
 }
 
 
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct AwsMarketplace {
+    #[serde(rename = "productCode")]
+    pub product_code: String,
+    #[serde(rename = "offerId", default, skip_serializing_if = "Option::is_none")]
+    pub offer_id: Option<String>,
+    #[serde(rename = "customerId")]
+    pub customer_id: String,
+}
+
+impl std::fmt::Display for AwsMarketplace {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for AwsMarketplace {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.product_code.clone().into(),
+            if let Some(offer_id) = &self.offer_id {
+                format!("{:?}", offer_id).into()
+            } else {
+                String::new().into()
+            },
+            self.customer_id.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "product_code".into(),
+            "offer_id".into(),
+            "customer_id".into(),
+        ]
+    }
+}
 
 #[doc = "An object containing billing infomation associated with the User account."]
 #[derive(
@@ -5374,14 +8170,18 @@ pub struct Billing {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub currency: Option<Currency>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub addons: Option<Vec<Addons>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cancelation: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub period: Option<Period>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub contract: Option<Contract>,
     pub plan: Plan,
+    #[serde(
+        rename = "planIteration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub plan_iteration: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub platform: Option<Platform>,
     #[serde(
@@ -5390,6 +8190,8 @@ pub struct Billing {
         skip_serializing_if = "Option::is_none"
     )]
     pub orb_customer_id: Option<String>,
+    #[serde(rename = "syncedAt", default, skip_serializing_if = "Option::is_none")]
+    pub synced_at: Option<f64>,
     #[serde(
         rename = "programType",
         default,
@@ -5408,8 +8210,6 @@ pub struct Billing {
     pub address: Option<Address>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub overdue: Option<bool>,
     #[serde(
         rename = "invoiceItems",
         default,
@@ -5440,6 +8240,26 @@ pub struct Billing {
         skip_serializing_if = "Option::is_none"
     )]
     pub pricing_experiment: Option<PricingExperiment>,
+    #[serde(
+        rename = "orbMigrationScheduledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub orb_migration_scheduled_at: Option<f64>,
+    #[serde(
+        rename = "forceOrbMigration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub force_orb_migration: Option<bool>,
+    #[serde(
+        rename = "awsMarketplace",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub aws_marketplace: Option<AwsMarketplace>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reseller: Option<String>,
 }
 
 impl std::fmt::Display for Billing {
@@ -5452,145 +8272,170 @@ impl std::fmt::Display for Billing {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Billing {
-    const LENGTH: usize = 23;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 27;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(currency) = &self.currency {
-                format!("{:?}", currency)
+                format!("{:?}", currency).into()
             } else {
-                String::new()
-            },
-            if let Some(addons) = &self.addons {
-                format!("{:?}", addons)
-            } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cancelation) = &self.cancelation {
-                format!("{:?}", cancelation)
+                format!("{:?}", cancelation).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.period),
+            format!("{:?}", self.period).into(),
             if let Some(contract) = &self.contract {
-                format!("{:?}", contract)
+                format!("{:?}", contract).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.plan),
-            if let Some(platform) = &self.platform {
-                format!("{:?}", platform)
+            format!("{:?}", self.plan).into(),
+            if let Some(plan_iteration) = &self.plan_iteration {
+                format!("{:?}", plan_iteration).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(platform) = &self.platform {
+                format!("{:?}", platform).into()
+            } else {
+                String::new().into()
             },
             if let Some(orb_customer_id) = &self.orb_customer_id {
-                format!("{:?}", orb_customer_id)
+                format!("{:?}", orb_customer_id).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(synced_at) = &self.synced_at {
+                format!("{:?}", synced_at).into()
+            } else {
+                String::new().into()
             },
             if let Some(program_type) = &self.program_type {
-                format!("{:?}", program_type)
+                format!("{:?}", program_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(trial) = &self.trial {
-                format!("{:?}", trial)
+                format!("{:?}", trial).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(email) = &self.email {
-                format!("{:?}", email)
+                format!("{:?}", email).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(tax) = &self.tax {
-                format!("{:?}", tax)
+                format!("{:?}", tax).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(language) = &self.language {
-                format!("{:?}", language)
+                format!("{:?}", language).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(address) = &self.address {
-                format!("{:?}", address)
+                format!("{:?}", address).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(name) = &self.name {
-                format!("{:?}", name)
+                format!("{:?}", name).into()
             } else {
-                String::new()
-            },
-            if let Some(overdue) = &self.overdue {
-                format!("{:?}", overdue)
-            } else {
-                String::new()
+                String::new().into()
             },
             if let Some(invoice_items) = &self.invoice_items {
-                format!("{:?}", invoice_items)
+                format!("{:?}", invoice_items).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(invoice_settings) = &self.invoice_settings {
-                format!("{:?}", invoice_settings)
+                format!("{:?}", invoice_settings).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(subscriptions) = &self.subscriptions {
-                format!("{:?}", subscriptions)
+                format!("{:?}", subscriptions).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(controls) = &self.controls {
-                format!("{:?}", controls)
+                format!("{:?}", controls).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(purchase_order) = &self.purchase_order {
-                format!("{:?}", purchase_order)
+                format!("{:?}", purchase_order).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(status) = &self.status {
-                format!("{:?}", status)
+                format!("{:?}", status).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(pricing_experiment) = &self.pricing_experiment {
-                format!("{:?}", pricing_experiment)
+                format!("{:?}", pricing_experiment).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(orb_migration_scheduled_at) = &self.orb_migration_scheduled_at {
+                format!("{:?}", orb_migration_scheduled_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(force_orb_migration) = &self.force_orb_migration {
+                format!("{:?}", force_orb_migration).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(aws_marketplace) = &self.aws_marketplace {
+                format!("{:?}", aws_marketplace).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reseller) = &self.reseller {
+                format!("{:?}", reseller).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "currency".to_string(),
-            "addons".to_string(),
-            "cancelation".to_string(),
-            "period".to_string(),
-            "contract".to_string(),
-            "plan".to_string(),
-            "platform".to_string(),
-            "orb_customer_id".to_string(),
-            "program_type".to_string(),
-            "trial".to_string(),
-            "email".to_string(),
-            "tax".to_string(),
-            "language".to_string(),
-            "address".to_string(),
-            "name".to_string(),
-            "overdue".to_string(),
-            "invoice_items".to_string(),
-            "invoice_settings".to_string(),
-            "subscriptions".to_string(),
-            "controls".to_string(),
-            "purchase_order".to_string(),
-            "status".to_string(),
-            "pricing_experiment".to_string(),
+            "currency".into(),
+            "cancelation".into(),
+            "period".into(),
+            "contract".into(),
+            "plan".into(),
+            "plan_iteration".into(),
+            "platform".into(),
+            "orb_customer_id".into(),
+            "synced_at".into(),
+            "program_type".into(),
+            "trial".into(),
+            "email".into(),
+            "tax".into(),
+            "language".into(),
+            "address".into(),
+            "name".into(),
+            "invoice_items".into(),
+            "invoice_settings".into(),
+            "subscriptions".into(),
+            "controls".into(),
+            "purchase_order".into(),
+            "status".into(),
+            "pricing_experiment".into(),
+            "orb_migration_scheduled_at".into(),
+            "force_orb_migration".into(),
+            "aws_marketplace".into(),
+            "reseller".into(),
         ]
     }
 }
@@ -5601,6 +8446,14 @@ impl tabled::Tabled for Billing {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ResourceConfig {
+    #[doc = "An object containing infomation related to the amount of platform resources may be \
+             allocated to the User account."]
+    #[serde(
+        rename = "blobStores",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub blob_stores: Option<f64>,
     #[doc = "An object containing infomation related to the amount of platform resources may be \
              allocated to the User account."]
     #[serde(rename = "nodeType", default, skip_serializing_if = "Option::is_none")]
@@ -5640,6 +8493,14 @@ pub struct ResourceConfig {
     #[doc = "An object containing infomation related to the amount of platform resources may be \
              allocated to the User account."]
     #[serde(
+        rename = "imageOptimizationType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub image_optimization_type: Option<String>,
+    #[doc = "An object containing infomation related to the amount of platform resources may be \
+             allocated to the User account."]
+    #[serde(
         rename = "edgeConfigs",
         default,
         skip_serializing_if = "Option::is_none"
@@ -5672,6 +8533,14 @@ pub struct ResourceConfig {
     #[doc = "An object containing infomation related to the amount of platform resources may be \
              allocated to the User account."]
     #[serde(
+        rename = "serverlessFunctionDefaultMaxExecutionTime",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub serverless_function_default_max_execution_time: Option<f64>,
+    #[doc = "An object containing infomation related to the amount of platform resources may be \
+             allocated to the User account."]
+    #[serde(
         rename = "kvDatabases",
         default,
         skip_serializing_if = "Option::is_none"
@@ -5688,11 +8557,23 @@ pub struct ResourceConfig {
     #[doc = "An object containing infomation related to the amount of platform resources may be \
              allocated to the User account."]
     #[serde(
-        rename = "blobStores",
+        rename = "integrationStores",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub blob_stores: Option<f64>,
+    pub integration_stores: Option<f64>,
+    #[doc = "An object containing infomation related to the amount of platform resources may be \
+             allocated to the User account."]
+    #[serde(rename = "cronJobs", default, skip_serializing_if = "Option::is_none")]
+    pub cron_jobs: Option<f64>,
+    #[doc = "An object containing infomation related to the amount of platform resources may be \
+             allocated to the User account."]
+    #[serde(
+        rename = "cronJobsPerProject",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub cron_jobs_per_project: Option<f64>,
 }
 
 impl std::fmt::Display for ResourceConfig {
@@ -5705,89 +8586,122 @@ impl std::fmt::Display for ResourceConfig {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ResourceConfig {
-    const LENGTH: usize = 12;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 17;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(node_type) = &self.node_type {
-                format!("{:?}", node_type)
+            if let Some(blob_stores) = &self.blob_stores {
+                format!("{:?}", blob_stores).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(node_type) = &self.node_type {
+                format!("{:?}", node_type).into()
+            } else {
+                String::new().into()
             },
             if let Some(concurrent_builds) = &self.concurrent_builds {
-                format!("{:?}", concurrent_builds)
+                format!("{:?}", concurrent_builds).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(aws_account_type) = &self.aws_account_type {
-                format!("{:?}", aws_account_type)
+                format!("{:?}", aws_account_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(aws_account_ids) = &self.aws_account_ids {
-                format!("{:?}", aws_account_ids)
+                format!("{:?}", aws_account_ids).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(cf_zone_name) = &self.cf_zone_name {
-                format!("{:?}", cf_zone_name)
+                format!("{:?}", cf_zone_name).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(image_optimization_type) = &self.image_optimization_type {
+                format!("{:?}", image_optimization_type).into()
+            } else {
+                String::new().into()
             },
             if let Some(edge_configs) = &self.edge_configs {
-                format!("{:?}", edge_configs)
+                format!("{:?}", edge_configs).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(edge_config_size) = &self.edge_config_size {
-                format!("{:?}", edge_config_size)
+                format!("{:?}", edge_config_size).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(edge_function_max_size_bytes) = &self.edge_function_max_size_bytes {
-                format!("{:?}", edge_function_max_size_bytes)
+                format!("{:?}", edge_function_max_size_bytes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(edge_function_execution_timeout_ms) =
                 &self.edge_function_execution_timeout_ms
             {
-                format!("{:?}", edge_function_execution_timeout_ms)
+                format!("{:?}", edge_function_execution_timeout_ms).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(serverless_function_default_max_execution_time) =
+                &self.serverless_function_default_max_execution_time
+            {
+                format!("{:?}", serverless_function_default_max_execution_time).into()
+            } else {
+                String::new().into()
             },
             if let Some(kv_databases) = &self.kv_databases {
-                format!("{:?}", kv_databases)
+                format!("{:?}", kv_databases).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(postgres_databases) = &self.postgres_databases {
-                format!("{:?}", postgres_databases)
+                format!("{:?}", postgres_databases).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            if let Some(blob_stores) = &self.blob_stores {
-                format!("{:?}", blob_stores)
+            if let Some(integration_stores) = &self.integration_stores {
+                format!("{:?}", integration_stores).into()
             } else {
-                String::new()
+                String::new().into()
+            },
+            if let Some(cron_jobs) = &self.cron_jobs {
+                format!("{:?}", cron_jobs).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(cron_jobs_per_project) = &self.cron_jobs_per_project {
+                format!("{:?}", cron_jobs_per_project).into()
+            } else {
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "node_type".to_string(),
-            "concurrent_builds".to_string(),
-            "aws_account_type".to_string(),
-            "aws_account_ids".to_string(),
-            "cf_zone_name".to_string(),
-            "edge_configs".to_string(),
-            "edge_config_size".to_string(),
-            "edge_function_max_size_bytes".to_string(),
-            "edge_function_execution_timeout_ms".to_string(),
-            "kv_databases".to_string(),
-            "postgres_databases".to_string(),
-            "blob_stores".to_string(),
+            "blob_stores".into(),
+            "node_type".into(),
+            "concurrent_builds".into(),
+            "aws_account_type".into(),
+            "aws_account_ids".into(),
+            "cf_zone_name".into(),
+            "image_optimization_type".into(),
+            "edge_configs".into(),
+            "edge_config_size".into(),
+            "edge_function_max_size_bytes".into(),
+            "edge_function_execution_timeout_ms".into(),
+            "serverless_function_default_max_execution_time".into(),
+            "kv_databases".into(),
+            "postgres_databases".into(),
+            "integration_stores".into(),
+            "cron_jobs".into(),
+            "cron_jobs_per_project".into(),
         ]
     }
 }
@@ -5800,11 +8714,11 @@ impl tabled::Tabled for ResourceConfig {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ViewPreference {
     #[serde(rename = "list")]
     #[display("list")]
@@ -5814,6 +8728,50 @@ pub enum ViewPreference {
     Cards,
 }
 
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum FavoritesViewPreference {
+    #[serde(rename = "open")]
+    #[display("open")]
+    Open,
+    #[serde(rename = "closed")]
+    #[display("closed")]
+    Closed,
+}
+
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum RecentsViewPreference {
+    #[serde(rename = "open")]
+    #[display("open")]
+    Open,
+    #[serde(rename = "closed")]
+    #[display("closed")]
+    Closed,
+}
+
 #[doc = "set of dashboard view preferences (cards or list) per scopeId"]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -5821,8 +8779,24 @@ pub enum ViewPreference {
 pub struct ActiveDashboardViews {
     #[serde(rename = "scopeId")]
     pub scope_id: String,
-    #[serde(rename = "viewPreference")]
-    pub view_preference: ViewPreference,
+    #[serde(
+        rename = "viewPreference",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub view_preference: Option<ViewPreference>,
+    #[serde(
+        rename = "favoritesViewPreference",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub favorites_view_preference: Option<FavoritesViewPreference>,
+    #[serde(
+        rename = "recentsViewPreference",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub recents_view_preference: Option<RecentsViewPreference>,
 }
 
 impl std::fmt::Display for ActiveDashboardViews {
@@ -5835,40 +8809,53 @@ impl std::fmt::Display for ActiveDashboardViews {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for ActiveDashboardViews {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.scope_id.clone(), format!("{:?}", self.view_preference)]
+    const LENGTH: usize = 4;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.scope_id.clone().into(),
+            if let Some(view_preference) = &self.view_preference {
+                format!("{:?}", view_preference).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(favorites_view_preference) = &self.favorites_view_preference {
+                format!("{:?}", favorites_view_preference).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(recents_view_preference) = &self.recents_view_preference {
+                format!("{:?}", recents_view_preference).into()
+            } else {
+                String::new().into()
+            },
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["scope_id".to_string(), "view_preference".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "scope_id".into(),
+            "view_preference".into(),
+            "favorites_view_preference".into(),
+            "recents_view_preference".into(),
+        ]
     }
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ImportFlowGitNamespace {
     String(String),
     F64(f64),
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ImportFlowGitNamespaceId {
     String(String),
     F64(f64),
@@ -5882,11 +8869,11 @@ pub enum ImportFlowGitNamespaceId {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum ImportFlowGitProvider {
     #[serde(rename = "github")]
     #[display("github")]
@@ -5900,14 +8887,9 @@ pub enum ImportFlowGitProvider {
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum GitNamespaceId {
     String(String),
     F64(f64),
@@ -5933,17 +8915,18 @@ impl std::fmt::Display for PreferredScopesAndGitNamespaces {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for PreferredScopesAndGitNamespaces {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.scope_id.clone(),
-            format!("{:?}", self.git_namespace_id),
+            self.scope_id.clone().into(),
+            format!("{:?}", self.git_namespace_id).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["scope_id".to_string(), "git_namespace_id".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["scope_id".into(), "git_namespace_id".into()]
     }
 }
 
@@ -5967,14 +8950,18 @@ impl std::fmt::Display for Dismissals {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for Dismissals {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.scope_id.clone(), format!("{:?}", self.created_at)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.scope_id.clone().into(),
+            format!("{:?}", self.created_at).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["scope_id".to_string(), "created_at".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["scope_id".into(), "created_at".into()]
     }
 }
 
@@ -5997,14 +8984,18 @@ impl std::fmt::Display for DismissedToasts {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for DismissedToasts {
     const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<String> {
-        vec![self.name.clone(), format!("{:?}", self.dismissals)]
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.name.clone().into(),
+            format!("{:?}", self.dismissals).into(),
+        ]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["name".to_string(), "dismissals".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "dismissals".into()]
     }
 }
 
@@ -6012,7 +9003,7 @@ impl tabled::Tabled for DismissedToasts {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct FavoriteProjectsAndSpacesOneOf {
+pub struct FavoriteProjectsAndSpacesProjectId {
     #[serde(rename = "projectId")]
     pub project_id: String,
     #[serde(rename = "scopeSlug")]
@@ -6021,7 +9012,7 @@ pub struct FavoriteProjectsAndSpacesOneOf {
     pub scope_id: String,
 }
 
-impl std::fmt::Display for FavoriteProjectsAndSpacesOneOf {
+impl std::fmt::Display for FavoriteProjectsAndSpacesProjectId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -6031,22 +9022,19 @@ impl std::fmt::Display for FavoriteProjectsAndSpacesOneOf {
     }
 }
 
-impl tabled::Tabled for FavoriteProjectsAndSpacesOneOf {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FavoriteProjectsAndSpacesProjectId {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.project_id.clone(),
-            self.scope_slug.clone(),
-            self.scope_id.clone(),
+            self.project_id.clone().into(),
+            self.scope_slug.clone().into(),
+            self.scope_id.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "project_id".to_string(),
-            "scope_slug".to_string(),
-            "scope_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["project_id".into(), "scope_slug".into(), "scope_id".into()]
     }
 }
 
@@ -6054,7 +9042,7 @@ impl tabled::Tabled for FavoriteProjectsAndSpacesOneOf {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct FavoriteProjectsAndSpacesOneOfOneOf {
+pub struct FavoriteProjectsAndSpacesSpaceId {
     #[serde(rename = "spaceId")]
     pub space_id: String,
     #[serde(rename = "scopeSlug")]
@@ -6063,7 +9051,7 @@ pub struct FavoriteProjectsAndSpacesOneOfOneOf {
     pub scope_id: String,
 }
 
-impl std::fmt::Display for FavoriteProjectsAndSpacesOneOfOneOf {
+impl std::fmt::Display for FavoriteProjectsAndSpacesSpaceId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(
             f,
@@ -6073,37 +9061,29 @@ impl std::fmt::Display for FavoriteProjectsAndSpacesOneOfOneOf {
     }
 }
 
-impl tabled::Tabled for FavoriteProjectsAndSpacesOneOfOneOf {
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FavoriteProjectsAndSpacesSpaceId {
     const LENGTH: usize = 3;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.space_id.clone(),
-            self.scope_slug.clone(),
-            self.scope_id.clone(),
+            self.space_id.clone().into(),
+            self.scope_slug.clone().into(),
+            self.scope_id.clone().into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
-        vec![
-            "space_id".to_string(),
-            "scope_slug".to_string(),
-            "scope_id".to_string(),
-        ]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["space_id".into(), "scope_slug".into(), "scope_id".into()]
     }
 }
 
 #[derive(
-    serde :: Serialize,
-    serde :: Deserialize,
-    PartialEq,
-    Debug,
-    Clone,
-    schemars :: JsonSchema,
-    tabled :: Tabled,
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum FavoriteProjectsAndSpaces {
-    FavoriteProjectsAndSpacesOneOf(FavoriteProjectsAndSpacesOneOf),
-    FavoriteProjectsAndSpacesOneOfOneOf(FavoriteProjectsAndSpacesOneOfOneOf),
+    FavoriteProjectsAndSpacesProjectId(FavoriteProjectsAndSpacesProjectId),
+    FavoriteProjectsAndSpacesSpaceId(FavoriteProjectsAndSpacesSpaceId),
 }
 
 #[doc = "remote caching settings"]
@@ -6125,20 +9105,245 @@ impl std::fmt::Display for RemoteCaching {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for RemoteCaching {
     const LENGTH: usize = 1;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![if let Some(enabled) = &self.enabled {
-            format!("{:?}", enabled)
+            format!("{:?}", enabled).into()
         } else {
-            String::new()
+            String::new().into()
         }]
     }
 
-    fn headers() -> Vec<String> {
-        vec!["enabled".to_string()]
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["enabled".into()]
     }
 }
+
+#[doc = "data cache settings"]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct DataCache {
+    #[serde(
+        rename = "excessBillingEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub excess_billing_enabled: Option<bool>,
+}
+
+impl std::fmt::Display for DataCache {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for DataCache {
+    const LENGTH: usize = 1;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(excess_billing_enabled) = &self.excess_billing_enabled {
+                format!("{:?}", excess_billing_enabled).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["excess_billing_enabled".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FeatureBlocksWebAnalytics {
+    #[serde(
+        rename = "blockedFrom",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub blocked_from: Option<f64>,
+    #[serde(
+        rename = "blockedUntil",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub blocked_until: Option<f64>,
+    #[serde(rename = "isCurrentlyBlocked")]
+    pub is_currently_blocked: bool,
+}
+
+impl std::fmt::Display for FeatureBlocksWebAnalytics {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FeatureBlocksWebAnalytics {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(blocked_from) = &self.blocked_from {
+                format!("{:?}", blocked_from).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(blocked_until) = &self.blocked_until {
+                format!("{:?}", blocked_until).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.is_currently_blocked).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "blocked_from".into(),
+            "blocked_until".into(),
+            "is_currently_blocked".into(),
+        ]
+    }
+}
+
+#[doc = "Feature blocks for the user"]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct FeatureBlocks {
+    #[serde(
+        rename = "webAnalytics",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub web_analytics: Option<FeatureBlocksWebAnalytics>,
+}
+
+impl std::fmt::Display for FeatureBlocks {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for FeatureBlocks {
+    const LENGTH: usize = 1;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![if let Some(web_analytics) = &self.web_analytics {
+            format!("{:?}", web_analytics).into()
+        } else {
+            String::new().into()
+        }]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["web_analytics".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct NorthstarMigration {
+    #[doc = "The ID of the team we created for this user."]
+    #[serde(rename = "teamId")]
+    pub team_id: String,
+    #[doc = "The number of projects migrated for this user."]
+    pub projects: f64,
+    #[doc = "The number of stores migrated for this user."]
+    pub stores: f64,
+    #[doc = "The number of integration configurations migrated for this user."]
+    #[serde(rename = "integrationConfigurations")]
+    pub integration_configurations: f64,
+    #[doc = "The number of integration clients migrated for this user."]
+    #[serde(rename = "integrationClients")]
+    pub integration_clients: f64,
+    #[doc = "The migration start time timestamp for this user."]
+    #[serde(rename = "startTime")]
+    pub start_time: f64,
+    #[doc = "The migration end time timestamp for this user."]
+    #[serde(rename = "endTime")]
+    pub end_time: f64,
+}
+
+impl std::fmt::Display for NorthstarMigration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for NorthstarMigration {
+    const LENGTH: usize = 7;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.team_id.clone().into(),
+            format!("{:?}", self.projects).into(),
+            format!("{:?}", self.stores).into(),
+            format!("{:?}", self.integration_configurations).into(),
+            format!("{:?}", self.integration_clients).into(),
+            format!("{:?}", self.start_time).into(),
+            format!("{:?}", self.end_time).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "team_id".into(),
+            "projects".into(),
+            "stores".into(),
+            "integration_configurations".into(),
+            "integration_clients".into(),
+            "start_time".into(),
+            "end_time".into(),
+        ]
+    }
+}
+
+#[doc = "The user's version. Will either be unset or `northstar`."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+#[derive(Default)]
+pub enum Version {
+    #[serde(rename = "northstar")]
+    #[display("northstar")]
+    #[default]
+    Northstar,
+}
+
 
 #[doc = "Data for the currently authenticated User."]
 #[derive(
@@ -6218,6 +9423,22 @@ pub struct AuthUser {
         skip_serializing_if = "Option::is_none"
     )]
     pub remote_caching: Option<RemoteCaching>,
+    #[doc = "data cache settings"]
+    #[serde(rename = "dataCache", default, skip_serializing_if = "Option::is_none")]
+    pub data_cache: Option<DataCache>,
+    #[doc = "Feature blocks for the user"]
+    #[serde(
+        rename = "featureBlocks",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub feature_blocks: Option<FeatureBlocks>,
+    #[serde(
+        rename = "northstarMigration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub northstar_migration: Option<NorthstarMigration>,
     #[doc = "The User's unique identifier."]
     pub id: String,
     #[doc = "Email address associated with the User account."]
@@ -6231,6 +9452,16 @@ pub struct AuthUser {
              endpoint to retrieve the avatar image."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
+    #[doc = "The user's default team. Only applies if the user's `version` is `'northstar'`."]
+    #[serde(
+        rename = "defaultTeamId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_team_id: Option<String>,
+    #[doc = "The user's version. Will either be unset or `northstar`."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<Version>,
 }
 
 impl std::fmt::Display for AuthUser {
@@ -6243,87 +9474,110 @@ impl std::fmt::Display for AuthUser {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AuthUser {
-    const LENGTH: usize = 19;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 24;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.created_at),
-            format!("{:?}", self.soft_block),
-            format!("{:?}", self.billing),
-            format!("{:?}", self.resource_config),
-            self.staging_prefix.clone(),
+            format!("{:?}", self.created_at).into(),
+            format!("{:?}", self.soft_block).into(),
+            format!("{:?}", self.billing).into(),
+            format!("{:?}", self.resource_config).into(),
+            self.staging_prefix.clone().into(),
             if let Some(active_dashboard_views) = &self.active_dashboard_views {
-                format!("{:?}", active_dashboard_views)
+                format!("{:?}", active_dashboard_views).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(import_flow_git_namespace) = &self.import_flow_git_namespace {
-                format!("{:?}", import_flow_git_namespace)
+                format!("{:?}", import_flow_git_namespace).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(import_flow_git_namespace_id) = &self.import_flow_git_namespace_id {
-                format!("{:?}", import_flow_git_namespace_id)
+                format!("{:?}", import_flow_git_namespace_id).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(import_flow_git_provider) = &self.import_flow_git_provider {
-                format!("{:?}", import_flow_git_provider)
+                format!("{:?}", import_flow_git_provider).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(preferred_scopes_and_git_namespaces) =
                 &self.preferred_scopes_and_git_namespaces
             {
-                format!("{:?}", preferred_scopes_and_git_namespaces)
+                format!("{:?}", preferred_scopes_and_git_namespaces).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(dismissed_toasts) = &self.dismissed_toasts {
-                format!("{:?}", dismissed_toasts)
+                format!("{:?}", dismissed_toasts).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(favorite_projects_and_spaces) = &self.favorite_projects_and_spaces {
-                format!("{:?}", favorite_projects_and_spaces)
+                format!("{:?}", favorite_projects_and_spaces).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.has_trial_available),
+            format!("{:?}", self.has_trial_available).into(),
             if let Some(remote_caching) = &self.remote_caching {
-                format!("{:?}", remote_caching)
+                format!("{:?}", remote_caching).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            self.id.clone(),
-            self.email.clone(),
-            format!("{:?}", self.name),
-            self.username.clone(),
-            format!("{:?}", self.avatar),
+            if let Some(data_cache) = &self.data_cache {
+                format!("{:?}", data_cache).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(feature_blocks) = &self.feature_blocks {
+                format!("{:?}", feature_blocks).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(northstar_migration) = &self.northstar_migration {
+                format!("{:?}", northstar_migration).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.email.clone().into(),
+            format!("{:?}", self.name).into(),
+            self.username.clone().into(),
+            format!("{:?}", self.avatar).into(),
+            format!("{:?}", self.default_team_id).into(),
+            format!("{:?}", self.version).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "created_at".to_string(),
-            "soft_block".to_string(),
-            "billing".to_string(),
-            "resource_config".to_string(),
-            "staging_prefix".to_string(),
-            "active_dashboard_views".to_string(),
-            "import_flow_git_namespace".to_string(),
-            "import_flow_git_namespace_id".to_string(),
-            "import_flow_git_provider".to_string(),
-            "preferred_scopes_and_git_namespaces".to_string(),
-            "dismissed_toasts".to_string(),
-            "favorite_projects_and_spaces".to_string(),
-            "has_trial_available".to_string(),
-            "remote_caching".to_string(),
-            "id".to_string(),
-            "email".to_string(),
-            "name".to_string(),
-            "username".to_string(),
-            "avatar".to_string(),
+            "created_at".into(),
+            "soft_block".into(),
+            "billing".into(),
+            "resource_config".into(),
+            "staging_prefix".into(),
+            "active_dashboard_views".into(),
+            "import_flow_git_namespace".into(),
+            "import_flow_git_namespace_id".into(),
+            "import_flow_git_provider".into(),
+            "preferred_scopes_and_git_namespaces".into(),
+            "dismissed_toasts".into(),
+            "favorite_projects_and_spaces".into(),
+            "has_trial_available".into(),
+            "remote_caching".into(),
+            "data_cache".into(),
+            "feature_blocks".into(),
+            "northstar_migration".into(),
+            "id".into(),
+            "email".into(),
+            "name".into(),
+            "username".into(),
+            "avatar".into(),
+            "default_team_id".into(),
+            "version".into(),
         ]
     }
 }
@@ -6352,6 +9606,16 @@ pub struct AuthUserLimited {
              endpoint to retrieve the avatar image."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
+    #[doc = "The user's default team. Only applies if the user's `version` is `'northstar'`."]
+    #[serde(
+        rename = "defaultTeamId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_team_id: Option<String>,
+    #[doc = "The user's version. Will either be unset or `northstar`."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<Version>,
 }
 
 impl std::fmt::Display for AuthUserLimited {
@@ -6364,27 +9628,32 @@ impl std::fmt::Display for AuthUserLimited {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AuthUserLimited {
-    const LENGTH: usize = 6;
-    fn fields(&self) -> Vec<String> {
+    const LENGTH: usize = 8;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            format!("{:?}", self.limited),
-            self.id.clone(),
-            self.email.clone(),
-            format!("{:?}", self.name),
-            self.username.clone(),
-            format!("{:?}", self.avatar),
+            format!("{:?}", self.limited).into(),
+            self.id.clone().into(),
+            self.email.clone().into(),
+            format!("{:?}", self.name).into(),
+            self.username.clone().into(),
+            format!("{:?}", self.avatar).into(),
+            format!("{:?}", self.default_team_id).into(),
+            format!("{:?}", self.version).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "limited".to_string(),
-            "id".to_string(),
-            "email".to_string(),
-            "name".to_string(),
-            "username".to_string(),
-            "avatar".to_string(),
+            "limited".into(),
+            "id".into(),
+            "email".into(),
+            "name".into(),
+            "username".into(),
+            "avatar".into(),
+            "default_team_id".into(),
+            "version".into(),
         ]
     }
 }
@@ -6393,25 +9662,101 @@ impl tabled::Tabled for AuthUserLimited {
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
+    Hash,
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
+    parse_display :: FromStr,
+    parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum UserOrigin {
+    #[serde(rename = "saml")]
+    #[display("saml")]
+    Saml,
+    #[serde(rename = "github")]
+    #[display("github")]
+    Github,
+    #[serde(rename = "gitlab")]
+    #[display("gitlab")]
+    Gitlab,
+    #[serde(rename = "bitbucket")]
+    #[display("bitbucket")]
+    Bitbucket,
+    #[serde(rename = "email")]
+    #[display("email")]
+    Email,
+    #[serde(rename = "manual")]
+    #[display("manual")]
+    Manual,
+    #[serde(rename = "passkey")]
+    #[display("passkey")]
+    Passkey,
+}
+
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum TeamOrigin {
+    #[serde(rename = "saml")]
+    #[display("saml")]
+    Saml,
+    #[serde(rename = "github")]
+    #[display("github")]
+    Github,
+    #[serde(rename = "gitlab")]
+    #[display("gitlab")]
+    Gitlab,
+    #[serde(rename = "bitbucket")]
+    #[display("bitbucket")]
+    Bitbucket,
+    #[serde(rename = "email")]
+    #[display("email")]
+    Email,
+    #[serde(rename = "manual")]
+    #[display("manual")]
+    Manual,
+    #[serde(rename = "passkey")]
+    #[display("passkey")]
+    Passkey,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 #[serde(tag = "type")]
 pub enum Scopes {
+    #[doc = "The access scopes granted to the token."]
     #[serde(rename = "user")]
     User {
-        origin: Origin,
-        createdAt: f64,
-        expiresAt: Option<f64>,
+        origin: UserOrigin,
+        #[serde(rename = "createdAt")]
+        created_at: f64,
+        #[serde(rename = "expiresAt", default, skip_serializing_if = "Option::is_none")]
+        expires_at: Option<f64>,
     },
+    #[doc = "The access scopes granted to the token."]
     #[serde(rename = "team")]
     Team {
-        teamId: String,
-        origin: Origin,
-        createdAt: f64,
-        expiresAt: Option<f64>,
+        #[serde(rename = "teamId")]
+        team_id: String,
+        origin: TeamOrigin,
+        #[serde(rename = "createdAt")]
+        created_at: f64,
+        #[serde(rename = "expiresAt", default, skip_serializing_if = "Option::is_none")]
+        expires_at: Option<f64>,
     },
 }
 
@@ -6454,43 +9799,44 @@ impl std::fmt::Display for AuthToken {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for AuthToken {
     const LENGTH: usize = 8;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.id.clone(),
-            self.name.clone(),
-            self.type_.clone(),
+            self.id.clone().into(),
+            self.name.clone().into(),
+            self.type_.clone().into(),
             if let Some(origin) = &self.origin {
-                format!("{:?}", origin)
+                format!("{:?}", origin).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(scopes) = &self.scopes {
-                format!("{:?}", scopes)
+                format!("{:?}", scopes).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(expires_at) = &self.expires_at {
-                format!("{:?}", expires_at)
+                format!("{:?}", expires_at).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.active_at),
-            format!("{:?}", self.created_at),
+            format!("{:?}", self.active_at).into(),
+            format!("{:?}", self.created_at).into(),
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "id".to_string(),
-            "name".to_string(),
-            "type_".to_string(),
-            "origin".to_string(),
-            "scopes".to_string(),
-            "expires_at".to_string(),
-            "active_at".to_string(),
-            "created_at".to_string(),
+            "id".into(),
+            "name".into(),
+            "type_".into(),
+            "origin".into(),
+            "scopes".into(),
+            "expires_at".into(),
+            "active_at".into(),
+            "created_at".into(),
         ]
     }
 }
@@ -6504,11 +9850,11 @@ impl tabled::Tabled for AuthToken {
     Debug,
     Clone,
     schemars :: JsonSchema,
-    tabled :: Tabled,
-    clap :: ValueEnum,
     parse_display :: FromStr,
     parse_display :: Display,
 )]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
 pub enum FileTreeType {
     #[serde(rename = "directory")]
     #[display("directory")]
@@ -6570,45 +9916,46 @@ impl std::fmt::Display for FileTree {
     }
 }
 
+#[cfg(feature = "tabled")]
 impl tabled::Tabled for FileTree {
     const LENGTH: usize = 7;
-    fn fields(&self) -> Vec<String> {
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            self.name.clone(),
-            format!("{:?}", self.type_),
+            self.name.clone().into(),
+            format!("{:?}", self.type_).into(),
             if let Some(uid) = &self.uid {
-                format!("{:?}", uid)
+                format!("{:?}", uid).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(children) = &self.children {
-                format!("{:?}", children)
+                format!("{:?}", children).into()
             } else {
-                String::new()
+                String::new().into()
             },
             if let Some(content_type) = &self.content_type {
-                format!("{:?}", content_type)
+                format!("{:?}", content_type).into()
             } else {
-                String::new()
+                String::new().into()
             },
-            format!("{:?}", self.mode),
+            format!("{:?}", self.mode).into(),
             if let Some(symlink) = &self.symlink {
-                format!("{:?}", symlink)
+                format!("{:?}", symlink).into()
             } else {
-                String::new()
+                String::new().into()
             },
         ]
     }
 
-    fn headers() -> Vec<String> {
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            "name".to_string(),
-            "type_".to_string(),
-            "uid".to_string(),
-            "children".to_string(),
-            "content_type".to_string(),
-            "mode".to_string(),
-            "symlink".to_string(),
+            "name".into(),
+            "type_".into(),
+            "uid".into(),
+            "children".into(),
+            "content_type".into(),
+            "mode".into(),
+            "symlink".into(),
         ]
     }
 }

@@ -103,7 +103,7 @@ twilio: openapitor
 		--date-time-format "%a, %d %b %Y %H:%M:%S %z" $(EXTRA_ARGS)
 
 .PHONY: vercel
-vercel:
+vercel: openapitor
 	$(openapitor_exe) \
 		--input specs/vercel.json \
 		--target-version 0.1.0 \
