@@ -369,10 +369,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -610,10 +610,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -772,10 +772,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -1240,19 +1240,6 @@ dependencies = [
 
 [[package]]
 name = "papergrid"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2ccbe15f2b6db62f9a9871642746427e297b0ceb85f9a7f1ee5ff47d184d0c8"
-dependencies = [
- "ansi-str",
- "ansitok",
- "bytecount",
- "fnv",
- "unicode-width",
-]
-
-[[package]]
-name = "papergrid"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ad43c07024ef767f9160710b3a6773976194758c7919b17e63b863db0bdf7fb"
@@ -1325,17 +1312,6 @@ dependencies = [
 
 [[package]]
 name = "parse-display"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6509d08722b53e8dafe97f2027b22ccbe3a5db83cb352931e9716b0aa44bc5c"
-dependencies = [
- "once_cell",
- "parse-display-derive 0.8.2",
- "regex",
-]
-
-[[package]]
-name = "parse-display"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "914a1c2265c98e2446911282c6ac86d8524f495792c38c5bd884f80499c7538a"
@@ -1358,21 +1334,6 @@ dependencies = [
  "regex-syntax 0.6.29",
  "structmeta 0.1.6",
  "syn 1.0.109",
-]
-
-[[package]]
-name = "parse-display-derive"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68517892c8daf78da08c0db777fcc17e07f2f63ef70041718f8a7630ad84f341"
-dependencies = [
- "once_cell",
- "proc-macro2",
- "quote",
- "regex",
- "regex-syntax 0.7.4",
- "structmeta 0.2.0",
- "syn 2.0.74",
 ]
 
 [[package]]
@@ -1550,10 +1511,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -1661,12 +1622,6 @@ checksum = "f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1"
 
 [[package]]
 name = "regex-syntax"
-version = "0.7.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5ea92a5b6195c6ef2a0295ea818b312502c6fc94dde986c5553242e18fd4ce2"
-
-[[package]]
-name = "regex-syntax"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
@@ -1706,10 +1661,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -1938,10 +1893,10 @@ dependencies = [
  "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.15.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.23.1",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
@@ -2225,18 +2180,6 @@ dependencies = [
 
 [[package]]
 name = "structmeta"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78ad9e09554f0456d67a69c1584c9798ba733a5b50349a6c0d0948710523922d"
-dependencies = [
- "proc-macro2",
- "quote",
- "structmeta-derive 0.2.0",
- "syn 2.0.74",
-]
-
-[[package]]
-name = "structmeta"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2e1575d8d40908d70f6fd05537266b90ae71b15dbbe7a8b7dffa2b759306d329"
@@ -2256,17 +2199,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
-]
-
-[[package]]
-name = "structmeta-derive"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a60bcaff7397072dca0017d1db428e30d5002e00b6847703e2e42005c95fbe00"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.74",
 ]
 
 [[package]]
@@ -2353,41 +2285,15 @@ dependencies = [
 
 [[package]]
 name = "tabled"
-version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dfe9c3632da101aba5131ed63f9eed38665f8b3c68703a6bb18124835c1a5d22"
-dependencies = [
- "ansi-str",
- "ansitok",
- "papergrid 0.10.0",
- "tabled_derive 0.6.0",
- "unicode-width",
-]
-
-[[package]]
-name = "tabled"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c998b0c8b921495196a48aabaf1901ff28be0760136e31604f7967b0792050e"
 dependencies = [
  "ansi-str",
  "ansitok",
- "papergrid 0.11.0",
- "tabled_derive 0.7.0",
+ "papergrid",
+ "tabled_derive",
  "unicode-width",
-]
-
-[[package]]
-name = "tabled_derive"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99f688a08b54f4f02f0a3c382aefdb7884d3d69609f785bd253dc033243e3fe4"
-dependencies = [
- "heck 0.4.1",
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -2509,18 +2415,6 @@ dependencies = [
 
 [[package]]
 name = "tokio-tungstenite"
-version = "0.19.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec509ac96e9a0c43427c74f003127d953a265737636129424288d27cb5c4b12c"
-dependencies = [
- "futures-util",
- "log",
- "tokio",
- "tungstenite 0.19.0",
-]
-
-[[package]]
-name = "tokio-tungstenite"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6989540ced10490aaf14e6bad2e3d33728a2813310a0c71d1574304c49631cd"
@@ -2528,7 +2422,7 @@ dependencies = [
  "futures-util",
  "log",
  "tokio",
- "tungstenite 0.23.0",
+ "tungstenite",
 ]
 
 [[package]]
@@ -2628,25 +2522,6 @@ checksum = "3528ecfd12c466c6f163363caf2d02a71161dd5e1cc6ae7b34207ea2d42d81ed"
 
 [[package]]
 name = "tungstenite"
-version = "0.19.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15fba1a6d6bb030745759a9a2a588bfe8490fc8b4751a277db3a0be1c9ebbf67"
-dependencies = [
- "byteorder",
- "bytes",
- "data-encoding",
- "http 0.2.9",
- "httparse",
- "log",
- "rand",
- "sha1",
- "thiserror",
- "url",
- "utf-8",
-]
-
-[[package]]
-name = "tungstenite"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e2e2ce1e47ed2994fd43b04c8f618008d4cabdd5ee34027cf14f9d918edd9c8"
@@ -2669,7 +2544,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "base64 0.21.2",
+ "base64 0.22.1",
+ "bigdecimal",
  "bytes",
  "chrono",
  "clap",
@@ -2680,11 +2556,10 @@ dependencies = [
  "futures",
  "futures-util",
  "http 0.2.9",
- "itertools 0.10.5",
+ "itertools 0.13.0",
  "log",
- "mime",
- "parse-display 0.8.2",
- "percent-encoding",
+ "mime_guess",
+ "parse-display 0.9.1",
  "phonenumber",
  "pretty_assertions",
  "rand",
@@ -2695,12 +2570,13 @@ dependencies = [
  "reqwest-tracing 0.4.5",
  "schemars",
  "serde",
+ "serde_bytes",
  "serde_json",
  "serde_urlencoded",
- "tabled 0.14.0",
+ "tabled",
  "thiserror",
  "tokio",
- "tokio-tungstenite 0.19.0",
+ "tokio-tungstenite",
  "tracing",
  "url",
  "uuid",
