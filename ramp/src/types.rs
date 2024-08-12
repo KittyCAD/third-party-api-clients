@@ -7204,7 +7204,8 @@ pub struct Bill {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub memo: Option<String>,
     #[doc = "Payment information of the bill."]
-    pub payment: ApiBillPayment,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub payment: Option<ApiBillPayment>,
     #[doc = "An ID that identifies the bill on client's side."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub remote_id: Option<String>,
@@ -7278,7 +7279,11 @@ impl tabled::Tabled for Bill {
             } else {
                 String::new().into()
             },
-            format!("{:?}", self.payment).into(),
+            if let Some(payment) = &self.payment {
+                format!("{:?}", payment).into()
+            } else {
+                String::new().into()
+            },
             if let Some(remote_id) = &self.remote_id {
                 format!("{:?}", remote_id).into()
             } else {

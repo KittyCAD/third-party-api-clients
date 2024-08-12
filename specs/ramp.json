@@ -8198,7 +8198,8 @@
                 "$ref": "#/components/schemas/ApiBillPayment"
               }
             ],
-            "description": "Payment information of the bill."
+            "description": "Payment information of the bill.",
+            "nullable": true
           },
           "remote_id": {
             "description": "An ID that identifies the bill on client's side.",
@@ -8217,7 +8218,7 @@
             "description": "Vendor information of the bill."
           }
         },
-        "required": ["amount", "created_at", "due_at", "id", "issued_at", "payment", "status", "vendor"],
+        "required": ["amount", "created_at", "due_at", "id", "issued_at", "status", "vendor"],
         "type": "object"
       },
       "Business": {
