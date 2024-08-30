@@ -361,7 +361,6 @@ paths:
               schema:
                 type: object
                 allOf:
-                - $ref: '#/components/schemas/MetaResponse'
                 - $ref: '#/components/schemas/Worker'
           description: a specific worker
       operationId: get-workers

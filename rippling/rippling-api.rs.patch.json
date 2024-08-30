@@ -4,7 +4,7 @@
     "path": "/info/x-rust",
     "value": {
       "client": "// Authenticate via an API token.\nlet client = rippling-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `RIPPLING_API_TOKEN`.\nlet client = rippling_api::Client::new_from_env();",
-      "install": "[dependencies]\nrippling-api = \"0.1.1\""
+      "install": "[dependencies]\nrippling-api = \"0.1.2\""
     }
   },
   {
@@ -131,7 +131,7 @@
     "op": "add",
     "path": "/paths/~1workers~1{id}/get/x-rust",
     "value": {
-      "example": "/// Retrieve a specific worker\n/// \n/// Retrieve a specific worker\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `id: &'astr`: ID of the resource to return (required)\nasync fn example_workers_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetWorkersResponse = client\n        .workers()\n        .get(\n            Some(\"some-string\".to_string()),\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "example": "/// Retrieve a specific worker\n/// \n/// Retrieve a specific worker\n/// \n/// **Parameters:**\n/// \n/// - `expand: Option<String>`\n/// - `id: &'astr`: ID of the resource to return (required)\nasync fn example_workers_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Worker = client\n        .workers()\n        .get(\n            Some(\"some-string\".to_string()),\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
       "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/workers/struct.Workers.html#method.get"
     }
   }

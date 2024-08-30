@@ -1,7 +1,7 @@
 [package]
 name = "rippling-api"
 description = "A fully generated & opinionated API client for the Rippling API."
-version = "0.1.1"
+version = "0.1.2"
 documentation = "https://docs.rs/rippling-api"
 readme = "README.md"
 
