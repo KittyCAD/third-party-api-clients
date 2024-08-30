@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! rippling-api = "0.1.0"
+//! rippling-api = "0.1.1"
 //! ```
 //!
 //! ## Basic example
