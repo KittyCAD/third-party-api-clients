@@ -1,2 +1,4 @@
 # files added by cargo
 target
+
+.direnv

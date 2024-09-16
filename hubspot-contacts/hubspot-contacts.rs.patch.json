@@ -1,0 +1,106 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = hubspot-contacts::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `HUBSPOT_CONTACTS_API_TOKEN`.\nlet client = hubspot_contacts::Client::new_from_env();",
+      "install": "[dependencies]\nhubspot-contacts = \"0.1.0\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts/get/x-rust",
+    "value": {
+      "example": "/// List\n/// \n/// Read a page of contacts. Control what is returned via the `properties` query param.\n/// \n/// **Parameters:**\n/// \n/// - `after: Option<String>`: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.\n/// - `archived: Option<bool>`: Whether to return only results that have been archived.\n/// - `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n/// - `limit: Option<i32>`: The maximum number of results to display per page.\n/// - `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n/// - `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.\nasync fn example_basic_get_crm_v_3_objects_contacts_get_page() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging =\n        client\n            .basic()\n            .get_crm_v_3_objects_contacts_get_page(\n                Some(\"some-string\".to_string()),\n                Some(false),\n                Some(vec![\"some-string\".to_string()]),\n                Some(4 as i32),\n                Some(vec![\"some-string\".to_string()]),\n                Some(vec![\"some-string\".to_string()]),\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/basic/struct.Basic.html#method.get_crm_v_3_objects_contacts_get_page"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts/post/x-rust",
+    "value": {
+      "example": "/// Create\n/// \n/// Create a contact with the given properties and return a copy of the object, including the ID. Documentation and examples for creating standard contacts is provided.\nasync fn example_basic_post_crm_v_3_objects_contacts_create() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObject = client\n        .basic()\n        .post_crm_v_3_objects_contacts_create(&hubspot_contacts::types::SimplePublicObjectInputForCreate {\n            associations: vec![hubspot_contacts::types::PublicAssociationsForObject {\n                types: vec![hubspot_contacts::types::AssociationSpec {\n                    association_category: hubspot_contacts::types::AssociationCategory::IntegratorDefined,\n                    association_type_id: 4 as i32,\n                }],\n                to: hubspot_contacts::types::PublicObjectId {\n                    id: \"some-string\".to_string(),\n                },\n            }],\n            properties: std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/basic/struct.Basic.html#method.post_crm_v_3_objects_contacts_create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1batch~1archive/post/x-rust",
+    "value": {
+      "example": "/// Archive a batch of contacts by ID\nasync fn example_batch_post_crm_v_3_objects_contacts_archive_archive() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    client\n        .batch()\n        .post_crm_v_3_objects_contacts_archive_archive(\n            &hubspot_contacts::types::BatchInputSimplePublicObjectId {\n                inputs: vec![hubspot_contacts::types::SimplePublicObjectId {\n                    id: \"some-string\".to_string(),\n                }],\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/batch/struct.Batch.html#method.post_crm_v_3_objects_contacts_archive_archive"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1batch~1create/post/x-rust",
+    "value": {
+      "example": "/// Create a batch of contacts\nasync fn example_batch_post_crm_v_3_objects_contacts_create_create() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::BatchResponseSimplePublicObject = client\n        .batch()\n        .post_crm_v_3_objects_contacts_create_create(\n            &hubspot_contacts::types::BatchInputSimplePublicObjectInputForCreate {\n                inputs: vec![hubspot_contacts::types::SimplePublicObjectInputForCreate {\n                    associations: vec![hubspot_contacts::types::PublicAssociationsForObject {\n                        types: vec![hubspot_contacts::types::AssociationSpec {\n                            association_category:\n                                hubspot_contacts::types::AssociationCategory::IntegratorDefined,\n                            association_type_id: 4 as i32,\n                        }],\n                        to: hubspot_contacts::types::PublicObjectId {\n                            id: \"some-string\".to_string(),\n                        },\n                    }],\n                    properties: std::collections::HashMap::from([(\n                        \"some-key\".to_string(),\n                        \"some-string\".to_string(),\n                    )]),\n                }],\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/batch/struct.Batch.html#method.post_crm_v_3_objects_contacts_create_create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1batch~1read/post/x-rust",
+    "value": {
+      "example": "/// Read a batch of contacts by internal ID, or unique property values\n/// \n/// **Parameters:**\n/// \n/// - `archived: Option<bool>`: Whether to return only results that have been archived.\nasync fn example_batch_post_crm_v_3_objects_contacts_read_read() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::BatchResponseSimplePublicObject = client\n        .batch()\n        .post_crm_v_3_objects_contacts_read_read(\n            Some(false),\n            &hubspot_contacts::types::BatchReadInputSimplePublicObjectId {\n                properties_with_history: vec![\"some-string\".to_string()],\n                id_property: Some(\"some-string\".to_string()),\n                inputs: vec![hubspot_contacts::types::SimplePublicObjectId {\n                    id: \"some-string\".to_string(),\n                }],\n                properties: vec![\"some-string\".to_string()],\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/batch/struct.Batch.html#method.post_crm_v_3_objects_contacts_read_read"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1batch~1update/post/x-rust",
+    "value": {
+      "example": "/// Update a batch of contacts\nasync fn example_batch_post_crm_v_3_objects_contacts_update_update() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::BatchResponseSimplePublicObject = client\n        .batch()\n        .post_crm_v_3_objects_contacts_update_update(\n            &hubspot_contacts::types::BatchInputSimplePublicObjectBatchInput {\n                inputs: vec![hubspot_contacts::types::SimplePublicObjectBatchInput {\n                    id_property: Some(\"some-string\".to_string()),\n                    id: \"some-string\".to_string(),\n                    properties: std::collections::HashMap::from([(\n                        \"some-key\".to_string(),\n                        \"some-string\".to_string(),\n                    )]),\n                }],\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/batch/struct.Batch.html#method.post_crm_v_3_objects_contacts_update_update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1gdpr-delete/post/x-rust",
+    "value": {
+      "example": "/// GDPR DELETE\n/// \n/// Permanently delete a contact and all associated content to follow GDPR. Use optional property 'idProperty' set to 'email' to identify contact by email address. If email address is not found, the email address will be added to a blocklist and prevent it from being used in the future.\nasync fn example_gdpr_post_crm_v_3_objects_contacts_delete_purge() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    client\n        .gdpr()\n        .post_crm_v_3_objects_contacts_delete_purge(&hubspot_contacts::types::PublicGdprDeleteInput {\n            id_property: Some(\"some-string\".to_string()),\n            object_id: \"some-string\".to_string(),\n        })\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/gdpr/struct.Gdpr.html#method.post_crm_v_3_objects_contacts_delete_purge"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1merge/post/x-rust",
+    "value": {
+      "example": "/// Merge two contacts with same type\nasync fn example_public_object_post_crm_v_3_objects_contacts_merge_merge() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObject = client\n        .public_object()\n        .post_crm_v_3_objects_contacts_merge_merge(&hubspot_contacts::types::PublicMergeInput {\n            object_id_to_merge: \"some-string\".to_string(),\n            primary_object_id: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/public_object/struct.PublicObject.html#method.post_crm_v_3_objects_contacts_merge_merge"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1search/post/x-rust",
+    "value": {
+      "example": "/// Perform a `POST` request to `/crm/v3/objects/contacts/search`.\nasync fn example_search_post_crm_v_3_objects_contacts_do() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::CollectionResponseWithTotalSimplePublicObjectForwardPaging = client\n        .search()\n        .post_crm_v_3_objects_contacts_do(&hubspot_contacts::types::PublicObjectSearchRequest {\n            query: Some(\"some-string\".to_string()),\n            limit: 4 as i32,\n            after: \"some-string\".to_string(),\n            sorts: vec![\"some-string\".to_string()],\n            properties: vec![\"some-string\".to_string()],\n            filter_groups: vec![hubspot_contacts::types::FilterGroup {\n                filters: vec![hubspot_contacts::types::Filter {\n                    high_value: Some(\"some-string\".to_string()),\n                    property_name: \"some-string\".to_string(),\n                    values: Some(vec![\"some-string\".to_string()]),\n                    value: Some(\"some-string\".to_string()),\n                    operator: hubspot_contacts::types::Operator::ContainsToken,\n                }],\n            }],\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/search/struct.Search.html#method.post_crm_v_3_objects_contacts_do"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1{contactId}/delete/x-rust",
+    "value": {
+      "example": "/// Archive\n/// \n/// Move an Object identified by `{contactId}` to the recycling bin.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr` (required)\nasync fn example_basic_delete_crm_v_3_objects_contacts_contact_id_archive() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    client\n        .basic()\n        .delete_crm_v_3_objects_contacts_contact_id_archive(\"some-string\")\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/basic/struct.Basic.html#method.delete_crm_v_3_objects_contacts_contact_id_archive"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1{contactId}/get/x-rust",
+    "value": {
+      "example": "/// Read\n/// \n/// Read an Object identified by `{contactId}`. `{contactId}` refers to the internal object ID.  Control what is returned via the `properties` query param.\n/// \n/// **Parameters:**\n/// \n/// - `archived: Option<bool>`: Whether to return only results that have been archived.\n/// - `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n/// - `contact_id: &'astr` (required)\n/// - `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n/// - `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\nasync fn example_basic_get_crm_v_3_objects_contacts_contact_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_contacts_contact_id_get_by_id(\n            Some(false),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/basic/struct.Basic.html#method.get_crm_v_3_objects_contacts_contact_id_get_by_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1crm~1v3~1objects~1contacts~1{contactId}/patch/x-rust",
+    "value": {
+      "example": "/// Update\n/// \n/// Perform a partial update of an Object identified by `{contactId}`. `{contactId}` refers to the internal object ID. Provided property values will be overwritten. Read-only and non-existent properties will be ignored. Properties values can be cleared by passing an empty string.\n/// \n/// **Parameters:**\n/// \n/// - `contact_id: &'astr` (required)\nasync fn example_basic_patch_crm_v_3_objects_contacts_contact_id_update() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObject = client\n        .basic()\n        .patch_crm_v_3_objects_contacts_contact_id_update(\n            \"some-string\",\n            &hubspot_contacts::types::SimplePublicObjectInput {\n                properties: std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-contacts/latest/hubspot-contacts/basic/struct.Basic.html#method.patch_crm_v_3_objects_contacts_contact_id_update"
+    }
+  }
+]

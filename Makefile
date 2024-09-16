@@ -37,6 +37,17 @@ gusto: openapitor
 		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
 
+.PHONY: hubspot
+hubspot: openapitor
+	$(openapitor_exe) \
+		--input specs/hubspot-contacts.json \
+		--target-version 0.1.0 \
+		--output ./hubspot-contacts \
+		--name hubspot-contacts \
+		--base-url https://api.hubapi.com \
+		--description "A fully generated & opinionated API client for the Hubspot Contacts API." \
+		--request-timeout-seconds 60 \
+
 # Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
 .PHONY: mailchimp
 mailchimp: openapitor
