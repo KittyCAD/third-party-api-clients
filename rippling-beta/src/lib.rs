@@ -1,34 +1,14 @@
-//! A fully generated & opinionated API client for the Rippling API.
+//! A fully generated & opinionated API client for the Rippling Beta API.
 //!
-//! [![docs.rs](https://docs.rs/rippling-api/badge.svg)](https://docs.rs/rippling-api)
+//! [![docs.rs](https://docs.rs/rippling-beta-api/badge.svg)](https://docs.rs/rippling-beta-api)
 //!
 //! ## API Details
 //!
-//! Using Rippling's API requires either an API key or an access token retrieved from an OAuth exchange. Each is tied to a single Rippling Company.
-//!
-//! If you are a partner building an integration to Rippling,you can use [Rippling's Installation Guide](https://developer.rippling.com/docs/rippling-api/fucwnbc121hiu-installation-guide) to learn how to retrieve an access token to start using Rippling APIs.
-//!
-//! If you are a customer, you can go [here](https://developer.rippling.com/docs/rippling-api/9rw6guf819r5f-introduction-for-customers) to learn create your API keys to start using Rippling APIs.
-//!
-//! ### Using the Interactive Documentation
-//!
-//! Rippling's Documentation Portal allows you to test the API endpoints directly within the documentation. To do so, provide your API key or Access Token as a header parameter with the form Authorization Bearer: Bearer.
-//!
-//! [API Terms of Service](https://app.rippling.com/developer/tos)
-//!
-//! ### Contact
+//! Documentation for the Rippling Platform API.
 //!
 //!
-//! | name | email |
-//! |----|----|
-//! | Rippling Support | support@rippling.com |
-//!
-//! ### License
 //!
 //!
-//! | name |
-//! |----|
-//! | MIT |
 //!
 //!
 //! ## Client Details
@@ -43,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! rippling-api = "0.1.3"
+//! rippling-beta-api = "0.1.0"
 //! ```
 //!
 //! ## Basic example
@@ -52,7 +32,7 @@
 //! a user agent string and set of credentials.
 //!
 //! ```rust,no_run
-//! use rippling_api::Client;
+//! use rippling_beta_api::Client;
 //!
 //! let client = Client::new(String::from("api-key"));
 //! ```
@@ -60,12 +40,12 @@
 //! Alternatively, the library can search for most of the variables required for
 //! the client in the environment:
 //!
-//! - `RIPPLING_API_TOKEN`
+//! - `RIPPLING_BETA_API_TOKEN`
 //!
 //! And then you can create a client from the environment.
 //!
 //! ```rust,no_run
-//! use rippling_api::Client;
+//! use rippling_beta_api::Client;
 //!
 //! let client = Client::new_from_env();
 //! ```
@@ -74,27 +54,41 @@
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[cfg(feature = "requests")]
-pub mod application_management;
-#[cfg(feature = "requests")]
-pub mod ats;
+/// Companies on Rippling.
 #[cfg(feature = "requests")]
 pub mod companies;
+/// Custom fields defined by the company.
 #[cfg(feature = "requests")]
-pub mod current_user;
+pub mod custom_fields;
+/// Departments used by the company.
 #[cfg(feature = "requests")]
-pub mod employees;
+pub mod departments;
+/// Employment types used by the company.
 #[cfg(feature = "requests")]
-pub mod groups;
+pub mod employment_types;
+/// Availability of API features to the company or Partners.
 #[cfg(feature = "requests")]
-pub mod leaves;
+pub mod entitlements;
+/// Provides the user's SSO information.
+#[cfg(feature = "requests")]
+pub mod me;
 mod methods;
+/// Teams at the company.
 #[cfg(feature = "requests")]
-pub mod saml;
+pub mod teams;
 #[cfg(test)]
 mod tests;
 pub mod types;
+/// Users of the company.
+#[cfg(feature = "requests")]
+pub mod users;
 pub mod utils;
+/// Work locations used by the company.
+#[cfg(feature = "requests")]
+pub mod work_locations;
+/// Workers who work or have worked at the company.
+#[cfg(feature = "requests")]
+pub mod workers;
 
 #[cfg(feature = "requests")]
 use std::env;
@@ -174,7 +168,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.rippling.com".to_string(),
+                        base_url: "https://rest.ripplingapis.com".to_string(),
 
                         client,
                         client_http1_only,
@@ -188,7 +182,7 @@ impl Client {
             match (builder_http.build(), builder_websocket.build()) {
                 (Ok(c), Ok(c1)) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.rippling.com".to_string(),
+                    base_url: "https://rest.ripplingapis.com".to_string(),
 
                     client: c,
                     client_http1_only: c1,
@@ -226,7 +220,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.rippling.com".to_string(),
+                        base_url: "https://rest.ripplingapis.com".to_string(),
 
                         client,
                     }
@@ -239,7 +233,7 @@ impl Client {
             match builder_http.build() {
                 Ok(c) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.rippling.com".to_string(),
+                    base_url: "https://rest.ripplingapis.com".to_string(),
 
                     client: c,
                 },
@@ -277,7 +271,7 @@ impl Client {
         Self::new_from_reqwest(token, client)
     }
 
-    /// Set the base URL for the client to something other than the default: <https://api.rippling.com>.
+    /// Set the base URL for the client to something other than the default: <https://rest.ripplingapis.com>.
     #[tracing::instrument]
     pub fn set_base_url<H>(&mut self, base_url: H)
     where
@@ -286,10 +280,10 @@ impl Client {
         self.base_url = base_url.to_string().trim_end_matches('/').to_string();
     }
 
-    /// Create a new Client struct from the environment variable: `RIPPLING_API_TOKEN`.
+    /// Create a new Client struct from the environment variable: `RIPPLING_BETA_API_TOKEN`.
     #[tracing::instrument]
     pub fn new_from_env() -> Self {
-        let token = env::var("RIPPLING_API_TOKEN").expect("must set RIPPLING_API_TOKEN");
+        let token = env::var("RIPPLING_BETA_API_TOKEN").expect("must set RIPPLING_BETA_API_TOKEN");
 
         Client::new(token)
     }
@@ -330,43 +324,53 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
-    /// Return a reference to an interface that provides access to Companies operations.
+    /// Employment types used by the company.
+    pub fn employment_types(&self) -> employment_types::EmploymentTypes {
+        employment_types::EmploymentTypes::new(self.clone())
+    }
+
+    /// Teams at the company.
+    pub fn teams(&self) -> teams::Teams {
+        teams::Teams::new(self.clone())
+    }
+
+    /// Availability of API features to the company or Partners.
+    pub fn entitlements(&self) -> entitlements::Entitlements {
+        entitlements::Entitlements::new(self.clone())
+    }
+
+    /// Users of the company.
+    pub fn users(&self) -> users::Users {
+        users::Users::new(self.clone())
+    }
+
+    /// Workers who work or have worked at the company.
+    pub fn workers(&self) -> workers::Workers {
+        workers::Workers::new(self.clone())
+    }
+
+    /// Departments used by the company.
+    pub fn departments(&self) -> departments::Departments {
+        departments::Departments::new(self.clone())
+    }
+
+    /// Work locations used by the company.
+    pub fn work_locations(&self) -> work_locations::WorkLocations {
+        work_locations::WorkLocations::new(self.clone())
+    }
+
+    /// Companies on Rippling.
     pub fn companies(&self) -> companies::Companies {
         companies::Companies::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Employees operations.
-    pub fn employees(&self) -> employees::Employees {
-        employees::Employees::new(self.clone())
+    /// Custom fields defined by the company.
+    pub fn custom_fields(&self) -> custom_fields::CustomFields {
+        custom_fields::CustomFields::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Groups operations.
-    pub fn groups(&self) -> groups::Groups {
-        groups::Groups::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to SAML operations.
-    pub fn saml(&self) -> saml::Saml {
-        saml::Saml::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Current User operations.
-    pub fn current_user(&self) -> current_user::CurrentUser {
-        current_user::CurrentUser::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to ATS operations.
-    pub fn ats(&self) -> ats::Ats {
-        ats::Ats::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Application Management operations.
-    pub fn application_management(&self) -> application_management::ApplicationManagement {
-        application_management::ApplicationManagement::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Leaves operations.
-    pub fn leaves(&self) -> leaves::Leaves {
-        leaves::Leaves::new(self.clone())
+    /// Provides the user's SSO information.
+    pub fn me(&self) -> me::Me {
+        me::Me::new(self.clone())
     }
 }
