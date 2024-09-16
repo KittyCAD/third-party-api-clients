@@ -4,11 +4,31 @@
 //!
 //! ## API Details
 //!
-//! Documentation for the Rippling Platform API.
+//! Using Rippling's API requires either an API key or an access token retrieved from an OAuth exchange. Each is tied to a single Rippling Company.
+//!
+//! If you are a partner building an integration to Rippling,you can use [Rippling's Installation Guide](https://developer.rippling.com/docs/rippling-api/fucwnbc121hiu-installation-guide) to learn how to retrieve an access token to start using Rippling APIs.
+//!
+//! If you are a customer, you can go [here](https://developer.rippling.com/docs/rippling-api/9rw6guf819r5f-introduction-for-customers) to learn create your API keys to start using Rippling APIs.
+//!
+//! ### Using the Interactive Documentation
+//!
+//! Rippling's Documentation Portal allows you to test the API endpoints directly within the documentation. To do so, provide your API key or Access Token as a header parameter with the form Authorization Bearer: Bearer.
+//!
+//! [API Terms of Service](https://app.rippling.com/developer/tos)
+//!
+//! ### Contact
 //!
 //!
+//! | name | email |
+//! |----|----|
+//! | Rippling Support | support@rippling.com |
+//!
+//! ### License
 //!
 //!
+//! | name |
+//! |----|
+//! | MIT |
 //!
 //!
 //! ## Client Details
@@ -23,7 +43,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! rippling-api = "0.1.2"
+//! rippling-api = "0.1.3"
 //! ```
 //!
 //! ## Basic example
@@ -54,41 +74,27 @@
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-/// Companies on Rippling.
 #[cfg(feature = "requests")]
-pub mod companies;
-/// Custom fields defined by the company.
+pub mod a_companies;
 #[cfg(feature = "requests")]
-pub mod custom_fields;
-/// Departments used by the company.
+pub mod b_employees;
 #[cfg(feature = "requests")]
-pub mod departments;
-/// Employment types used by the company.
+pub mod e_current_user;
 #[cfg(feature = "requests")]
-pub mod employment_types;
-/// Availability of API features to the company or Partners.
+pub mod f_groups;
 #[cfg(feature = "requests")]
-pub mod entitlements;
-/// Provides the user's SSO information.
+pub mod g_saml;
 #[cfg(feature = "requests")]
-pub mod me;
+pub mod h_ats;
+#[cfg(feature = "requests")]
+pub mod i_application_management;
+#[cfg(feature = "requests")]
+pub mod j_leaves;
 mod methods;
-/// Teams at the company.
-#[cfg(feature = "requests")]
-pub mod teams;
 #[cfg(test)]
 mod tests;
 pub mod types;
-/// Users of the company.
-#[cfg(feature = "requests")]
-pub mod users;
 pub mod utils;
-/// Work locations used by the company.
-#[cfg(feature = "requests")]
-pub mod work_locations;
-/// Workers who work or have worked at the company.
-#[cfg(feature = "requests")]
-pub mod workers;
 
 #[cfg(feature = "requests")]
 use std::env;
@@ -324,53 +330,43 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
-    /// Employment types used by the company.
-    pub fn employment_types(&self) -> employment_types::EmploymentTypes {
-        employment_types::EmploymentTypes::new(self.clone())
+    /// Return a reference to an interface that provides access to A. Companies operations.
+    pub fn a_companies(&self) -> a_companies::ACompanies {
+        a_companies::ACompanies::new(self.clone())
     }
 
-    /// Teams at the company.
-    pub fn teams(&self) -> teams::Teams {
-        teams::Teams::new(self.clone())
+    /// Return a reference to an interface that provides access to B. Employees operations.
+    pub fn b_employees(&self) -> b_employees::BEmployees {
+        b_employees::BEmployees::new(self.clone())
     }
 
-    /// Availability of API features to the company or Partners.
-    pub fn entitlements(&self) -> entitlements::Entitlements {
-        entitlements::Entitlements::new(self.clone())
+    /// Return a reference to an interface that provides access to F. Groups operations.
+    pub fn f_groups(&self) -> f_groups::FGroups {
+        f_groups::FGroups::new(self.clone())
     }
 
-    /// Users of the company.
-    pub fn users(&self) -> users::Users {
-        users::Users::new(self.clone())
+    /// Return a reference to an interface that provides access to G. SAML operations.
+    pub fn g_saml(&self) -> g_saml::GSaml {
+        g_saml::GSaml::new(self.clone())
     }
 
-    /// Workers who work or have worked at the company.
-    pub fn workers(&self) -> workers::Workers {
-        workers::Workers::new(self.clone())
+    /// Return a reference to an interface that provides access to E. Current User operations.
+    pub fn e_current_user(&self) -> e_current_user::ECurrentUser {
+        e_current_user::ECurrentUser::new(self.clone())
     }
 
-    /// Departments used by the company.
-    pub fn departments(&self) -> departments::Departments {
-        departments::Departments::new(self.clone())
+    /// Return a reference to an interface that provides access to H. ATS operations.
+    pub fn h_ats(&self) -> h_ats::HAts {
+        h_ats::HAts::new(self.clone())
     }
 
-    /// Work locations used by the company.
-    pub fn work_locations(&self) -> work_locations::WorkLocations {
-        work_locations::WorkLocations::new(self.clone())
+    /// Return a reference to an interface that provides access to I. Application Management operations.
+    pub fn i_application_management(&self) -> i_application_management::IApplicationManagement {
+        i_application_management::IApplicationManagement::new(self.clone())
     }
 
-    /// Companies on Rippling.
-    pub fn companies(&self) -> companies::Companies {
-        companies::Companies::new(self.clone())
-    }
-
-    /// Custom fields defined by the company.
-    pub fn custom_fields(&self) -> custom_fields::CustomFields {
-        custom_fields::CustomFields::new(self.clone())
-    }
-
-    /// Provides the user's SSO information.
-    pub fn me(&self) -> me::Me {
-        me::Me::new(self.clone())
+    /// Return a reference to an interface that provides access to J. Leaves operations.
+    pub fn j_leaves(&self) -> j_leaves::JLeaves {
+        j_leaves::JLeaves::new(self.clone())
     }
 }

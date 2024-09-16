@@ -2,24 +2,24 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct Entitlements {
+pub struct ECurrentUser {
     pub client: Client,
 }
 
-impl Entitlements {
+impl ECurrentUser {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "List entitlements\n\nA List of entitlements\n- Requires: `API Tier 1`\n\n```rust,no_run\nasync fn example_entitlements_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListEntitlementsResponse = client.entitlements().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GET Current User\n\nRetrieves basic information about the Rippling user whose access token you're using. This is generally used for the SSO flow.\n\n```rust,no_run\nasync fn example_e_current_user_get_me() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::AuthenticatedUserMe = client.e_current_user().get_me().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn list<'a>(
+    pub async fn get_me<'a>(
         &'a self,
-    ) -> Result<crate::types::ListEntitlementsResponse, crate::types::error::Error> {
+    ) -> Result<crate::types::AuthenticatedUserMe, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "entitlements"),
+            &format!("{}/{}", self.client.base_url, "platform/api/me"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
