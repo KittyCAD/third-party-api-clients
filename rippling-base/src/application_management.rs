@@ -12,7 +12,7 @@ impl ApplicationManagement {
         Self { client }
     }
 
-    #[doc = "GET Matching App Users\n\nReturns matching users and their app IDs based on the app handles.\n\nNote:There could be multiple instances of the same app. In this case, the API will return all instances in the format app_handle_app_owner_id.\n\n\n**Parameters:**\n\n- `app_handles: Option<String>`: CSV of app handles. See GET /app_detail/app_handles\n\n\n```rust,no_run\nasync fn example_application_management_get_app_app_matching_users() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetAppAppMatchingUsersResponse = client\n        .application_management()\n        .get_app_app_matching_users(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GET Matching App Users\n\nReturns matching users and their app IDs based on the app handles.\n\nNote:There could be multiple instances of the same app. In this case, the API will return all instances in the format app_handle_app_owner_id.\n\n\n**Parameters:**\n\n- `app_handles: Option<String>`: CSV of app handles. See GET /app_detail/app_handles\n\n\n```rust,no_run\nasync fn example_application_management_get_app_app_matching_users() -> anyhow::Result<()> {\n    let client = rippling_base_api::Client::new_from_env();\n    let result: rippling_base_api::types::GetAppAppMatchingUsersResponse = client\n        .application_management()\n        .get_app_app_matching_users(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_app_app_matching_users<'a>(
         &'a self,
@@ -56,8 +56,8 @@ impl ApplicationManagement {
              endpoint does not require any scopes.\n\nPlease note, hitting any other endpoint \
              should mark your app as installed as well.\n\n```rust,no_run\nasync fn \
              example_application_management_post_mark_app_installed() -> anyhow::Result<()> {\n    \
-             let client = rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::PostMarkAppInstalledResponse = client\n        \
+             let client = rippling_base_api::Client::new_from_env();\n    let result: \
+             rippling_base_api::types::PostMarkAppInstalledResponse = client\n        \
              .application_management()\n        .post_mark_app_installed()\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]

@@ -1,8 +1,8 @@
 [package]
-name = "rippling-beta-api"
-description = "A fully generated & opinionated API client for the Rippling Beta API."
+name = "rippling-base-api"
+description = "A fully generated & opinionated API client for the Rippling Base API."
 version = "0.1.0"
-documentation = "https://docs.rs/rippling-beta-api"
+documentation = "https://docs.rs/rippling-base-api"
 readme = "README.md"
 
 edition = "2018"

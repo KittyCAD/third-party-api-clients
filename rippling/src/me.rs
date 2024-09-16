@@ -2,26 +2,39 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct CurrentUser {
+pub struct Me {
     pub client: Client,
 }
 
-impl CurrentUser {
+impl Me {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "GCurrent User\n\nRetrieves basic information about the Rippling user whose access token you're using. This is generally used for the SSO flow.\n\n```rust,no_run\nasync fn example_current_user_get_me() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::AuthenticatedUserMe = client.current_user().get_me().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve my SSO information\n\nSSO information of the current user\n- Requires: `API \
+             Tier 1`\n- Expandable fields: `company`\n\n**Parameters:**\n\n- `expand: \
+             Option<String>`\n\n```rust,no_run\nasync fn example_me_list_sso() -> \
+             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
+             result: rippling_api::types::Ssome = client\n        .me()\n        \
+             .list_sso(Some(\"some-string\".to_string()))\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_me<'a>(
+    pub async fn list_sso<'a>(
         &'a self,
-    ) -> Result<crate::types::AuthenticatedUserMe, crate::types::error::Error> {
+        expand: Option<String>,
+    ) -> Result<crate::types::Ssome, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "platform/api/me"),
+            &format!("{}/{}", self.client.base_url, "sso-me"),
         );
         req = req.bearer_auth(&self.client.token);
+        let mut query_params = vec![];
+        if let Some(p) = expand {
+            query_params.push(("expand", p));
+        }
+
+        req = req.query(&query_params);
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {

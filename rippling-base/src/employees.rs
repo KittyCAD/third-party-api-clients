@@ -20,8 +20,8 @@ impl Employees {
              100.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Sets a limit on the returned \
              values\n- `offset: Option<i64>`: Offsets the returned values\n\n```rust,no_run\nasync \
              fn example_employees_get() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: \
-             Vec<rippling_api::types::Employee> = client\n        .employees()\n        \
+             rippling_base_api::Client::new_from_env();\n    let result: \
+             Vec<rippling_base_api::types::Employee> = client\n        .employees()\n        \
              .get(Some(4 as i64), Some(4 as i64))\n        .await?;\n    println!(\"{:?}\", \
              result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
@@ -64,7 +64,7 @@ impl Employees {
         }
     }
 
-    #[doc = "GET Employee\n\nRetrieves the information for a single employee based on the scopes that your API key or access token have access to.\n\n**Parameters:**\n\n- `employee_id: &'astr`: Unique identifier for the employee within Rippling. (required)\n\n```rust,no_run\nasync fn example_employees_get_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Employee = client.employees().get_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GET Employee\n\nRetrieves the information for a single employee based on the scopes that your API key or access token have access to.\n\n**Parameters:**\n\n- `employee_id: &'astr`: Unique identifier for the employee within Rippling. (required)\n\n```rust,no_run\nasync fn example_employees_get_id() -> anyhow::Result<()> {\n    let client = rippling_base_api::Client::new_from_env();\n    let result: rippling_base_api::types::Employee = client.employees().get_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_id<'a>(
         &'a self,
@@ -110,8 +110,8 @@ impl Employees {
              provisioned roles for compliance purposes. TRUE will return every employee from the \
              company (bypassing any access rules).\n\n```rust,no_run\nasync fn \
              example_employees_get_include_terminated() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: \
-             Vec<rippling_api::types::Employee> = client\n        .employees()\n        \
+             rippling_base_api::Client::new_from_env();\n    let result: \
+             Vec<rippling_base_api::types::Employee> = client\n        .employees()\n        \
              .get_include_terminated(Some(4 as i64), Some(4 as i64), Some(4 as i64), \
              Some(false))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]

@@ -1903,7 +1903,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rippling-beta-api"
+name = "rippling-base-api"
 version = "0.1.0"
 dependencies = [
  "anyhow",

@@ -20,7 +20,7 @@ impl Saml {
              reinstalls your app. Any time a new app is installed, unique SAML Metadata will be \
              generated specific to that app.\n\n```rust,no_run\nasync fn \
              example_saml_get_idp_metadata() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: String = \
+             rippling_base_api::Client::new_from_env();\n    let result: String = \
              client.saml().get_idp_metadata().await?;\n    println!(\"{:?}\", result);\n    \
              Ok(())\n}\n```"]
     #[tracing::instrument]

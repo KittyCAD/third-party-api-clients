@@ -12,7 +12,13 @@ impl Users {
         Self { client }
     }
 
-    #[doc = "List users\n\nA List of users\n- Requires: `API Tier 1`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `order_by: Option<String>`\n\n```rust,no_run\nasync fn example_users_list() -> anyhow::Result<()> {\n    let client = rippling_beta_api::Client::new_from_env();\n    let result: rippling_beta_api::types::ListUsersResponse =\n        client.users().list(Some(\"some-string\".to_string())).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List users\n\nA List of users\n- Requires: `API Tier 1`\n- Sortable fields: `id`, \
+             `created_at`, `updated_at`\n\n**Parameters:**\n\n- `order_by: \
+             Option<String>`\n\n```rust,no_run\nasync fn example_users_list() -> \
+             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
+             result: rippling_api::types::ListUsersResponse =\n        \
+             client.users().list(Some(\"some-string\".to_string())).await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
@@ -51,8 +57,8 @@ impl Users {
     #[doc = "Retrieve a specific user\n\nRetrieve a specific user\n\n**Parameters:**\n\n- `id: \
              &'astr`: ID of the resource to return (required)\n\n```rust,no_run\nasync fn \
              example_users_get() -> anyhow::Result<()> {\n    let client = \
-             rippling_beta_api::Client::new_from_env();\n    let result: \
-             rippling_beta_api::types::GetUsersResponse = client\n        .users()\n        \
+             rippling_api::Client::new_from_env();\n    let result: \
+             rippling_api::types::GetUsersResponse = client\n        .users()\n        \
              .get(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]

@@ -2,33 +2,32 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct CustomFields {
+pub struct CurrentUser {
     pub client: Client,
 }
 
-impl CustomFields {
+impl CurrentUser {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "List custom fields\n\nA List of custom fields\n- Requires: `API Tier 1`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `order_by: Option<String>`\n\n```rust,no_run\nasync fn example_custom_fields_list() -> anyhow::Result<()> {\n    let client = rippling_beta_api::Client::new_from_env();\n    let result: rippling_beta_api::types::ListCustomFieldsResponse = client\n        .custom_fields()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GCurrent User\n\nRetrieves basic information about the Rippling user whose access \
+             token you're using. This is generally used for the SSO flow.\n\n```rust,no_run\nasync \
+             fn example_current_user_get_me() -> anyhow::Result<()> {\n    let client = \
+             rippling_base_api::Client::new_from_env();\n    let result: \
+             rippling_base_api::types::AuthenticatedUserMe = \
+             client.current_user().get_me().await?;\n    println!(\"{:?}\", result);\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn list<'a>(
+    pub async fn get_me<'a>(
         &'a self,
-        order_by: Option<String>,
-    ) -> Result<crate::types::ListCustomFieldsResponse, crate::types::error::Error> {
+    ) -> Result<crate::types::AuthenticatedUserMe, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "custom-fields"),
+            &format!("{}/{}", self.client.base_url, "platform/api/me"),
         );
         req = req.bearer_auth(&self.client.token);
-        let mut query_params = vec![];
-        if let Some(p) = order_by {
-            query_params.push(("order_by", p));
-        }
-
-        req = req.query(&query_params);
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {

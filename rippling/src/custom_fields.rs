@@ -2,26 +2,39 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct Entitlements {
+pub struct CustomFields {
     pub client: Client,
 }
 
-impl Entitlements {
+impl CustomFields {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "List entitlements\n\nA List of entitlements\n- Requires: `API Tier 1`\n\n```rust,no_run\nasync fn example_entitlements_list() -> anyhow::Result<()> {\n    let client = rippling_beta_api::Client::new_from_env();\n    let result: rippling_beta_api::types::ListEntitlementsResponse = client.entitlements().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List custom fields\n\nA List of custom fields\n- Requires: `API Tier 1`\n- Sortable \
+             fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `order_by: \
+             Option<String>`\n\n```rust,no_run\nasync fn example_custom_fields_list() -> \
+             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
+             result: rippling_api::types::ListCustomFieldsResponse = client\n        \
+             .custom_fields()\n        .list(Some(\"some-string\".to_string()))\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
-    ) -> Result<crate::types::ListEntitlementsResponse, crate::types::error::Error> {
+        order_by: Option<String>,
+    ) -> Result<crate::types::ListCustomFieldsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "entitlements"),
+            &format!("{}/{}", self.client.base_url, "custom-fields"),
         );
         req = req.bearer_auth(&self.client.token);
+        let mut query_params = vec![];
+        if let Some(p) = order_by {
+            query_params.push(("order_by", p));
+        }
+
+        req = req.query(&query_params);
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
