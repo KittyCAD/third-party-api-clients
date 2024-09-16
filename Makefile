@@ -37,6 +37,9 @@ gusto: openapitor
 		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
 
+# root spec for hubspot api:
+# https://api.hubspot.com/api-catalog-public/v1/apis
+# We've just plucked crm -> contacts api spec below.
 .PHONY: hubspot
 hubspot: openapitor
 	$(openapitor_exe) \
