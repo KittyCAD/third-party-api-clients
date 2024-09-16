@@ -2,11 +2,11 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct FGroups {
+pub struct Groups {
     pub client: Client,
 }
 
-impl FGroups {
+impl Groups {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
@@ -15,15 +15,12 @@ impl FGroups {
     #[doc = "GET Groups\n\nPlease note, the Groups endpoint requires an OAuth application (i.e. \
              approved 3rd party partners), as the end point is intended for mapping third-party \
              application “Groups” within Rippling organizations.\n\nLists the current third-party \
-             groups for an organization.\n\n```rust,no_run\nasync fn example_f_groups_get_groups() \
-             -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    \
-             let result: Vec<rippling_api::types::Group> = \
-             client.f_groups().get_groups().await?;\n    println!(\"{:?}\", result);\n    \
-             Ok(())\n}\n```"]
+             groups for an organization.\n\n```rust,no_run\nasync fn example_groups_get() -> \
+             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
+             result: Vec<rippling_api::types::Group> = client.groups().get().await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_groups<'a>(
-        &'a self,
-    ) -> Result<Vec<crate::types::Group>, crate::types::error::Error> {
+    pub async fn get<'a>(&'a self) -> Result<Vec<crate::types::Group>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!("{}/{}", self.client.base_url, "platform/api/groups"),
@@ -49,16 +46,16 @@ impl FGroups {
     }
 
     #[doc = "POST Groups\n\nCreates a generic group, that can be associated within the third-party \
-             application.\n\n```rust,no_run\nasync fn example_f_groups_post_groups() -> \
-             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             result: rippling_api::types::Group = client\n        .f_groups()\n        \
-             .post_groups(&rippling_api::types::PostGroupsRequestBody {\n            name: \
+             application.\n\n```rust,no_run\nasync fn example_groups_post() -> anyhow::Result<()> \
+             {\n    let client = rippling_api::Client::new_from_env();\n    let result: \
+             rippling_api::types::Group = client\n        .groups()\n        \
+             .post(&rippling_api::types::PostGroupsRequestBody {\n            name: \
              Some(\"some-string\".to_string()),\n            spoke_id: \
              Some(\"some-string\".to_string()),\n            users: \
              Some(vec![\"some-string\".to_string()]),\n        })\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn post_groups<'a>(
+    pub async fn post<'a>(
         &'a self,
         body: &crate::types::PostGroupsRequestBody,
     ) -> Result<crate::types::Group, crate::types::error::Error> {
@@ -91,18 +88,17 @@ impl FGroups {
              approved 3rd party partners), as the end point is intended for mapping third-party \
              application “Groups” within Rippling organizations.\n\n**Parameters:**\n\n- \
              `group_id: i64`: Unique identifier for the group within Rippling. \
-             (required)\n\n```rust,no_run\nasync fn example_f_groups_get_groups_group_id() -> \
-             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             result: rippling_api::types::Group = client\n        .f_groups()\n        \
-             .get_groups_group_id(\n            4 as i64,\n            \
-             &rippling_api::types::GroupUpdatePayload {\n                name: \
-             Some(\"some-string\".to_string()),\n                spoke_id: \
+             (required)\n\n```rust,no_run\nasync fn example_groups_get_id() -> anyhow::Result<()> \
+             {\n    let client = rippling_api::Client::new_from_env();\n    let result: \
+             rippling_api::types::Group = client\n        .groups()\n        .get_id(\n            \
+             4 as i64,\n            &rippling_api::types::GroupUpdatePayload {\n                \
+             name: Some(\"some-string\".to_string()),\n                spoke_id: \
              Some(\"some-string\".to_string()),\n                users: \
              Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                \
              version: Some(\"some-string\".to_string()),\n            },\n        )\n        \
              .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_groups_group_id<'a>(
+    pub async fn get_id<'a>(
         &'a self,
         group_id: i64,
         body: &crate::types::GroupUpdatePayload,
@@ -136,9 +132,9 @@ impl FGroups {
         }
     }
 
-    #[doc = "PUT Group\n\nPlease note, the Groups endpoint requires an OAuth application (i.e. approved 3rd party partners), as the end point is intended for mapping third-party application “Groups” within Rippling organizations.\n\nUsing the PUT method, all of the group fields will be updated, even if the corresponding parameter is missing. If the PATCH method is used, and a param is missing, its value won’t be changed.\n\n**Parameters:**\n\n- `group_id: i64`: Unique identifier for the group within Rippling. (required)\n\n```rust,no_run\nasync fn example_f_groups_put_groups_group_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Group = client\n        .f_groups()\n        .put_groups_group_id(\n            4 as i64,\n            &rippling_api::types::GroupUpdatePayload {\n                name: Some(\"some-string\".to_string()),\n                spoke_id: Some(\"some-string\".to_string()),\n                users: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "PUT Group\n\nPlease note, the Groups endpoint requires an OAuth application (i.e. approved 3rd party partners), as the end point is intended for mapping third-party application “Groups” within Rippling organizations.\n\nUsing the PUT method, all of the group fields will be updated, even if the corresponding parameter is missing. If the PATCH method is used, and a param is missing, its value won’t be changed.\n\n**Parameters:**\n\n- `group_id: i64`: Unique identifier for the group within Rippling. (required)\n\n```rust,no_run\nasync fn example_groups_put_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Group = client\n        .groups()\n        .put_id(\n            4 as i64,\n            &rippling_api::types::GroupUpdatePayload {\n                name: Some(\"some-string\".to_string()),\n                spoke_id: Some(\"some-string\".to_string()),\n                users: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn put_groups_group_id<'a>(
+    pub async fn put_id<'a>(
         &'a self,
         group_id: i64,
         body: &crate::types::GroupUpdatePayload,
@@ -176,15 +172,11 @@ impl FGroups {
              approved 3rd party partners), as the end point is intended for mapping third-party \
              application “Groups” within Rippling organizations.\n\nDeletes the specified \
              group.\n\n**Parameters:**\n\n- `group_id: i64`: Unique identifier for the group \
-             within Rippling. (required)\n\n```rust,no_run\nasync fn \
-             example_f_groups_delete_groups_group_id() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    client.f_groups().delete_groups_group_id(4 \
-             as i64).await?;\n    Ok(())\n}\n```"]
+             within Rippling. (required)\n\n```rust,no_run\nasync fn example_groups_delete_id() -> \
+             anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    \
+             client.groups().delete_id(4 as i64).await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn delete_groups_group_id<'a>(
-        &'a self,
-        group_id: i64,
-    ) -> Result<(), crate::types::error::Error> {
+    pub async fn delete_id<'a>(&'a self, group_id: i64) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
             &format!(
@@ -207,9 +199,9 @@ impl FGroups {
         }
     }
 
-    #[doc = "PATCH Group\n\nPlease note, the Groups endpoint requires an OAuth application (i.e. approved 3rd party partners), as the end point is intended for mapping third-party application “Groups” within Rippling organizations.\n\nUsing the PUT method, all of the group fields will be updated, even if the corresponding parameter is missing. If the PATCH method is used, and a param is missing, its value won’t be changed.\n\n**Parameters:**\n\n- `group_id: i64`: Unique identifier for the group within Rippling. (required)\n\n```rust,no_run\nasync fn example_f_groups_patch_groups_group_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Group = client\n        .f_groups()\n        .patch_groups_group_id(\n            4 as i64,\n            &rippling_api::types::GroupUpdatePayload {\n                name: Some(\"some-string\".to_string()),\n                spoke_id: Some(\"some-string\".to_string()),\n                users: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "PATCH Group\n\nPlease note, the Groups endpoint requires an OAuth application (i.e. approved 3rd party partners), as the end point is intended for mapping third-party application “Groups” within Rippling organizations.\n\nUsing the PUT method, all of the group fields will be updated, even if the corresponding parameter is missing. If the PATCH method is used, and a param is missing, its value won’t be changed.\n\n**Parameters:**\n\n- `group_id: i64`: Unique identifier for the group within Rippling. (required)\n\n```rust,no_run\nasync fn example_groups_patch_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Group = client\n        .groups()\n        .patch_id(\n            4 as i64,\n            &rippling_api::types::GroupUpdatePayload {\n                name: Some(\"some-string\".to_string()),\n                spoke_id: Some(\"some-string\".to_string()),\n                users: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                version: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn patch_groups_group_id<'a>(
+    pub async fn patch_id<'a>(
         &'a self,
         group_id: i64,
         body: &crate::types::GroupUpdatePayload,

@@ -2,17 +2,17 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct ECurrentUser {
+pub struct CurrentUser {
     pub client: Client,
 }
 
-impl ECurrentUser {
+impl CurrentUser {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "GET Current User\n\nRetrieves basic information about the Rippling user whose access token you're using. This is generally used for the SSO flow.\n\n```rust,no_run\nasync fn example_e_current_user_get_me() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::AuthenticatedUserMe = client.e_current_user().get_me().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GCurrent User\n\nRetrieves basic information about the Rippling user whose access token you're using. This is generally used for the SSO flow.\n\n```rust,no_run\nasync fn example_current_user_get_me() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::AuthenticatedUserMe = client.current_user().get_me().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_me<'a>(
         &'a self,

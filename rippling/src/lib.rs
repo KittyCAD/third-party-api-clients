@@ -75,22 +75,22 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "requests")]
-pub mod a_companies;
+pub mod application_management;
 #[cfg(feature = "requests")]
-pub mod b_employees;
+pub mod ats;
 #[cfg(feature = "requests")]
-pub mod e_current_user;
+pub mod companies;
 #[cfg(feature = "requests")]
-pub mod f_groups;
+pub mod current_user;
 #[cfg(feature = "requests")]
-pub mod g_saml;
+pub mod employees;
 #[cfg(feature = "requests")]
-pub mod h_ats;
+pub mod groups;
 #[cfg(feature = "requests")]
-pub mod i_application_management;
-#[cfg(feature = "requests")]
-pub mod j_leaves;
+pub mod leaves;
 mod methods;
+#[cfg(feature = "requests")]
+pub mod saml;
 #[cfg(test)]
 mod tests;
 pub mod types;
@@ -330,43 +330,43 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
-    /// Return a reference to an interface that provides access to A. Companies operations.
-    pub fn a_companies(&self) -> a_companies::ACompanies {
-        a_companies::ACompanies::new(self.clone())
+    /// Return a reference to an interface that provides access to Companies operations.
+    pub fn companies(&self) -> companies::Companies {
+        companies::Companies::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to B. Employees operations.
-    pub fn b_employees(&self) -> b_employees::BEmployees {
-        b_employees::BEmployees::new(self.clone())
+    /// Return a reference to an interface that provides access to Employees operations.
+    pub fn employees(&self) -> employees::Employees {
+        employees::Employees::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to F. Groups operations.
-    pub fn f_groups(&self) -> f_groups::FGroups {
-        f_groups::FGroups::new(self.clone())
+    /// Return a reference to an interface that provides access to Groups operations.
+    pub fn groups(&self) -> groups::Groups {
+        groups::Groups::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to G. SAML operations.
-    pub fn g_saml(&self) -> g_saml::GSaml {
-        g_saml::GSaml::new(self.clone())
+    /// Return a reference to an interface that provides access to SAML operations.
+    pub fn saml(&self) -> saml::Saml {
+        saml::Saml::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to E. Current User operations.
-    pub fn e_current_user(&self) -> e_current_user::ECurrentUser {
-        e_current_user::ECurrentUser::new(self.clone())
+    /// Return a reference to an interface that provides access to Current User operations.
+    pub fn current_user(&self) -> current_user::CurrentUser {
+        current_user::CurrentUser::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to H. ATS operations.
-    pub fn h_ats(&self) -> h_ats::HAts {
-        h_ats::HAts::new(self.clone())
+    /// Return a reference to an interface that provides access to ATS operations.
+    pub fn ats(&self) -> ats::Ats {
+        ats::Ats::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to I. Application Management operations.
-    pub fn i_application_management(&self) -> i_application_management::IApplicationManagement {
-        i_application_management::IApplicationManagement::new(self.clone())
+    /// Return a reference to an interface that provides access to Application Management operations.
+    pub fn application_management(&self) -> application_management::ApplicationManagement {
+        application_management::ApplicationManagement::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to J. Leaves operations.
-    pub fn j_leaves(&self) -> j_leaves::JLeaves {
-        j_leaves::JLeaves::new(self.clone())
+    /// Return a reference to an interface that provides access to Leaves operations.
+    pub fn leaves(&self) -> leaves::Leaves {
+        leaves::Leaves::new(self.clone())
     }
 }

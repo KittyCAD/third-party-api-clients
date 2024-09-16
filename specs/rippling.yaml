@@ -22,16 +22,16 @@ servers:
   - url: 'https://api.rippling.com'
     description: Production
 tags:
-  - name: A. Companies
-  - name: B. Employees
-  - name: C. Payroll
-  - name: D. 401k
-  - name: F. Groups
-  - name: G. SAML
-  - name: E. Current User
-  - name: H. ATS
-  - name: I. Application Management
-  - name: J. Leaves
+  - name: Companies
+  - name: Employees
+  - name: Payroll
+  - name: 401k
+  - name: Groups
+  - name: SAML
+  - name: Current User
+  - name: ATS
+  - name: Application Management
+  - name: Leaves
 paths:
   /platform/api/companies/current:
     get:
@@ -73,7 +73,7 @@ paths:
       security:
         - Token: []
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: 5p60h6uqioozm
     parameters: []
@@ -107,7 +107,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: sl774k0ddr3es
     parameters: []
@@ -177,7 +177,7 @@ paths:
 
         For optimal performance, ensure pagination is used via our limit and offset parameters. Pagination should be set to a maximum of 100.
       tags:
-        - B. Employees
+        - Employees
       parameters:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
@@ -215,7 +215,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: pqmhoffeo0egu
     parameters: []
@@ -298,7 +298,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: c6dqbgoi5tyir
     parameters: []
@@ -337,7 +337,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: qzv0ddv3ngsp3
     parameters: []
@@ -373,7 +373,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: 0mz71uqr6d6uv
     parameters: []
@@ -447,7 +447,7 @@ paths:
       security:
         - Token: []
       tags:
-        - B. Employees
+        - Employees
       x-stoplight:
         id: q28s4hbu6sqpw
   /platform/api/employees/include_terminated:
@@ -525,13 +525,13 @@ paths:
           name: send_all_roles
           description: 'For integrations that rely on provisioning, this parameter can be used to identify non provisioned roles for compliance purposes. TRUE will return every employee from the company (bypassing any access rules).'
       tags:
-        - B. Employees
+        - Employees
       x-stoplight:
         id: f0wza3kg7ot43
     parameters: []
   /platform/api/me:
     get:
-      summary: GET Current User
+      summary: GCurrent User
       responses:
         '200':
           description: OK
@@ -550,7 +550,7 @@ paths:
       security:
         - Token: []
       tags:
-        - E. Current User
+        - Current User
       x-stoplight:
         id: etnldtzb56wyg
     parameters: []
@@ -588,7 +588,7 @@ paths:
       security:
         - Token: []
       tags:
-        - F. Groups
+        - Groups
       x-stoplight:
         id: qk9ir92fyn7qr
     parameters: []
@@ -640,7 +640,7 @@ paths:
                     - 5c8f7f06c592917aeee1ea9f
         description: A group object.
       tags:
-        - F. Groups
+        - Groups
       x-stoplight:
         id: jxy09npxocnck
   '/platform/api/groups/{groupId}':
@@ -690,7 +690,7 @@ paths:
                   version: uu8ccavwbsb8stfn
         description: Group updates object.
       tags:
-        - F. Groups
+        - Groups
       x-stoplight:
         id: us4excdz9agg0
     get:
@@ -729,7 +729,7 @@ paths:
                   version: uu8ccavwbsb8stfn
         description: Group updates object.
       tags:
-        - F. Groups
+        - Groups
     patch:
       summary: PATCH Group
       operationId: patch-groups-groupId
@@ -768,7 +768,7 @@ paths:
                   version: yvmzhfw50hn39aas
         description: Group updates object.
       tags:
-        - F. Groups
+        - Groups
       x-stoplight:
         id: w1yvh0c4nq9ng
     delete:
@@ -784,7 +784,7 @@ paths:
       security:
         - Token: []
       tags:
-        - F. Groups
+        - Groups
       x-stoplight:
         id: bapambfnc4z0n
   /platform/api/leave_requests:
@@ -895,7 +895,7 @@ paths:
       security:
         - Token: []
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: 46dek0wrkjep8
     post:
@@ -1010,7 +1010,7 @@ paths:
       security:
         - Token: []
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: 8x6t6az954nqd
     parameters: []
@@ -1044,7 +1044,7 @@ paths:
       security:
         - Token: []
       tags:
-        - A. Companies
+        - Companies
       x-stoplight:
         id: sike025s6tfiw
     parameters: []
@@ -1112,7 +1112,7 @@ paths:
       security:
         - Token: []
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: p4yrmui3koqp2
     parameters: []
@@ -1156,7 +1156,7 @@ paths:
       security:
         - Token: []
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: of2pp2jct60yb
     parameters:
@@ -1203,7 +1203,7 @@ paths:
 
         Rippling's SAML Metadata is per customer app installation. It is not the same across all customers. It is not the same if the customer uninstalls and reinstalls your app. Any time a new app is installed, unique SAML Metadata will be generated specific to that app.
       tags:
-        - G. SAML
+        - SAML
       x-stoplight:
         id: ffogkuqtkiwcx
     parameters: []
@@ -1231,7 +1231,7 @@ paths:
               $ref: '#/components/schemas/Candidate'
         description: ''
       tags:
-        - H. ATS
+        - ATS
       x-stoplight:
         id: lwstyxi1y3j1p
     parameters: []
@@ -1239,7 +1239,7 @@ paths:
     get:
       summary: GET Company Activity
       tags:
-        - A. Companies
+        - Companies
       responses:
         '200':
           description: OK
@@ -1363,7 +1363,7 @@ paths:
         - Token: []
       description: Cancel a leave request.
       tags:
-        - J. Leaves
+        - Leaves
   '/platform/api/leave_requests/{id}/process':
     parameters:
       - schema:
@@ -1397,7 +1397,7 @@ paths:
           description: The action to be taken on the leave request. Can be either approved or declined.
       description: Approve or decline a leave request. Only pending requests can be processed (approved / declined). Only an admin or manager is capable of taking action on a request.
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: ihweo9vw3rk76
   '/platform/api/leave_requests/{id}':
@@ -1492,14 +1492,14 @@ paths:
       security:
         - Token: []
       tags:
-        - J. Leaves
+        - Leaves
       x-stoplight:
         id: o7qcuo86folji
   /platform/api/app_detail/app_matching_users:
     get:
       summary: GET Matching App Users
       tags:
-        - I. Application Management
+        - Application Management
       responses:
         '200':
           description: OK
@@ -1578,7 +1578,7 @@ paths:
       security:
         - Token: []
       tags:
-        - I. Application Management
+        - Application Management
       x-stoplight:
         id: v584n9ie97jb7
     parameters: []

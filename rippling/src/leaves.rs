@@ -2,19 +2,19 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct JLeaves {
+pub struct Leaves {
     pub client: Client,
 }
 
-impl JLeaves {
+impl Leaves {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "GET Leave Requests\n\nRetrieves the current leave requests.The query can be filtered by a number of specific query parameters.\n\n**Parameters:**\n\n- `end_date: Option<String>`: End date of leave.\n- `from: Option<String>`: Filter to capture whether the leave request overlaps with a date range.\n- `id: Option<String>`\n- `leave_policy: Option<String>`\n- `limit: Option<String>`: Sets a limit on the returned values\n- `offset: Option<String>`: Offsets the returned values\n- `processed_by: Option<String>`\n- `requested_by: Option<String>`\n- `role: Option<String>`\n- `start_date: Option<String>`: Start date of leave.\n- `status: Option<String>`\n- `to: Option<String>`: Filter to capture whether the leave request overlaps with a date range.\n\n```rust,no_run\nasync fn example_j_leaves_get_leave_requests() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: Vec<rippling_api::types::LeaveRequest> = client\n        .j_leaves()\n        .get_leave_requests(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "GET Leave Requests\n\nRetrieves the current leave requests.The query can be filtered by a number of specific query parameters.\n\n**Parameters:**\n\n- `end_date: Option<String>`: End date of leave.\n- `from: Option<String>`: Filter to capture whether the leave request overlaps with a date range.\n- `id: Option<String>`\n- `leave_policy: Option<String>`\n- `limit: Option<String>`: Sets a limit on the returned values\n- `offset: Option<String>`: Offsets the returned values\n- `processed_by: Option<String>`\n- `requested_by: Option<String>`\n- `role: Option<String>`\n- `start_date: Option<String>`: Start date of leave.\n- `status: Option<String>`\n- `to: Option<String>`: Filter to capture whether the leave request overlaps with a date range.\n\n```rust,no_run\nasync fn example_leaves_get_requests() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: Vec<rippling_api::types::LeaveRequest> = client\n        .leaves()\n        .get_requests(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_leave_requests<'a>(
+    pub async fn get_requests<'a>(
         &'a self,
         end_date: Option<String>,
         from: Option<String>,
@@ -103,9 +103,9 @@ impl JLeaves {
         }
     }
 
-    #[doc = "POST Leave Request\n\nCreate a leave request. This endpoint is currently in alpha and should not be used by default. Only TILT managed requests can have a status other than PENDING.\n\n```rust,no_run\nasync fn example_j_leaves_post_leave_requests() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::LeaveRequest = client\n        .j_leaves()\n        .post_leave_requests(&rippling_api::types::PostLeaveRequestsRequestBody {\n            role: \"some-string\".to_string(),\n            requested_by: Some(\"some-string\".to_string()),\n            status: Some(\"some-string\".to_string()),\n            start_date: \"some-string\".to_string(),\n            end_date: \"some-string\".to_string(),\n            start_date_start_time: Some(\"some-string\".to_string()),\n            end_date_end_time: Some(\"some-string\".to_string()),\n            start_date_custom_hours: Some(\"some-string\".to_string()),\n            end_date_custom_hours: Some(\"some-string\".to_string()),\n            company_leave_type: \"some-string\".to_string(),\n            leave_policy: \"some-string\".to_string(),\n            reason_for_leave: Some(\"some-string\".to_string()),\n            managed_by: Some(\"some-string\".to_string()),\n            external_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "POST Leave Request\n\nCreate a leave request. This endpoint is currently in alpha and should not be used by default. Only TILT managed requests can have a status other than PENDING.\n\n```rust,no_run\nasync fn example_leaves_post_requests() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::LeaveRequest = client\n        .leaves()\n        .post_requests(&rippling_api::types::PostLeaveRequestsRequestBody {\n            role: \"some-string\".to_string(),\n            requested_by: Some(\"some-string\".to_string()),\n            status: Some(\"some-string\".to_string()),\n            start_date: \"some-string\".to_string(),\n            end_date: \"some-string\".to_string(),\n            start_date_start_time: Some(\"some-string\".to_string()),\n            end_date_end_time: Some(\"some-string\".to_string()),\n            start_date_custom_hours: Some(\"some-string\".to_string()),\n            end_date_custom_hours: Some(\"some-string\".to_string()),\n            company_leave_type: \"some-string\".to_string(),\n            leave_policy: \"some-string\".to_string(),\n            reason_for_leave: Some(\"some-string\".to_string()),\n            managed_by: Some(\"some-string\".to_string()),\n            external_id: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn post_leave_requests<'a>(
+    pub async fn post_requests<'a>(
         &'a self,
         body: &crate::types::PostLeaveRequestsRequestBody,
     ) -> Result<crate::types::LeaveRequest, crate::types::error::Error> {
@@ -137,13 +137,13 @@ impl JLeaves {
     #[doc = "GET Leave Balances\n\nRetrieves the leave balances for \
              employees\n\n**Parameters:**\n\n- `limit: Option<i64>`: Sets a limit on the returned \
              values\n- `offset: Option<i64>`: Offset the returned values\n\n```rust,no_run\nasync \
-             fn example_j_leaves_get_leave_balances() -> anyhow::Result<()> {\n    let client = \
+             fn example_leaves_get_balances() -> anyhow::Result<()> {\n    let client = \
              rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::GetLeaveBalancesResponse = client\n        .j_leaves()\n        \
-             .get_leave_balances(Some(4 as i64), Some(4 as i64))\n        .await?;\n    \
+             rippling_api::types::GetLeaveBalancesResponse = client\n        .leaves()\n        \
+             .get_balances(Some(4 as i64), Some(4 as i64))\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_leave_balances<'a>(
+    pub async fn get_balances<'a>(
         &'a self,
         limit: Option<i64>,
         offset: Option<i64>,
@@ -186,13 +186,13 @@ impl JLeaves {
              1 employee. An employee can work at 1 and only 1 company.\n\n**Parameters:**\n\n- \
              `role: &'astr`: This is the unique role ID of the employee. It corresponds to the IDs \
              returned in the Get/employees endpoint (required)\n\n```rust,no_run\nasync fn \
-             example_j_leaves_get_leave_balance() -> anyhow::Result<()> {\n    let client = \
+             example_leaves_get_balance() -> anyhow::Result<()> {\n    let client = \
              rippling_api::Client::new_from_env();\n    let result: \
              rippling_api::types::GetLeaveBalanceResponse =\n        \
-             client.j_leaves().get_leave_balance(\"some-string\").await?;\n    println!(\"{:?}\", \
+             client.leaves().get_balance(\"some-string\").await?;\n    println!(\"{:?}\", \
              result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_leave_balance<'a>(
+    pub async fn get_balance<'a>(
         &'a self,
         role: &'a str,
     ) -> Result<crate::types::GetLeaveBalanceResponse, crate::types::error::Error> {
@@ -226,13 +226,13 @@ impl JLeaves {
 
     #[doc = "POST Cancel Leave Request\n\nCancel a leave request.\n\n**Parameters:**\n\n- `id: \
              &'astr`: Unique identifier of the leave request being canceled. \
-             (required)\n\n```rust,no_run\nasync fn example_j_leaves_cancel_leave_requests() -> \
+             (required)\n\n```rust,no_run\nasync fn example_leaves_cancel_requests() -> \
              anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             result: rippling_api::types::LeaveRequest = client\n        .j_leaves()\n        \
-             .cancel_leave_requests(\"some-string\")\n        .await?;\n    println!(\"{:?}\", \
+             result: rippling_api::types::LeaveRequest = \
+             client.leaves().cancel_requests(\"some-string\").await?;\n    println!(\"{:?}\", \
              result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn cancel_leave_requests<'a>(
+    pub async fn cancel_requests<'a>(
         &'a self,
         id: &'a str,
     ) -> Result<crate::types::LeaveRequest, crate::types::error::Error> {
@@ -264,9 +264,19 @@ impl JLeaves {
         }
     }
 
-    #[doc = "POST Process Leave Request\n\nApprove or decline a leave request. Only pending requests can be processed (approved / declined). Only an admin or manager is capable of taking action on a request.\n\n**Parameters:**\n\n- `action: crate::types::Action`: The action to be taken on the leave request. Can be either approved or declined. (required)\n- `id: &'astr`: Unique identifier of the leave request being processed. (required)\n\n```rust,no_run\nasync fn example_j_leaves_process_leave_requests() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::LeaveRequest = client\n        .j_leaves()\n        .process_leave_requests(rippling_api::types::Action::Decline, \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "POST Process Leave Request\n\nApprove or decline a leave request. Only pending \
+             requests can be processed (approved / declined). Only an admin or manager is capable \
+             of taking action on a request.\n\n**Parameters:**\n\n- `action: \
+             crate::types::Action`: The action to be taken on the leave request. Can be either \
+             approved or declined. (required)\n- `id: &'astr`: Unique identifier of the leave \
+             request being processed. (required)\n\n```rust,no_run\nasync fn \
+             example_leaves_process_requests() -> anyhow::Result<()> {\n    let client = \
+             rippling_api::Client::new_from_env();\n    let result: \
+             rippling_api::types::LeaveRequest = client\n        .leaves()\n        \
+             .process_requests(rippling_api::types::Action::Decline, \"some-string\")\n        \
+             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn process_leave_requests<'a>(
+    pub async fn process_requests<'a>(
         &'a self,
         action: crate::types::Action,
         id: &'a str,
@@ -308,10 +318,10 @@ impl JLeaves {
              other updates, use the cancel endpoint to cancel the request, and create a new \
              request with the updated information.\n\n**Parameters:**\n\n- `id: &'astr`: Unique \
              identifier of the leave request being modified (required)\n\n```rust,no_run\nasync fn \
-             example_j_leaves_patch_leave_requests_leave_request_id() -> anyhow::Result<()> {\n    \
-             let client = rippling_api::Client::new_from_env();\n    let result: \
-             Vec<rippling_api::types::LeaveRequest> = client\n        .j_leaves()\n        \
-             .patch_leave_requests_leave_request_id(\n            \"some-string\",\n            \
+             example_leaves_patch_requests_request_id() -> anyhow::Result<()> {\n    let client = \
+             rippling_api::Client::new_from_env();\n    let result: \
+             Vec<rippling_api::types::LeaveRequest> = client\n        .leaves()\n        \
+             .patch_requests_request_id(\n            \"some-string\",\n            \
              &rippling_api::types::PatchLeaveRequestsLeaveRequestIdRequestBody {\n                \
              requested_by: Some(\"some-string\".to_string()),\n                status: \
              Some(\"some-string\".to_string()),\n                start_date: \
@@ -324,7 +334,7 @@ impl JLeaves {
              Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn patch_leave_requests_leave_request_id<'a>(
+    pub async fn patch_requests_request_id<'a>(
         &'a self,
         id: &'a str,
         body: &crate::types::PatchLeaveRequestsLeaveRequestIdRequestBody,

@@ -2,11 +2,11 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct GSaml {
+pub struct Saml {
     pub client: Client,
 }
 
-impl GSaml {
+impl Saml {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
@@ -19,12 +19,12 @@ impl GSaml {
              same across all customers. It is not the same if the customer uninstalls and \
              reinstalls your app. Any time a new app is installed, unique SAML Metadata will be \
              generated specific to that app.\n\n```rust,no_run\nasync fn \
-             example_g_saml_get_saml_idp_metadata() -> anyhow::Result<()> {\n    let client = \
+             example_saml_get_idp_metadata() -> anyhow::Result<()> {\n    let client = \
              rippling_api::Client::new_from_env();\n    let result: String = \
-             client.g_saml().get_saml_idp_metadata().await?;\n    println!(\"{:?}\", result);\n    \
+             client.saml().get_idp_metadata().await?;\n    println!(\"{:?}\", result);\n    \
              Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_saml_idp_metadata<'a>(&'a self) -> Result<String, crate::types::error::Error> {
+    pub async fn get_idp_metadata<'a>(&'a self) -> Result<String, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             &format!(

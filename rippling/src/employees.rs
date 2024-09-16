@@ -2,11 +2,11 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct BEmployees {
+pub struct Employees {
     pub client: Client,
 }
 
-impl BEmployees {
+impl Employees {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
@@ -19,13 +19,13 @@ impl BEmployees {
              via our limit and offset parameters. Pagination should be set to a maximum of \
              100.\n\n**Parameters:**\n\n- `limit: Option<i64>`: Sets a limit on the returned \
              values\n- `offset: Option<i64>`: Offsets the returned values\n\n```rust,no_run\nasync \
-             fn example_b_employees_get_employees() -> anyhow::Result<()> {\n    let client = \
+             fn example_employees_get() -> anyhow::Result<()> {\n    let client = \
              rippling_api::Client::new_from_env();\n    let result: \
-             Vec<rippling_api::types::Employee> = client\n        .b_employees()\n        \
-             .get_employees(Some(4 as i64), Some(4 as i64))\n        .await?;\n    \
-             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+             Vec<rippling_api::types::Employee> = client\n        .employees()\n        \
+             .get(Some(4 as i64), Some(4 as i64))\n        .await?;\n    println!(\"{:?}\", \
+             result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_employees<'a>(
+    pub async fn get<'a>(
         &'a self,
         limit: Option<i64>,
         offset: Option<i64>,
@@ -64,17 +64,9 @@ impl BEmployees {
         }
     }
 
-    #[doc = "GET Employee\n\nRetrieves the information for a single employee based on the scopes \
-             that your API key or access token have access to.\n\n**Parameters:**\n\n- \
-             `employee_id: &'astr`: Unique identifier for the employee within Rippling. \
-             (required)\n\n```rust,no_run\nasync fn \
-             example_b_employees_get_employees_employee_id() -> anyhow::Result<()> {\n    let \
-             client = rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::Employee = client\n        .b_employees()\n        \
-             .get_employees_employee_id(\"some-string\")\n        .await?;\n    println!(\"{:?}\", \
-             result);\n    Ok(())\n}\n```"]
+    #[doc = "GET Employee\n\nRetrieves the information for a single employee based on the scopes that your API key or access token have access to.\n\n**Parameters:**\n\n- `employee_id: &'astr`: Unique identifier for the employee within Rippling. (required)\n\n```rust,no_run\nasync fn example_employees_get_id() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::Employee = client.employees().get_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_employees_employee_id<'a>(
+    pub async fn get_id<'a>(
         &'a self,
         employee_id: &'a str,
     ) -> Result<crate::types::Employee, crate::types::error::Error> {
@@ -117,14 +109,13 @@ impl BEmployees {
              integrations that rely on provisioning, this parameter can be used to identify non \
              provisioned roles for compliance purposes. TRUE will return every employee from the \
              company (bypassing any access rules).\n\n```rust,no_run\nasync fn \
-             example_b_employees_get_employees_include_terminated() -> anyhow::Result<()> {\n    \
-             let client = rippling_api::Client::new_from_env();\n    let result: \
-             Vec<rippling_api::types::Employee> = client\n        .b_employees()\n        \
-             .get_employees_include_terminated(\n            Some(4 as i64),\n            Some(4 \
-             as i64),\n            Some(4 as i64),\n            Some(false),\n        )\n        \
-             .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+             example_employees_get_include_terminated() -> anyhow::Result<()> {\n    let client = \
+             rippling_api::Client::new_from_env();\n    let result: \
+             Vec<rippling_api::types::Employee> = client\n        .employees()\n        \
+             .get_include_terminated(Some(4 as i64), Some(4 as i64), Some(4 as i64), \
+             Some(false))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
-    pub async fn get_employees_include_terminated<'a>(
+    pub async fn get_include_terminated<'a>(
         &'a self,
         ein: Option<i64>,
         limit: Option<i64>,
