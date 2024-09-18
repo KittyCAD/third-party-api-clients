@@ -12,13 +12,14 @@ impl Basic {
         Self { client }
     }
 
-    #[doc = "Read\n\nRead an Object identified by `{contactId}`. `{contactId}` refers to the internal object ID.  Control what is returned via the `properties` query param.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `contact_id: &'astr` (required)\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_contacts_contact_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_contacts_contact_id_get_by_id(\n            Some(false),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Read\n\nRead an Object identified by `{contactId}`. `{contactId}` refers to the internal object ID.  Control what is returned via the `properties` query param.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `contact_id: &'astr` (required)\n- `id_property: Option<String>`: What id property to query, could be id or email\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_contacts_contact_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_contacts_contact_id_get_by_id(\n            Some(false),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_crm_v_3_objects_contacts_contact_id_get_by_id<'a>(
         &'a self,
         archived: Option<bool>,
         associations: Option<Vec<String>>,
         contact_id: &'a str,
+        id_property: Option<String>,
         properties: Option<Vec<String>>,
         properties_with_history: Option<Vec<String>>,
     ) -> Result<crate::types::SimplePublicObjectWithAssociations, crate::types::error::Error> {
@@ -38,6 +39,10 @@ impl Basic {
 
         if let Some(p) = associations {
             query_params.push(("associations", itertools::join(p, ",")));
+        }
+
+        if let Some(p) = id_property {
+            query_params.push(("idProperty", p));
         }
 
         if let Some(p) = properties {

@@ -40,6 +40,7 @@ gusto: openapitor
 # root spec for hubspot api:
 # https://api.hubspot.com/api-catalog-public/v1/apis
 # We've just plucked crm -> contacts api spec below.
+# https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/objects/contacts
 .PHONY: hubspot
 hubspot: openapitor
 	$(openapitor_exe) \

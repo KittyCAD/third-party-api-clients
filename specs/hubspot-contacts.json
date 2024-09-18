@@ -146,7 +146,8 @@
               "type" : "string"
             }
           }
-        }, {
+        },
+	{
           "name" : "archived",
           "in" : "query",
           "description" : "Whether to return only results that have been archived.",
@@ -157,7 +158,19 @@
             "type" : "boolean",
             "default" : false
           }
-        } ],
+        },
+	{
+          "name" : "idProperty",
+          "in" : "query",
+          "description" : "What id property to query, could be id or email",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }
+	],
         "responses" : {
           "200" : {
             "description" : "successful operation",
