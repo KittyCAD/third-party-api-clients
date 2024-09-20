@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1companies/get/x-rust",
     "value": {
-      "example": "/// List companies\n/// \n/// A List of companies\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `legal_entities`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `expand: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_companies_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCompaniesResponse = client\n        .companies()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_companies_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut companies = client.companies();\n    let mut stream = companies.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "example": "/// List companies\n/// \n/// A List of companies\n/// - Requires: `API Tier 1`\n/// - Expandable fields: `parent_legal_entity`, `legal_entities`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `expand: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_companies_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCompaniesResponse = client\n        .companies()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_companies_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut companies = client.companies();\n    let mut stream = companies.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
       "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/companies/struct.Companies.html#method.list"
     }
   },
@@ -21,6 +21,166 @@
     "value": {
       "example": "/// List custom fields\n/// \n/// A List of custom fields\n/// - Requires: `API Tier 1`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_custom_fields_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCustomFieldsResponse = client\n        .custom_fields()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_custom_fields_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut custom_fields = client.custom_fields();\n    let mut stream = custom_fields.list_stream(Some(\"some-string\".to_string()));\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
       "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_fields/struct.CustomFields.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects/get/x-rust",
+    "value": {
+      "example": "/// List custom objects\n/// \n/// A List of custom objects\n/// - Requires: `API Tier 1`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\nasync fn example_custom_objects_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCustomObjectsResponse = client\n        .custom_objects()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_custom_objects_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut custom_objects = client.custom_objects();\n    let mut stream = custom_objects.list_stream();\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_objects/struct.CustomObjects.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects/post/x-rust",
+    "value": {
+      "example": "/// Create a new custom object\n/// \n/// Create a new custom object\nasync fn example_custom_objects_create() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObject = client\n        .custom_objects()\n        .create(&rippling_api::types::CreateCustomObjectsRequestBody {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n            category: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_objects/struct.CustomObjects.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}/delete/x-rust",
+    "value": {
+      "example": "/// Delete a custom object\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_objects_delete() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    client.custom_objects().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_objects/struct.CustomObjects.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific custom object\n/// \n/// Retrieve a specific custom object\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_objects_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObject = client.custom_objects().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_objects/struct.CustomObjects.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}/patch/x-rust",
+    "value": {
+      "example": "/// Update a custom object\n/// \n/// Updated a specific custom object\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_objects_update() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObject = client\n        .custom_objects()\n        .update(\n            \"some-string\",\n            &rippling_api::types::UpdateCustomObjectsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                category: Some(\"some-string\".to_string()),\n                plural_label: Some(\"some-string\".to_string()),\n                owner_role: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_objects/struct.CustomObjects.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1fields/get/x-rust",
+    "value": {
+      "example": "/// List custom object fields\n/// \n/// A List of custom object fields\n/// - Requires: `API Tier 1`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_fields_list_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCustomObjectsCustomObjectApiNameFieldsResponse = client\n        .custom_object_fields()\n        .list_custom_objects_custom_object_api_name_fields(\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_custom_object_fields_list_custom_objects_custom_object_api_name_fields_stream(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut custom_object_fields = client.custom_object_fields();\n    let mut stream = custom_object_fields\n        .list_custom_objects_custom_object_api_name_fields_stream(\"some-string\");\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_fields/struct.CustomObjectFields.html#method.list_custom_objects_custom_object_api_name_fields"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1fields/post/x-rust",
+    "value": {
+      "example": "/// Create a new custom object field\n/// \n/// Create a new custom object field\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_fields_create_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .create_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            &rippling_api::types::CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                data_type: Some(serde_json::Value {}),\n                required: Some(false),\n                rql_definition: Some(serde_json::Value {}),\n                is_unique: Some(false),\n                formula_attr_metas: Some(serde_json::Value {}),\n                section: Some(serde_json::Value {}),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n                derived_aggregated_field: Some(serde_json::Value {}),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_fields/struct.CustomObjectFields.html#method.create_custom_objects_custom_object_api_name_fields"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1fields~1{field_api_name}/delete/x-rust",
+    "value": {
+      "example": "/// Delete a custom object field\n/// \n/// Delete a custom object field\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\n/// - `field_api_name: &'astr` (required)\nasync fn example_custom_object_fields_delete_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    client\n        .custom_object_fields()\n        .delete_custom_objects_custom_object_api_name_fields(\"some-string\", \"some-string\")\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_fields/struct.CustomObjectFields.html#method.delete_custom_objects_custom_object_api_name_fields"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1fields~1{field_api_name}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific custom object field\n/// \n/// Retrieve a specific custom object field\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\n/// - `field_api_name: &'astr` (required)\nasync fn example_custom_object_fields_get_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .get_custom_objects_custom_object_api_name_fields(\"some-string\", \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_fields/struct.CustomObjectFields.html#method.get_custom_objects_custom_object_api_name_fields"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1fields~1{field_api_name}/patch/x-rust",
+    "value": {
+      "example": "/// Update a custom object field\n/// \n/// Updated a specific custom object field\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\n/// - `field_api_name: &'astr` (required)\nasync fn example_custom_object_fields_update_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .update_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            \"some-string\",\n            &rippling_api::types::UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                data_type: Some(serde_json::Value {}),\n                required: Some(false),\n                rql_definition: Some(serde_json::Value {}),\n                is_unique: Some(false),\n                formula_attr_metas: Some(serde_json::Value {}),\n                section: Some(serde_json::Value {}),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n                name_field_details: Some(serde_json::Value {}),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_fields/struct.CustomObjectFields.html#method.update_custom_objects_custom_object_api_name_fields"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records/get/x-rust",
+    "value": {
+      "example": "/// List custom object records\n/// \n/// A List of custom object records\n/// - Requires: `API Tier 1`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_list_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .list_custom_objects_custom_object_api_name_records(\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_custom_object_records_list_custom_objects_custom_object_api_name_records_stream(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut custom_object_records = client.custom_object_records();\n    let mut stream = custom_object_records\n        .list_custom_objects_custom_object_api_name_records_stream(\"some-string\");\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.list_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records/post/x-rust",
+    "value": {
+      "example": "/// Create a new custom object record\n/// \n/// Create a new custom object record\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_create_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CreateCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .create_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            &rippling_api::types::CreateCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                field_api_name: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.create_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1bulk/delete/x-rust",
+    "value": {
+      "example": "/// bulk delete custom object records\n/// \n/// Bulk Delete custom object records\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_bulk_delete_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    client\n        .custom_object_records()\n        .bulk_delete_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            &rippling_api::types::BulkDeleteCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                rows_to_delete: Some(\"some-string\".to_string()),\n                all_or_nothing: Some(false),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.bulk_delete_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1bulk/patch/x-rust",
+    "value": {
+      "example": "/// Bulk Update custom object records\n/// \n/// Bulk Updated a specific custom object records\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_bulk_update_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: Vec<rippling_api::types::BulkUpdateCustomObjectsCustomObjectApiNameRecordsResponse> =\n        client\n            .custom_object_records()\n            .bulk_update_custom_objects_custom_object_api_name_records(\n                \"some-string\",\n                &rippling_api::types::BulkUpdateCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                    rows_to_update: Some(vec![rippling_api::types::RowsToUpdate {\n                        name: Some(\"some-string\".to_string()),\n                        field_api_name: Some(\"some-string\".to_string()),\n                    }]),\n                    all_or_nothing: Some(false),\n                },\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.bulk_update_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1bulk/post/x-rust",
+    "value": {
+      "example": "/// Bulk Create custom object records\n/// \n/// bulk create new custom object records\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_bulk_create_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: Vec<rippling_api::types::BulkCreateCustomObjectsCustomObjectApiNameRecordsResponse> =\n        client\n            .custom_object_records()\n            .bulk_create_custom_objects_custom_object_api_name_records(\n                \"some-string\",\n                &rippling_api::types::BulkCreateCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                    rows_to_write: Some(vec![rippling_api::types::RowsToWrite {\n                        name: Some(\"some-string\".to_string()),\n                        field_api_name: Some(\"some-string\".to_string()),\n                    }]),\n                    all_or_nothing: Some(false),\n                },\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.bulk_create_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1external_id~1{external_id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific custom object record by its external_id\n/// \n/// Retrieve a specific custom object record by its external_id\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\n/// - `external_id: &'astr` (required)\nasync fn example_custom_object_records_get_custom_objects_custom_object_api_name_records_by_external_id(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetCustomObjectsCustomObjectApiNameRecordsByExternalIdResponse =\n        client\n            .custom_object_records()\n            .get_custom_objects_custom_object_api_name_records_by_external_id(\n                \"some-string\",\n                \"some-string\",\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.get_custom_objects_custom_object_api_name_records_by_external_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1query/post/x-rust",
+    "value": {
+      "example": "/// List custom object records by query\n/// \n/// A List of custom object records filtered by querying\n/// \n/// **Parameters:**\n/// \n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_list_by_query_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .list_by_query_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            &rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                query: Some(\"some-string\".to_string()),\n                limit: Some(4 as i64),\n                cursor: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.list_by_query_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1{codr_id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete a custom object record\n/// \n/// **Parameters:**\n/// \n/// - `codr_id: &'astr` (required)\n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_delete_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    client\n        .custom_object_records()\n        .delete_custom_objects_custom_object_api_name_records(\"some-string\", \"some-string\")\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.delete_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1{codr_id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific custom object record\n/// \n/// Retrieve a specific custom object record\n/// \n/// **Parameters:**\n/// \n/// - `codr_id: &'astr` (required)\n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_get_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .get_custom_objects_custom_object_api_name_records(\"some-string\", \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.get_custom_objects_custom_object_api_name_records"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1custom-objects~1{custom_object_api_name}~1records~1{codr_id}/patch/x-rust",
+    "value": {
+      "example": "/// Update a custom object record\n/// \n/// Updated a specific custom object record\n/// \n/// **Parameters:**\n/// \n/// - `codr_id: &'astr` (required)\n/// - `custom_object_api_name: &'astr` (required)\nasync fn example_custom_object_records_update_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::UpdateCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .update_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            \"some-string\",\n            &rippling_api::types::UpdateCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                field_api_name: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/custom_object_records/struct.CustomObjectRecords.html#method.update_custom_objects_custom_object_api_name_records"
     }
   },
   {
@@ -61,6 +221,46 @@
     "value": {
       "example": "/// List entitlements\n/// \n/// A List of entitlements\n/// - Requires: `API Tier 1`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\nasync fn example_entitlements_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListEntitlementsResponse = client\n        .entitlements()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_entitlements_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut entitlements = client.entitlements();\n    let mut stream = entitlements.list_stream();\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
       "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/entitlements/struct.Entitlements.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1object-categories/get/x-rust",
+    "value": {
+      "example": "/// List object categories\n/// \n/// A List of object categories\n/// - Requires: `API Tier 1`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\nasync fn example_object_categories_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListObjectCategoriesResponse = client\n        .object_categories()\n        .list(Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_object_categories_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut object_categories = client.object_categories();\n    let mut stream = object_categories.list_stream();\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/object_categories/struct.ObjectCategories.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1object-categories/post/x-rust",
+    "value": {
+      "example": "/// Create a new object category\n/// \n/// Create a new object category\nasync fn example_object_categories_create() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ObjectCategory = client\n        .object_categories()\n        .create(&rippling_api::types::CreateObjectCategoriesRequestBody {\n            name: Some(\"some-string\".to_string()),\n            description: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/object_categories/struct.ObjectCategories.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1object-categories~1{id}/delete/x-rust",
+    "value": {
+      "example": "/// Delete a object category\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_object_categories_delete() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    client.object_categories().delete(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/object_categories/struct.ObjectCategories.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1object-categories~1{id}/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a specific object category\n/// \n/// Retrieve a specific object category\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_object_categories_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ObjectCategory =\n        client.object_categories().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/object_categories/struct.ObjectCategories.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1object-categories~1{id}/patch/x-rust",
+    "value": {
+      "example": "/// Update a object category\n/// \n/// Updated a specific object category\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_object_categories_update() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ObjectCategory = client\n        .object_categories()\n        .update(\n            \"some-string\",\n            &rippling_api::types::UpdateObjectCategoriesRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/object_categories/struct.ObjectCategories.html#method.update"
     }
   },
   {
@@ -123,7 +323,7 @@
     "op": "add",
     "path": "/paths/~1workers/get/x-rust",
     "value": {
-      "example": "/// List workers\n/// \n/// A List of workers\n/// - Requires: `API Tier 1`\n/// - Filterable fields: `status`, `work_email`\n/// - Expandable fields: `user`, `legal_entity`, `employment_type`, `compensation`, `department`, `teams`, `level`, `custom_fields`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `expand: Option<String>`\n/// - `filter: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_workers_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListWorkersResponse = client\n        .workers()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_workers_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut workers = client.workers();\n    let mut stream = workers.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
+      "example": "/// List workers\n/// \n/// A List of workers\n/// - Requires: `API Tier 1`\n/// - Filterable fields: `status`, `work_email`\n/// - Expandable fields: `user`, `manager`, `legal_entity`, `employment_type`, `compensation`, `department`, `teams`, `level`, `custom_fields`\n/// - Sortable fields: `id`, `created_at`, `updated_at`\n/// \n/// **Parameters:**\n/// \n/// - `cursor: Option<String>`\n/// - `expand: Option<String>`\n/// - `filter: Option<String>`\n/// - `order_by: Option<String>`\nasync fn example_workers_list() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListWorkersResponse = client\n        .workers()\n        .list(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n\n\n/// - OR -\n\n/// Get a stream of results.\n///\n/// This allows you to paginate through all the items.\nuse futures_util::TryStreamExt;\nasync fn example_workers_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut workers = client.workers();\n    let mut stream = workers.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n",
       "libDocsLink": "https://docs.rs/rippling-api/latest/rippling-api/workers/struct.Workers.html#method.list"
     }
   },

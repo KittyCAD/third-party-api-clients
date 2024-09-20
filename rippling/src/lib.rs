@@ -60,6 +60,15 @@ pub mod companies;
 /// Custom fields defined by the company.
 #[cfg(feature = "requests")]
 pub mod custom_fields;
+/// Custom object fields defined by the company.
+#[cfg(feature = "requests")]
+pub mod custom_object_fields;
+/// Custom object datarows defined by the company.
+#[cfg(feature = "requests")]
+pub mod custom_object_records;
+/// Custom objects defined by the company.
+#[cfg(feature = "requests")]
+pub mod custom_objects;
 /// Departments used by the company.
 #[cfg(feature = "requests")]
 pub mod departments;
@@ -73,6 +82,9 @@ pub mod entitlements;
 #[cfg(feature = "requests")]
 pub mod me;
 mod methods;
+/// Object Categories defined by the company.
+#[cfg(feature = "requests")]
+pub mod object_categories;
 /// Teams at the company.
 #[cfg(feature = "requests")]
 pub mod teams;
@@ -324,41 +336,6 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
-    /// Employment types used by the company.
-    pub fn employment_types(&self) -> employment_types::EmploymentTypes {
-        employment_types::EmploymentTypes::new(self.clone())
-    }
-
-    /// Teams at the company.
-    pub fn teams(&self) -> teams::Teams {
-        teams::Teams::new(self.clone())
-    }
-
-    /// Availability of API features to the company or Partners.
-    pub fn entitlements(&self) -> entitlements::Entitlements {
-        entitlements::Entitlements::new(self.clone())
-    }
-
-    /// Users of the company.
-    pub fn users(&self) -> users::Users {
-        users::Users::new(self.clone())
-    }
-
-    /// Workers who work or have worked at the company.
-    pub fn workers(&self) -> workers::Workers {
-        workers::Workers::new(self.clone())
-    }
-
-    /// Departments used by the company.
-    pub fn departments(&self) -> departments::Departments {
-        departments::Departments::new(self.clone())
-    }
-
-    /// Work locations used by the company.
-    pub fn work_locations(&self) -> work_locations::WorkLocations {
-        work_locations::WorkLocations::new(self.clone())
-    }
-
     /// Companies on Rippling.
     pub fn companies(&self) -> companies::Companies {
         companies::Companies::new(self.clone())
@@ -369,8 +346,63 @@ impl Client {
         custom_fields::CustomFields::new(self.clone())
     }
 
+    /// Custom object fields defined by the company.
+    pub fn custom_object_fields(&self) -> custom_object_fields::CustomObjectFields {
+        custom_object_fields::CustomObjectFields::new(self.clone())
+    }
+
+    /// Custom object datarows defined by the company.
+    pub fn custom_object_records(&self) -> custom_object_records::CustomObjectRecords {
+        custom_object_records::CustomObjectRecords::new(self.clone())
+    }
+
+    /// Custom objects defined by the company.
+    pub fn custom_objects(&self) -> custom_objects::CustomObjects {
+        custom_objects::CustomObjects::new(self.clone())
+    }
+
+    /// Departments used by the company.
+    pub fn departments(&self) -> departments::Departments {
+        departments::Departments::new(self.clone())
+    }
+
+    /// Employment types used by the company.
+    pub fn employment_types(&self) -> employment_types::EmploymentTypes {
+        employment_types::EmploymentTypes::new(self.clone())
+    }
+
+    /// Availability of API features to the company or Partners.
+    pub fn entitlements(&self) -> entitlements::Entitlements {
+        entitlements::Entitlements::new(self.clone())
+    }
+
     /// Provides the user's SSO information.
     pub fn me(&self) -> me::Me {
         me::Me::new(self.clone())
+    }
+
+    /// Object Categories defined by the company.
+    pub fn object_categories(&self) -> object_categories::ObjectCategories {
+        object_categories::ObjectCategories::new(self.clone())
+    }
+
+    /// Teams at the company.
+    pub fn teams(&self) -> teams::Teams {
+        teams::Teams::new(self.clone())
+    }
+
+    /// Users of the company.
+    pub fn users(&self) -> users::Users {
+        users::Users::new(self.clone())
+    }
+
+    /// Work locations used by the company.
+    pub fn work_locations(&self) -> work_locations::WorkLocations {
+        work_locations::WorkLocations::new(self.clone())
+    }
+
+    /// Workers who work or have worked at the company.
+    pub fn workers(&self) -> workers::Workers {
+        workers::Workers::new(self.clone())
     }
 }
