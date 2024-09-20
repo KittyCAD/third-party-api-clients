@@ -9930,7 +9930,8 @@ pub struct WorkerLocation {
     #[serde(rename = "type")]
     pub type_: WorkerLocationType,
     #[doc = "The work location, if the worker isn't remote."]
-    pub work_location_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub work_location_id: Option<String>,
 }
 
 impl std::fmt::Display for WorkerLocation {
@@ -9949,7 +9950,11 @@ impl tabled::Tabled for WorkerLocation {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.type_).into(),
-            self.work_location_id.clone().into(),
+            if let Some(work_location_id) = &self.work_location_id {
+                format!("{:?}", work_location_id).into()
+            } else {
+                String::new().into()
+            },
         ]
     }
 

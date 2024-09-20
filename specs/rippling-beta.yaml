@@ -3601,6 +3601,7 @@ components:
         work_location_id:
           type: string
           description: Work Location Id
+          nullable: true
         work_location:
           type: object
           description: 'Work location for the job
@@ -5286,11 +5287,11 @@ components:
         work_location_id:
           type: string
           description: The work location, if the worker isn't remote.
+          nullable: true
       description: ''
       x-rippling-expandable-fields: []
       required:
       - type
-      - work_location_id
   parameters:
     get_id:
       name: id
