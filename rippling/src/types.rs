@@ -1,4 +1,6 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
+use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -5499,7 +5501,8 @@ pub struct WorkerLocation {
     #[serde(rename = "type")]
     pub type_: WorkerLocationType,
     #[doc = "The work location, if the worker isn't remote."]
-    pub work_location_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub work_location_id: Option<String>,
 }
 
 impl std::fmt::Display for WorkerLocation {
@@ -5518,7 +5521,11 @@ impl tabled::Tabled for WorkerLocation {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.type_).into(),
-            self.work_location_id.clone().into(),
+            if let Some(work_location_id) = &self.work_location_id {
+                format!("{:?}", work_location_id).into()
+            } else {
+                String::new().into()
+            },
         ]
     }
 
@@ -5559,7 +5566,8 @@ pub struct WorkerLocationRequest {
     #[serde(rename = "type")]
     pub type_: WorkerLocationRequestType,
     #[doc = "The work location, if the worker isn't remote."]
-    pub work_location_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub work_location_id: Option<String>,
 }
 
 impl std::fmt::Display for WorkerLocationRequest {
@@ -5578,7 +5586,11 @@ impl tabled::Tabled for WorkerLocationRequest {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.type_).into(),
-            self.work_location_id.clone().into(),
+            if let Some(work_location_id) = &self.work_location_id {
+                format!("{:?}", work_location_id).into()
+            } else {
+                String::new().into()
+            },
         ]
     }
 
@@ -8727,10 +8739,10 @@ pub struct User {
     pub display_name: Option<String>,
     #[doc = "The user's email addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub emails: Option<Email>,
+    pub emails: Option<Vec<Email>>,
     #[doc = "The user's phone numbers."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub phone_numbers: Option<UserPhoneNumber>,
+    pub phone_numbers: Option<Vec<UserPhoneNumber>>,
     #[doc = "The user's addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub addresses: Option<UserAddress>,
@@ -14617,8 +14629,7 @@ pub struct ListDepartmentsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<Department>>,
+    pub results: Vec<Department>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -14634,6 +14645,38 @@ impl std::fmt::Display for ListDepartmentsResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListDepartmentsResponse {
+    type Item = Department;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListDepartmentsResponse {
     const LENGTH: usize = 3;
@@ -14644,11 +14687,7 @@ impl tabled::Tabled for ListDepartmentsResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -14741,8 +14780,7 @@ pub struct ListEmploymentTypesResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<CompanyEmploymentType>>,
+    pub results: Vec<CompanyEmploymentType>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -14758,6 +14796,38 @@ impl std::fmt::Display for ListEmploymentTypesResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListEmploymentTypesResponse {
+    type Item = CompanyEmploymentType;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListEmploymentTypesResponse {
     const LENGTH: usize = 3;
@@ -14768,11 +14838,7 @@ impl tabled::Tabled for ListEmploymentTypesResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -14921,8 +14987,7 @@ pub struct ListTeamsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<Team>>,
+    pub results: Vec<Team>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -14938,6 +15003,38 @@ impl std::fmt::Display for ListTeamsResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListTeamsResponse {
+    type Item = Team;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListTeamsResponse {
     const LENGTH: usize = 3;
@@ -14948,11 +15045,7 @@ impl tabled::Tabled for ListTeamsResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15045,8 +15138,7 @@ pub struct ListWorkLocationsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<WorkLocation>>,
+    pub results: Vec<WorkLocation>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15062,6 +15154,38 @@ impl std::fmt::Display for ListWorkLocationsResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListWorkLocationsResponse {
+    type Item = WorkLocation;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListWorkLocationsResponse {
     const LENGTH: usize = 3;
@@ -15072,11 +15196,7 @@ impl tabled::Tabled for ListWorkLocationsResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15155,8 +15275,7 @@ pub struct ListWorkersResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<Worker>>,
+    pub results: Vec<Worker>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15172,6 +15291,38 @@ impl std::fmt::Display for ListWorkersResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListWorkersResponse {
+    type Item = Worker;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListWorkersResponse {
     const LENGTH: usize = 3;
@@ -15182,11 +15333,7 @@ impl tabled::Tabled for ListWorkersResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15207,8 +15354,7 @@ pub struct ListUsersResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<User>>,
+    pub results: Vec<User>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15224,6 +15370,38 @@ impl std::fmt::Display for ListUsersResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListUsersResponse {
+    type Item = User;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListUsersResponse {
     const LENGTH: usize = 3;
@@ -15234,11 +15412,7 @@ impl tabled::Tabled for ListUsersResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15281,10 +15455,10 @@ pub struct GetUsersResponse {
     pub display_name: Option<String>,
     #[doc = "The user's email addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub emails: Option<Email>,
+    pub emails: Option<Vec<Email>>,
     #[doc = "The user's phone numbers."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub phone_numbers: Option<UserPhoneNumber>,
+    pub phone_numbers: Option<Vec<UserPhoneNumber>>,
     #[doc = "The user's addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub addresses: Option<UserAddress>,
@@ -15413,8 +15587,7 @@ pub struct ListCompaniesResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<Company>>,
+    pub results: Vec<Company>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15430,6 +15603,38 @@ impl std::fmt::Display for ListCompaniesResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListCompaniesResponse {
+    type Item = Company;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCompaniesResponse {
     const LENGTH: usize = 3;
@@ -15440,11 +15645,7 @@ impl tabled::Tabled for ListCompaniesResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15465,8 +15666,7 @@ pub struct ListEntitlementsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<EntitlementModel>>,
+    pub results: Vec<EntitlementModel>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15482,6 +15682,38 @@ impl std::fmt::Display for ListEntitlementsResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListEntitlementsResponse {
+    type Item = EntitlementModel;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListEntitlementsResponse {
     const LENGTH: usize = 3;
@@ -15492,11 +15724,7 @@ impl tabled::Tabled for ListEntitlementsResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {
@@ -15517,8 +15745,7 @@ pub struct ListCustomFieldsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<RedactedFields>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<CustomField>>,
+    pub results: Vec<CustomField>,
     #[doc = "A link to the next page of responses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_link: Option<String>,
@@ -15534,6 +15761,38 @@ impl std::fmt::Display for ListCustomFieldsResponse {
     }
 }
 
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListCustomFieldsResponse {
+    type Item = CustomField;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ListCustomFieldsResponse {
     const LENGTH: usize = 3;
@@ -15544,11 +15803,7 @@ impl tabled::Tabled for ListCustomFieldsResponse {
             } else {
                 String::new().into()
             },
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(next_link) = &self.next_link {
                 format!("{:?}", next_link).into()
             } else {

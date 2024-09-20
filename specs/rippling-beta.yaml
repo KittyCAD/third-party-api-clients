@@ -17,6 +17,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields:
       - parent
       x-rippling-sortable-fields:
@@ -45,6 +46,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -89,6 +92,7 @@ paths:
         \ fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields: []
       x-rippling-sortable-fields:
       - id
@@ -116,6 +120,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -159,6 +165,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields:
       - parent
       x-rippling-sortable-fields:
@@ -187,6 +194,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -231,6 +240,7 @@ paths:
         \ fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields: []
       x-rippling-sortable-fields:
       - id
@@ -258,6 +268,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -304,6 +316,7 @@ paths:
       - $ref: '#/components/parameters/filter'
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields:
       - user
       - legal_entity
@@ -339,6 +352,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -392,6 +407,7 @@ paths:
         \ `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields: []
       x-rippling-sortable-fields:
       - id
@@ -419,6 +435,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -463,6 +481,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields:
       - legal_entities
       x-rippling-sortable-fields:
@@ -491,6 +510,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -535,7 +556,8 @@ paths:
       - Entitlements
       summary: List entitlements
       description: "A List of entitlements\n - Requires: `API Tier 1`"
-      parameters: []
+      parameters:
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields: []
       x-rippling-sortable-fields: []
       security:
@@ -560,6 +582,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -574,6 +598,7 @@ paths:
         \ fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields: []
       x-rippling-sortable-fields:
       - id
@@ -601,6 +626,8 @@ paths:
                     type: string
                     format: uri
                     description: A link to the next page of responses.
+                required:
+                  - results
       x-deprecated-description:
       - API_Tier_1
       x-rippling-entitlements:
@@ -2740,11 +2767,11 @@ components:
         work_location_id:
           type: string
           description: The work location, if the worker isn't remote.
+          nullable: true
       description: ''
       x-rippling-expandable-fields: []
       required:
       - type
-      - work_location_id
     WorkerLocationRequest:
       type: object
       properties:
@@ -2757,10 +2784,10 @@ components:
         work_location_id:
           type: string
           description: The work location, if the worker isn't remote.
+          nullable: true
       description: ''
       required:
       - type
-      - work_location_id
     LegalEntity:
       type: object
       properties:
@@ -4097,15 +4124,15 @@ components:
           description: The display name of the user using either the concatenated
             preferred given and family name or username depending on availability.
         emails:
-          type: object
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
           description: The user's email addresses.
-          allOf:
-          - $ref: '#/components/schemas/Email'
         phone_numbers:
-          type: object
+          type: array 
+          items:
+            $ref: '#/components/schemas/UserPhoneNumber'
           description: The user's phone numbers.
-          allOf:
-          - $ref: '#/components/schemas/UserPhoneNumber'
         addresses:
           type: object
           description: The user's addresses.
@@ -6147,6 +6174,12 @@ components:
         format: id
     order_by:
       name: order_by
+      in: query
+      allowEmptyValue: false
+      schema:
+        type: string
+    cursor:
+      name: cursor
       in: query
       allowEmptyValue: false
       schema:

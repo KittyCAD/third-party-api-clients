@@ -92,7 +92,7 @@ rippling-base: openapitor
 rippling: openapitor
 	$(openapitor_exe) \
 		--input specs/rippling-beta.yaml \
-		--target-version 0.1.3 \
+		--target-version 0.1.4 \
 		--output ./rippling \
 		--name rippling-api \
 		--description "A fully generated & opinionated API client for the Rippling API." \
