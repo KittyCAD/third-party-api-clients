@@ -4134,15 +4134,15 @@ components:
             $ref: '#/components/schemas/UserPhoneNumber'
           description: The user's phone numbers.
         addresses:
-          type: object
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAddress'
           description: The user's addresses.
-          allOf:
-          - $ref: '#/components/schemas/UserAddress'
         photos:
-          type: object
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoto'
           description: The user's photos.
-          allOf:
-          - $ref: '#/components/schemas/UserPhoto'
         preferred_language:
           type: string
           description: The User's preferred written or spoken language in the same

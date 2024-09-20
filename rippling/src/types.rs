@@ -8745,10 +8745,10 @@ pub struct User {
     pub phone_numbers: Option<Vec<UserPhoneNumber>>,
     #[doc = "The user's addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub addresses: Option<UserAddress>,
+    pub addresses: Option<Vec<UserAddress>>,
     #[doc = "The user's photos."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub photos: Option<UserPhoto>,
+    pub photos: Option<Vec<UserPhoto>>,
     #[doc = "The User's preferred written or spoken language in the same format of the HTTP \
              Accept-Language header, pursuant to Section 5.3.5 of RFC7231."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15461,10 +15461,10 @@ pub struct GetUsersResponse {
     pub phone_numbers: Option<Vec<UserPhoneNumber>>,
     #[doc = "The user's addresses."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub addresses: Option<UserAddress>,
+    pub addresses: Option<Vec<UserAddress>>,
     #[doc = "The user's photos."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub photos: Option<UserPhoto>,
+    pub photos: Option<Vec<UserPhoto>>,
     #[doc = "The User's preferred written or spoken language in the same format of the HTTP \
              Accept-Language header, pursuant to Section 5.3.5 of RFC7231."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
