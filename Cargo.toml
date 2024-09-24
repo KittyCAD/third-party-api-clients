@@ -3,6 +3,7 @@ members = [
 	"commonroom",
 	"front",
 	"gusto",
+	"hubspot-contacts",
 	"pagerduty",
 	"ramp",
 	"remote",

@@ -37,6 +37,21 @@ gusto: openapitor
 		--request-timeout-seconds 60 \
 		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
 
+# root spec for hubspot api:
+# https://api.hubspot.com/api-catalog-public/v1/apis
+# We've just plucked crm -> contacts api spec below.
+# https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/objects/contacts
+.PHONY: hubspot
+hubspot: openapitor
+	$(openapitor_exe) \
+		--input specs/hubspot-contacts.json \
+		--target-version 0.1.0 \
+		--output ./hubspot-contacts \
+		--name hubspot-contacts \
+		--base-url https://api.hubapi.com \
+		--description "A fully generated & opinionated API client for the Hubspot Contacts API." \
+		--request-timeout-seconds 60 \
+
 # Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
 .PHONY: mailchimp
 mailchimp: openapitor
