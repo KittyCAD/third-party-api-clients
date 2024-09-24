@@ -91,22 +91,10 @@ remote: openapitor
 		--request-timeout-seconds 60 \
 		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
 
-.PHONY: rippling-base
-rippling-base: openapitor
-	$(openapitor_exe) \
-		--input specs/rippling.yaml \
-		--target-version 0.1.0 \
-		--output ./rippling-base \
-		--name rippling-base-api \
-		--description "A fully generated & opinionated API client for the Rippling Base API." \
-		--base-url "https://api.rippling.com" \
-		--request-timeout-seconds 60 \
-		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
-
 .PHONY: rippling
 rippling: openapitor
 	$(openapitor_exe) \
-		--input specs/rippling-beta.yaml \
+		--input specs/rippling.yaml \
 		--target-version 0.1.4 \
 		--output ./rippling \
 		--name rippling-api \
