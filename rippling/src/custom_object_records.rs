@@ -24,11 +24,11 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -47,14 +47,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -70,7 +69,7 @@ impl CustomObjectRecords {
         use futures::{StreamExt, TryFutureExt, TryStreamExt};
 
         use crate::types::paginate::Pagination;
-        self . list_custom_objects_custom_object_api_name_records (None , custom_object_api_name) . map_ok (move | result | { let items = futures :: stream :: iter (result . items () . into_iter () . map (Ok)) ; let next_pages = futures :: stream :: try_unfold ((None , result) , move | (prev_page_token , new_result) | async move { if new_result . has_more_pages () && ! new_result . items () . is_empty () && prev_page_token != new_result . next_page_token () { async { let mut req = self . client . client . request (http :: Method :: GET , & format ! ("{}/{}" , self . client . base_url , "custom-objects/{custom_object_api_name}/records" . replace ("{custom_object_api_name}" , & custom_object_api_name)) ,) ; req = req . bearer_auth (& self . client . token) ; let mut request = req . build () ? ; request = new_result . next_page (request) ? ; let resp = self . client . client . execute (request) . await ? ; let status = resp . status () ; if status . is_success () { let text = resp . text () . await . unwrap_or_default () ; serde_json :: from_str (& text) . map_err (| err | crate :: types :: error :: Error :: from_serde_error (format_serde_error :: SerdeError :: new (text . to_string () , err) , status) . into ()) } else { let text = resp . text () . await . unwrap_or_default () ; return Err (crate :: types :: error :: Error :: Server { body : text . to_string () , status }) ; } } . map_ok (| result : crate :: types :: ListCustomObjectsCustomObjectApiNameRecordsResponse | { Some ((futures :: stream :: iter (result . items () . into_iter () . map (Ok) ,) , (new_result . next_page_token () , result) ,)) }) . await } else { Ok (None) } }) . try_flatten () ; items . chain (next_pages) }) . try_flatten_stream () . boxed ()
+        self . list_custom_objects_custom_object_api_name_records (None , custom_object_api_name) . map_ok (move | result | { let items = futures :: stream :: iter (result . items () . into_iter () . map (Ok)) ; let next_pages = futures :: stream :: try_unfold ((None , result) , move | (prev_page_token , new_result) | async move { if new_result . has_more_pages () && ! new_result . items () . is_empty () && prev_page_token != new_result . next_page_token () { async { let mut req = self . client . client . request (http :: Method :: GET , format ! ("{}/{}" , self . client . base_url , "custom-objects/{custom_object_api_name}/records" . replace ("{custom_object_api_name}" , custom_object_api_name)) ,) ; req = req . bearer_auth (& self . client . token) ; let mut request = req . build () ? ; request = new_result . next_page (request) ? ; let resp = self . client . client . execute (request) . await ? ; let status = resp . status () ; if status . is_success () { let text = resp . text () . await . unwrap_or_default () ; serde_json :: from_str (& text) . map_err (| err | crate :: types :: error :: Error :: from_serde_error (format_serde_error :: SerdeError :: new (text . to_string () , err) , status)) } else { let text = resp . text () . await . unwrap_or_default () ; Err (crate :: types :: error :: Error :: Server { body : text . to_string () , status }) } } . map_ok (| result : crate :: types :: ListCustomObjectsCustomObjectApiNameRecordsResponse | { Some ((futures :: stream :: iter (result . items () . into_iter () . map (Ok) ,) , (new_result . next_page_token () , result) ,)) }) . await } else { Ok (None) } }) . try_flatten () ; items . chain (next_pages) }) . try_flatten_stream () . boxed ()
     }
 
     #[doc = "Create a new custom object record\n\nCreate a new custom object record\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_records_create_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CreateCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .create_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            &rippling_api::types::CreateCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                field_api_name: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
@@ -85,11 +84,11 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -103,21 +102,21 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
-    #[doc = "List custom object records by query\n\nA List of custom object records filtered by querying\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_records_list_by_query_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .list_by_query_custom_objects_custom_object_api_name_records(\n            \"some-string\",\n            &rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                query: Some(\"some-string\".to_string()),\n                limit: Some(4 as i64),\n                cursor: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List custom object records by query\n\nA List of custom object records filtered by querying\n\n**Parameters:**\n\n- `cursor: Option<String>`\n- `custom_object_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_records_list_by_query_custom_objects_custom_object_api_name_records(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsResponse = client\n        .custom_object_records()\n        .list_by_query_custom_objects_custom_object_api_name_records(\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            &rippling_api::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsRequestBody {\n                query: Some(\"some-string\".to_string()),\n                limit: Some(4 as i64),\n                cursor: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_by_query_custom_objects_custom_object_api_name_records<'a>(
         &'a self,
+        cursor: Option<String>,
         custom_object_api_name: &'a str,
         body: &crate::types::ListByQueryCustomObjectsCustomObjectApiNameRecordsRequestBody,
     ) -> Result<
@@ -126,14 +125,20 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/query"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
+        let mut query_params = vec![];
+        if let Some(p) = cursor {
+            query_params.push(("cursor", p));
+        }
+
+        req = req.query(&query_params);
         req = req.json(body);
         let resp = req.send().await?;
         let status = resp.status();
@@ -144,14 +149,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -176,12 +180,12 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/{codr_id}"
-                    .replace("{codr_id}", &codr_id)
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{codr_id}", codr_id)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -194,14 +198,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -214,12 +217,12 @@ impl CustomObjectRecords {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/{codr_id}"
-                    .replace("{codr_id}", &codr_id)
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{codr_id}", codr_id)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -229,10 +232,10 @@ impl CustomObjectRecords {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -249,12 +252,12 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/{codr_id}"
-                    .replace("{codr_id}", &codr_id)
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{codr_id}", codr_id)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -268,14 +271,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -291,12 +293,12 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/external_id/{external_id}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
-                    .replace("{external_id}", &external_id)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
+                    .replace("{external_id}", external_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -309,14 +311,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -332,11 +333,11 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/bulk"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -350,14 +351,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -370,11 +370,11 @@ impl CustomObjectRecords {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/bulk"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -385,10 +385,10 @@ impl CustomObjectRecords {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -404,11 +404,11 @@ impl CustomObjectRecords {
     > {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/records/bulk"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -422,14 +422,13 @@ impl CustomObjectRecords {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

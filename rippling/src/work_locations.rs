@@ -31,7 +31,7 @@ impl WorkLocations {
     ) -> Result<crate::types::ListWorkLocationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "work-locations"),
+            format!("{}/{}", self.client.base_url, "work-locations"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -53,14 +53,13 @@ impl WorkLocations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -99,7 +98,7 @@ impl WorkLocations {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    &format!("{}/{}", self.client.base_url, "work-locations"),
+                                    format!("{}/{}", self.client.base_url, "work-locations"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -116,14 +115,13 @@ impl WorkLocations {
                                             ),
                                             status,
                                         )
-                                        .into()
                                     })
                                 } else {
                                     let text = resp.text().await.unwrap_or_default();
-                                    return Err(crate::types::error::Error::Server {
+                                    Err(crate::types::error::Error::Server {
                                         body: text.to_string(),
                                         status,
-                                    });
+                                    })
                                 }
                             }
                             .map_ok(|result: crate::types::ListWorkLocationsResponse| {
@@ -159,10 +157,10 @@ impl WorkLocations {
     ) -> Result<crate::types::GetWorkLocationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "work-locations/{id}".replace("{id}", &id)
+                "work-locations/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -175,14 +173,13 @@ impl WorkLocations {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

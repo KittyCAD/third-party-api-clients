@@ -6,6 +6,96 @@ servers:
 - url: https://rest.ripplingapis.com
   description: Production Rippling API endpoint.
 paths:
+  /candidates:
+    get:
+      operationId: list-candidates
+      tags:
+      - Candidates
+      summary: List candidates
+      description: "A List of candidates\n - Requires: `API Tier 2`\n - Sortable fields:\
+        \ `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - candidates.read
+      responses:
+        '200':
+          description: A list of candidates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Candidate'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /candidate-applications:
+    get:
+      operationId: list-candidate-applications
+      tags:
+      - Candidate Applications
+      summary: List candidate applications
+      description: "A List of candidate applications\n - Requires: `API Tier 2`\n\
+        \ - Expandable fields: `job`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - job
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - candidate-applications.read
+      responses:
+        '200':
+          description: A list of candidate applications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Application'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
   /companies:
     get:
       operationId: list-companies
@@ -13,15 +103,13 @@ paths:
       - Companies
       summary: List companies
       description: "A List of companies\n - Requires: `API Tier 1`\n - Expandable\
-        \ fields: `parent_legal_entity`, `legal_entities`\n - Sortable fields: `id`,\
+        \ fields: - Sortable fields: `id`,\
         \ `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       - $ref: '#/components/parameters/cursor'
       x-rippling-expandable-fields:
-      - parent_legal_entity
-      - legal_entities
       x-rippling-sortable-fields:
       - id
       - created_at
@@ -54,6 +142,83 @@ paths:
       - API_Tier_1
       x-rippling-entitlements:
       - API_Tier_1
+  /compensations:
+    get:
+      operationId: list-compensations
+      tags:
+      - Compensations
+      summary: List compensations
+      description: "A List of compensations\n - Requires: `API Tier 2`\n - Expandable\
+        \ fields: `worker`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - worker
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - compensations.read
+      responses:
+        '200':
+          description: A list of compensations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Compensation'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /compensations/{id}:
+    get:
+      tags:
+      - Compensations
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - compensations.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Compensation'
+          description: a specific compensation
+      operationId: get-compensations
+      summary: Retrieve a specific compensation
+      description: Retrieves the Compensation for the Worker with the ID provided
+        in the URL path.
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - worker
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
   /custom-fields:
     get:
       operationId: list-custom-fields
@@ -457,6 +622,830 @@ paths:
       - API_Tier_1
       x-rippling-entitlements:
       - API_Tier_1
+  /job-codes:
+    get:
+      operationId: list-job-codes
+      tags:
+      - Job
+      summary: List job codes
+      description: "A List of job codes\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `job_dimension_id`, `group_id`\n - Expandable fields: `job_dimension`\n\
+        \ - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - job_dimension
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-codes.read
+      responses:
+        '200':
+          description: A list of job codes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobCode'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - job_dimension_id
+      - group_id
+    post:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-codes.read
+        - job-codes.read-write
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/JobCode'
+          description: Created a new job code
+      operationId: create-job-codes
+      summary: Create a new job code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCodeRequest'
+      description: Create a new job code
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /job-codes/{id}:
+    get:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-codes.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/JobCode'
+          description: a specific job code
+      operationId: get-job-codes
+      summary: Retrieve a specific job code
+      description: Retrieve a specific job code
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - job_dimension
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    patch:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-codes.read
+        - job-codes.read-write)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/JobCode'
+          description: Update a specific job code
+      operationId: update-job-codes
+      summary: Update a job code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCodeRequest'
+      parameters:
+      - $ref: '#/components/parameters/patch_id'
+      description: Updated a specific job code
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    delete:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-codes.read
+        - job-codes.read-write)
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      operationId: delete-job-codes
+      summary: Delete a job code
+      parameters:
+      - $ref: '#/components/parameters/delete_id'
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /job-dimensions:
+    get:
+      operationId: list-job-dimensions
+      tags:
+      - Job
+      summary: List job dimensions
+      description: "A List of job dimensions\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `name`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-dimensions.read
+      responses:
+        '200':
+          description: A list of job dimensions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobDimension'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - name
+    post:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-dimensions.read
+        - job-dimensions.read-write
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/JobDimension'
+          description: Created a new job dimension
+      operationId: create-job-dimensions
+      summary: Create a new job dimension
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobDimensionRequest'
+      description: Create a new job dimension
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /job-dimensions/{id}:
+    get:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-dimensions.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/JobDimension'
+          description: a specific job dimension
+      operationId: get-job-dimensions
+      summary: Retrieve a specific job dimension
+      description: Retrieve a specific job dimension
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    patch:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-dimensions.read
+        - job-dimensions.read-write)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/JobDimension'
+          description: Update a specific job dimension
+      operationId: update-job-dimensions
+      summary: Update a job dimension
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobDimensionRequest'
+      parameters:
+      - $ref: '#/components/parameters/patch_id'
+      description: Updated a specific job dimension
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    delete:
+      tags:
+      - Job
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-dimensions.read
+        - job-dimensions.read-write)
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      operationId: delete-job-dimensions
+      summary: Delete a job dimension
+      parameters:
+      - $ref: '#/components/parameters/delete_id'
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /job-requisitions:
+    get:
+      operationId: list-job-requisitions
+      tags:
+      - Job Requisitions
+      summary: List job requisitions
+      description: "A List of job requisitions\n - Requires: `API Tier 2`\n - Sortable\
+        \ fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - job-requisitions.read
+      responses:
+        '200':
+          description: A list of job requisitions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobRequisition'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /leave-balances:
+    get:
+      operationId: list-leave-balances
+      tags:
+      - Leave Balances
+      summary: List leave balances
+      description: "A List of leave balances\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `worker_id`, `leave_type_id`\n - Expandable fields: `worker`, `leave_type`\n\
+        \ - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - worker
+      - leave_type
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-balances.read
+      responses:
+        '200':
+          description: A list of leave balances
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LeaveBalance'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - worker_id
+      - leave_type_id
+  /leave-balances/{id}:
+    get:
+      tags:
+      - Leave Balances
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-balances.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/LeaveBalance'
+          description: a specific leave balance
+      operationId: get-leave-balances
+      summary: Retrieve a specific leave balance
+      description: Retrieve a specific leave balance
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - worker
+      - leave_type
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /leave-requests:
+    get:
+      operationId: list-leave-requests
+      tags:
+      - Leave Requests
+      summary: List leave requests
+      description: "A List of leave requests\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `worker_id`, `requester_id`, `reviewer_id`, `status`, `leave_policy_id`,\
+        \ `leave_type_id`\n - Expandable fields: `worker`, `requester`, `leave_type`,\
+        \ `reviewer`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - worker
+      - requester
+      - leave_type
+      - reviewer
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-requests.read
+      responses:
+        '200':
+          description: A list of leave requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LeaveRequest'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - worker_id
+      - requester_id
+      - reviewer_id
+      - status
+      - leave_policy_id
+      - leave_type_id
+    post:
+      tags:
+      - Leave Requests
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-requests.read
+        - leave-requests.read-write
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/LeaveRequest'
+          description: Created a new leave request
+      operationId: create-leave-requests
+      summary: Create a new leave request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaveRequestRequest'
+      description: Create a new leave request
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /leave-requests/{id}:
+    get:
+      tags:
+      - Leave Requests
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-requests.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/LeaveRequest'
+          description: a specific leave request
+      operationId: get-leave-requests
+      summary: Retrieve a specific leave request
+      description: Retrieve a specific leave request
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - worker
+      - requester
+      - leave_type
+      - reviewer
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    patch:
+      tags:
+      - Leave Requests
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-requests.read
+        - leave-requests.read-write)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/LeaveRequest'
+          description: Update a specific leave request
+      operationId: update-leave-requests
+      summary: Update a leave request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaveRequestRequest'
+      parameters:
+      - $ref: '#/components/parameters/patch_id'
+      description: Updated a specific leave request
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /leave-types:
+    get:
+      operationId: list-leave-types
+      tags:
+      - Leave Types
+      summary: List leave types
+      description: "A List of leave types\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `name`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-types.read
+      responses:
+        '200':
+          description: A list of leave types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LeaveType'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - name
+  /leave-types/{id}:
+    get:
+      tags:
+      - Leave Types
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - leave-types.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/LeaveType'
+          description: a specific leave type
+      operationId: get-leave-types
+      summary: Retrieve a specific leave type
+      description: Retrieve a specific leave type
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /legal-entities:
+    get:
+      operationId: list-legal-entities
+      tags:
+      - Legal entities
+      summary: List legal entities
+      description: "A List of legal entities\n - Requires: `API Tier 2`\n - Expandable\
+        \ fields: `parent`, `company`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - parent
+      - company
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - legal-entities.read
+      responses:
+        '200':
+          description: A list of legal entities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LegalEntity'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /legal-entities/{id}:
+    get:
+      tags:
+      - Legal entities
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - legal-entities.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/LegalEntity'
+          description: a specific legal entity
+      operationId: get-legal-entities
+      summary: Retrieve a specific legal entity
+      description: Retrieve a specific legal entity
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - parent
+      - company
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /levels:
+    get:
+      operationId: list-levels
+      tags:
+      - Tracks and Levels
+      summary: List levels
+      description: "A List of levels\n - Requires: `API Tier 2`\n - Expandable fields:\
+        \ `parent`, `track`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - parent
+      - track
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - levels.read
+      responses:
+        '200':
+          description: A list of levels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Level'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /levels/{id}:
+    get:
+      tags:
+      - Tracks and Levels
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - levels.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Level'
+          description: a specific level
+      operationId: get-levels
+      summary: Retrieve a specific level
+      description: Retrieve a specific level
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - parent
+      - track
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
   /object-categories:
     get:
       operationId: list-object-categories
@@ -464,7 +1453,7 @@ paths:
       - Object Categories
       summary: List object categories
       description: "A List of object categories\n - Requires: `API Tier 1`"
-      parameters: 
+      parameters:
       - $ref: '#/components/parameters/cursor'
       security:
       - BearerTokenProduction: []
@@ -621,6 +1610,165 @@ paths:
       - API_Tier_1
       x-deprecated-description:
       - API_Tier_1
+  /shift-inputs:
+    get:
+      operationId: list-shift-inputs
+      tags:
+      - Shift Inputs
+      summary: List shift inputs
+      description: "A List of shift inputs\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `name`\n - Expandable fields: `creator`\n - Sortable fields: `id`,\
+        \ `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - creator
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - shift-inputs.read
+      responses:
+        '200':
+          description: A list of shift inputs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShiftInput'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - name
+    post:
+      tags:
+      - Shift Inputs
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - shift-inputs.read
+        - shift-inputs.read-write
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ShiftInput'
+          description: Created a new shift input
+      operationId: create-shift-inputs
+      summary: Create a new shift input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftInputRequest'
+      description: Create a new shift input
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /shift-inputs/{id}:
+    get:
+      tags:
+      - Shift Inputs
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - shift-inputs.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/ShiftInput'
+          description: a specific shift input
+      operationId: get-shift-inputs
+      summary: Retrieve a specific shift input
+      description: Retrieve a specific shift input
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - creator
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    patch:
+      tags:
+      - Shift Inputs
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - shift-inputs.read
+        - shift-inputs.read-write)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ShiftInput'
+          description: Update a specific shift input
+      operationId: update-shift-inputs
+      summary: Update a shift input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftInputRequest'
+      parameters:
+      - $ref: '#/components/parameters/patch_id'
+      description: Updated a specific shift input
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    delete:
+      tags:
+      - Shift Inputs
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - shift-inputs.read
+        - shift-inputs.read-write)
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      operationId: delete-shift-inputs
+      summary: Delete a shift input
+      parameters:
+      - $ref: '#/components/parameters/delete_id'
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
   /sso-me:
     get:
       operationId: list-sso-me
@@ -730,6 +1878,322 @@ paths:
       - API_Tier_1
       x-deprecated-description:
       - API_Tier_1
+  /time-cards:
+    get:
+      operationId: list-time-cards
+      tags:
+      - Time Entries
+      summary: List time cards
+      description: "A List of time cards\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `pay_period.start_date`, `worker_id`\n - Expandable fields: `worker`\n\
+        \ - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - worker
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-cards.read
+      responses:
+        '200':
+          description: A list of time cards
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimeCard'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - pay_period.start_date
+      - worker_id
+  /time-cards/{id}:
+    get:
+      tags:
+      - Time Entries
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-cards.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/TimeCard'
+          description: a specific time card
+      operationId: get-time-cards
+      summary: Retrieve a specific time card
+      description: Retrieve a specific time card
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - worker
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /time-entries:
+    get:
+      operationId: list-time-entries
+      tags:
+      - Time Entries
+      summary: List time entries
+      description: "A List of time entries\n - Requires: `API Tier 2`\n - Filterable\
+        \ fields: `worker_id`, `start_time`, `pay_period.start_date`\n - Expandable\
+        \ fields: `worker`, `time_card`\n - Sortable fields: `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/expand'
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields:
+      - worker
+      - time_card
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-entries.read
+      responses:
+        '200':
+          description: A list of time entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimeEntry'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-rippling-filterable-fields:
+      - worker_id
+      - start_time
+      - pay_period.start_date
+    post:
+      tags:
+      - Time Entries
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-entries.read
+        - time-entries.read-write
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TimeEntry'
+          description: Created a new time entry
+      operationId: create-time-entries
+      summary: Create a new time entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeEntryRequest'
+      description: Create a new time entry
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /time-entries/{id}:
+    get:
+      tags:
+      - Time Entries
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-entries.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/TimeEntry'
+          description: a specific time entry
+      operationId: get-time-entries
+      summary: Retrieve a specific time entry
+      description: Retrieve a specific time entry
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      - $ref: '#/components/parameters/expand'
+      x-rippling-expandable-fields:
+      - worker
+      - time_card
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    patch:
+      tags:
+      - Time Entries
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-entries.read
+        - time-entries.read-write)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TimeEntry'
+          description: Update a specific time entry
+      operationId: update-time-entries
+      summary: Update a time entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeEntryRequest'
+      parameters:
+      - $ref: '#/components/parameters/patch_id'
+      description: Updated a specific time entry
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+    delete:
+      tags:
+      - Time Entries
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - time-entries.read
+        - time-entries.read-write)
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      operationId: delete-time-entries
+      summary: Delete a time entry
+      parameters:
+      - $ref: '#/components/parameters/delete_id'
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
+  /tracks:
+    get:
+      operationId: list-tracks
+      tags:
+      - Tracks and Levels
+      summary: List tracks
+      description: "A List of tracks\n - Requires: `API Tier 2`\n - Sortable fields:\
+        \ `id`, `created_at`, `updated_at`"
+      parameters:
+      - $ref: '#/components/parameters/order_by'
+      - $ref: '#/components/parameters/cursor'
+      x-rippling-expandable-fields: []
+      x-rippling-sortable-fields:
+      - id
+      - created_at
+      - updated_at
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - tracks.read
+      responses:
+        '200':
+          description: A list of tracks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  __meta:
+                    $ref: '#/components/schemas/RedactedFields'
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Track'
+                  next_link:
+                    type: string
+                    format: uri
+                    description: A link to the next page of responses.
+                required:
+                  - results
+      x-deprecated-description:
+      - API_Tier_2
+      x-rippling-entitlements:
+      - API_Tier_2
+  /tracks/{id}:
+    get:
+      tags:
+      - Tracks and Levels
+      security:
+      - BearerTokenProduction: []
+      - OAuth2Production:
+        - tracks.read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/MetaResponse'
+                - $ref: '#/components/schemas/Track'
+          description: a specific track
+      operationId: get-tracks
+      summary: Retrieve a specific track
+      description: Retrieve a specific track
+      parameters:
+      - $ref: '#/components/parameters/get_id'
+      x-rippling-expandable-fields: []
+      x-rippling-entitlements:
+      - API_Tier_2
+      x-deprecated-description:
+      - API_Tier_2
   /users:
     get:
       operationId: list-users
@@ -1041,24 +2505,14 @@ paths:
                     type: string
                   description:
                     type: string
-                  data_type:
-                    type: object
                   required:
                     type: boolean
-                  rql_definition:
-                    type: object
                   is_unique:
                     type: boolean
-                  formula_attr_metas:
-                    type: object
-                  section:
-                    type: object
                   enable_history:
                     type: boolean
                   derived_field_formula:
                     type: string
-                  derived_aggregated_field:
-                    type: object
       description: Create a new custom object field
       parameters:
       - name: custom_object_api_name
@@ -1135,24 +2589,14 @@ paths:
                     type: string
                   description:
                     type: string
-                  data_type:
-                    type: object
                   required:
                     type: boolean
-                  rql_definition:
-                    type: object
                   is_unique:
                     type: boolean
-                  formula_attr_metas:
-                    type: object
-                  section:
-                    type: object
                   enable_history:
                     type: boolean
                   derived_field_formula:
                     type: string
-                  name_field_details:
-                    type: object
       parameters:
       - name: custom_object_api_name
         in: path
@@ -1333,6 +2777,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: '#/components/parameters/cursor'
       security:
       - BearerTokenProduction: []
       - OAuth2Production:
@@ -1372,6 +2817,8 @@ paths:
                           type: string
                   cursor:
                     type: string
+                required:
+                  - results
       requestBody:
         content:
           application/json:
@@ -2260,14 +3707,11 @@ components:
           description: The name of the company.
       description: ''
       x-rippling-expandable-fields:
-      - parent_legal_entity
-      - legal_entities
       required:
       - id
       - created_at
       - updated_at
       - legal_entities_id
-      - legal_entities
       - name
     CompanyEmploymentType:
       type: object
@@ -2407,7 +3851,6 @@ components:
           description: The payment terms for an worker's compensation.
       description: ''
       x-rippling-expandable-fields:
-      - worker
       required:
       - id
       - created_at
@@ -2841,9 +4284,6 @@ components:
         api_name:
           type: string
           description: The api name of the custom object field
-        data_type:
-          type: object
-          description: The field type
         is_unique:
           type: boolean
           description: This field specifies whether a particular column value has
@@ -2870,7 +4310,6 @@ components:
       - name
       - custom_object
       - api_name
-      - data_type
       - is_unique
       - is_immutable
       - is_standard
@@ -3003,6 +4442,25 @@ components:
       - updated_at
       - name
       - job_dimension_id
+    JobCodeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the job dimension.
+        job_dimension_id:
+          type: string
+          description: The ID of the job dimension this job code belongs to.
+        external_id:
+          type: string
+          description: The unique identifier of the job code in an outside system.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - job_dimension_id
     JobCodeSummary:
       type: object
       properties:
@@ -3037,6 +4495,22 @@ components:
             system
       description: ''
       x-rippling-expandable-fields: []
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+    JobDimensionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the job dimension
+        external_id:
+          type: string
+          description: The unique identifier of the job dimension in a third party
+            system
+      description: ''
       required:
       - id
       - created_at
@@ -3295,6 +4769,69 @@ components:
       - requester
       - leave_type
       - reviewer
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
+      - status
+      - start_date
+      - end_date
+      - leave_policy_id
+    LeaveRequestRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the leave request.
+        requester_id:
+          type: string
+          description: The ID of the worker who requested the leave request.
+        status:
+          type: string
+          description: The status of the leave request.
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - CANCELED
+        start_date:
+          type: string
+          description: The start date of the leave request.
+        start_time:
+          type: string
+          description: The start time of the leave request.
+        end_date:
+          type: string
+          description: The end date of the leave request.
+        end_time:
+          type: string
+          description: The end time of the leave request.
+        start_date_custom_hours:
+          type: number
+          description: The number of hours to take off on the start date.
+        end_date_custom_hours:
+          type: number
+          description: The number of hours to take off on the end date.
+        comments:
+          type: string
+          description: The comments associated with the leave request.
+        leave_policy_id:
+          type: string
+          description: The ID of the leave policy associated with the leave request.
+        leave_type_id:
+          type: string
+          description: The ID of the leave type associated with the leave request.
+        reason_for_leave:
+          type: string
+          description: The reason for the leave request.
+        reviewer_id:
+          type: string
+          description: The ID of the worker who reviewed the leave request.
+        reviewed_at:
+          type: string
+          description: The timestamp the leave request was reviewed.
+      description: ''
       required:
       - id
       - created_at
@@ -3601,7 +5138,6 @@ components:
         work_location_id:
           type: string
           description: Work Location Id
-          nullable: true
         work_location:
           type: object
           description: 'Work location for the job
@@ -3781,15 +5317,40 @@ components:
       - prompt
       - type
       - country_code
+    ShiftInputRequest:
+      type: object
+      properties:
+        creator_id:
+          type: string
+          description: The creator id associated with the shift input.
+        name:
+          type: string
+          description: Name of the shift unit.
+        prompt:
+          type: string
+          description: Prompt for the shift unit.
+        type:
+          type: string
+          description: Type of shift unit.
+        country_code:
+          type: string
+          description: Two letter string designating country code which the shift
+            input is associated.
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - prompt
+      - type
+      - country_code
     ShiftInputValue:
       type: object
       properties:
         shift_input_id:
           type: string
           description: The id of the relevant shift input
-        value:
-          type: object
-          description: The value of the shift input.
         author_id:
           type: string
           description: The id of the role that last added/updated this input.
@@ -3804,9 +5365,6 @@ components:
         shift_input_id:
           type: string
           description: The id of the relevant shift input
-        value:
-          type: object
-          description: The value of the shift input.
         author_id:
           type: string
           description: The id of the role that last added/updated this input.
@@ -4093,6 +5651,66 @@ components:
           type: string
           description: The text of the comment.
       description: ''
+    TimeEntryRequest:
+      type: object
+      properties:
+        worker_id:
+          type: string
+          description: The ID of the worker associated with the time entry.
+        duration:
+          type: number
+          description: The duration of the time entry.
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeEntryCommentRequest'
+          description: The comments associated with the time entry.
+        job_shifts:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobShiftRequest'
+          description: The job shifts worked during the time entry.
+        breaks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BreakRequest'
+          description: The breaks taken during the time entry.
+        tags:
+          type: array
+          items:
+            type: string
+          description: The tags associated with the time entry.
+        idempotency_key:
+          type: string
+          description: The unique key of the time entry in an outside system. If set,
+            no other time entry with the same key can be created.
+        create_extra_hours_run:
+          type: boolean
+          description: Whether the time entry should create an extra hours run.
+        status:
+          type: string
+          description: The status of the time entry.
+          enum:
+          - DRAFT
+          - APPROVED
+          - PAID
+          - FINALIZED
+        pay_period:
+          type: object
+          description: The pay period associated with the time card.
+          allOf:
+          - $ref: '#/components/schemas/PayPeriodRequest'
+        shift_input_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftInputValueRequest'
+          description: Arbitrary shift inputs collected on the time entry
+      description: ''
+      required:
+      - id
+      - created_at
+      - updated_at
+      - worker_id
     TimeEntrySummary:
       type: object
       properties:
@@ -5287,11 +6905,11 @@ components:
         work_location_id:
           type: string
           description: The work location, if the worker isn't remote.
-          nullable: true
       description: ''
       x-rippling-expandable-fields: []
       required:
       - type
+      - work_location_id
   parameters:
     get_id:
       name: id

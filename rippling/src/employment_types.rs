@@ -31,7 +31,7 @@ impl EmploymentTypes {
     ) -> Result<crate::types::ListEmploymentTypesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "employment-types"),
+            format!("{}/{}", self.client.base_url, "employment-types"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -53,14 +53,13 @@ impl EmploymentTypes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -100,7 +99,7 @@ impl EmploymentTypes {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    &format!("{}/{}", self.client.base_url, "employment-types"),
+                                    format!("{}/{}", self.client.base_url, "employment-types"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -117,14 +116,13 @@ impl EmploymentTypes {
                                             ),
                                             status,
                                         )
-                                        .into()
                                     })
                                 } else {
                                     let text = resp.text().await.unwrap_or_default();
-                                    return Err(crate::types::error::Error::Server {
+                                    Err(crate::types::error::Error::Server {
                                         body: text.to_string(),
                                         status,
-                                    });
+                                    })
                                 }
                             }
                             .map_ok(|result: crate::types::ListEmploymentTypesResponse| {
@@ -160,10 +158,10 @@ impl EmploymentTypes {
     ) -> Result<crate::types::GetEmploymentTypesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "employment-types/{id}".replace("{id}", &id)
+                "employment-types/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -176,14 +174,13 @@ impl EmploymentTypes {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

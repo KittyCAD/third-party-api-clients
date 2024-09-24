@@ -3367,8 +3367,6 @@ pub struct CustomObjectField {
     pub description: Option<String>,
     #[doc = "The api name of the custom object field"]
     pub api_name: String,
-    #[doc = "The field type"]
-    pub data_type: serde_json::Value,
     #[doc = "This field specifies whether a particular column value has unique values"]
     pub is_unique: bool,
     #[doc = "whether the field is imuatable"]
@@ -3394,7 +3392,7 @@ impl std::fmt::Display for CustomObjectField {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for CustomObjectField {
-    const LENGTH: usize = 13;
+    const LENGTH: usize = 12;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.id.clone().into(),
@@ -3408,7 +3406,6 @@ impl tabled::Tabled for CustomObjectField {
                 String::new().into()
             },
             self.api_name.clone().into(),
-            format!("{:?}", self.data_type).into(),
             format!("{:?}", self.is_unique).into(),
             format!("{:?}", self.is_immutable).into(),
             format!("{:?}", self.is_standard).into(),
@@ -3430,7 +3427,6 @@ impl tabled::Tabled for CustomObjectField {
             "custom_object".into(),
             "description".into(),
             "api_name".into(),
-            "data_type".into(),
             "is_unique".into(),
             "is_immutable".into(),
             "is_standard".into(),
@@ -3747,6 +3743,54 @@ impl tabled::Tabled for JobCode {
     }
 }
 
+#[doc = "JobCodeRequest."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct JobCodeRequest {
+    #[doc = "The name of the job dimension."]
+    pub name: String,
+    #[doc = "The ID of the job dimension this job code belongs to."]
+    pub job_dimension_id: String,
+    #[doc = "The unique identifier of the job code in an outside system."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+}
+
+impl std::fmt::Display for JobCodeRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for JobCodeRequest {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.name.clone().into(),
+            self.job_dimension_id.clone().into(),
+            if let Some(external_id) = &self.external_id {
+                format!("{:?}", external_id).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "name".into(),
+            "job_dimension_id".into(),
+            "external_id".into(),
+        ]
+    }
+}
+
 #[doc = "JobCodeSummary."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3846,6 +3890,47 @@ impl tabled::Tabled for JobDimension {
             "name".into(),
             "external_id".into(),
         ]
+    }
+}
+
+#[doc = "JobDimensionRequest."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct JobDimensionRequest {
+    #[doc = "The name of the job dimension"]
+    pub name: String,
+    #[doc = "The unique identifier of the job dimension in a third party system"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+}
+
+impl std::fmt::Display for JobDimensionRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for JobDimensionRequest {
+    const LENGTH: usize = 2;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.name.clone().into(),
+            if let Some(external_id) = &self.external_id {
+                format!("{:?}", external_id).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["name".into(), "external_id".into()]
     }
 }
 
@@ -4452,6 +4537,176 @@ impl tabled::Tabled for LeaveRequest {
             "reviewed_at".into(),
             "days_take_off".into(),
             "is_managed_by_external_system".into(),
+        ]
+    }
+}
+
+#[doc = "The status of the leave request."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum LeaveRequestRequestStatus {
+    #[serde(rename = "PENDING")]
+    #[display("PENDING")]
+    Pending,
+    #[serde(rename = "APPROVED")]
+    #[display("APPROVED")]
+    Approved,
+    #[serde(rename = "REJECTED")]
+    #[display("REJECTED")]
+    Rejected,
+    #[serde(rename = "CANCELED")]
+    #[display("CANCELED")]
+    Canceled,
+}
+
+#[doc = "LeaveRequestRequest."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct LeaveRequestRequest {
+    #[doc = "The ID of the worker associated with the leave request."]
+    pub worker_id: String,
+    #[doc = "The ID of the worker who requested the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requester_id: Option<String>,
+    #[doc = "The status of the leave request."]
+    pub status: LeaveRequestRequestStatus,
+    #[doc = "The start date of the leave request."]
+    pub start_date: String,
+    #[doc = "The start time of the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<String>,
+    #[doc = "The end date of the leave request."]
+    pub end_date: String,
+    #[doc = "The end time of the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<String>,
+    #[doc = "The number of hours to take off on the start date."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_date_custom_hours: Option<f64>,
+    #[doc = "The number of hours to take off on the end date."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub end_date_custom_hours: Option<f64>,
+    #[doc = "The comments associated with the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub comments: Option<String>,
+    #[doc = "The ID of the leave policy associated with the leave request."]
+    pub leave_policy_id: String,
+    #[doc = "The ID of the leave type associated with the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leave_type_id: Option<String>,
+    #[doc = "The reason for the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reason_for_leave: Option<String>,
+    #[doc = "The ID of the worker who reviewed the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewer_id: Option<String>,
+    #[doc = "The timestamp the leave request was reviewed."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewed_at: Option<String>,
+}
+
+impl std::fmt::Display for LeaveRequestRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for LeaveRequestRequest {
+    const LENGTH: usize = 15;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.worker_id.clone().into(),
+            if let Some(requester_id) = &self.requester_id {
+                format!("{:?}", requester_id).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.status).into(),
+            self.start_date.clone().into(),
+            if let Some(start_time) = &self.start_time {
+                format!("{:?}", start_time).into()
+            } else {
+                String::new().into()
+            },
+            self.end_date.clone().into(),
+            if let Some(end_time) = &self.end_time {
+                format!("{:?}", end_time).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(start_date_custom_hours) = &self.start_date_custom_hours {
+                format!("{:?}", start_date_custom_hours).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(end_date_custom_hours) = &self.end_date_custom_hours {
+                format!("{:?}", end_date_custom_hours).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(comments) = &self.comments {
+                format!("{:?}", comments).into()
+            } else {
+                String::new().into()
+            },
+            self.leave_policy_id.clone().into(),
+            if let Some(leave_type_id) = &self.leave_type_id {
+                format!("{:?}", leave_type_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reason_for_leave) = &self.reason_for_leave {
+                format!("{:?}", reason_for_leave).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reviewer_id) = &self.reviewer_id {
+                format!("{:?}", reviewer_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reviewed_at) = &self.reviewed_at {
+                format!("{:?}", reviewed_at).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "worker_id".into(),
+            "requester_id".into(),
+            "status".into(),
+            "start_date".into(),
+            "start_time".into(),
+            "end_date".into(),
+            "end_time".into(),
+            "start_date_custom_hours".into(),
+            "end_date_custom_hours".into(),
+            "comments".into(),
+            "leave_policy_id".into(),
+            "leave_type_id".into(),
+            "reason_for_leave".into(),
+            "reviewer_id".into(),
+            "reviewed_at".into(),
         ]
     }
 }
@@ -5184,6 +5439,34 @@ impl tabled::Tabled for Premiums {
     }
 }
 
+#[doc = "Prototype."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct Prototype {}
+
+impl std::fmt::Display for Prototype {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for Prototype {
+    const LENGTH: usize = 0;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+}
+
 #[doc = "PrototypeJob."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -5701,6 +5984,63 @@ impl tabled::Tabled for ShiftInput {
     }
 }
 
+#[doc = "ShiftInputRequest."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ShiftInputRequest {
+    #[doc = "The creator id associated with the shift input."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub creator_id: Option<String>,
+    #[doc = "Name of the shift unit."]
+    pub name: String,
+    #[doc = "Prompt for the shift unit."]
+    pub prompt: String,
+    #[doc = "Type of shift unit."]
+    #[serde(rename = "type")]
+    pub type_: String,
+    #[doc = "Two letter string designating country code which the shift input is associated."]
+    pub country_code: String,
+}
+
+impl std::fmt::Display for ShiftInputRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ShiftInputRequest {
+    const LENGTH: usize = 5;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(creator_id) = &self.creator_id {
+                format!("{:?}", creator_id).into()
+            } else {
+                String::new().into()
+            },
+            self.name.clone().into(),
+            self.prompt.clone().into(),
+            self.type_.clone().into(),
+            self.country_code.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "creator_id".into(),
+            "name".into(),
+            "prompt".into(),
+            "type_".into(),
+            "country_code".into(),
+        ]
+    }
+}
+
 #[doc = "ShiftInputValue."]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -5708,8 +6048,6 @@ impl tabled::Tabled for ShiftInput {
 pub struct ShiftInputValue {
     #[doc = "The id of the relevant shift input"]
     pub shift_input_id: String,
-    #[doc = "The value of the shift input."]
-    pub value: serde_json::Value,
     #[doc = "The id of the role that last added/updated this input."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub author_id: Option<String>,
@@ -5727,11 +6065,10 @@ impl std::fmt::Display for ShiftInputValue {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftInputValue {
-    const LENGTH: usize = 3;
+    const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.shift_input_id.clone().into(),
-            format!("{:?}", self.value).into(),
             if let Some(author_id) = &self.author_id {
                 format!("{:?}", author_id).into()
             } else {
@@ -5741,7 +6078,7 @@ impl tabled::Tabled for ShiftInputValue {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["shift_input_id".into(), "value".into(), "author_id".into()]
+        vec!["shift_input_id".into(), "author_id".into()]
     }
 }
 
@@ -5752,8 +6089,6 @@ impl tabled::Tabled for ShiftInputValue {
 pub struct ShiftInputValueRequest {
     #[doc = "The id of the relevant shift input"]
     pub shift_input_id: String,
-    #[doc = "The value of the shift input."]
-    pub value: serde_json::Value,
     #[doc = "The id of the role that last added/updated this input."]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub author_id: Option<String>,
@@ -5771,11 +6106,10 @@ impl std::fmt::Display for ShiftInputValueRequest {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for ShiftInputValueRequest {
-    const LENGTH: usize = 3;
+    const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.shift_input_id.clone().into(),
-            format!("{:?}", self.value).into(),
             if let Some(author_id) = &self.author_id {
                 format!("{:?}", author_id).into()
             } else {
@@ -5785,7 +6119,7 @@ impl tabled::Tabled for ShiftInputValueRequest {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["shift_input_id".into(), "value".into(), "author_id".into()]
+        vec!["shift_input_id".into(), "author_id".into()]
     }
 }
 
@@ -6489,6 +6823,161 @@ impl tabled::Tabled for TimeEntryCommentRequest {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["text".into()]
+    }
+}
+
+#[doc = "The status of the time entry."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum TimeEntryRequestStatus {
+    #[serde(rename = "DRAFT")]
+    #[display("DRAFT")]
+    Draft,
+    #[serde(rename = "APPROVED")]
+    #[display("APPROVED")]
+    Approved,
+    #[serde(rename = "PAID")]
+    #[display("PAID")]
+    Paid,
+    #[serde(rename = "FINALIZED")]
+    #[display("FINALIZED")]
+    Finalized,
+}
+
+#[doc = "TimeEntryRequest."]
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct TimeEntryRequest {
+    #[doc = "The ID of the worker associated with the time entry."]
+    pub worker_id: String,
+    #[doc = "The duration of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub duration: Option<f64>,
+    #[doc = "The comments associated with the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub comments: Option<Vec<TimeEntryCommentRequest>>,
+    #[doc = "The job shifts worked during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_shifts: Option<Vec<JobShiftRequest>>,
+    #[doc = "The breaks taken during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub breaks: Option<Vec<BreakRequest>>,
+    #[doc = "The tags associated with the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    #[doc = "The unique key of the time entry in an outside system. If set, no other time entry \
+             with the same key can be created."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub idempotency_key: Option<String>,
+    #[doc = "Whether the time entry should create an extra hours run."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub create_extra_hours_run: Option<bool>,
+    #[doc = "The status of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<TimeEntryRequestStatus>,
+    #[doc = "The pay period associated with the time card."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pay_period: Option<PayPeriodRequest>,
+    #[doc = "Arbitrary shift inputs collected on the time entry"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub shift_input_values: Option<Vec<ShiftInputValueRequest>>,
+}
+
+impl std::fmt::Display for TimeEntryRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for TimeEntryRequest {
+    const LENGTH: usize = 11;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            self.worker_id.clone().into(),
+            if let Some(duration) = &self.duration {
+                format!("{:?}", duration).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(comments) = &self.comments {
+                format!("{:?}", comments).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(job_shifts) = &self.job_shifts {
+                format!("{:?}", job_shifts).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(breaks) = &self.breaks {
+                format!("{:?}", breaks).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tags) = &self.tags {
+                format!("{:?}", tags).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(idempotency_key) = &self.idempotency_key {
+                format!("{:?}", idempotency_key).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(create_extra_hours_run) = &self.create_extra_hours_run {
+                format!("{:?}", create_extra_hours_run).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(status) = &self.status {
+                format!("{:?}", status).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(pay_period) = &self.pay_period {
+                format!("{:?}", pay_period).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(shift_input_values) = &self.shift_input_values {
+                format!("{:?}", shift_input_values).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "worker_id".into(),
+            "duration".into(),
+            "comments".into(),
+            "job_shifts".into(),
+            "breaks".into(),
+            "tags".into(),
+            "idempotency_key".into(),
+            "create_extra_hours_run".into(),
+            "status".into(),
+            "pay_period".into(),
+            "shift_input_values".into(),
+        ]
     }
 }
 
@@ -9930,8 +10419,7 @@ pub struct WorkerLocation {
     #[serde(rename = "type")]
     pub type_: WorkerLocationType,
     #[doc = "The work location, if the worker isn't remote."]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub work_location_id: Option<String>,
+    pub work_location_id: String,
 }
 
 impl std::fmt::Display for WorkerLocation {
@@ -9950,8 +10438,83 @@ impl tabled::Tabled for WorkerLocation {
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.type_).into(),
-            if let Some(work_location_id) = &self.work_location_id {
-                format!("{:?}", work_location_id).into()
+            self.work_location_id.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["type_".into(), "work_location_id".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListCandidatesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<Candidate>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListCandidatesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListCandidatesResponse {
+    type Item = Candidate;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListCandidatesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
             } else {
                 String::new().into()
             },
@@ -9959,7 +10522,86 @@ impl tabled::Tabled for WorkerLocation {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["type_".into(), "work_location_id".into()]
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListCandidateApplicationsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<Application>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListCandidateApplicationsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListCandidateApplicationsResponse {
+    type Item = Application;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListCandidateApplicationsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
     }
 }
 
@@ -10039,6 +10681,268 @@ impl tabled::Tabled for ListCompaniesResponse {
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
         vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListCompensationsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<Compensation>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListCompensationsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListCompensationsResponse {
+    type Item = Compensation;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListCompensationsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetCompensationsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The worker's ID."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub worker_id: Option<String>,
+    #[doc = "The worker's annual compensation. This calculation assumes 40-hour work weeks for \
+             workers with an hourly wage."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub annual_compensation: Option<Currency>,
+    #[doc = "The worker's annual salary equivalent, for insurance purposes. It will be equal to \
+             the worker's annual compensation, except for owners that are receiving no \
+             cashcompensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub annual_salary_equivalent: Option<Currency>,
+    #[doc = "The worker's hourly wage. This calculation assumes 40-hour work weeks for workers \
+             with fixed compensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hourly_wage: Option<Currency>,
+    #[doc = "The worker's monthly compensation. This calculation assumes 40-hour work weeks for \
+             workers with an hourly wage."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub monthly_compensation: Option<Currency>,
+    #[doc = "The worker's on-target commission."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub on_target_commission: Option<Currency>,
+    #[doc = "The worker's hourly wage. This calculation assumes 40-hour work weeks for workers \
+             with fixed compensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub relocation_reimbursement: Option<Currency>,
+    #[doc = "The worker's signing bonus."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub signing_bonus: Option<Currency>,
+    #[doc = "The worker's target annual bonus amount."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub target_annual_bonus: Option<Currency>,
+    #[doc = "The worker's weekly compensation. This calculation assumes 40-hour work weeks for \
+             workers with an hourly wage."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub weekly_compensation: Option<Currency>,
+    #[doc = "The worker's target annual bonus as a percent of annual compensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub target_annual_bonus_percent: Option<f64>,
+    #[doc = "The worker's bonus schedule."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bonus_schedule: Option<String>,
+    #[doc = "The payment type for an worker's compensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub payment_type: Option<String>,
+    #[doc = "The payment terms for an worker's compensation."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub payment_terms: Option<String>,
+}
+
+impl std::fmt::Display for GetCompensationsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetCompensationsResponse {
+    const LENGTH: usize = 18;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(worker_id) = &self.worker_id {
+                format!("{:?}", worker_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(annual_compensation) = &self.annual_compensation {
+                format!("{:?}", annual_compensation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(annual_salary_equivalent) = &self.annual_salary_equivalent {
+                format!("{:?}", annual_salary_equivalent).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(hourly_wage) = &self.hourly_wage {
+                format!("{:?}", hourly_wage).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(monthly_compensation) = &self.monthly_compensation {
+                format!("{:?}", monthly_compensation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(on_target_commission) = &self.on_target_commission {
+                format!("{:?}", on_target_commission).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(relocation_reimbursement) = &self.relocation_reimbursement {
+                format!("{:?}", relocation_reimbursement).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(signing_bonus) = &self.signing_bonus {
+                format!("{:?}", signing_bonus).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(target_annual_bonus) = &self.target_annual_bonus {
+                format!("{:?}", target_annual_bonus).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(weekly_compensation) = &self.weekly_compensation {
+                format!("{:?}", weekly_compensation).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(target_annual_bonus_percent) = &self.target_annual_bonus_percent {
+                format!("{:?}", target_annual_bonus_percent).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(bonus_schedule) = &self.bonus_schedule {
+                format!("{:?}", bonus_schedule).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(payment_type) = &self.payment_type {
+                format!("{:?}", payment_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(payment_terms) = &self.payment_terms {
+                format!("{:?}", payment_terms).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "worker_id".into(),
+            "annual_compensation".into(),
+            "annual_salary_equivalent".into(),
+            "hourly_wage".into(),
+            "monthly_compensation".into(),
+            "on_target_commission".into(),
+            "relocation_reimbursement".into(),
+            "signing_bonus".into(),
+            "target_annual_bonus".into(),
+            "weekly_compensation".into(),
+            "target_annual_bonus_percent".into(),
+            "bonus_schedule".into(),
+            "payment_type".into(),
+            "payment_terms".into(),
+        ]
     }
 }
 
@@ -10761,6 +11665,1493 @@ impl tabled::Tabled for ListEntitlementsResponse {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct ListJobCodesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<JobCode>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListJobCodesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListJobCodesResponse {
+    type Item = JobCode;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListJobCodesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetJobCodesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the job dimension."]
+    pub name: String,
+    #[doc = "The ID of the job dimension this job code belongs to."]
+    pub job_dimension_id: String,
+    #[doc = "The job dimension this job code belongs to.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_dimension: Option<JobDimension>,
+    #[doc = "The unique identifier of the job code in an outside system."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+    #[doc = "The ID of the job roster group."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group_id: Option<String>,
+}
+
+impl std::fmt::Display for GetJobCodesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetJobCodesResponse {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+            self.job_dimension_id.clone().into(),
+            if let Some(job_dimension) = &self.job_dimension {
+                format!("{:?}", job_dimension).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(external_id) = &self.external_id {
+                format!("{:?}", external_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(group_id) = &self.group_id {
+                format!("{:?}", group_id).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "name".into(),
+            "job_dimension_id".into(),
+            "job_dimension".into(),
+            "external_id".into(),
+            "group_id".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListJobDimensionsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<JobDimension>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListJobDimensionsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListJobDimensionsResponse {
+    type Item = JobDimension;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListJobDimensionsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetJobDimensionsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the job dimension"]
+    pub name: String,
+    #[doc = "The unique identifier of the job dimension in a third party system"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+}
+
+impl std::fmt::Display for GetJobDimensionsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetJobDimensionsResponse {
+    const LENGTH: usize = 6;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+            if let Some(external_id) = &self.external_id {
+                format!("{:?}", external_id).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "name".into(),
+            "external_id".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListJobRequisitionsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<JobRequisition>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListJobRequisitionsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListJobRequisitionsResponse {
+    type Item = JobRequisition;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListJobRequisitionsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListLeaveBalancesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<LeaveBalance>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListLeaveBalancesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListLeaveBalancesResponse {
+    type Item = LeaveBalance;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListLeaveBalancesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetLeaveBalancesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The ID of the worker associated with the leave balance."]
+    pub worker_id: String,
+    #[doc = "The worker associated with the leave balance.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub worker: Option<Worker>,
+    #[doc = "The ID of the leave type associated with the leave balance."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leave_type_id: Option<String>,
+    #[doc = "The leave type associated with the leave balance.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leave_type: Option<LeaveType>,
+    #[doc = "Indicates if the leave balance is unlimited."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub is_balance_unlimited: Option<bool>,
+    #[doc = "The worker's leave balance including future leave requests. If the leave balance is \
+             unlimited, this field will be null."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub balance_including_future_requests: Option<f64>,
+    #[doc = "The worker's leave balance excluding future leave requests. If the leave balance is \
+             unlimited, this field will be null."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub balance_excluding_future_requests: Option<f64>,
+}
+
+impl std::fmt::Display for GetLeaveBalancesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetLeaveBalancesResponse {
+    const LENGTH: usize = 11;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.worker_id.clone().into(),
+            if let Some(worker) = &self.worker {
+                format!("{:?}", worker).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(leave_type_id) = &self.leave_type_id {
+                format!("{:?}", leave_type_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(leave_type) = &self.leave_type {
+                format!("{:?}", leave_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(is_balance_unlimited) = &self.is_balance_unlimited {
+                format!("{:?}", is_balance_unlimited).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(balance_including_future_requests) = &self.balance_including_future_requests
+            {
+                format!("{:?}", balance_including_future_requests).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(balance_excluding_future_requests) = &self.balance_excluding_future_requests
+            {
+                format!("{:?}", balance_excluding_future_requests).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "worker_id".into(),
+            "worker".into(),
+            "leave_type_id".into(),
+            "leave_type".into(),
+            "is_balance_unlimited".into(),
+            "balance_including_future_requests".into(),
+            "balance_excluding_future_requests".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListLeaveRequestsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<LeaveRequest>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListLeaveRequestsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListLeaveRequestsResponse {
+    type Item = LeaveRequest;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListLeaveRequestsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[doc = "The status of the leave request."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum GetLeaveRequestsResponseStatus {
+    #[serde(rename = "PENDING")]
+    #[display("PENDING")]
+    Pending,
+    #[serde(rename = "APPROVED")]
+    #[display("APPROVED")]
+    Approved,
+    #[serde(rename = "REJECTED")]
+    #[display("REJECTED")]
+    Rejected,
+    #[serde(rename = "CANCELED")]
+    #[display("CANCELED")]
+    Canceled,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetLeaveRequestsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The ID of the worker associated with the leave request."]
+    pub worker_id: String,
+    #[doc = "The worker associated with the leave request.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub worker: Option<Worker>,
+    #[doc = "The ID of the worker who requested the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requester_id: Option<String>,
+    #[doc = "The worker who requested the leave request.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub requester: Option<Worker>,
+    #[doc = "The status of the leave request."]
+    pub status: GetLeaveRequestsResponseStatus,
+    #[doc = "The start date of the leave request."]
+    pub start_date: String,
+    #[doc = "The start time of the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<String>,
+    #[doc = "The end date of the leave request."]
+    pub end_date: String,
+    #[doc = "The end time of the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<String>,
+    #[doc = "The comments associated with the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub comments: Option<String>,
+    #[doc = "The number of minutes requested for the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub number_of_minutes_requested: Option<f64>,
+    #[doc = "The ID of the leave policy associated with the leave request."]
+    pub leave_policy_id: String,
+    #[doc = "The ID of the leave type associated with the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leave_type_id: Option<String>,
+    #[doc = "The leave type associated with the leave request.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leave_type: Option<LeaveType>,
+    #[doc = "The reason for the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reason_for_leave: Option<String>,
+    #[doc = "The ID of the worker who reviewed the leave request."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewer_id: Option<String>,
+    #[doc = "The worker who reviewed the leave request.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewer: Option<Worker>,
+    #[doc = "The timestamp the leave request was reviewed."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewed_at: Option<String>,
+    #[doc = "The specific dates taken off and the amount of time taken off for each one."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub days_take_off: Option<Vec<DayOff>>,
+    #[doc = "Whether the leave request is managed by an external system."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub is_managed_by_external_system: Option<bool>,
+}
+
+impl std::fmt::Display for GetLeaveRequestsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetLeaveRequestsResponse {
+    const LENGTH: usize = 24;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.worker_id.clone().into(),
+            if let Some(worker) = &self.worker {
+                format!("{:?}", worker).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(requester_id) = &self.requester_id {
+                format!("{:?}", requester_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(requester) = &self.requester {
+                format!("{:?}", requester).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.status).into(),
+            self.start_date.clone().into(),
+            if let Some(start_time) = &self.start_time {
+                format!("{:?}", start_time).into()
+            } else {
+                String::new().into()
+            },
+            self.end_date.clone().into(),
+            if let Some(end_time) = &self.end_time {
+                format!("{:?}", end_time).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(comments) = &self.comments {
+                format!("{:?}", comments).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(number_of_minutes_requested) = &self.number_of_minutes_requested {
+                format!("{:?}", number_of_minutes_requested).into()
+            } else {
+                String::new().into()
+            },
+            self.leave_policy_id.clone().into(),
+            if let Some(leave_type_id) = &self.leave_type_id {
+                format!("{:?}", leave_type_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(leave_type) = &self.leave_type {
+                format!("{:?}", leave_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reason_for_leave) = &self.reason_for_leave {
+                format!("{:?}", reason_for_leave).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reviewer_id) = &self.reviewer_id {
+                format!("{:?}", reviewer_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reviewer) = &self.reviewer {
+                format!("{:?}", reviewer).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(reviewed_at) = &self.reviewed_at {
+                format!("{:?}", reviewed_at).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(days_take_off) = &self.days_take_off {
+                format!("{:?}", days_take_off).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(is_managed_by_external_system) = &self.is_managed_by_external_system {
+                format!("{:?}", is_managed_by_external_system).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "worker_id".into(),
+            "worker".into(),
+            "requester_id".into(),
+            "requester".into(),
+            "status".into(),
+            "start_date".into(),
+            "start_time".into(),
+            "end_date".into(),
+            "end_time".into(),
+            "comments".into(),
+            "number_of_minutes_requested".into(),
+            "leave_policy_id".into(),
+            "leave_type_id".into(),
+            "leave_type".into(),
+            "reason_for_leave".into(),
+            "reviewer_id".into(),
+            "reviewer".into(),
+            "reviewed_at".into(),
+            "days_take_off".into(),
+            "is_managed_by_external_system".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListLeaveTypesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<LeaveType>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListLeaveTypesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListLeaveTypesResponse {
+    type Item = LeaveType;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListLeaveTypesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetLeaveTypesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The type of leave."]
+    #[serde(rename = "type")]
+    pub type_: String,
+    #[doc = "The name of the leave type."]
+    pub name: String,
+    #[doc = "The description of the leave type."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[doc = "Whether the leave is paid."]
+    pub is_paid: bool,
+    #[doc = "Whether the leave is managed by an external system."]
+    pub is_managed_by_external_system: bool,
+}
+
+impl std::fmt::Display for GetLeaveTypesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetLeaveTypesResponse {
+    const LENGTH: usize = 9;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.type_.clone().into(),
+            self.name.clone().into(),
+            if let Some(description) = &self.description {
+                format!("{:?}", description).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.is_paid).into(),
+            format!("{:?}", self.is_managed_by_external_system).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "type_".into(),
+            "name".into(),
+            "description".into(),
+            "is_paid".into(),
+            "is_managed_by_external_system".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListLegalEntitiesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<LegalEntity>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListLegalEntitiesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListLegalEntitiesResponse {
+    type Item = LegalEntity;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListLegalEntitiesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetLegalEntitiesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The tax identifier for the legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tax_identifier: Option<String>,
+    #[doc = "The country the legal entity is based in."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country: Option<Country>,
+    #[doc = "The legal name of the legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub legal_name: Option<String>,
+    #[doc = "The legal entity's level in a hierarchy. * `PARENT`: The legal entity is considered \
+             the ultimate holding entity. * `SUBSIDIARY`: The legal entity is considered a \
+             subsidiary, fully or partially held by another. * `BRANCH`: The legal entity is \
+             considered a branch, associated with a parent legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub entity_level: Option<EntityLevel>,
+    #[doc = "The registration date of the entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub registration_date: Option<String>,
+    #[doc = "The mailing address of the legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mailing_address: Option<Address>,
+    #[doc = "The physical address of the legal entity, if it differs from the mailing address."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub physical_address: Option<Address>,
+    #[doc = "The parent legal entity."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
+    #[doc = "The parent legal entity.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent: Option<LegalEntity>,
+    #[doc = "The legal entity management type in the case of an employer of record (EOR) or \
+             professional employment organization (PEO). * `PEO`: The legal entity is considered \
+             a Professional Employment Organization (PEO). * `EOR`: The legal entity is \
+             considered an Employer of Record (EOR)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub management_type: Option<ManagementType>,
+    #[doc = "The company or organization associated with the legal entity"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
+    #[doc = "The company or organization associated with the legal entity\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub company: Option<Company>,
+}
+
+impl std::fmt::Display for GetLegalEntitiesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetLegalEntitiesResponse {
+    const LENGTH: usize = 16;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(tax_identifier) = &self.tax_identifier {
+                format!("{:?}", tax_identifier).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(country) = &self.country {
+                format!("{:?}", country).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(legal_name) = &self.legal_name {
+                format!("{:?}", legal_name).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(entity_level) = &self.entity_level {
+                format!("{:?}", entity_level).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(registration_date) = &self.registration_date {
+                format!("{:?}", registration_date).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(mailing_address) = &self.mailing_address {
+                format!("{:?}", mailing_address).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(physical_address) = &self.physical_address {
+                format!("{:?}", physical_address).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(parent_id) = &self.parent_id {
+                format!("{:?}", parent_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(parent) = &self.parent {
+                format!("{:?}", parent).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(management_type) = &self.management_type {
+                format!("{:?}", management_type).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(company_id) = &self.company_id {
+                format!("{:?}", company_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(company) = &self.company {
+                format!("{:?}", company).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "tax_identifier".into(),
+            "country".into(),
+            "legal_name".into(),
+            "entity_level".into(),
+            "registration_date".into(),
+            "mailing_address".into(),
+            "physical_address".into(),
+            "parent_id".into(),
+            "parent".into(),
+            "management_type".into(),
+            "company_id".into(),
+            "company".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListLevelsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<Level>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListLevelsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListLevelsResponse {
+    type Item = Level;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListLevelsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetLevelsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the level. Must be unique within the company or organization."]
+    pub name: String,
+    #[doc = "The parent level."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
+    #[doc = "The parent level.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent: Option<Level>,
+    #[doc = "Global level is used to track the seniority of levels. The higher up a level is \
+             placed on the page, the more senior and higher-ranked the level. Global level is \
+             used in workflows, policies, and reports that use the level attribute (e.g., you can \
+             use Level Lookup to set up a workflow that notifies the nearest person in an \
+             worker's management chain at or above the specified level)."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub global_level: Option<i64>,
+    #[doc = "The description of the level."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[doc = "The rank of the level within its track."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rank: Option<i64>,
+    #[doc = "The track associated with the level, if it's not a global level."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub track_id: Option<String>,
+    #[doc = "The track associated with the level, if it's not a global level.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub track: Option<Track>,
+}
+
+impl std::fmt::Display for GetLevelsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetLevelsResponse {
+    const LENGTH: usize = 12;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+            if let Some(parent_id) = &self.parent_id {
+                format!("{:?}", parent_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(parent) = &self.parent {
+                format!("{:?}", parent).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(global_level) = &self.global_level {
+                format!("{:?}", global_level).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(description) = &self.description {
+                format!("{:?}", description).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(rank) = &self.rank {
+                format!("{:?}", rank).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(track_id) = &self.track_id {
+                format!("{:?}", track_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(track) = &self.track {
+                format!("{:?}", track).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "name".into(),
+            "parent_id".into(),
+            "parent".into(),
+            "global_level".into(),
+            "description".into(),
+            "rank".into(),
+            "track_id".into(),
+            "track".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct ListObjectCategoriesResponse {
     pub results: Vec<ObjectCategory>,
     #[doc = "A link to the next page of responses."]
@@ -10918,6 +13309,179 @@ impl tabled::Tabled for UpdateObjectCategoriesRequestBody {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct ListShiftInputsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<ShiftInput>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListShiftInputsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListShiftInputsResponse {
+    type Item = ShiftInput;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListShiftInputsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetShiftInputsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The creator id associated with the shift input."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub creator_id: Option<String>,
+    #[doc = "The creator associated with the shift input.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub creator: Option<Worker>,
+    #[doc = "Name of the shift unit."]
+    pub name: String,
+    #[doc = "Prompt for the shift unit."]
+    pub prompt: String,
+    #[doc = "Type of shift unit."]
+    #[serde(rename = "type")]
+    pub type_: String,
+    #[doc = "Two letter string designating country code which the shift input is associated."]
+    pub country_code: String,
+    #[doc = "The party that manages this shift input"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub managed_by: Option<String>,
+}
+
+impl std::fmt::Display for GetShiftInputsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetShiftInputsResponse {
+    const LENGTH: usize = 11;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            if let Some(creator_id) = &self.creator_id {
+                format!("{:?}", creator_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(creator) = &self.creator {
+                format!("{:?}", creator).into()
+            } else {
+                String::new().into()
+            },
+            self.name.clone().into(),
+            self.prompt.clone().into(),
+            self.type_.clone().into(),
+            self.country_code.clone().into(),
+            if let Some(managed_by) = &self.managed_by {
+                format!("{:?}", managed_by).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "creator_id".into(),
+            "creator".into(),
+            "name".into(),
+            "prompt".into(),
+            "type_".into(),
+            "country_code".into(),
+            "managed_by".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct ListTeamsResponse {
     #[doc = "A list of redacted fields."]
     #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
@@ -11061,6 +13625,624 @@ impl tabled::Tabled for GetTeamsResponse {
             "updated_at".into(),
             "parent_id".into(),
             "parent".into(),
+            "name".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListTimeCardsResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<TimeCard>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListTimeCardsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListTimeCardsResponse {
+    type Item = TimeCard;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListTimeCardsResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetTimeCardsResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The ID of the worker associated with the time card."]
+    pub worker_id: String,
+    #[doc = "The worker associated with the time card.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub worker: Option<Worker>,
+    #[doc = "The pay period associated with the time card."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pay_period: Option<PayPeriod>,
+    #[doc = "The summary of the time card."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub summary: Option<TimeCardSummary>,
+}
+
+impl std::fmt::Display for GetTimeCardsResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetTimeCardsResponse {
+    const LENGTH: usize = 8;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.worker_id.clone().into(),
+            if let Some(worker) = &self.worker {
+                format!("{:?}", worker).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(pay_period) = &self.pay_period {
+                format!("{:?}", pay_period).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(summary) = &self.summary {
+                format!("{:?}", summary).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "worker_id".into(),
+            "worker".into(),
+            "pay_period".into(),
+            "summary".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListTimeEntriesResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<TimeEntry>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListTimeEntriesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListTimeEntriesResponse {
+    type Item = TimeEntry;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListTimeEntriesResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[doc = "The status of the time entry."]
+#[derive(
+    serde :: Serialize,
+    serde :: Deserialize,
+    PartialEq,
+    Hash,
+    Debug,
+    Clone,
+    schemars :: JsonSchema,
+    parse_display :: FromStr,
+    parse_display :: Display,
+)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
+#[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
+pub enum GetTimeEntriesResponseStatus {
+    #[serde(rename = "DRAFT")]
+    #[display("DRAFT")]
+    Draft,
+    #[serde(rename = "APPROVED")]
+    #[display("APPROVED")]
+    Approved,
+    #[serde(rename = "PAID")]
+    #[display("PAID")]
+    Paid,
+    #[serde(rename = "FINALIZED")]
+    #[display("FINALIZED")]
+    Finalized,
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetTimeEntriesResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The ID of the worker associated with the time entry."]
+    pub worker_id: String,
+    #[doc = "The worker associated with the time entry.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub worker: Option<Worker>,
+    #[doc = "The start time of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<String>,
+    #[doc = "The end time of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<String>,
+    #[doc = "The comments associated with the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub comments: Option<Vec<TimeEntryComment>>,
+    #[doc = "The job shifts worked during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_shifts: Option<Vec<JobShift>>,
+    #[doc = "The breaks taken during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub breaks: Option<Vec<Break>>,
+    #[doc = "The premiums earned during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub premiums: Option<Vec<Premiums>>,
+    #[doc = "The piece-rate premiums earned during the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub piece_rate_premiums: Option<Vec<PieceRatePremiums>>,
+    #[doc = "The pay rates for each segment of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub segments: Option<Vec<Segments>>,
+    #[doc = "A summary of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time_entry_summary: Option<TimeEntrySummary>,
+    #[doc = "The ID of the time card associated with the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time_card_id: Option<String>,
+    #[doc = "The time card associated with the time entry.\n\nExpandable field"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time_card: Option<TimeCard>,
+    #[doc = "The tags associated with the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    #[doc = "The unique key of the time entry in an outside system. If set, no other time entry \
+             with the same key can be created."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub idempotency_key: Option<String>,
+    #[doc = "Whether the time entry should create an extra hours run."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub create_extra_hours_run: Option<bool>,
+    #[doc = "The status of the time entry."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<GetTimeEntriesResponseStatus>,
+    #[doc = "The pay period associated with the time card."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pay_period: Option<PayPeriod>,
+    #[doc = "Arbitrary shift inputs collected on the time entry"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub shift_input_values: Option<Vec<ShiftInputValue>>,
+}
+
+impl std::fmt::Display for GetTimeEntriesResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetTimeEntriesResponse {
+    const LENGTH: usize = 23;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.worker_id.clone().into(),
+            if let Some(worker) = &self.worker {
+                format!("{:?}", worker).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(start_time) = &self.start_time {
+                format!("{:?}", start_time).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(end_time) = &self.end_time {
+                format!("{:?}", end_time).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(comments) = &self.comments {
+                format!("{:?}", comments).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(job_shifts) = &self.job_shifts {
+                format!("{:?}", job_shifts).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(breaks) = &self.breaks {
+                format!("{:?}", breaks).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(premiums) = &self.premiums {
+                format!("{:?}", premiums).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(piece_rate_premiums) = &self.piece_rate_premiums {
+                format!("{:?}", piece_rate_premiums).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(segments) = &self.segments {
+                format!("{:?}", segments).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(time_entry_summary) = &self.time_entry_summary {
+                format!("{:?}", time_entry_summary).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(time_card_id) = &self.time_card_id {
+                format!("{:?}", time_card_id).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(time_card) = &self.time_card {
+                format!("{:?}", time_card).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(tags) = &self.tags {
+                format!("{:?}", tags).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(idempotency_key) = &self.idempotency_key {
+                format!("{:?}", idempotency_key).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(create_extra_hours_run) = &self.create_extra_hours_run {
+                format!("{:?}", create_extra_hours_run).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(status) = &self.status {
+                format!("{:?}", status).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(pay_period) = &self.pay_period {
+                format!("{:?}", pay_period).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(shift_input_values) = &self.shift_input_values {
+                format!("{:?}", shift_input_values).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
+            "worker_id".into(),
+            "worker".into(),
+            "start_time".into(),
+            "end_time".into(),
+            "comments".into(),
+            "job_shifts".into(),
+            "breaks".into(),
+            "premiums".into(),
+            "piece_rate_premiums".into(),
+            "segments".into(),
+            "time_entry_summary".into(),
+            "time_card_id".into(),
+            "time_card".into(),
+            "tags".into(),
+            "idempotency_key".into(),
+            "create_extra_hours_run".into(),
+            "status".into(),
+            "pay_period".into(),
+            "shift_input_values".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct ListTracksResponse {
+    #[doc = "A list of redacted fields."]
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<RedactedFields>,
+    pub results: Vec<Track>,
+    #[doc = "A link to the next page of responses."]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next_link: Option<String>,
+}
+
+impl std::fmt::Display for ListTracksResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "requests")]
+impl crate::types::paginate::Pagination for ListTracksResponse {
+    type Item = Track;
+    fn has_more_pages(&self) -> bool {
+        self.next_link.is_some()
+    }
+
+    fn next_page_token(&self) -> Option<String> {
+        self.next_link.clone()
+    }
+
+    fn next_page(
+        &self,
+        req: reqwest::Request,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        let mut req = req.try_clone().ok_or_else(|| {
+            crate::types::error::Error::InvalidRequest(format!(
+                "failed to clone request: {:?}",
+                req
+            ))
+        })?;
+        req.url_mut()
+            .query_pairs_mut()
+            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        Ok(req)
+    }
+
+    fn items(&self) -> Vec<Self::Item> {
+        self.results.clone()
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for ListTracksResponse {
+    const LENGTH: usize = 3;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(next_link) = &self.next_link {
+                format!("{:?}", next_link).into()
+            } else {
+                String::new().into()
+            },
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["meta".into(), "results".into(), "next_link".into()]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct GetTracksResponse {
+    #[serde(rename = "__meta", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<Meta>,
+    #[doc = "Identifier field"]
+    pub id: String,
+    #[doc = "Record creation date"]
+    pub created_at: String,
+    #[doc = "Record update date"]
+    pub updated_at: String,
+    #[doc = "The name of the track. Must be unique within the company or organization."]
+    pub name: String,
+}
+
+impl std::fmt::Display for GetTracksResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for GetTracksResponse {
+    const LENGTH: usize = 5;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(meta) = &self.meta {
+                format!("{:?}", meta).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            self.created_at.clone().into(),
+            self.updated_at.clone().into(),
+            self.name.clone().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "meta".into(),
+            "id".into(),
+            "created_at".into(),
+            "updated_at".into(),
             "name".into(),
         ]
     }
@@ -11595,23 +14777,13 @@ pub struct CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub data_type: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub required: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub rql_definition: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_unique: Option<bool>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub formula_attr_metas: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub section: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enable_history: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub derived_field_formula: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub derived_aggregated_field: Option<serde_json::Value>,
 }
 
 impl std::fmt::Display for CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {
@@ -11626,7 +14798,7 @@ impl std::fmt::Display for CreateCustomObjectsCustomObjectApiNameFieldsRequestBo
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {
-    const LENGTH: usize = 11;
+    const LENGTH: usize = 6;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
@@ -11639,33 +14811,13 @@ impl tabled::Tabled for CreateCustomObjectsCustomObjectApiNameFieldsRequestBody 
             } else {
                 String::new().into()
             },
-            if let Some(data_type) = &self.data_type {
-                format!("{:?}", data_type).into()
-            } else {
-                String::new().into()
-            },
             if let Some(required) = &self.required {
                 format!("{:?}", required).into()
             } else {
                 String::new().into()
             },
-            if let Some(rql_definition) = &self.rql_definition {
-                format!("{:?}", rql_definition).into()
-            } else {
-                String::new().into()
-            },
             if let Some(is_unique) = &self.is_unique {
                 format!("{:?}", is_unique).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(formula_attr_metas) = &self.formula_attr_metas {
-                format!("{:?}", formula_attr_metas).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(section) = &self.section {
-                format!("{:?}", section).into()
             } else {
                 String::new().into()
             },
@@ -11679,11 +14831,6 @@ impl tabled::Tabled for CreateCustomObjectsCustomObjectApiNameFieldsRequestBody 
             } else {
                 String::new().into()
             },
-            if let Some(derived_aggregated_field) = &self.derived_aggregated_field {
-                format!("{:?}", derived_aggregated_field).into()
-            } else {
-                String::new().into()
-            },
         ]
     }
 
@@ -11691,15 +14838,10 @@ impl tabled::Tabled for CreateCustomObjectsCustomObjectApiNameFieldsRequestBody 
         vec![
             "name".into(),
             "description".into(),
-            "data_type".into(),
             "required".into(),
-            "rql_definition".into(),
             "is_unique".into(),
-            "formula_attr_metas".into(),
-            "section".into(),
             "enable_history".into(),
             "derived_field_formula".into(),
-            "derived_aggregated_field".into(),
         ]
     }
 }
@@ -11713,23 +14855,13 @@ pub struct UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub data_type: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub required: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub rql_definition: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_unique: Option<bool>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub formula_attr_metas: Option<serde_json::Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub section: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enable_history: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub derived_field_formula: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name_field_details: Option<serde_json::Value>,
 }
 
 impl std::fmt::Display for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {
@@ -11744,7 +14876,7 @@ impl std::fmt::Display for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBo
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {
-    const LENGTH: usize = 11;
+    const LENGTH: usize = 6;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(name) = &self.name {
@@ -11757,33 +14889,13 @@ impl tabled::Tabled for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody 
             } else {
                 String::new().into()
             },
-            if let Some(data_type) = &self.data_type {
-                format!("{:?}", data_type).into()
-            } else {
-                String::new().into()
-            },
             if let Some(required) = &self.required {
                 format!("{:?}", required).into()
             } else {
                 String::new().into()
             },
-            if let Some(rql_definition) = &self.rql_definition {
-                format!("{:?}", rql_definition).into()
-            } else {
-                String::new().into()
-            },
             if let Some(is_unique) = &self.is_unique {
                 format!("{:?}", is_unique).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(formula_attr_metas) = &self.formula_attr_metas {
-                format!("{:?}", formula_attr_metas).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(section) = &self.section {
-                format!("{:?}", section).into()
             } else {
                 String::new().into()
             },
@@ -11797,11 +14909,6 @@ impl tabled::Tabled for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody 
             } else {
                 String::new().into()
             },
-            if let Some(name_field_details) = &self.name_field_details {
-                format!("{:?}", name_field_details).into()
-            } else {
-                String::new().into()
-            },
         ]
     }
 
@@ -11809,15 +14916,10 @@ impl tabled::Tabled for UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody 
         vec![
             "name".into(),
             "description".into(),
-            "data_type".into(),
             "required".into(),
-            "rql_definition".into(),
             "is_unique".into(),
-            "formula_attr_metas".into(),
-            "section".into(),
             "enable_history".into(),
             "derived_field_formula".into(),
-            "name_field_details".into(),
         ]
     }
 }
@@ -12210,8 +15312,7 @@ impl tabled::Tabled for ListByQueryCustomObjectsCustomObjectApiNameRecordsReques
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct ListByQueryCustomObjectsCustomObjectApiNameRecordsResponse {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub results: Option<Vec<Results>>,
+    pub results: Vec<Results>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cursor: Option<String>,
 }
@@ -12231,11 +15332,7 @@ impl tabled::Tabled for ListByQueryCustomObjectsCustomObjectApiNameRecordsRespon
     const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
-            if let Some(results) = &self.results {
-                format!("{:?}", results).into()
-            } else {
-                String::new().into()
-            },
+            format!("{:?}", self.results).into(),
             if let Some(cursor) = &self.cursor {
                 format!("{:?}", cursor).into()
             } else {

@@ -20,7 +20,7 @@ impl Entitlements {
     ) -> Result<crate::types::ListEntitlementsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "entitlements"),
+            format!("{}/{}", self.client.base_url, "entitlements"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -38,14 +38,13 @@ impl Entitlements {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -74,7 +73,7 @@ impl Entitlements {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    &format!("{}/{}", self.client.base_url, "entitlements"),
+                                    format!("{}/{}", self.client.base_url, "entitlements"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -91,14 +90,13 @@ impl Entitlements {
                                             ),
                                             status,
                                         )
-                                        .into()
                                     })
                                 } else {
                                     let text = resp.text().await.unwrap_or_default();
-                                    return Err(crate::types::error::Error::Server {
+                                    Err(crate::types::error::Error::Server {
                                         body: text.to_string(),
                                         status,
-                                    });
+                                    })
                                 }
                             }
                             .map_ok(|result: crate::types::ListEntitlementsResponse| {

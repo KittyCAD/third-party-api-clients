@@ -23,7 +23,7 @@ impl Workers {
     ) -> Result<crate::types::ListWorkersResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "workers"),
+            format!("{}/{}", self.client.base_url, "workers"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -53,14 +53,13 @@ impl Workers {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -90,7 +89,7 @@ impl Workers {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    &format!("{}/{}", self.client.base_url, "workers"),
+                                    format!("{}/{}", self.client.base_url, "workers"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -107,14 +106,13 @@ impl Workers {
                                             ),
                                             status,
                                         )
-                                        .into()
                                     })
                                 } else {
                                     let text = resp.text().await.unwrap_or_default();
-                                    return Err(crate::types::error::Error::Server {
+                                    Err(crate::types::error::Error::Server {
                                         body: text.to_string(),
                                         status,
-                                    });
+                                    })
                                 }
                             }
                             .map_ok(|result: crate::types::ListWorkersResponse| {
@@ -152,10 +150,10 @@ impl Workers {
     ) -> Result<crate::types::Worker, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "workers/{id}".replace("{id}", &id)
+                "workers/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -174,14 +172,13 @@ impl Workers {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

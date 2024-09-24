@@ -26,7 +26,7 @@ impl Me {
     ) -> Result<crate::types::Ssome, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "sso-me"),
+            format!("{}/{}", self.client.base_url, "sso-me"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -44,14 +44,13 @@ impl Me {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

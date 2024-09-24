@@ -2,30 +2,45 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct ObjectCategories {
+pub struct ShiftInputs {
     pub client: Client,
 }
 
-impl ObjectCategories {
+impl ShiftInputs {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "List object categories\n\nA List of object categories\n- Requires: `API Tier 1`\n\n**Parameters:**\n\n- `cursor: Option<String>`\n\n```rust,no_run\nuse futures_util::TryStreamExt;\nasync fn example_object_categories_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut object_categories = client.object_categories();\n    let mut stream = object_categories.list_stream();\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
+    #[doc = "List shift inputs\n\nA List of shift inputs\n- Requires: `API Tier 2`\n- Filterable fields: `name`\n- Expandable fields: `creator`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: Option<String>`\n- `expand: Option<String>`\n- `filter: Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nuse futures_util::TryStreamExt;\nasync fn example_shift_inputs_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut shift_inputs = client.shift_inputs();\n    let mut stream = shift_inputs.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list<'a>(
         &'a self,
         cursor: Option<String>,
-    ) -> Result<crate::types::ListObjectCategoriesResponse, crate::types::error::Error> {
+        expand: Option<String>,
+        filter: Option<String>,
+        order_by: Option<String>,
+    ) -> Result<crate::types::ListShiftInputsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "object-categories"),
+            format!("{}/{}", self.client.base_url, "shift-inputs"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
         if let Some(p) = cursor {
             query_params.push(("cursor", p));
+        }
+
+        if let Some(p) = expand {
+            query_params.push(("expand", p));
+        }
+
+        if let Some(p) = filter {
+            query_params.push(("filter", p));
+        }
+
+        if let Some(p) = order_by {
+            query_params.push(("order_by", p));
         }
 
         req = req.query(&query_params);
@@ -48,18 +63,21 @@ impl ObjectCategories {
         }
     }
 
-    #[doc = "List object categories\n\nA List of object categories\n- Requires: `API Tier 1`\n\n**Parameters:**\n\n- `cursor: Option<String>`\n\n```rust,no_run\nuse futures_util::TryStreamExt;\nasync fn example_object_categories_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut object_categories = client.object_categories();\n    let mut stream = object_categories.list_stream();\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
+    #[doc = "List shift inputs\n\nA List of shift inputs\n- Requires: `API Tier 2`\n- Filterable fields: `name`\n- Expandable fields: `creator`\n- Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: Option<String>`\n- `expand: Option<String>`\n- `filter: Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nuse futures_util::TryStreamExt;\nasync fn example_shift_inputs_list_stream() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let mut shift_inputs = client.shift_inputs();\n    let mut stream = shift_inputs.list_stream(\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n        Some(\"some-string\".to_string()),\n    );\n    loop {\n        match stream.try_next().await {\n            Ok(Some(item)) => {\n                println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                break;\n            }\n            Err(err) => {\n                return Err(err.into());\n            }\n        }\n    }\n\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     #[cfg(not(feature = "js"))]
     pub fn list_stream<'a>(
         &'a self,
-    ) -> impl futures::Stream<Item = Result<crate::types::ObjectCategory, crate::types::error::Error>>
+        expand: Option<String>,
+        filter: Option<String>,
+        order_by: Option<String>,
+    ) -> impl futures::Stream<Item = Result<crate::types::ShiftInput, crate::types::error::Error>>
            + Unpin
            + '_ {
         use futures::{StreamExt, TryFutureExt, TryStreamExt};
 
         use crate::types::paginate::Pagination;
-        self.list(None)
+        self.list(None, expand, filter, order_by)
             .map_ok(move |result| {
                 let items = futures::stream::iter(result.items().into_iter().map(Ok));
                 let next_pages = futures::stream::try_unfold(
@@ -72,7 +90,7 @@ impl ObjectCategories {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    format!("{}/{}", self.client.base_url, "object-categories"),
+                                    format!("{}/{}", self.client.base_url, "shift-inputs"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -98,7 +116,7 @@ impl ObjectCategories {
                                     })
                                 }
                             }
-                            .map_ok(|result: crate::types::ListObjectCategoriesResponse| {
+                            .map_ok(|result: crate::types::ListShiftInputsResponse| {
                                 Some((
                                     futures::stream::iter(result.items().into_iter().map(Ok)),
                                     (new_result.next_page_token(), result),
@@ -117,22 +135,15 @@ impl ObjectCategories {
             .boxed()
     }
 
-    #[doc = "Create a new object category\n\nCreate a new object category\n\n```rust,no_run\nasync \
-             fn example_object_categories_create() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::ObjectCategory = client\n        .object_categories()\n        \
-             .create(&rippling_api::types::CreateObjectCategoriesRequestBody {\n            name: \
-             Some(\"some-string\".to_string()),\n            description: \
-             Some(\"some-string\".to_string()),\n        })\n        .await?;\n    \
-             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a new shift input\n\nCreate a new shift input\n\n```rust,no_run\nasync fn example_shift_inputs_create() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ShiftInput = client\n        .shift_inputs()\n        .create(&rippling_api::types::ShiftInputRequest {\n            creator_id: Some(\"some-string\".to_string()),\n            name: \"some-string\".to_string(),\n            prompt: \"some-string\".to_string(),\n            type_: \"some-string\".to_string(),\n            country_code: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create<'a>(
         &'a self,
-        body: &crate::types::CreateObjectCategoriesRequestBody,
-    ) -> Result<crate::types::ObjectCategory, crate::types::error::Error> {
+        body: &crate::types::ShiftInputRequest,
+    ) -> Result<crate::types::ShiftInput, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            format!("{}/{}", self.client.base_url, "object-categories"),
+            format!("{}/{}", self.client.base_url, "shift-inputs"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -155,27 +166,28 @@ impl ObjectCategories {
         }
     }
 
-    #[doc = "Retrieve a specific object category\n\nRetrieve a specific object \
-             category\n\n**Parameters:**\n\n- `id: &'astr` (required)\n\n```rust,no_run\nasync fn \
-             example_object_categories_get() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::ObjectCategory =\n        \
-             client.object_categories().get(\"some-string\").await?;\n    println!(\"{:?}\", \
-             result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve a specific shift input\n\nRetrieve a specific shift input\n\n**Parameters:**\n\n- `expand: Option<String>`\n- `id: &'astr`: ID of the resource to return (required)\n\n```rust,no_run\nasync fn example_shift_inputs_get() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::GetShiftInputsResponse = client\n        .shift_inputs()\n        .get(\n            Some(\"some-string\".to_string()),\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get<'a>(
         &'a self,
+        expand: Option<String>,
         id: &'a str,
-    ) -> Result<crate::types::ObjectCategory, crate::types::error::Error> {
+    ) -> Result<crate::types::GetShiftInputsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "object-categories/{id}".replace("{id}", id)
+                "shift-inputs/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
+        let mut query_params = vec![];
+        if let Some(p) = expand {
+            query_params.push(("expand", p));
+        }
+
+        req = req.query(&query_params);
         let resp = req.send().await?;
         let status = resp.status();
         if status.is_success() {
@@ -195,10 +207,12 @@ impl ObjectCategories {
         }
     }
 
-    #[doc = "Delete a object category\n\n**Parameters:**\n\n- `id: &'astr` \
-             (required)\n\n```rust,no_run\nasync fn example_object_categories_delete() -> \
+    #[doc = "Delete a shift input\n\n**Parameters:**\n\n- `id: &'astr`: ID of the resource to \
+             delete (required)\n\n```rust,no_run\nasync fn example_shift_inputs_delete() -> \
              anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    \
-             client.object_categories().delete(\"some-string\").await?;\n    Ok(())\n}\n```"]
+             client\n        .shift_inputs()\n        \
+             .delete(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")\n        .await?;\n    \
+             Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete<'a>(&'a self, id: &'a str) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
@@ -206,7 +220,7 @@ impl ObjectCategories {
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "object-categories/{id}".replace("{id}", id)
+                "shift-inputs/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -223,28 +237,19 @@ impl ObjectCategories {
         }
     }
 
-    #[doc = "Update a object category\n\nUpdated a specific object \
-             category\n\n**Parameters:**\n\n- `id: &'astr` (required)\n\n```rust,no_run\nasync fn \
-             example_object_categories_update() -> anyhow::Result<()> {\n    let client = \
-             rippling_api::Client::new_from_env();\n    let result: \
-             rippling_api::types::ObjectCategory = client\n        .object_categories()\n        \
-             .update(\n            \"some-string\",\n            \
-             &rippling_api::types::UpdateObjectCategoriesRequestBody {\n                name: \
-             Some(\"some-string\".to_string()),\n                description: \
-             Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    \
-             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update a shift input\n\nUpdated a specific shift input\n\n**Parameters:**\n\n- `id: &'astr`: ID of the resource to patch (required)\n\n```rust,no_run\nasync fn example_shift_inputs_update() -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::ShiftInput = client\n        .shift_inputs()\n        .update(\n            \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            &rippling_api::types::ShiftInputRequest {\n                creator_id: Some(\"some-string\".to_string()),\n                name: \"some-string\".to_string(),\n                prompt: \"some-string\".to_string(),\n                type_: \"some-string\".to_string(),\n                country_code: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update<'a>(
         &'a self,
         id: &'a str,
-        body: &crate::types::UpdateObjectCategoriesRequestBody,
-    ) -> Result<crate::types::ObjectCategory, crate::types::error::Error> {
+        body: &crate::types::ShiftInputRequest,
+    ) -> Result<crate::types::ShiftInput, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
             format!(
                 "{}/{}",
                 self.client.base_url,
-                "object-categories/{id}".replace("{id}", id)
+                "shift-inputs/{id}".replace("{id}", id)
             ),
         );
         req = req.bearer_auth(&self.client.token);

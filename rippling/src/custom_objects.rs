@@ -20,7 +20,7 @@ impl CustomObjects {
     ) -> Result<crate::types::ListCustomObjectsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "custom-objects"),
+            format!("{}/{}", self.client.base_url, "custom-objects"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -38,14 +38,13 @@ impl CustomObjects {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -73,7 +72,7 @@ impl CustomObjects {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    &format!("{}/{}", self.client.base_url, "custom-objects"),
+                                    format!("{}/{}", self.client.base_url, "custom-objects"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -90,14 +89,13 @@ impl CustomObjects {
                                             ),
                                             status,
                                         )
-                                        .into()
                                     })
                                 } else {
                                     let text = resp.text().await.unwrap_or_default();
-                                    return Err(crate::types::error::Error::Server {
+                                    Err(crate::types::error::Error::Server {
                                         body: text.to_string(),
                                         status,
-                                    });
+                                    })
                                 }
                             }
                             .map_ok(|result: crate::types::ListCustomObjectsResponse| {
@@ -135,7 +133,7 @@ impl CustomObjects {
     ) -> Result<crate::types::CustomObject, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "custom-objects"),
+            format!("{}/{}", self.client.base_url, "custom-objects"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -148,14 +146,13 @@ impl CustomObjects {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -173,11 +170,11 @@ impl CustomObjects {
     ) -> Result<crate::types::CustomObject, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -190,14 +187,13 @@ impl CustomObjects {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -212,11 +208,11 @@ impl CustomObjects {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -226,10 +222,10 @@ impl CustomObjects {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -254,11 +250,11 @@ impl CustomObjects {
     ) -> Result<crate::types::CustomObject, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -272,14 +268,13 @@ impl CustomObjects {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

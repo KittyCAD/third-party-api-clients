@@ -2,23 +2,23 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
-pub struct CustomFields {
+pub struct JobRequisitions {
     pub client: Client,
 }
 
-impl CustomFields {
+impl JobRequisitions {
     #[doc(hidden)]
     pub fn new(client: Client) -> Self {
         Self { client }
     }
 
-    #[doc = "List custom fields\n\nA List of custom fields\n- Requires: `API Tier 1`\n- Sortable \
-             fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: \
+    #[doc = "List job requisitions\n\nA List of job requisitions\n- Requires: `API Tier 2`\n- \
+             Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: \
              Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nuse \
-             futures_util::TryStreamExt;\nasync fn example_custom_fields_list_stream() -> \
+             futures_util::TryStreamExt;\nasync fn example_job_requisitions_list_stream() -> \
              anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             mut custom_fields = client.custom_fields();\n    let mut stream = \
-             custom_fields.list_stream(Some(\"some-string\".to_string()));\n    loop {\n        \
+             mut job_requisitions = client.job_requisitions();\n    let mut stream = \
+             job_requisitions.list_stream(Some(\"some-string\".to_string()));\n    loop {\n        \
              match stream.try_next().await {\n            Ok(Some(item)) => {\n                \
              println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                \
              break;\n            }\n            Err(err) => {\n                return \
@@ -28,10 +28,10 @@ impl CustomFields {
         &'a self,
         cursor: Option<String>,
         order_by: Option<String>,
-    ) -> Result<crate::types::ListCustomFieldsResponse, crate::types::error::Error> {
+    ) -> Result<crate::types::ListJobRequisitionsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            format!("{}/{}", self.client.base_url, "custom-fields"),
+            format!("{}/{}", self.client.base_url, "job-requisitions"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -63,13 +63,13 @@ impl CustomFields {
         }
     }
 
-    #[doc = "List custom fields\n\nA List of custom fields\n- Requires: `API Tier 1`\n- Sortable \
-             fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: \
+    #[doc = "List job requisitions\n\nA List of job requisitions\n- Requires: `API Tier 2`\n- \
+             Sortable fields: `id`, `created_at`, `updated_at`\n\n**Parameters:**\n\n- `cursor: \
              Option<String>`\n- `order_by: Option<String>`\n\n```rust,no_run\nuse \
-             futures_util::TryStreamExt;\nasync fn example_custom_fields_list_stream() -> \
+             futures_util::TryStreamExt;\nasync fn example_job_requisitions_list_stream() -> \
              anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let \
-             mut custom_fields = client.custom_fields();\n    let mut stream = \
-             custom_fields.list_stream(Some(\"some-string\".to_string()));\n    loop {\n        \
+             mut job_requisitions = client.job_requisitions();\n    let mut stream = \
+             job_requisitions.list_stream(Some(\"some-string\".to_string()));\n    loop {\n        \
              match stream.try_next().await {\n            Ok(Some(item)) => {\n                \
              println!(\"{:?}\", item);\n            }\n            Ok(None) => {\n                \
              break;\n            }\n            Err(err) => {\n                return \
@@ -79,7 +79,7 @@ impl CustomFields {
     pub fn list_stream<'a>(
         &'a self,
         order_by: Option<String>,
-    ) -> impl futures::Stream<Item = Result<crate::types::CustomField, crate::types::error::Error>>
+    ) -> impl futures::Stream<Item = Result<crate::types::JobRequisition, crate::types::error::Error>>
            + Unpin
            + '_ {
         use futures::{StreamExt, TryFutureExt, TryStreamExt};
@@ -98,7 +98,7 @@ impl CustomFields {
                             async {
                                 let mut req = self.client.client.request(
                                     http::Method::GET,
-                                    format!("{}/{}", self.client.base_url, "custom-fields"),
+                                    format!("{}/{}", self.client.base_url, "job-requisitions"),
                                 );
                                 req = req.bearer_auth(&self.client.token);
                                 let mut request = req.build()?;
@@ -124,7 +124,7 @@ impl CustomFields {
                                     })
                                 }
                             }
-                            .map_ok(|result: crate::types::ListCustomFieldsResponse| {
+                            .map_ok(|result: crate::types::ListJobRequisitionsResponse| {
                                 Some((
                                     futures::stream::iter(result.items().into_iter().map(Ok)),
                                     (new_result.next_page_token(), result),

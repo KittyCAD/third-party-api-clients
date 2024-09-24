@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! rippling-api = "0.1.4"
+//! rippling-api = "0.1.5"
 //! ```
 //!
 //! ## Basic example
@@ -54,9 +54,18 @@
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+/// An application by a candidate to a specific job requisition.
+#[cfg(feature = "requests")]
+pub mod candidate_applications;
+/// Someone who applies to a job requisition opened by the company.
+#[cfg(feature = "requests")]
+pub mod candidates;
 /// Companies on Rippling.
 #[cfg(feature = "requests")]
 pub mod companies;
+/// Compensation associated with workers.
+#[cfg(feature = "requests")]
+pub mod compensations;
 /// Custom fields defined by the company.
 #[cfg(feature = "requests")]
 pub mod custom_fields;
@@ -78,6 +87,24 @@ pub mod employment_types;
 /// Availability of API features to the company or Partners.
 #[cfg(feature = "requests")]
 pub mod entitlements;
+/// Job related information for the company.
+#[cfg(feature = "requests")]
+pub mod job;
+/// A request for a job to be filled by a candidate.
+#[cfg(feature = "requests")]
+pub mod job_requisitions;
+/// Leave balances for workers.
+#[cfg(feature = "requests")]
+pub mod leave_balances;
+/// Leave requests submitted by workers.
+#[cfg(feature = "requests")]
+pub mod leave_requests;
+/// Leave types used by the company.
+#[cfg(feature = "requests")]
+pub mod leave_types;
+/// Legal entities registered by the company.
+#[cfg(feature = "requests")]
+pub mod legal_entities;
 /// Provides the user's SSO information.
 #[cfg(feature = "requests")]
 pub mod me;
@@ -85,11 +112,20 @@ mod methods;
 /// Object Categories defined by the company.
 #[cfg(feature = "requests")]
 pub mod object_categories;
+/// Shift inputs used by the company.
+#[cfg(feature = "requests")]
+pub mod shift_inputs;
 /// Teams at the company.
 #[cfg(feature = "requests")]
 pub mod teams;
 #[cfg(test)]
 mod tests;
+/// Time entries submitted by workers.
+#[cfg(feature = "requests")]
+pub mod time_entries;
+/// Levels and tracks used by the company for workers.
+#[cfg(feature = "requests")]
+pub mod tracks_and_levels;
 pub mod types;
 /// Users of the company.
 #[cfg(feature = "requests")]
@@ -336,9 +372,24 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
+    /// An application by a candidate to a specific job requisition.
+    pub fn candidate_applications(&self) -> candidate_applications::CandidateApplications {
+        candidate_applications::CandidateApplications::new(self.clone())
+    }
+
+    /// Someone who applies to a job requisition opened by the company.
+    pub fn candidates(&self) -> candidates::Candidates {
+        candidates::Candidates::new(self.clone())
+    }
+
     /// Companies on Rippling.
     pub fn companies(&self) -> companies::Companies {
         companies::Companies::new(self.clone())
+    }
+
+    /// Compensation associated with workers.
+    pub fn compensations(&self) -> compensations::Compensations {
+        compensations::Compensations::new(self.clone())
     }
 
     /// Custom fields defined by the company.
@@ -376,6 +427,36 @@ impl Client {
         entitlements::Entitlements::new(self.clone())
     }
 
+    /// Job related information for the company.
+    pub fn job(&self) -> job::Job {
+        job::Job::new(self.clone())
+    }
+
+    /// A request for a job to be filled by a candidate.
+    pub fn job_requisitions(&self) -> job_requisitions::JobRequisitions {
+        job_requisitions::JobRequisitions::new(self.clone())
+    }
+
+    /// Leave balances for workers.
+    pub fn leave_balances(&self) -> leave_balances::LeaveBalances {
+        leave_balances::LeaveBalances::new(self.clone())
+    }
+
+    /// Leave requests submitted by workers.
+    pub fn leave_requests(&self) -> leave_requests::LeaveRequests {
+        leave_requests::LeaveRequests::new(self.clone())
+    }
+
+    /// Leave types used by the company.
+    pub fn leave_types(&self) -> leave_types::LeaveTypes {
+        leave_types::LeaveTypes::new(self.clone())
+    }
+
+    /// Legal entities registered by the company.
+    pub fn legal_entities(&self) -> legal_entities::LegalEntities {
+        legal_entities::LegalEntities::new(self.clone())
+    }
+
     /// Provides the user's SSO information.
     pub fn me(&self) -> me::Me {
         me::Me::new(self.clone())
@@ -386,9 +467,24 @@ impl Client {
         object_categories::ObjectCategories::new(self.clone())
     }
 
+    /// Shift inputs used by the company.
+    pub fn shift_inputs(&self) -> shift_inputs::ShiftInputs {
+        shift_inputs::ShiftInputs::new(self.clone())
+    }
+
     /// Teams at the company.
     pub fn teams(&self) -> teams::Teams {
         teams::Teams::new(self.clone())
+    }
+
+    /// Time entries submitted by workers.
+    pub fn time_entries(&self) -> time_entries::TimeEntries {
+        time_entries::TimeEntries::new(self.clone())
+    }
+
+    /// Levels and tracks used by the company for workers.
+    pub fn tracks_and_levels(&self) -> tracks_and_levels::TracksAndLevels {
+        tracks_and_levels::TracksAndLevels::new(self.clone())
     }
 
     /// Users of the company.

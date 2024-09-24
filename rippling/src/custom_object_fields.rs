@@ -24,11 +24,11 @@ impl CustomObjectFields {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/fields"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -47,14 +47,13 @@ impl CustomObjectFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -71,10 +70,10 @@ impl CustomObjectFields {
         use futures::{StreamExt, TryFutureExt, TryStreamExt};
 
         use crate::types::paginate::Pagination;
-        self . list_custom_objects_custom_object_api_name_fields (None , custom_object_api_name) . map_ok (move | result | { let items = futures :: stream :: iter (result . items () . into_iter () . map (Ok)) ; let next_pages = futures :: stream :: try_unfold ((None , result) , move | (prev_page_token , new_result) | async move { if new_result . has_more_pages () && ! new_result . items () . is_empty () && prev_page_token != new_result . next_page_token () { async { let mut req = self . client . client . request (http :: Method :: GET , & format ! ("{}/{}" , self . client . base_url , "custom-objects/{custom_object_api_name}/fields" . replace ("{custom_object_api_name}" , & custom_object_api_name)) ,) ; req = req . bearer_auth (& self . client . token) ; let mut request = req . build () ? ; request = new_result . next_page (request) ? ; let resp = self . client . client . execute (request) . await ? ; let status = resp . status () ; if status . is_success () { let text = resp . text () . await . unwrap_or_default () ; serde_json :: from_str (& text) . map_err (| err | crate :: types :: error :: Error :: from_serde_error (format_serde_error :: SerdeError :: new (text . to_string () , err) , status) . into ()) } else { let text = resp . text () . await . unwrap_or_default () ; return Err (crate :: types :: error :: Error :: Server { body : text . to_string () , status }) ; } } . map_ok (| result : crate :: types :: ListCustomObjectsCustomObjectApiNameFieldsResponse | { Some ((futures :: stream :: iter (result . items () . into_iter () . map (Ok) ,) , (new_result . next_page_token () , result) ,)) }) . await } else { Ok (None) } }) . try_flatten () ; items . chain (next_pages) }) . try_flatten_stream () . boxed ()
+        self . list_custom_objects_custom_object_api_name_fields (None , custom_object_api_name) . map_ok (move | result | { let items = futures :: stream :: iter (result . items () . into_iter () . map (Ok)) ; let next_pages = futures :: stream :: try_unfold ((None , result) , move | (prev_page_token , new_result) | async move { if new_result . has_more_pages () && ! new_result . items () . is_empty () && prev_page_token != new_result . next_page_token () { async { let mut req = self . client . client . request (http :: Method :: GET , format ! ("{}/{}" , self . client . base_url , "custom-objects/{custom_object_api_name}/fields" . replace ("{custom_object_api_name}" , custom_object_api_name)) ,) ; req = req . bearer_auth (& self . client . token) ; let mut request = req . build () ? ; request = new_result . next_page (request) ? ; let resp = self . client . client . execute (request) . await ? ; let status = resp . status () ; if status . is_success () { let text = resp . text () . await . unwrap_or_default () ; serde_json :: from_str (& text) . map_err (| err | crate :: types :: error :: Error :: from_serde_error (format_serde_error :: SerdeError :: new (text . to_string () , err) , status)) } else { let text = resp . text () . await . unwrap_or_default () ; Err (crate :: types :: error :: Error :: Server { body : text . to_string () , status }) } } . map_ok (| result : crate :: types :: ListCustomObjectsCustomObjectApiNameFieldsResponse | { Some ((futures :: stream :: iter (result . items () . into_iter () . map (Ok) ,) , (new_result . next_page_token () , result) ,)) }) . await } else { Ok (None) } }) . try_flatten () ; items . chain (next_pages) }) . try_flatten_stream () . boxed ()
     }
 
-    #[doc = "Create a new custom object field\n\nCreate a new custom object field\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_fields_create_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .create_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            &rippling_api::types::CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                data_type: Some(serde_json::Value {}),\n                required: Some(false),\n                rql_definition: Some(serde_json::Value {}),\n                is_unique: Some(false),\n                formula_attr_metas: Some(serde_json::Value {}),\n                section: Some(serde_json::Value {}),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n                derived_aggregated_field: Some(serde_json::Value {}),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a new custom object field\n\nCreate a new custom object field\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_fields_create_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .create_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            &rippling_api::types::CreateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                required: Some(false),\n                is_unique: Some(false),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_custom_objects_custom_object_api_name_fields<'a>(
         &'a self,
@@ -83,11 +82,11 @@ impl CustomObjectFields {
     ) -> Result<crate::types::CustomObjectField, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/fields"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -101,14 +100,13 @@ impl CustomObjectFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -121,12 +119,12 @@ impl CustomObjectFields {
     ) -> Result<crate::types::CustomObjectField, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/fields/{field_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
-                    .replace("{field_api_name}", &field_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
+                    .replace("{field_api_name}", field_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -139,14 +137,13 @@ impl CustomObjectFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -166,12 +163,12 @@ impl CustomObjectFields {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/fields/{field_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
-                    .replace("{field_api_name}", &field_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
+                    .replace("{field_api_name}", field_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -181,14 +178,14 @@ impl CustomObjectFields {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
-    #[doc = "Update a custom object field\n\nUpdated a specific custom object field\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n- `field_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_fields_update_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .update_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            \"some-string\",\n            &rippling_api::types::UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                data_type: Some(serde_json::Value {}),\n                required: Some(false),\n                rql_definition: Some(serde_json::Value {}),\n                is_unique: Some(false),\n                formula_attr_metas: Some(serde_json::Value {}),\n                section: Some(serde_json::Value {}),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n                name_field_details: Some(serde_json::Value {}),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update a custom object field\n\nUpdated a specific custom object field\n\n**Parameters:**\n\n- `custom_object_api_name: &'astr` (required)\n- `field_api_name: &'astr` (required)\n\n```rust,no_run\nasync fn example_custom_object_fields_update_custom_objects_custom_object_api_name_fields(\n) -> anyhow::Result<()> {\n    let client = rippling_api::Client::new_from_env();\n    let result: rippling_api::types::CustomObjectField = client\n        .custom_object_fields()\n        .update_custom_objects_custom_object_api_name_fields(\n            \"some-string\",\n            \"some-string\",\n            &rippling_api::types::UpdateCustomObjectsCustomObjectApiNameFieldsRequestBody {\n                name: Some(\"some-string\".to_string()),\n                description: Some(\"some-string\".to_string()),\n                required: Some(false),\n                is_unique: Some(false),\n                enable_history: Some(false),\n                derived_field_formula: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn update_custom_objects_custom_object_api_name_fields<'a>(
         &'a self,
@@ -198,12 +195,12 @@ impl CustomObjectFields {
     ) -> Result<crate::types::CustomObjectField, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom-objects/{custom_object_api_name}/fields/{field_api_name}"
-                    .replace("{custom_object_api_name}", &custom_object_api_name)
-                    .replace("{field_api_name}", &field_api_name)
+                    .replace("{custom_object_api_name}", custom_object_api_name)
+                    .replace("{field_api_name}", field_api_name)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -217,14 +214,13 @@ impl CustomObjectFields {
                     format_serde_error::SerdeError::new(text.to_string(), err),
                     status,
                 )
-                .into()
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }
