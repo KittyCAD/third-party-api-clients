@@ -5135,9 +5135,6 @@ components:
         title:
           type: string
           description: Job title
-        work_location_id:
-          type: string
-          description: Work Location Id
         work_location:
           type: object
           description: 'Work location for the job
@@ -6902,14 +6899,10 @@ components:
           enum:
           - REMOTE
           - WORK
-        work_location_id:
-          type: string
-          description: The work location, if the worker isn't remote.
       description: ''
       x-rippling-expandable-fields: []
       required:
       - type
-      - work_location_id
   parameters:
     get_id:
       name: id

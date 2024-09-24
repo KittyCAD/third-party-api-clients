@@ -5484,9 +5484,6 @@ pub struct PrototypeJob {
     #[doc = "Job title"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[doc = "Work Location Id"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub work_location_id: Option<String>,
     #[doc = "Work location for the job\n\nExpandable field"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub work_location: Option<PrototypeWorkLocation>,
@@ -5504,7 +5501,7 @@ impl std::fmt::Display for PrototypeJob {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for PrototypeJob {
-    const LENGTH: usize = 7;
+    const LENGTH: usize = 6;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             self.id.clone().into(),
@@ -5517,11 +5514,6 @@ impl tabled::Tabled for PrototypeJob {
             },
             if let Some(title) = &self.title {
                 format!("{:?}", title).into()
-            } else {
-                String::new().into()
-            },
-            if let Some(work_location_id) = &self.work_location_id {
-                format!("{:?}", work_location_id).into()
             } else {
                 String::new().into()
             },
@@ -5540,7 +5532,6 @@ impl tabled::Tabled for PrototypeJob {
             "updated_at".into(),
             "prototype_id".into(),
             "title".into(),
-            "work_location_id".into(),
             "work_location".into(),
         ]
     }
@@ -10418,8 +10409,6 @@ pub struct WorkerLocation {
     #[doc = "The type of location."]
     #[serde(rename = "type")]
     pub type_: WorkerLocationType,
-    #[doc = "The work location, if the worker isn't remote."]
-    pub work_location_id: String,
 }
 
 impl std::fmt::Display for WorkerLocation {
@@ -10434,16 +10423,13 @@ impl std::fmt::Display for WorkerLocation {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for WorkerLocation {
-    const LENGTH: usize = 2;
+    const LENGTH: usize = 1;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            format!("{:?}", self.type_).into(),
-            self.work_location_id.clone().into(),
-        ]
+        vec![format!("{:?}", self.type_).into()]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["type_".into(), "work_location_id".into()]
+        vec!["type_".into()]
     }
 }
 
