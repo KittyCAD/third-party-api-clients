@@ -1,0 +1,66 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = hubspot-users::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `HUBSPOT_USERS_API_TOKEN`.\nlet client = hubspot_users::Client::new_from_env();",
+      "install": "[dependencies]\nhubspot-users = \"0.1.0\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1/get/x-rust",
+    "value": {
+      "example": "/// Retrieves a list of users from an account\n/// \n/// Retrieves a list of users from an account\n/// \n/// **Parameters:**\n/// \n/// - `after: Option<String>`: Results will display maximum 100 users per page. Additional results will be on the next page.\n/// - `limit: Option<i32>`: The number of users to retrieve\nasync fn example_users_get_settings_v_3_get_page() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::CollectionResponsePublicUserForwardPaging = client\n        .users()\n        .get_settings_v_3_get_page(Some(\"some-string\".to_string()), Some(4 as i32))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/users/struct.Users.html#method.get_settings_v_3_get_page"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1/post/x-rust",
+    "value": {
+      "example": "/// Adds a user\n/// \n/// New users will only have minimal permissions, which is contacts-base. A welcome email will prompt them to set a password and log in to HubSpot.\nasync fn example_users_post_settings_v_3_create() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::PublicUser = client\n        .users()\n        .post_settings_v_3_create(&hubspot_users::types::UserProvisionRequest {\n            first_name: Some(\"some-string\".to_string()),\n            last_name: Some(\"some-string\".to_string()),\n            primary_team_id: Some(\"some-string\".to_string()),\n            send_welcome_email: Some(false),\n            role_id: Some(\"some-string\".to_string()),\n            secondary_team_ids: Some(vec![\"some-string\".to_string()]),\n            email: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/users/struct.Users.html#method.post_settings_v_3_create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1roles/get/x-rust",
+    "value": {
+      "example": "/// Retrieves the roles on an account\n/// \n/// Retrieves the roles on an account\nasync fn example_roles_get_settings_v_3_users_get_all() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::CollectionResponsePublicPermissionSetNoPaging =\n        client.roles().get_settings_v_3_users_get_all().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/roles/struct.Roles.html#method.get_settings_v_3_users_get_all"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1teams/get/x-rust",
+    "value": {
+      "example": "/// See details about this account's teams\n/// \n/// View teams for this account\nasync fn example_teams_get_settings_v_3_users_get_all() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::CollectionResponsePublicTeamNoPaging =\n        client.teams().get_settings_v_3_users_get_all().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/teams/struct.Teams.html#method.get_settings_v_3_users_get_all"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1{userId}/delete/x-rust",
+    "value": {
+      "example": "/// Removes a user\n/// \n/// Removes a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.\n/// \n/// **Parameters:**\n/// \n/// - `id_property: Option<crate::types::IdProperty>`: The name of a property with unique user values. Valid values are `USER_ID`(default) or `EMAIL`\n/// - `user_id: &'astr`: Identifier of user to delete (required)\nasync fn example_users_delete_settings_v_3_id_archive() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    client\n        .users()\n        .delete_settings_v_3_id_archive(Some(hubspot_users::types::IdProperty::Email), \"some-string\")\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/users/struct.Users.html#method.delete_settings_v_3_id_archive"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1{userId}/get/x-rust",
+    "value": {
+      "example": "/// Retrieves a user\n/// \n/// Retrieves a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.\n/// \n/// **Parameters:**\n/// \n/// - `id_property: Option<crate::types::IdProperty>`: The name of a property with unique user values. Valid values are `USER_ID`(default) or `EMAIL`\n/// - `user_id: &'astr`: Identifier of user to retrieve (required)\nasync fn example_users_get_settings_v_3_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::PublicUser = client\n        .users()\n        .get_settings_v_3_id_get_by_id(Some(hubspot_users::types::IdProperty::Email), \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/users/struct.Users.html#method.get_settings_v_3_id_get_by_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1settings~1v3~1users~1{userId}/put/x-rust",
+    "value": {
+      "example": "/// Modifies a user\n/// \n/// Modifies a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.\n/// \n/// **Parameters:**\n/// \n/// - `id_property: Option<crate::types::IdProperty>`: The name of a property with unique user values. Valid values are `USER_ID`(default) or `EMAIL`\n/// - `user_id: &'astr`: Identifier of user to retrieve (required)\nasync fn example_users_put_settings_v_3_id_replace() -> anyhow::Result<()> {\n    let client = hubspot_users::Client::new_from_env();\n    let result: hubspot_users::types::PublicUser = client\n        .users()\n        .put_settings_v_3_id_replace(\n            Some(hubspot_users::types::IdProperty::Email),\n            \"some-string\",\n            &hubspot_users::types::PublicUserUpdate {\n                first_name: Some(\"some-string\".to_string()),\n                last_name: Some(\"some-string\".to_string()),\n                primary_team_id: Some(\"some-string\".to_string()),\n                role_id: Some(\"some-string\".to_string()),\n                secondary_team_ids: Some(vec![\"some-string\".to_string()]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/hubspot-users/latest/hubspot-users/users/struct.Users.html#method.put_settings_v_3_id_replace"
+    }
+  }
+]

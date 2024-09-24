@@ -4,6 +4,7 @@ members = [
 	"front",
 	"gusto",
 	"hubspot-contacts",
+	"hubspot-users",
 	"pagerduty",
 	"ramp",
 	"remote",

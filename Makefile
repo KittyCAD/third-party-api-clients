@@ -41,8 +41,8 @@ gusto: openapitor
 # https://api.hubspot.com/api-catalog-public/v1/apis
 # We've just plucked crm -> contacts api spec below.
 # https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/objects/contacts
-.PHONY: hubspot
-hubspot: openapitor
+.PHONY: hubspot-contacts
+hubspot-contacts: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-contacts.json \
 		--target-version 0.1.0 \
@@ -50,6 +50,21 @@ hubspot: openapitor
 		--name hubspot-contacts \
 		--base-url https://api.hubapi.com \
 		--description "A fully generated & opinionated API client for the Hubspot Contacts API." \
+		--request-timeout-seconds 60 \
+
+# root spec for hubspot api:
+# https://api.hubspot.com/api-catalog-public/v1/apis
+# We've just plucked crm -> users api spec below.
+# https://api.hubspot.com/api-catalog-public/v1/apis/users
+.PHONY: hubspot-users
+hubspot-users: openapitor
+	$(openapitor_exe) \
+		--input specs/hubspot-users.json \
+		--target-version 0.1.0 \
+		--output ./hubspot-users \
+		--name hubspot-users \
+		--base-url https://api.hubspot.com \
+		--description "A fully generated & opinionated API client for the Hubspot Users API." \
 		--request-timeout-seconds 60 \
 
 # Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
