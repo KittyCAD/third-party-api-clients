@@ -2313,14 +2313,17 @@ impl tabled::Tabled for CreateComment {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum CreateConversationType {
     #[serde(rename = "discussion")]
     #[display("discussion")]
-    #[default]
     Discussion,
 }
 
+impl std::default::Default for CreateConversationType {
+    fn default() -> Self {
+        CreateConversationType::Discussion
+    }
+}
 
 #[doc = "Details for the starter comment"]
 #[derive(
@@ -2657,17 +2660,20 @@ impl tabled::Tabled for UpdateCustomField {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum Mode {
     #[serde(rename = "private")]
     #[display("private")]
-    #[default]
     Private,
     #[serde(rename = "shared")]
     #[display("shared")]
     Shared,
 }
 
+impl std::default::Default for Mode {
+    fn default() -> Self {
+        Mode::Private
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3387,17 +3393,20 @@ impl tabled::Tabled for Sender {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum BodyFormat {
     #[serde(rename = "html")]
     #[display("html")]
     Html,
     #[serde(rename = "markdown")]
     #[display("markdown")]
-    #[default]
     Markdown,
 }
 
+impl std::default::Default for BodyFormat {
+    fn default() -> Self {
+        BodyFormat::Markdown
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -3583,17 +3592,20 @@ impl tabled::Tabled for ImportMessageSender {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum ImportMessageBodyFormat {
     #[serde(rename = "html")]
     #[display("html")]
     Html,
     #[serde(rename = "markdown")]
     #[display("markdown")]
-    #[default]
     Markdown,
 }
 
+impl std::default::Default for ImportMessageBodyFormat {
+    fn default() -> Self {
+        ImportMessageBodyFormat::Markdown
+    }
+}
 
 #[doc = "Type of the message to import. Default is `email`."]
 #[derive(
@@ -3609,11 +3621,9 @@ pub enum ImportMessageBodyFormat {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum ImportMessageType {
     #[serde(rename = "email")]
     #[display("email")]
-    #[default]
     Email,
     #[serde(rename = "sms")]
     #[display("sms")]
@@ -3626,6 +3636,11 @@ pub enum ImportMessageType {
     Custom,
 }
 
+impl std::default::Default for ImportMessageType {
+    fn default() -> Self {
+        ImportMessageType::Email
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -9008,14 +9023,17 @@ impl tabled::Tabled for ShiftResponseUnderscoreLinks {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum ShiftResponseColor {
     #[serde(rename = "black")]
     #[display("black")]
-    #[default]
     Black,
 }
 
+impl std::default::Default for ShiftResponseColor {
+    fn default() -> Self {
+        ShiftResponseColor::Black
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,

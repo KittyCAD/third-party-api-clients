@@ -21,7 +21,7 @@ impl ReceiptIntegrations {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/receipt-integrations/opt-out"
             ),
@@ -40,10 +40,10 @@ impl ReceiptIntegrations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -56,7 +56,7 @@ impl ReceiptIntegrations {
     {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/receipt-integrations/opt-out"
             ),
@@ -75,10 +75,10 @@ impl ReceiptIntegrations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -90,7 +90,7 @@ impl ReceiptIntegrations {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/receipt-integrations/opt-out/{mailbox_opted_out_email_uuid}".replace(
@@ -106,10 +106,10 @@ impl ReceiptIntegrations {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

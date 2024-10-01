@@ -27,7 +27,7 @@ impl User {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/users"),
+            format!("{}/{}", self.client.base_url, "developer/v1/users"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -72,10 +72,10 @@ impl User {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -87,7 +87,7 @@ impl User {
     ) -> Result<crate::types::DeferredTaskUUID, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/users/deferred"),
+            format!("{}/{}", self.client.base_url, "developer/v1/users/deferred"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -103,10 +103,10 @@ impl User {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -118,7 +118,7 @@ impl User {
     ) -> Result<crate::types::UserDeferredTask, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/users/deferred/status/{task_id}"
@@ -138,10 +138,10 @@ impl User {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -153,7 +153,7 @@ impl User {
     ) -> Result<crate::types::User, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/users/{user_id}".replace("{user_id}", &format!("{}", user_id))
@@ -172,10 +172,10 @@ impl User {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -188,7 +188,7 @@ impl User {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/users/{user_id}".replace("{user_id}", &format!("{}", user_id))
@@ -202,10 +202,10 @@ impl User {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -218,7 +218,7 @@ impl User {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/users/{user_id}".replace("{user_id}", &format!("{}", user_id))
@@ -232,10 +232,10 @@ impl User {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

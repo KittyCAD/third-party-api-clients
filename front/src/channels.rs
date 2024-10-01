@@ -23,7 +23,7 @@ impl Channels {
     ) -> Result<crate::types::ListChannelsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "channels"),
+            format!("{}/{}", self.client.base_url, "channels"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -38,10 +38,10 @@ impl Channels {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -59,7 +59,7 @@ impl Channels {
     ) -> Result<crate::types::ListTeamChannelsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/channels".replace("{team_id}", team_id)
@@ -78,10 +78,10 @@ impl Channels {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -99,7 +99,7 @@ impl Channels {
     ) -> Result<crate::types::ListTeammateChannelsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/channels".replace("{teammate_id}", teammate_id)
@@ -118,10 +118,10 @@ impl Channels {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -138,7 +138,7 @@ impl Channels {
     ) -> Result<crate::types::ChannelResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}".replace("{channel_id}", channel_id)
@@ -157,10 +157,10 @@ impl Channels {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -173,7 +173,7 @@ impl Channels {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}".replace("{channel_id}", channel_id)
@@ -187,10 +187,10 @@ impl Channels {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -208,7 +208,7 @@ impl Channels {
     ) -> Result<crate::types::ValidateChannelResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/validate".replace("{channel_id}", channel_id)
@@ -227,10 +227,10 @@ impl Channels {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -254,7 +254,7 @@ impl Channels {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/channels".replace("{inbox_id}", inbox_id)
@@ -268,10 +268,10 @@ impl Channels {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

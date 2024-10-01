@@ -20,7 +20,7 @@ impl CompanyBankAccountsBeta {
     ) -> Result<Vec<crate::types::CompanyBankAccount>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/bank_accounts"
@@ -40,10 +40,10 @@ impl CompanyBankAccountsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -56,7 +56,7 @@ impl CompanyBankAccountsBeta {
     ) -> Result<crate::types::CompanyBankAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/bank_accounts"
@@ -77,10 +77,10 @@ impl CompanyBankAccountsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -94,7 +94,7 @@ impl CompanyBankAccountsBeta {
     ) -> Result<crate::types::CompanyBankAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id_or_uuid}/bank_accounts/{bank_account_uuid}/verify"
@@ -116,10 +116,10 @@ impl CompanyBankAccountsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

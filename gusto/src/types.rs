@@ -1,4 +1,6 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
+use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -4022,11 +4024,9 @@ impl tabled::Tabled for EarningType {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum DeductionReducesTaxableIncome {
     #[serde(rename = "unset")]
     #[display("unset")]
-    #[default]
     Unset,
     #[serde(rename = "reduces_taxable_income")]
     #[display("reduces_taxable_income")]
@@ -4036,6 +4036,11 @@ pub enum DeductionReducesTaxableIncome {
     DoesNotReduceTaxableIncome,
 }
 
+impl std::default::Default for DeductionReducesTaxableIncome {
+    fn default() -> Self {
+        DeductionReducesTaxableIncome::Unset
+    }
+}
 
 #[doc = "The representation of an employee benefit."]
 #[derive(
@@ -5816,14 +5821,17 @@ impl tabled::Tabled for PostEmployeeYtdBenefitAmountsFromDifferentCompanyApplica
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum Include {
     #[serde(rename = "custom_fields")]
     #[display("custom_fields")]
-    #[default]
     CustomFields,
 }
 
+impl std::default::Default for Include {
+    fn default() -> Self {
+        Include::CustomFields
+    }
+}
 
 #[derive(
     serde :: Serialize,
@@ -5838,14 +5846,17 @@ pub enum Include {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum GetInclude {
     #[serde(rename = "custom_fields")]
     #[display("custom_fields")]
-    #[default]
     CustomFields,
 }
 
+impl std::default::Default for GetInclude {
+    fn default() -> Self {
+        GetInclude::CustomFields
+    }
+}
 
 #[doc = "PutEmployeesRequestBody."]
 #[derive(
@@ -5952,14 +5963,17 @@ impl tabled::Tabled for PutEmployeesRequestBody {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum GetCompaniesCompanyIdInclude {
     #[serde(rename = "custom_fields")]
     #[display("custom_fields")]
-    #[default]
     CustomFields,
 }
 
+impl std::default::Default for GetCompaniesCompanyIdInclude {
+    fn default() -> Self {
+        GetCompaniesCompanyIdInclude::CustomFields
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,

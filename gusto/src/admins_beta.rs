@@ -20,7 +20,7 @@ impl AdminsBeta {
     ) -> Result<Vec<crate::types::Admin>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/admins".replace("{company_id}", company_id)
@@ -39,10 +39,10 @@ impl AdminsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -55,7 +55,7 @@ impl AdminsBeta {
     ) -> Result<crate::types::Admin, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/admins".replace("{company_id}", company_id)
@@ -75,10 +75,10 @@ impl AdminsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

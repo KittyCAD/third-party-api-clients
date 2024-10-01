@@ -33,7 +33,7 @@ impl Garnishments {
     ) -> Result<Vec<crate::types::Garnishment>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/garnishments".replace("{employee_id}", employee_id)
@@ -52,10 +52,10 @@ impl Garnishments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -68,7 +68,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/garnishments".replace("{employee_id}", employee_id)
@@ -88,10 +88,10 @@ impl Garnishments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -114,7 +114,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/garnishments/{garnishment_id}".replace("{garnishment_id}", garnishment_id)
@@ -133,10 +133,10 @@ impl Garnishments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -149,7 +149,7 @@ impl Garnishments {
     ) -> Result<crate::types::Garnishment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/garnishments/{garnishment_id}".replace("{garnishment_id}", garnishment_id)
@@ -169,10 +169,10 @@ impl Garnishments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -25,7 +25,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -44,10 +44,10 @@ impl Jobs {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -60,7 +60,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -80,10 +80,10 @@ impl Jobs {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -100,7 +100,7 @@ impl Jobs {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}".replace("{job_id}", job_id)
@@ -113,10 +113,10 @@ impl Jobs {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -135,7 +135,7 @@ impl Jobs {
     ) -> Result<Vec<crate::types::Job>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/jobs".replace("{employee_id}", employee_id)
@@ -154,10 +154,10 @@ impl Jobs {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -170,7 +170,7 @@ impl Jobs {
     ) -> Result<crate::types::Job, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/jobs".replace("{employee_id}", employee_id)
@@ -190,10 +190,10 @@ impl Jobs {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -206,7 +206,7 @@ impl Jobs {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}/compensations".replace("{job_id}", job_id)
@@ -226,10 +226,10 @@ impl Jobs {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

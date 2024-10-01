@@ -24,7 +24,7 @@ impl Beta {
     ) -> Result<crate::types::ApiToken, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "api-token-status"),
+            format!("{}/{}", self.client.base_url, "api-token-status"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -39,10 +39,10 @@ impl Beta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -26,7 +26,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxChannelsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/channels".replace("{inbox_id}", inbox_id)
@@ -45,10 +45,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -63,7 +63,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "inboxes"),
+            format!("{}/{}", self.client.base_url, "inboxes"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -78,10 +78,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -99,7 +99,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "inboxes"),
+            format!("{}/{}", self.client.base_url, "inboxes"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -109,10 +109,10 @@ impl Inboxes {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -130,7 +130,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListTeamInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/inboxes".replace("{team_id}", team_id)
@@ -149,10 +149,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -173,7 +173,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/inboxes".replace("{team_id}", team_id)
@@ -187,10 +187,10 @@ impl Inboxes {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -207,7 +207,7 @@ impl Inboxes {
     ) -> Result<crate::types::InboxResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}".replace("{inbox_id}", inbox_id)
@@ -226,10 +226,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -244,7 +244,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/conversations".replace("{inbox_id}", inbox_id)
@@ -277,10 +277,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -298,7 +298,7 @@ impl Inboxes {
     ) -> Result<crate::types::ListInboxTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
@@ -317,10 +317,10 @@ impl Inboxes {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -340,7 +340,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
@@ -354,10 +354,10 @@ impl Inboxes {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -377,7 +377,7 @@ impl Inboxes {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "inboxes/{inbox_id}/teammates".replace("{inbox_id}", inbox_id)
@@ -391,10 +391,10 @@ impl Inboxes {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

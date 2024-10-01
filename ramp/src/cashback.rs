@@ -53,7 +53,7 @@ impl Cashback {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/cashbacks"),
+            format!("{}/{}", self.client.base_url, "developer/v1/cashbacks"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -98,10 +98,10 @@ impl Cashback {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -119,7 +119,7 @@ impl Cashback {
     ) -> Result<crate::types::Cashback, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/cashbacks/{cashback_id}".replace("{cashback_id}", cashback_id)
@@ -138,10 +138,10 @@ impl Cashback {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

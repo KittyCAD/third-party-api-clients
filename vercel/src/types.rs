@@ -1,4 +1,6 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
+use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -2136,14 +2138,17 @@ impl tabled::Tabled for Address {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum Interval {
     #[serde(rename = "month")]
     #[display("month")]
-    #[default]
     Month,
 }
 
+impl std::default::Default for Interval {
+    fn default() -> Self {
+        Interval::Month
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -8107,14 +8112,17 @@ pub enum Status {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum PricingExperiment {
     #[serde(rename = "august-2022")]
     #[display("august-2022")]
-    #[default]
     August2022,
 }
 
+impl std::default::Default for PricingExperiment {
+    fn default() -> Self {
+        PricingExperiment::August2022
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
@@ -9336,14 +9344,17 @@ impl tabled::Tabled for NorthstarMigration {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum Version {
     #[serde(rename = "northstar")]
     #[display("northstar")]
-    #[default]
     Northstar,
 }
 
+impl std::default::Default for Version {
+    fn default() -> Self {
+        Version::Northstar
+    }
+}
 
 #[doc = "Data for the currently authenticated User."]
 #[derive(

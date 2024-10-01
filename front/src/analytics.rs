@@ -20,7 +20,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsReportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "analytics/reports"),
+            format!("{}/{}", self.client.base_url, "analytics/reports"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -36,10 +36,10 @@ impl Analytics {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -56,7 +56,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsReportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "analytics/reports/{report_uid}".replace("{report_uid}", report_uid)
@@ -75,10 +75,10 @@ impl Analytics {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -90,7 +90,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsExportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "analytics/exports"),
+            format!("{}/{}", self.client.base_url, "analytics/exports"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -106,10 +106,10 @@ impl Analytics {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -126,7 +126,7 @@ impl Analytics {
     ) -> Result<crate::types::AnalyticsExportResponse2, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "analytics/exports/{export_id}".replace("{export_id}", export_id)
@@ -145,10 +145,10 @@ impl Analytics {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

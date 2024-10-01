@@ -24,7 +24,7 @@ impl Department {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/departments"),
+            format!("{}/{}", self.client.base_url, "developer/v1/departments"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -49,10 +49,10 @@ impl Department {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -64,7 +64,7 @@ impl Department {
     ) -> Result<crate::types::Department, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/departments"),
+            format!("{}/{}", self.client.base_url, "developer/v1/departments"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -80,10 +80,10 @@ impl Department {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -95,7 +95,7 @@ impl Department {
     ) -> Result<crate::types::Department, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/departments/{department_id}"
@@ -115,10 +115,10 @@ impl Department {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -131,7 +131,7 @@ impl Department {
     ) -> Result<crate::types::Department, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/departments/{department_id}"
@@ -152,10 +152,10 @@ impl Department {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -44,7 +44,7 @@ impl Statement {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/statements"),
+            format!("{}/{}", self.client.base_url, "developer/v1/statements"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -77,10 +77,10 @@ impl Statement {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -98,7 +98,7 @@ impl Statement {
     ) -> Result<crate::types::Statement, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/statements/{statement_id}".replace("{statement_id}", statement_id)
@@ -117,10 +117,10 @@ impl Statement {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

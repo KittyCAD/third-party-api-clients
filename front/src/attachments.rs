@@ -25,11 +25,10 @@ impl Attachments {
     ) -> Result<crate::types::Attachment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "download/{attachment_link_id}"
-                    .replace("{attachment_link_id}", attachment_link_id)
+                "download/{attachment_link_id}".replace("{attachment_link_id}", attachment_link_id)
             ),
         );
         req = req.bearer_auth(&self.client.token);
@@ -45,10 +44,10 @@ impl Attachments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

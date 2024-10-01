@@ -28,7 +28,7 @@ impl TransferPayment {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/transfers"),
+            format!("{}/{}", self.client.base_url, "developer/v1/transfers"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -77,10 +77,10 @@ impl TransferPayment {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -99,7 +99,7 @@ impl TransferPayment {
     ) -> Result<crate::types::Transfer, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/transfers/{transfer_id}".replace("{transfer_id}", transfer_id)
@@ -118,10 +118,10 @@ impl TransferPayment {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

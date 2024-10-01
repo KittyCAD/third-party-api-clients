@@ -33,7 +33,7 @@ impl Terminations {
     ) -> Result<Vec<crate::types::Termination>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/terminations".replace("{employee_id}", employee_id)
@@ -52,10 +52,10 @@ impl Terminations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -68,7 +68,7 @@ impl Terminations {
     ) -> Result<crate::types::Termination, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/terminations".replace("{employee_id}", employee_id)
@@ -88,10 +88,10 @@ impl Terminations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

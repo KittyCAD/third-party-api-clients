@@ -26,7 +26,7 @@ impl Accounting {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/accounts"
             ),
@@ -62,10 +62,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -78,7 +78,7 @@ impl Accounting {
     {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/accounts"
             ),
@@ -97,10 +97,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -120,7 +120,7 @@ impl Accounting {
     ) -> Result<crate::types::GeneralLedgerAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/accounts/{gl_account_id}"
@@ -140,10 +140,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -162,7 +162,7 @@ impl Accounting {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/accounts/{gl_account_id}"
@@ -176,10 +176,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -192,7 +192,7 @@ impl Accounting {
     ) -> Result<crate::types::GeneralLedgerAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/accounts/{gl_account_id}"
@@ -213,10 +213,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -233,7 +233,7 @@ impl Accounting {
     ) -> Result<crate::types::AccountingProvider, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/connection"
             ),
@@ -251,10 +251,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -280,7 +280,7 @@ impl Accounting {
     ) -> Result<crate::types::AccountingProvider, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/connection"
             ),
@@ -299,10 +299,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -315,7 +315,7 @@ impl Accounting {
     pub async fn delete_connection_resouce<'a>(&'a self) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/connection"
             ),
@@ -327,10 +327,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -348,7 +348,7 @@ impl Accounting {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/field-options"
             ),
@@ -380,10 +380,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -396,7 +396,7 @@ impl Accounting {
     {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/field-options"
             ),
@@ -415,10 +415,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -438,7 +438,7 @@ impl Accounting {
     ) -> Result<crate::types::CustomFieldOption, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/field-options/{field_option_id}"
@@ -458,10 +458,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -480,7 +480,7 @@ impl Accounting {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/field-options/{field_option_id}"
@@ -494,10 +494,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -510,7 +510,7 @@ impl Accounting {
     ) -> Result<crate::types::CustomFieldOption, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/field-options/{field_option_id}"
@@ -531,10 +531,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -551,7 +551,7 @@ impl Accounting {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/fields"
             ),
@@ -583,10 +583,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -598,7 +598,7 @@ impl Accounting {
     ) -> Result<crate::types::ApiAccountingCustomFieldResource, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/fields"
             ),
@@ -617,10 +617,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -632,7 +632,7 @@ impl Accounting {
     ) -> Result<crate::types::ApiAccountingCustomFieldResource, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/fields/{field_id}"
@@ -652,10 +652,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -674,7 +674,7 @@ impl Accounting {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/fields/{field_id}"
@@ -688,10 +688,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -704,7 +704,7 @@ impl Accounting {
     ) -> Result<crate::types::ApiAccountingCustomFieldResource, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/fields/{field_id}"
@@ -725,10 +725,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -740,7 +740,7 @@ impl Accounting {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/syncs"
             ),
@@ -753,10 +753,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -774,7 +774,7 @@ impl Accounting {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/vendors"
             ),
@@ -810,10 +810,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -826,7 +826,7 @@ impl Accounting {
     {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url, "developer/v1/accounting/vendors"
             ),
@@ -845,10 +845,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -860,7 +860,7 @@ impl Accounting {
     ) -> Result<crate::types::VendorAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/vendors/{vendor_id}"
@@ -880,10 +880,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -902,7 +902,7 @@ impl Accounting {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/vendors/{vendor_id}"
@@ -916,10 +916,10 @@ impl Accounting {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -932,7 +932,7 @@ impl Accounting {
     ) -> Result<crate::types::VendorAccount, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/accounting/vendors/{vendor_id}"
@@ -953,10 +953,10 @@ impl Accounting {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

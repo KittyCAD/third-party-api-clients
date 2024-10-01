@@ -20,7 +20,7 @@ impl SalesLead {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/leads"),
+            format!("{}/{}", self.client.base_url, "developer/v1/leads"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -30,10 +30,10 @@ impl SalesLead {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -51,7 +51,7 @@ impl SalesLead {
     ) -> Result<crate::types::Lead, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/leads/{sales_lead_id}".replace("{sales_lead_id}", sales_lead_id)
@@ -70,10 +70,10 @@ impl SalesLead {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -85,7 +85,7 @@ impl SalesLead {
     ) -> Result<crate::types::Upload, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/leads/{sales_lead_id}/upload_document"
@@ -105,10 +105,10 @@ impl SalesLead {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

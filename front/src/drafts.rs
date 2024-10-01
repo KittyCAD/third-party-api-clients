@@ -26,7 +26,7 @@ impl Drafts {
     ) -> Result<crate::types::ListConversationDraftsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -46,10 +46,10 @@ impl Drafts {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -62,7 +62,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "conversations/{conversation_id}/drafts"
@@ -83,10 +83,10 @@ impl Drafts {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -99,7 +99,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "channels/{channel_id}/drafts".replace("{channel_id}", channel_id)
@@ -119,10 +119,10 @@ impl Drafts {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -142,7 +142,7 @@ impl Drafts {
     ) -> Result<crate::types::MessageResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{message_id}/".replace("{message_id}", message_id)
@@ -162,10 +162,10 @@ impl Drafts {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -178,7 +178,7 @@ impl Drafts {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "drafts/{draft_id}".replace("{draft_id}", draft_id)
@@ -192,10 +192,10 @@ impl Drafts {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -26,7 +26,7 @@ impl TimeOff {
     ) -> Result<crate::types::ListTimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/timeoff"),
+            format!("{}/{}", self.client.base_url, "v1/timeoff"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -71,10 +71,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -86,7 +86,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "v1/timeoff"),
+            format!("{}/{}", self.client.base_url, "v1/timeoff"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -102,10 +102,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -122,7 +122,7 @@ impl TimeOff {
     ) -> Result<crate::types::ListTimeoffTypesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/timeoff/types"),
+            format!("{}/{}", self.client.base_url, "v1/timeoff/types"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -137,10 +137,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -158,7 +158,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/timeoff/{id}".replace("{timeoff_id}", timeoff_id)
@@ -177,10 +177,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -192,7 +192,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
+            format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -208,10 +208,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -223,7 +223,7 @@ impl TimeOff {
     ) -> Result<crate::types::TimeoffResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
+            format!("{}/{}", self.client.base_url, "v1/timeoff/{id}"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -239,10 +239,10 @@ impl TimeOff {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

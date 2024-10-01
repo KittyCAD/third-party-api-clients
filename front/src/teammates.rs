@@ -23,7 +23,7 @@ impl Teammates {
     ) -> Result<crate::types::ListTeammatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "teammates"),
+            format!("{}/{}", self.client.base_url, "teammates"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -38,10 +38,10 @@ impl Teammates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -58,7 +58,7 @@ impl Teammates {
     ) -> Result<crate::types::TeammateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
@@ -77,10 +77,10 @@ impl Teammates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -93,7 +93,7 @@ impl Teammates {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}".replace("{teammate_id}", teammate_id)
@@ -107,10 +107,10 @@ impl Teammates {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -125,7 +125,7 @@ impl Teammates {
     ) -> Result<crate::types::ListAssignedConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/conversations".replace("{teammate_id}", teammate_id)
@@ -158,10 +158,10 @@ impl Teammates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -180,7 +180,7 @@ impl Teammates {
     ) -> Result<crate::types::ListTeammateInboxesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/inboxes".replace("{teammate_id}", teammate_id)
@@ -199,10 +199,10 @@ impl Teammates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

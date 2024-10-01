@@ -25,7 +25,7 @@ impl CurrentUser {
     ) -> Result<crate::types::CurrentUser, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/me"),
+            format!("{}/{}", self.client.base_url, "v1/me"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -40,10 +40,10 @@ impl CurrentUser {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

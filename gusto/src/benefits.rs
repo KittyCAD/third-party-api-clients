@@ -19,7 +19,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::SupportedBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/benefits"),
+            format!("{}/{}", self.client.base_url, "v1/benefits"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let resp = req.send().await?;
@@ -34,10 +34,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -58,7 +58,7 @@ impl Benefits {
     ) -> Result<crate::types::SupportedBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/benefits/{benefit_id}".replace("{benefit_id}", benefit_id)
@@ -77,10 +77,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -103,7 +103,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::CompanyBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/company_benefits".replace("{company_id}", company_id)
@@ -122,10 +122,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -138,7 +138,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/company_benefits".replace("{company_id}", company_id)
@@ -158,10 +158,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -173,7 +173,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/company_benefits/{company_benefit_id}"
@@ -193,10 +193,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -209,7 +209,7 @@ impl Benefits {
     ) -> Result<crate::types::CompanyBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/company_benefits/{company_benefit_id}"
@@ -230,10 +230,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -255,7 +255,7 @@ impl Benefits {
     ) -> Result<Vec<crate::types::EmployeeBenefit>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/employee_benefits"
@@ -275,10 +275,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -291,7 +291,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/employee_benefits"
@@ -312,10 +312,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -328,7 +328,7 @@ impl Benefits {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company"
@@ -343,10 +343,10 @@ impl Benefits {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -358,7 +358,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -378,10 +378,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -394,7 +394,7 @@ impl Benefits {
     ) -> Result<crate::types::EmployeeBenefit, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -415,10 +415,10 @@ impl Benefits {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -437,7 +437,7 @@ impl Benefits {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employee_benefits/{employee_benefit_id}"
@@ -451,10 +451,10 @@ impl Benefits {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

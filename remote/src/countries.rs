@@ -19,7 +19,7 @@ impl Countries {
     ) -> Result<crate::types::CountriesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/countries"),
+            format!("{}/{}", self.client.base_url, "v1/countries"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -34,10 +34,10 @@ impl Countries {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -61,7 +61,7 @@ impl Countries {
     ) -> Result<crate::types::HolidaysResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/countries/{country_code}/holidays/{year}"
@@ -88,10 +88,10 @@ impl Countries {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -115,7 +115,7 @@ impl Countries {
     ) -> Result<crate::types::CountryFormResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/countries/{country_code}/{form}"
@@ -136,10 +136,10 @@ impl Countries {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

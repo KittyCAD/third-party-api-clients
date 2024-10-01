@@ -30,7 +30,7 @@ impl JobApplicantsBeta {
     ) -> Result<Vec<crate::types::JobApplicant>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/job_applicants".replace("{company_id}", company_id)
@@ -49,10 +49,10 @@ impl JobApplicantsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -65,7 +65,7 @@ impl JobApplicantsBeta {
     ) -> Result<crate::types::JobApplicant, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/job_applicants".replace("{company_id}", company_id)
@@ -85,10 +85,10 @@ impl JobApplicantsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -101,7 +101,7 @@ impl JobApplicantsBeta {
     ) -> Result<crate::types::JobApplicant, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/job_applicants/{job_applicant_uuid}"
@@ -122,10 +122,10 @@ impl JobApplicantsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -139,7 +139,7 @@ impl JobApplicantsBeta {
     ) -> Result<crate::types::JobApplicant, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/job_applicants/{job_applicant_uuid}"
@@ -161,10 +161,10 @@ impl JobApplicantsBeta {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -177,7 +177,7 @@ impl JobApplicantsBeta {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/job_applicants/{job_applicant_uuid}"
@@ -192,10 +192,10 @@ impl JobApplicantsBeta {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

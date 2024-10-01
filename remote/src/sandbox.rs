@@ -21,7 +21,7 @@ impl Sandbox {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/sandbox/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -41,10 +41,10 @@ impl Sandbox {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -57,7 +57,7 @@ impl Sandbox {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/sandbox/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -77,10 +77,10 @@ impl Sandbox {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

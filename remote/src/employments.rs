@@ -22,7 +22,7 @@ impl Employments {
     ) -> Result<crate::types::ListEmploymentsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "v1/employments"),
+            format!("{}/{}", self.client.base_url, "v1/employments"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -51,10 +51,10 @@ impl Employments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -66,7 +66,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "v1/employments"),
+            format!("{}/{}", self.client.base_url, "v1/employments"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -82,10 +82,10 @@ impl Employments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -97,7 +97,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -116,10 +116,10 @@ impl Employments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -132,7 +132,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -152,10 +152,10 @@ impl Employments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -168,7 +168,7 @@ impl Employments {
     ) -> Result<crate::types::EmploymentResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/employments/{employment_id}".replace("{employment_id}", employment_id)
@@ -188,10 +188,10 @@ impl Employments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

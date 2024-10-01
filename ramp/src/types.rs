@@ -1,4 +1,6 @@
 #![doc = r" This module contains the generated types for the library."]
+#[cfg(feature = "tabled")]
+use tabled::Tabled;
 pub mod base64 {
     #![doc = " Base64 data that encodes to url safe base64, but can decode from multiple"]
     #![doc = " base64 implementations to account for various clients and libraries. Compatible"]
@@ -6916,20 +6918,23 @@ impl tabled::Tabled for ApiUserDeferredTaskData {
 )]
 #[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 #[cfg_attr(feature = "tabled", derive(tabled::Tabled))]
-#[derive(Default)]
 pub enum ReassignApprovalsBehavior {
     #[serde(rename = "DO_NOT_REPLACE")]
     #[display("DO_NOT_REPLACE")]
     DoNotReplace,
     #[serde(rename = "REPLACE_WITH_MANAGER")]
     #[display("REPLACE_WITH_MANAGER")]
-    #[default]
     ReplaceWithManager,
     #[serde(rename = "REPLACE_WITH_USER")]
     #[display("REPLACE_WITH_USER")]
     ReplaceWithUser,
 }
 
+impl std::default::Default for ReassignApprovalsBehavior {
+    fn default() -> Self {
+        ReassignApprovalsBehavior::ReplaceWithManager
+    }
+}
 
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,

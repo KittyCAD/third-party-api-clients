@@ -33,7 +33,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -52,10 +52,10 @@ impl Compensations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -68,7 +68,7 @@ impl Compensations {
     ) -> Result<crate::types::Compensation, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PUT,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/compensations/{compensation_id}".replace("{compensation_id}", compensation_id)
@@ -88,10 +88,10 @@ impl Compensations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -103,7 +103,7 @@ impl Compensations {
     ) -> Result<Vec<crate::types::Compensation>, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/jobs/{job_id}/compensations".replace("{job_id}", job_id)
@@ -122,10 +122,10 @@ impl Compensations {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -25,7 +25,7 @@ impl CustomFields {
     ) -> Result<crate::types::ListContactCustomFieldsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "contacts/custom_fields"),
+            format!("{}/{}", self.client.base_url, "contacts/custom_fields"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -40,10 +40,10 @@ impl CustomFields {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -62,7 +62,7 @@ impl CustomFields {
     ) -> Result<crate::types::ListCustomFieldsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "custom_fields"),
+            format!("{}/{}", self.client.base_url, "custom_fields"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -77,10 +77,10 @@ impl CustomFields {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -93,7 +93,7 @@ impl CustomFields {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "custom_fields/{custom_field_id}".replace("{custom_field_id}", custom_field_id)
@@ -107,10 +107,10 @@ impl CustomFields {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

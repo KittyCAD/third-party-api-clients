@@ -23,7 +23,7 @@ impl Tags {
     ) -> Result<crate::types::ListTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "tags"),
+            format!("{}/{}", self.client.base_url, "tags"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -38,10 +38,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -60,7 +60,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "tags"),
+            format!("{}/{}", self.client.base_url, "tags"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -76,10 +76,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -91,7 +91,7 @@ impl Tags {
     ) -> Result<crate::types::ListTeamTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/tags".replace("{team_id}", team_id)
@@ -110,10 +110,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -126,7 +126,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/tags".replace("{team_id}", team_id)
@@ -146,10 +146,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -167,7 +167,7 @@ impl Tags {
     ) -> Result<crate::types::ListTeammateTagsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
@@ -186,10 +186,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -202,7 +202,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/tags".replace("{teammate_id}", teammate_id)
@@ -222,10 +222,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -243,7 +243,7 @@ impl Tags {
     ) -> Result<crate::types::ListTagChildrenResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/children".replace("{tag_id}", tag_id)
@@ -262,10 +262,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -278,7 +278,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/children".replace("{tag_id}", tag_id)
@@ -298,10 +298,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -313,7 +313,7 @@ impl Tags {
     ) -> Result<crate::types::TagResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -332,10 +332,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -347,7 +347,7 @@ impl Tags {
     pub async fn delete<'a>(&'a self, tag_id: &'a str) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -360,10 +360,10 @@ impl Tags {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -376,7 +376,7 @@ impl Tags {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}".replace("{tag_id}", tag_id)
@@ -390,10 +390,10 @@ impl Tags {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -408,7 +408,7 @@ impl Tags {
     ) -> Result<crate::types::ListTaggedConversationsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "tags/{tag_id}/conversations".replace("{tag_id}", tag_id)
@@ -441,10 +441,10 @@ impl Tags {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

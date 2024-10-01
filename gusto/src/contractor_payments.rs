@@ -22,11 +22,10 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPaymentSummary, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "v1/companies/{company_id}/contractor_payments"
-                    .replace("{company_id}", company_id)
+                "v1/companies/{company_id}/contractor_payments".replace("{company_id}", company_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
@@ -52,10 +51,10 @@ impl ContractorPayments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -73,17 +72,16 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPayment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
-                "v1/companies/{company_id}/contractor_payments"
-                    .replace("{company_id}", company_id)
+                "v1/companies/{company_id}/contractor_payments".replace("{company_id}", company_id)
             ),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![
             ("contractor_id", format!("{}", contractor_id)),
-            ("date", date.to_string()),
+            ("date", format!("{}", date)),
         ];
         if let Some(p) = bonus {
             query_params.push(("bonus", format!("{}", p)));
@@ -114,10 +112,10 @@ impl ContractorPayments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -139,7 +137,7 @@ impl ContractorPayments {
     ) -> Result<crate::types::ContractorPayment, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments/{contractor_payment_id_or_uuid}"
@@ -163,10 +161,10 @@ impl ContractorPayments {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -179,7 +177,7 @@ impl ContractorPayments {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "v1/companies/{company_id}/contractor_payments/{contractor_payment_id_or_uuid}"
@@ -197,10 +195,10 @@ impl ContractorPayments {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

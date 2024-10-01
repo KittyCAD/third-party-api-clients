@@ -50,7 +50,7 @@ impl Receipt {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/receipts"),
+            format!("{}/{}", self.client.base_url, "developer/v1/receipts"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -91,10 +91,10 @@ impl Receipt {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -106,7 +106,7 @@ impl Receipt {
     ) -> Result<crate::types::LightReceipt, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/receipts"),
+            format!("{}/{}", self.client.base_url, "developer/v1/receipts"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -122,10 +122,10 @@ impl Receipt {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -137,7 +137,7 @@ impl Receipt {
     ) -> Result<crate::types::Receipt, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/receipts/{receipt_id}"
@@ -157,10 +157,10 @@ impl Receipt {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

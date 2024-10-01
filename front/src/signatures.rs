@@ -26,7 +26,7 @@ impl Signatures {
     ) -> Result<crate::types::ListTeammateSignaturesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
@@ -45,10 +45,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -61,7 +61,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/signatures".replace("{teammate_id}", teammate_id)
@@ -81,10 +81,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -102,7 +102,7 @@ impl Signatures {
     ) -> Result<crate::types::ListTeamSignaturesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/signatures".replace("{team_id}", team_id)
@@ -121,10 +121,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -149,7 +149,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/signatures".replace("{team_id}", team_id)
@@ -169,10 +169,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -184,7 +184,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -203,10 +203,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -221,7 +221,7 @@ impl Signatures {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -234,10 +234,10 @@ impl Signatures {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -250,7 +250,7 @@ impl Signatures {
     ) -> Result<crate::types::SignatureResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "signatures/{signature_id}".replace("{signature_id}", signature_id)
@@ -270,10 +270,10 @@ impl Signatures {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

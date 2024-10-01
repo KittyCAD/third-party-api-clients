@@ -24,7 +24,7 @@ impl SpendProgram {
     > {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "developer/v1/spend-programs"),
+            format!("{}/{}", self.client.base_url, "developer/v1/spend-programs"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         let mut query_params = vec![];
@@ -49,10 +49,10 @@ impl SpendProgram {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -64,7 +64,7 @@ impl SpendProgram {
     ) -> Result<crate::types::ApiSpendProgramResource, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "developer/v1/spend-programs"),
+            format!("{}/{}", self.client.base_url, "developer/v1/spend-programs"),
         );
         req = req.bearer_auth(&self.client.token.read().await.access_token);
         req = req.json(body);
@@ -80,10 +80,10 @@ impl SpendProgram {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -102,7 +102,7 @@ impl SpendProgram {
     ) -> Result<crate::types::ApiSpendProgramResource, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "developer/v1/spend-programs/{spend_program_id}"
@@ -122,10 +122,10 @@ impl SpendProgram {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

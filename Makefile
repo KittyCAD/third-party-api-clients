@@ -45,7 +45,7 @@ gusto: openapitor
 hubspot-contacts: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-contacts.json \
-		--target-version 0.1.0 \
+		--target-version 0.1.1 \
 		--output ./hubspot-contacts \
 		--name hubspot-contacts \
 		--base-url https://api.hubapi.com \
@@ -60,7 +60,7 @@ hubspot-contacts: openapitor
 hubspot-users: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-users.json \
-		--target-version 0.1.0 \
+		--target-version 0.1.1 \
 		--output ./hubspot-users \
 		--name hubspot-users \
 		--base-url https://api.hubspot.com \
@@ -98,7 +98,7 @@ ramp: openapitor
 remote: openapitor
 	$(openapitor_exe) \
 		--input specs/remote.json \
-		--target-version 0.1.0 \
+		--target-version 0.1.1 \
 		--output ./remote \
 		--name remote-api \
 		--description "A fully generated & opinionated API client for the Remote API." \
@@ -110,7 +110,7 @@ remote: openapitor
 rippling: openapitor
 	$(openapitor_exe) \
 		--input specs/rippling.yaml \
-		--target-version 0.1.6 \
+		--target-version 0.1.7 \
 		--output ./rippling \
 		--name rippling-api \
 		--description "A fully generated & opinionated API client for the Rippling API." \
@@ -136,7 +136,7 @@ twilio: openapitor
 vercel: openapitor
 	$(openapitor_exe) \
 		--input specs/vercel.json \
-		--target-version 0.1.0 \
+		--target-version 0.1.1 \
 		--output ./vercel \
 		--name vercel-api \
 		--description "A fully generated & opinionated API client for the Vercel API." \

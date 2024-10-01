@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! hubspot-users = "0.1.0"
+//! hubspot-users = "0.1.1"
 //! ```
 //!
 //! ## Basic example
@@ -143,7 +143,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.hubapi.com".to_string(),
+                        base_url: "https://api.hubspot.com".to_string(),
 
                         client,
                         client_http1_only,
@@ -157,7 +157,7 @@ impl Client {
             match (builder_http.build(), builder_websocket.build()) {
                 (Ok(c), Ok(c1)) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.hubapi.com".to_string(),
+                    base_url: "https://api.hubspot.com".to_string(),
 
                     client: c,
                     client_http1_only: c1,
@@ -195,7 +195,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.hubapi.com".to_string(),
+                        base_url: "https://api.hubspot.com".to_string(),
 
                         client,
                     }
@@ -208,7 +208,7 @@ impl Client {
             match builder_http.build() {
                 Ok(c) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.hubapi.com".to_string(),
+                    base_url: "https://api.hubspot.com".to_string(),
 
                     client: c,
                 },
@@ -246,7 +246,7 @@ impl Client {
         Self::new_from_reqwest(token, client)
     }
 
-    /// Set the base URL for the client to something other than the default: <https://api.hubapi.com>.
+    /// Set the base URL for the client to something other than the default: <https://api.hubspot.com>.
     #[tracing::instrument]
     pub fn set_base_url<H>(&mut self, base_url: H)
     where

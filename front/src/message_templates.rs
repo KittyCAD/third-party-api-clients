@@ -20,7 +20,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::GetChildTemplatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_templates"
@@ -40,10 +40,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -56,7 +56,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_template_folders/{message_template_folder_id}/message_templates"
@@ -77,10 +77,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -96,7 +96,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::ListMessageTemplatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "message_templates"),
+            format!("{}/{}", self.client.base_url, "message_templates"),
         );
         req = req.bearer_auth(&self.client.token);
         let resp = req.send().await?;
@@ -111,10 +111,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -126,7 +126,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!("{}/{}", self.client.base_url, "message_templates"),
+            format!("{}/{}", self.client.base_url, "message_templates"),
         );
         req = req.bearer_auth(&self.client.token);
         req = req.json(body);
@@ -142,10 +142,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -163,7 +163,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::ListTeamMessageTemplatesResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/message_templates".replace("{team_id}", team_id)
@@ -182,10 +182,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -198,7 +198,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teams/{team_id}/message_templates".replace("{team_id}", team_id)
@@ -218,10 +218,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -240,7 +240,7 @@ impl MessageTemplates {
     {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_templates".replace("{teammate_id}", teammate_id)
@@ -259,10 +259,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -275,7 +275,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::POST,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "teammates/{teammate_id}/message_templates".replace("{teammate_id}", teammate_id)
@@ -295,10 +295,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -316,7 +316,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_templates/{message_template_id}"
@@ -336,10 +336,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -355,7 +355,7 @@ impl MessageTemplates {
     ) -> Result<(), crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::DELETE,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_templates/{message_template_id}"
@@ -369,10 +369,10 @@ impl MessageTemplates {
             Ok(())
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -397,7 +397,7 @@ impl MessageTemplates {
     ) -> Result<crate::types::MessageTemplateResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::PATCH,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "message_templates/{message_template_id}"
@@ -418,10 +418,10 @@ impl MessageTemplates {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }

@@ -1,5 +1,5 @@
 pub mod date_time_format {
-    use chrono::{DateTime, TimeZone, Utc};
+    use chrono::{DateTime, NaiveDateTime, Utc};
     use serde::{self, Deserialize, Deserializer};
     const FORMAT: &str = "%Y-%m-%dT%H:%M:%S";
     // The signature of a deserialize_with function must follow the pattern:
@@ -14,8 +14,8 @@ pub mod date_time_format {
         D: Deserializer<'de>,
     {
         let s: String = String::deserialize(deserializer)?;
-        match Utc.datetime_from_str(&s, FORMAT) {
-            Ok(t) => Ok(t),
+        match NaiveDateTime::parse_from_str(&s, FORMAT) {
+            Ok(t) => Ok(t.and_utc()),
             Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{}\"", s)) {
                 Ok(t) => Ok(t),
                 Err(e) => Err(serde::de::Error::custom(format!(
@@ -28,7 +28,7 @@ pub mod date_time_format {
 }
 
 pub mod nullable_date_time_format {
-    use chrono::{DateTime, TimeZone, Utc};
+    use chrono::{DateTime, NaiveDateTime, Utc};
     use serde::{self, Deserialize, Deserializer};
     const FORMAT: &str = "%Y-%m-%dT%H:%M:%S";
     // The signature of a deserialize_with function must follow the pattern:
@@ -45,8 +45,8 @@ pub mod nullable_date_time_format {
         let s: Option<String> = Option::deserialize(deserializer)?;
         if let Some(s) = s {
             // This is standard.
-            match Utc.datetime_from_str(&s, FORMAT) {
-                Ok(t) => Ok(Some(t)),
+            match NaiveDateTime::parse_from_str(&s, FORMAT) {
+                Ok(t) => Ok(Some(t.and_utc())),
                 Err(_) => match serde_json::from_str::<DateTime<Utc>>(&format!("\"{}\"", s)) {
                     Ok(t) => Ok(Some(t)),
                     Err(e) => Err(serde::de::Error::custom(format!(

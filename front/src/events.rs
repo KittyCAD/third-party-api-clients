@@ -22,7 +22,7 @@ impl Events {
     ) -> Result<crate::types::ListEventsResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!("{}/{}", self.client.base_url, "events"),
+            format!("{}/{}", self.client.base_url, "events"),
         );
         req = req.bearer_auth(&self.client.token);
         let mut query_params = vec![];
@@ -51,10 +51,10 @@ impl Events {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 
@@ -74,7 +74,7 @@ impl Events {
     ) -> Result<crate::types::EventResponse, crate::types::error::Error> {
         let mut req = self.client.client.request(
             http::Method::GET,
-            &format!(
+            format!(
                 "{}/{}",
                 self.client.base_url,
                 "events/{event_id}".replace("{event_id}", event_id)
@@ -93,10 +93,10 @@ impl Events {
             })
         } else {
             let text = resp.text().await.unwrap_or_default();
-            return Err(crate::types::error::Error::Server {
+            Err(crate::types::error::Error::Server {
                 body: text.to_string(),
                 status,
-            });
+            })
         }
     }
 }
