@@ -10,26 +10,26 @@
 //!
 //! ### Contact
 //!
-//! 
+//!
 //! | name | url | email |
 //! |----|----|----|
 //! | Twilio Support | <https://support.twilio.com> | support@twilio.com |
-//! 
+//!
 //! ### License
 //!
-//! 
+//!
 //! | name | url |
 //! |----|----|
 //! | Apache 2.0 | <https://www.apache.org/licenses/LICENSE-2.0.html> |
-//! 
+//!
 //!
 //! ## Client Details
 //!
-//! 
+//!
 //!
 //! The documentation for the crate is generated
 //! along with the code to make this library easy to use.
-//! 
+//!
 //!
 //! To install the library, add the following to your `Cargo.toml` file.
 //!
@@ -46,10 +46,7 @@
 //! ```rust,no_run
 //! use twilio_api::Client;
 //!
-//! let client = Client::new(
-//!     String::from("username"),
-//!     String::from("password"),
-//! );
+//! let client = Client::new(String::from("username"), String::from("password"));
 //! ```
 //!
 //! Alternatively, the library can search for most of the variables required for
@@ -65,31 +62,25 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
-//!
 #![allow(missing_docs)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-#[cfg(test)]
-mod tests;
-mod methods;
-pub mod types;
-pub mod utils;
 #[cfg(feature = "requests")]
 pub mod default;
-
+mod methods;
+#[cfg(test)]
+mod tests;
+pub mod types;
+pub mod utils;
 
 #[cfg(feature = "requests")]
 use std::env;
 
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(feature = "requests")]
-static APP_USER_AGENT: &str = concat!(
-    env!("CARGO_PKG_NAME"),
-    ".rs/",
-    env!("CARGO_PKG_VERSION"),
-);
+static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), ".rs/", env!("CARGO_PKG_VERSION"),);
 
 /// Entrypoint for interacting with the API client.
 #[derive(Clone, Debug)]
@@ -111,10 +102,7 @@ impl Client {
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
     #[tracing::instrument]
-    pub fn new<T>(
-        username: T,
-        password: T,
-    ) -> Self
+    pub fn new<T>(username: T, password: T) -> Self
     where
         T: ToString + std::fmt::Debug,
     {
@@ -174,15 +162,11 @@ impl Client {
 
     /// Create a new Client struct from the environment variable: `TWILIO_API_TOKEN`.
     #[tracing::instrument]
-    pub fn new_from_env() -> Self
-    {
+    pub fn new_from_env() -> Self {
         let username = env::var("TWILIO_USERNAME").expect("must set TWILIO_USERNAME");
         let password = env::var("TWILIO_PASSWORD").expect("must set TWILIO_PASSWORD");
 
-        Client::new(
-            username,
-            password,
-        )
+        Client::new(username, password)
     }
 
     /// Create a raw request to our API.
@@ -192,18 +176,14 @@ impl Client {
         method: reqwest::Method,
         uri: &str,
         body: Option<reqwest::Body>,
-    ) -> anyhow::Result<reqwest_middleware::RequestBuilder>
-    {
+    ) -> anyhow::Result<reqwest_middleware::RequestBuilder> {
         let u = if uri.starts_with("https://") || uri.starts_with("http://") {
             uri.to_string()
         } else {
             format!("{}/{}", self.base_url, uri.trim_start_matches('/'))
         };
 
-        let mut req = self.client.request(
-            method,
-            &u,
-        );
+        let mut req = self.client.request(method, &u);
 
         // Add in our authentication.
         req = req.basic_auth(&self.username, Some(&self.password));
@@ -225,10 +205,8 @@ impl Client {
         Ok(req)
     }
 
-
-/// Return a reference to an interface that provides access to default operations.
-               pub fn default(&self) -> default::Default {
-                    default::Default::new(self.clone())
-               }
-
+    /// Return a reference to an interface that provides access to default operations.
+    pub fn default(&self) -> default::Default {
+        default::Default::new(self.clone())
+    }
 }
