@@ -11437,6 +11437,7 @@
               "INVITE_DELETED",
               "INVITE_EXPIRED",
               "INVITE_PENDING",
+              "USER_INACTIVE",
               "USER_ACTIVE",
               "USER_ONBOARDING",
               "USER_SUSPENDED"

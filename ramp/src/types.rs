@@ -11749,6 +11749,9 @@ pub enum UserStatus {
     #[serde(rename = "INVITE_PENDING")]
     #[display("INVITE_PENDING")]
     InvitePending,
+    #[serde(rename = "USER_INACTIVE")]
+    #[display("USER_INACTIVE")]
+    UserInactive,
     #[serde(rename = "USER_ACTIVE")]
     #[display("USER_ACTIVE")]
     UserActive,
