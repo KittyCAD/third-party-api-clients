@@ -25,7 +25,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-hubspot-contacts = "0.1.1"
+hubspot-contacts = "0.1.2"
 ```
 
 ## Basic example
@@ -45,6 +45,7 @@ Alternatively, the library can search for most of the variables required for
 the client in the environment:
 
 - `HUBSPOT_CONTACTS_API_TOKEN`
+
 
 And then you can create a client from the environment.
 

@@ -45,7 +45,7 @@ gusto: openapitor
 hubspot-contacts: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-contacts.json \
-		--target-version 0.1.1 \
+		--target-version 0.1.2 \
 		--output ./hubspot-contacts \
 		--name hubspot-contacts \
 		--base-url https://api.hubapi.com \
