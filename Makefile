@@ -12,18 +12,6 @@ commonroom: openapitor
 		--request-timeout-seconds 60 \
 		--base-url "https://api.commonroom.io/community/v1" $(EXTRA_ARGS)
 
-# Spec is from: https://github.com/frontapp/front-api-specs/blob/main/core-api/core-api.json
-.PHONY: front
-front: openapitor
-	$(openapitor_exe) \
-		--input specs/front.json \
-		--target-version 0.0.3 \
-		--output ./front \
-		--name front-api \
-		--base-url https://api2.frontapp.com \
-		--request-timeout-seconds 60 \
-		--description "A fully generated & opinionated API client for the Front API."
-
 .PHONY: gusto
 gusto: openapitor
 	$(openapitor_exe) \
@@ -153,7 +141,6 @@ openapitor:
 all:
 	make openapitor
 	make commonroom
-	make front
 	make gusto
 	make ramp
 	make remote
