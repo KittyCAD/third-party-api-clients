@@ -570,50 +570,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "front-api"
-version = "0.0.3"
-dependencies = [
- "anyhow",
- "async-trait",
- "base64 0.22.1",
- "bigdecimal",
- "bytes",
- "chrono",
- "clap",
- "data-encoding",
- "dirs",
- "expectorate",
- "format_serde_error",
- "futures",
- "futures-util",
- "http 1.2.0",
- "itertools 0.13.0",
- "log",
- "mime_guess",
- "parse-display 0.10.0",
- "phonenumber",
- "pretty_assertions",
- "rand",
- "reqwest 0.12.12",
- "reqwest-conditional-middleware",
- "reqwest-middleware 0.4.0",
- "reqwest-retry 0.7.0",
- "reqwest-tracing 0.5.5",
- "schemars",
- "serde",
- "serde_bytes",
- "serde_json",
- "serde_urlencoded",
- "tabled",
- "thiserror 2.0.9",
- "tokio",
- "tokio-tungstenite",
- "tracing",
- "url",
- "uuid",
-]
-
-[[package]]
 name = "futures"
 version = "0.3.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
