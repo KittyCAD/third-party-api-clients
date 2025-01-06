@@ -25,7 +25,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-rippling-api = "0.1.7"
+rippling-api = "0.1.8"
 ```
 
 ## Basic example
@@ -45,6 +45,7 @@ Alternatively, the library can search for most of the variables required for
 the client in the environment:
 
 - `RIPPLING_API_TOKEN`
+
 
 And then you can create a client from the environment.
 
