@@ -55,6 +55,7 @@
 //! - `TWILIO_USERNAME`
 //! - `TWILIO_PASSWORD`
 //!
+//!
 //! And then you can create a client from the environment.
 //!
 //! ```rust,no_run
@@ -62,7 +63,9 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
+#![allow(elided_named_lifetimes)]
 #![allow(missing_docs)]
+#![allow(unused_imports)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -160,13 +163,17 @@ impl Client {
         self.base_url = base_url.to_string().trim_end_matches('/').to_string();
     }
 
-    /// Create a new Client struct from the environment variable: `TWILIO_API_TOKEN`.
+    /// Create a new Client struct from the environment variable: `ENV_VARIABLE_PREFIX_USERNAME`
+    /// and `ENV_VARIABLE_PREFIX_PASSWORD`.
     #[tracing::instrument]
     pub fn new_from_env() -> Self {
         let username = env::var("TWILIO_USERNAME").expect("must set TWILIO_USERNAME");
         let password = env::var("TWILIO_PASSWORD").expect("must set TWILIO_PASSWORD");
+        let base_url = env::var("TWILIO_HOST").unwrap_or("https://api.twilio.com".to_string());
 
-        Client::new(username, password)
+        let mut c = Client::new(username, password);
+        c.set_base_url(base_url);
+        c
     }
 
     /// Create a raw request to our API.
