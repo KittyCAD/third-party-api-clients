@@ -44,6 +44,7 @@
 //!
 //! - `REMOTE_API_TOKEN`
 //!
+//!
 //! And then you can create a client from the environment.
 //!
 //! ```rust,no_run
@@ -51,7 +52,9 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
+#![allow(elided_named_lifetimes)]
 #![allow(missing_docs)]
+#![allow(unused_imports)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -262,12 +265,15 @@ impl Client {
         self.base_url = base_url.to_string().trim_end_matches('/').to_string();
     }
 
-    /// Create a new Client struct from the environment variable: `REMOTE_API_TOKEN`.
+    /// Create a new Client struct from the environment variable: `ENV_VARIABLE_PREFIX_API_TOKEN`.
     #[tracing::instrument]
     pub fn new_from_env() -> Self {
         let token = env::var("REMOTE_API_TOKEN").expect("must set REMOTE_API_TOKEN");
+        let base_url = env::var("REMOTE_HOST").unwrap_or("https://gateway.remote.com".to_string());
 
-        Client::new(token)
+        let mut c = Client::new(token);
+        c.set_base_url(base_url);
+        c
     }
 
     /// Create a raw request to our API.

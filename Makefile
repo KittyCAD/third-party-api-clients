@@ -60,7 +60,7 @@ hubspot-contacts: openapitor
 hubspot-users: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-users.json \
-		--target-version 0.1.1 \
+		--target-version 0.1.2 \
 		--output ./hubspot-users \
 		--name hubspot-users \
 		--base-url https://api.hubspot.com \

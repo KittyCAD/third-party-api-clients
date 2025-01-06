@@ -58,6 +58,7 @@ the client in the environment:
 - `GUSTO_CLIENT_SECRET`
 - `GUSTO_REDIRECT_URI`
 
+
 And then you can create a client from the environment.
 
 ```rust,no_run

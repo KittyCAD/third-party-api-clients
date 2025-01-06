@@ -52,6 +52,7 @@ the client in the environment:
 - `RAMP_CLIENT_SECRET`
 - `RAMP_REDIRECT_URI`
 
+
 And then you can create a client from the environment.
 
 ```rust,no_run

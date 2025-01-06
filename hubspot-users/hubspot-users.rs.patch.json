@@ -4,7 +4,7 @@
     "path": "/info/x-rust",
     "value": {
       "client": "// Authenticate via an API token.\nlet client = hubspot-users::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `HUBSPOT_USERS_API_TOKEN`.\nlet client = hubspot_users::Client::new_from_env();",
-      "install": "[dependencies]\nhubspot-users = \"0.1.1\""
+      "install": "[dependencies]\nhubspot-users = \"0.1.2\""
     }
   },
   {

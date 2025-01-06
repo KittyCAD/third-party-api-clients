@@ -50,6 +50,7 @@
 //! - `RAMP_CLIENT_SECRET`
 //! - `RAMP_REDIRECT_URI`
 //!
+//!
 //! And then you can create a client from the environment.
 //!
 //! ```rust,no_run
@@ -57,7 +58,9 @@
 //!
 //! let client = Client::new_from_env(String::from("token"), String::from("refresh-token"));
 //! ```
+#![allow(elided_named_lifetimes)]
 #![allow(missing_docs)]
+#![allow(unused_imports)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -356,9 +359,9 @@ impl Client {
     }
 
     /// Create a new Client struct from the environment variables:
-    ///     - `RAMP_CLIENT_ID`
-    ///     - `RAMP_CLIENT_SECRET`
-    ///     - `RAMP_REDIRECT_URI`
+    ///     - `ENV_VARIABLE_PREFIX_CLIENT_ID`
+    ///     - `ENV_VARIABLE_PREFIX_CLIENT_SECRET`
+    ///     - `ENV_VARIABLE_PREFIX_REDIRECT_URI`
     #[tracing::instrument]
     pub fn new_from_env<T, R>(token: T, refresh_token: R) -> Self
     where
@@ -368,8 +371,11 @@ impl Client {
         let client_id = env::var("RAMP_CLIENT_ID").expect("must set RAMP_CLIENT_ID");
         let client_secret = env::var("RAMP_CLIENT_SECRET").expect("must set RAMP_CLIENT_SECRET");
         let redirect_uri = env::var("RAMP_REDIRECT_URI").expect("must set RAMP_REDIRECT_URI");
+        let base_url = env::var("RAMP_HOST").unwrap_or("https://api.ramp.com".to_string());
 
-        Client::new(client_id, client_secret, redirect_uri, token, refresh_token)
+        let mut c = Client::new(client_id, client_secret, redirect_uri, token, refresh_token);
+        c.set_base_url(base_url);
+        c
     }
 
     /// Return a user consent url with an optional set of scopes.

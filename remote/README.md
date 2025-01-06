@@ -48,6 +48,7 @@ the client in the environment:
 
 - `REMOTE_API_TOKEN`
 
+
 And then you can create a client from the environment.
 
 ```rust,no_run
