@@ -882,7 +882,8 @@
           "job_title": {
             "type": "string",
             "x-struct": null,
-            "x-validate": null
+            "x-validate": null,
+            "nullable": true
           },
           "personal_email": {
             "format": "email",

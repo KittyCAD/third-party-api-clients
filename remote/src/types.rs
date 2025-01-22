@@ -1645,7 +1645,8 @@ pub struct EmploymentBasicParams {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub country_code: Option<String>,
     pub full_name: String,
-    pub job_title: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_title: Option<String>,
     pub personal_email: String,
     #[doc = "Required for employees, optional for contractors"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1672,7 +1673,7 @@ impl tabled::Tabled for EmploymentBasicParams {
             self.company_id.clone().into(),
             format!("{:?}", self.country_code).into(),
             self.full_name.clone().into(),
-            self.job_title.clone().into(),
+            format!("{:?}", self.job_title).into(),
             self.personal_email.clone().into(),
             if let Some(provisional_start_date) = &self.provisional_start_date {
                 format!("{:?}", provisional_start_date).into()
