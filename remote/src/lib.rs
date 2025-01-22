@@ -25,7 +25,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! remote-api = "0.1.1"
+//! remote-api = "0.1.2"
 //! ```
 //!
 //! ## Basic example

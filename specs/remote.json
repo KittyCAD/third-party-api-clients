@@ -599,7 +599,8 @@
           "job_title": {
             "type": "string",
             "x-struct": null,
-            "x-validate": null
+            "x-validate": null,
+            "nullable": true
           },
           "onboarding_tasks": {
             "$ref": "#/components/schemas/OnboardingTasks"
@@ -1764,7 +1765,8 @@
           "job_title": {
             "type": "string",
             "x-struct": null,
-            "x-validate": null
+            "x-validate": null,
+            "nullable": true
           },
           "manager_id": {
             "description": "The user id of the manager, who should have an `admin`, `owner` or `people_manager` role.\nYou can find these users by querying the [Company Managers endpoint](#operation/get_index_company_manager).\n**Update of this field is only available for active employments.**\n",
@@ -2503,7 +2505,8 @@
           "job_title": {
             "type": "string",
             "x-struct": null,
-            "x-validate": null
+            "x-validate": null,
+            "nullable": true
           },
           "status": {
             "$ref": "#/components/schemas/EmploymentStatus"

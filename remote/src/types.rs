@@ -1145,7 +1145,8 @@ pub struct Employment {
     pub files: Option<Vec<File>>,
     pub full_name: String,
     pub id: String,
-    pub job_title: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_title: Option<String>,
     #[doc = "All tasks that need to be completed before marking the employment as ready"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub onboarding_tasks: Option<OnboardingTasks>,
@@ -1207,7 +1208,7 @@ impl tabled::Tabled for Employment {
             },
             self.full_name.clone().into(),
             self.id.clone().into(),
-            self.job_title.clone().into(),
+            format!("{:?}", self.job_title).into(),
             if let Some(onboarding_tasks) = &self.onboarding_tasks {
                 format!("{:?}", onboarding_tasks).into()
             } else {
@@ -2745,7 +2746,8 @@ pub struct EmploymentFullParams {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub emergency_contact_details: Option<serde_json::Value>,
     pub full_name: String,
-    pub job_title: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_title: Option<String>,
     #[doc = "The user id of the manager, who should have an `admin`, `owner` or `people_manager` \
              role.\nYou can find these users by querying the [Company Managers \
              endpoint](#operation/get_index_company_manager).\n**Update of this field is only \
@@ -2816,7 +2818,7 @@ impl tabled::Tabled for EmploymentFullParams {
                 String::new().into()
             },
             self.full_name.clone().into(),
-            self.job_title.clone().into(),
+            format!("{:?}", self.job_title).into(),
             if let Some(manager_id) = &self.manager_id {
                 format!("{:?}", manager_id).into()
             } else {
@@ -3716,7 +3718,8 @@ pub struct MinimalEmployment {
     pub country: Country,
     pub full_name: String,
     pub id: String,
-    pub job_title: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub job_title: Option<String>,
     #[doc = "The status of employment"]
     pub status: EmploymentStatus,
 }
@@ -3739,7 +3742,7 @@ impl tabled::Tabled for MinimalEmployment {
             format!("{:?}", self.country).into(),
             self.full_name.clone().into(),
             self.id.clone().into(),
-            self.job_title.clone().into(),
+            format!("{:?}", self.job_title).into(),
             format!("{:?}", self.status).into(),
         ]
     }

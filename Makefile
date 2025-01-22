@@ -86,7 +86,7 @@ ramp: openapitor
 remote: openapitor
 	$(openapitor_exe) \
 		--input specs/remote.json \
-		--target-version 0.1.1 \
+		--target-version 0.1.2 \
 		--output ./remote \
 		--name remote-api \
 		--description "A fully generated & opinionated API client for the Remote API." \
