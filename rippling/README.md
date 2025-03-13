@@ -25,7 +25,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-rippling-api = "0.1.8"
+rippling-api = "0.1.9"
 ```
 
 ## Basic example

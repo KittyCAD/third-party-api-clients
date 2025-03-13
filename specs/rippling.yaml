@@ -991,6 +991,7 @@ paths:
         \ - Sortable fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/limit'
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       - $ref: '#/components/parameters/cursor'
@@ -1075,6 +1076,7 @@ paths:
         \ `reviewer`\n - Sortable fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/limit'
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       - $ref: '#/components/parameters/cursor'
@@ -6960,6 +6962,13 @@ components:
       allowEmptyValue: false
       schema:
         type: string
+    limit:
+      name: limit
+      in: query
+      allowEmptyValue: false
+      schema:
+        type: integer
+        format: int32
   securitySchemes:
     BearerTokenProduction:
       type: http

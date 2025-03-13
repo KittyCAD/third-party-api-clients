@@ -98,7 +98,7 @@ remote: openapitor
 rippling: openapitor
 	$(openapitor_exe) \
 		--input specs/rippling.yaml \
-		--target-version 0.1.8 \
+		--target-version 0.1.9 \
 		--output ./rippling \
 		--name rippling-api \
 		--description "A fully generated & opinionated API client for the Rippling API." \
