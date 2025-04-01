@@ -37,7 +37,7 @@ impl Cashback {
              \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            \
              Some(uuid::Uuid::from_str(\n                \
              \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            \
-             Some(false),\n            Some(chrono::Utc::now()),\n        )\n        .await?;\n    \
+             Some(true),\n            Some(chrono::Utc::now()),\n        )\n        .await?;\n    \
              println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
