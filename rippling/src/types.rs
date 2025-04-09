@@ -10468,9 +10468,13 @@ impl crate::types::paginate::Pagination for ListCandidatesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -10547,9 +10551,13 @@ impl crate::types::paginate::Pagination for ListCandidateApplicationsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -10626,9 +10634,13 @@ impl crate::types::paginate::Pagination for ListCompaniesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -10705,9 +10717,13 @@ impl crate::types::paginate::Pagination for ListCompensationsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -10967,9 +10983,13 @@ impl crate::types::paginate::Pagination for ListCustomFieldsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11043,9 +11063,13 @@ impl crate::types::paginate::Pagination for ListCustomObjectsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11237,9 +11261,13 @@ impl crate::types::paginate::Pagination for ListDepartmentsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11397,9 +11425,13 @@ impl crate::types::paginate::Pagination for ListEmploymentTypesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11604,9 +11636,13 @@ impl crate::types::paginate::Pagination for ListEntitlementsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11683,9 +11719,13 @@ impl crate::types::paginate::Pagination for ListJobCodesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11847,9 +11887,13 @@ impl crate::types::paginate::Pagination for ListJobDimensionsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -11989,9 +12033,13 @@ impl crate::types::paginate::Pagination for ListJobRequisitionsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -12068,9 +12116,13 @@ impl crate::types::paginate::Pagination for ListLeaveBalancesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -12259,9 +12311,13 @@ impl crate::types::paginate::Pagination for ListLeaveRequestsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -12572,9 +12628,13 @@ impl crate::types::paginate::Pagination for ListLeaveTypesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -12727,9 +12787,13 @@ impl crate::types::paginate::Pagination for ListLegalEntitiesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -12970,9 +13034,13 @@ impl crate::types::paginate::Pagination for ListLevelsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -13167,9 +13235,13 @@ impl crate::types::paginate::Pagination for ListObjectCategoriesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -13327,9 +13399,13 @@ impl crate::types::paginate::Pagination for ListShiftInputsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -13500,9 +13576,13 @@ impl crate::types::paginate::Pagination for ListTeamsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -13651,9 +13731,13 @@ impl crate::types::paginate::Pagination for ListTimeCardsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -13811,9 +13895,13 @@ impl crate::types::paginate::Pagination for ListTimeEntriesResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -14136,9 +14224,13 @@ impl crate::types::paginate::Pagination for ListTracksResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -14269,9 +14361,13 @@ impl crate::types::paginate::Pagination for ListUsersResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -14502,9 +14598,13 @@ impl crate::types::paginate::Pagination for ListWorkLocationsResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -14639,9 +14739,13 @@ impl crate::types::paginate::Pagination for ListWorkersResponse {
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -14715,9 +14819,13 @@ impl crate::types::paginate::Pagination for ListCustomObjectsCustomObjectApiName
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
@@ -15052,9 +15160,13 @@ impl crate::types::paginate::Pagination for ListCustomObjectsCustomObjectApiName
                 req
             ))
         })?;
-        req.url_mut()
-            .query_pairs_mut()
-            .append_pair("next_link", self.next_link.as_deref().unwrap_or(""));
+        *req.url_mut() =
+            url::Url::parse(self.next_link.as_deref().unwrap_or("")).map_err(|_| {
+                crate::types::error::Error::InvalidRequest(format!(
+                    "failed to parse url: {:?}",
+                    self.next_link
+                ))
+            })?;
         Ok(req)
     }
 
