@@ -991,7 +991,6 @@ paths:
         \ - Sortable fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/filter'
-      - $ref: '#/components/parameters/limit'
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       - $ref: '#/components/parameters/cursor'
@@ -1076,7 +1075,6 @@ paths:
         \ `reviewer`\n - Sortable fields: `id`, `created_at`, `updated_at`"
       parameters:
       - $ref: '#/components/parameters/filter'
-      - $ref: '#/components/parameters/limit'
       - $ref: '#/components/parameters/expand'
       - $ref: '#/components/parameters/order_by'
       - $ref: '#/components/parameters/cursor'
