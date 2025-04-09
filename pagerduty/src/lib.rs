@@ -10,7 +10,9 @@ use anyhow::Result;
 use reqwest::{Method, Request, StatusCode, Url};
 use serde::{Deserialize, Serialize};
 
-use crate::types::{EscalationPolicy, EscalationPolicyListResponse, Service, ServiceListResponse, ServiceObject};
+use crate::types::{
+    EscalationPolicy, EscalationPolicyListResponse, Service, ServiceListResponse, ServiceObject,
+};
 
 /// Entrypoint for interacting with the Pagerduty API.
 #[derive(Debug, Clone)]
@@ -34,12 +36,15 @@ impl Client {
         let http = reqwest::Client::builder().build();
         match http {
             Ok(c) => {
-                let retry_policy = reqwest_retry::policies::ExponentialBackoff::builder().build_with_max_retries(3);
+                let retry_policy = reqwest_retry::policies::ExponentialBackoff::builder()
+                    .build_with_max_retries(3);
                 let client = reqwest_middleware::ClientBuilder::new(c)
                     // Trace HTTP requests. See the tracing crate to make use of these traces.
                     .with(reqwest_tracing::TracingMiddleware::default())
                     // Retry failed requests.
-                    .with(reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy))
+                    .with(reqwest_retry::RetryTransientMiddleware::new_with_policy(
+                        retry_policy,
+                    ))
                     .build();
 
                 Self {
@@ -60,7 +65,13 @@ impl Client {
     }
 
     #[tracing::instrument(skip(self, body))]
-    fn request<P, B>(&self, method: Method, path: P, body: &B, query: Option<Vec<(&str, &str)>>) -> Result<Request>
+    fn request<P, B>(
+        &self,
+        method: Method,
+        path: P,
+        body: &B,
+        query: Option<Vec<(&str, &str)>>,
+    ) -> Result<Request>
     where
         P: ToString + std::fmt::Debug,
         B: serde::Serialize,
@@ -233,7 +244,10 @@ impl Client {
     }
 
     #[tracing::instrument(skip(self))]
-    async fn list_escalation_policies_internal(&self, offset: i64) -> Result<EscalationPolicyListResponse> {
+    async fn list_escalation_policies_internal(
+        &self,
+        offset: i64,
+    ) -> Result<EscalationPolicyListResponse> {
         let limit_str = format!("{}", LIMIT);
         let mut query: Vec<(&str, &str)> = vec![("limit", &limit_str)];
 
