@@ -1,4 +1,6 @@
 #![doc = r" This module contains the generated types for the library."]
+
+use std::collections::HashMap;
 #[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
@@ -494,7 +496,7 @@ pub struct StandardError {
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub sub_category: Option<SubCategory>,
+    pub sub_category: Option<HashMap<String, String>>,
     pub context: std::collections::HashMap<String, Vec<String>>,
     pub links: std::collections::HashMap<String, String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
