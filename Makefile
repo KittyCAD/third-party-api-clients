@@ -45,11 +45,11 @@ hubspot-contacts: openapitor
 # https://api.hubspot.com/api-catalog-public/v1/apis
 # We've just plucked crm -> tickets api spec below.
 # https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/objects/tickets
-.PHONY: hubspot-contacts
+.PHONY: hubspot-tickets
 hubspot-tickets: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-tickets.json \
-		--target-version 0.1.2 \
+		--target-version 0.1.0 \
 		--output ./hubspot-tickets \
 		--name hubspot-tickets \
 		--base-url https://api.hubapi.com \

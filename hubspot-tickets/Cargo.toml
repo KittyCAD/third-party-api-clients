@@ -1,7 +1,7 @@
 [package]
 name = "hubspot-tickets"
 description = "A fully generated & opinionated API client for the Hubspot Tickets API."
-version = "0.1.2"
+version = "0.1.0"
 documentation = "https://docs.rs/hubspot-tickets"
 readme = "README.md"
 

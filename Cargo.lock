@@ -951,6 +951,51 @@ dependencies = [
 ]
 
 [[package]]
+name = "hubspot-tickets"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "bigdecimal",
+ "bytes",
+ "chrono",
+ "clap",
+ "data-encoding",
+ "dirs",
+ "expectorate",
+ "format_serde_error",
+ "futures",
+ "futures-util",
+ "getrandom 0.3.1",
+ "http 1.2.0",
+ "itertools 0.13.0",
+ "log",
+ "mime_guess",
+ "parse-display 0.10.0",
+ "phonenumber",
+ "pretty_assertions",
+ "rand 0.9.0",
+ "reqwest 0.12.15",
+ "reqwest-conditional-middleware",
+ "reqwest-middleware 0.4.0",
+ "reqwest-retry 0.7.0",
+ "reqwest-tracing 0.5.5",
+ "schemars",
+ "serde",
+ "serde_bytes",
+ "serde_json",
+ "serde_urlencoded",
+ "tabled 0.18.0",
+ "thiserror 2.0.9",
+ "tokio",
+ "tokio-tungstenite",
+ "tracing",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "hubspot-users"
 version = "0.1.2"
 dependencies = [
