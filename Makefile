@@ -40,6 +40,22 @@ hubspot-contacts: openapitor
 		--description "A fully generated & opinionated API client for the Hubspot Contacts API." \
 		--request-timeout-seconds 60 \
 
+
+# root spec for hubspot api:
+# https://api.hubspot.com/api-catalog-public/v1/apis
+# We've just plucked crm -> tickets api spec below.
+# https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/objects/tickets
+.PHONY: hubspot-contacts
+hubspot-tickets: openapitor
+	$(openapitor_exe) \
+		--input specs/hubspot-tickets.json \
+		--target-version 0.1.2 \
+		--output ./hubspot-tickets \
+		--name hubspot-tickets \
+		--base-url https://api.hubapi.com \
+		--description "A fully generated & opinionated API client for the Hubspot Tickets API." \
+		--request-timeout-seconds 60 \
+
 # root spec for hubspot api:
 # https://api.hubspot.com/api-catalog-public/v1/apis
 # We've just plucked crm -> users api spec below.
