@@ -25,7 +25,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-hubspot-tickets = "0.1.2"
+hubspot-tickets = "0.1.0"
 ```
 
 ## Basic example

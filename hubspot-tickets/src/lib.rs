@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! hubspot-tickets = "0.1.2"
+//! hubspot-tickets = "0.1.0"
 //! ```
 //!
 //! ## Basic example
