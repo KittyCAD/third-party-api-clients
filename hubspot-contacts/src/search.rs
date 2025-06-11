@@ -12,25 +12,7 @@ impl Search {
         Self { client }
     }
 
-    #[doc = "Perform a `POST` request to \
-             `/crm/v3/objects/contacts/search`.\n\n```rust,no_run\nasync fn \
-             example_search_post_crm_v_3_objects_contacts_do() -> anyhow::Result<()> {\n    let \
-             client = hubspot_contacts::Client::new_from_env();\n    let result: \
-             hubspot_contacts::types::CollectionResponseWithTotalSimplePublicObjectForwardPaging = \
-             client\n        .search()\n        \
-             .post_crm_v_3_objects_contacts_do(&hubspot_contacts::types::PublicObjectSearchRequest \
-             {\n            query: Some(\"some-string\".to_string()),\n            limit: 4 as \
-             i32,\n            after: \"some-string\".to_string(),\n            sorts: \
-             vec![\"some-string\".to_string()],\n            properties: \
-             vec![\"some-string\".to_string()],\n            filter_groups: \
-             vec![hubspot_contacts::types::FilterGroup {\n                filters: \
-             vec![hubspot_contacts::types::Filter {\n                    high_value: \
-             Some(\"some-string\".to_string()),\n                    property_name: \
-             \"some-string\".to_string(),\n                    values: \
-             Some(vec![\"some-string\".to_string()]),\n                    value: \
-             Some(\"some-string\".to_string()),\n                    operator: \
-             hubspot_contacts::types::Operator::ContainsToken,\n                }],\n            \
-             }],\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `POST` request to `/crm/v3/objects/contacts/search`.\n\n```rust,no_run\nasync fn example_search_post_crm_v_3_objects_contacts_do() -> anyhow::Result<()> {\n    let client = hubspot_contacts::Client::new_from_env();\n    let result: hubspot_contacts::types::CollectionResponseWithTotalSimplePublicObjectForwardPaging = client\n        .search()\n        .post_crm_v_3_objects_contacts_do(&hubspot_contacts::types::PublicObjectSearchRequest {\n            query: Some(\"some-string\".to_string()),\n            limit: 4 as i32,\n            after: \"some-string\".to_string(),\n            sorts: vec![\"some-string\".to_string()],\n            properties: vec![\"some-string\".to_string()],\n            filter_groups: vec![hubspot_contacts::types::FilterGroup {\n                filters: vec![hubspot_contacts::types::Filter {\n                    high_value: Some(\"some-string\".to_string()),\n                    property_name: \"some-string\".to_string(),\n                    values: Some(vec![\"some-string\".to_string()]),\n                    value: Some(\"some-string\".to_string()),\n                    operator: hubspot_contacts::types::Operator::NotIn,\n                }],\n            }],\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_crm_v_3_objects_contacts_do<'a>(
         &'a self,
