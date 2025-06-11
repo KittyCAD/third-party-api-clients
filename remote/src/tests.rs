@@ -29,7 +29,7 @@ async fn test_remote_employments() {
             company_id: company_id.clone(),
             country_code: Some("AUS".to_string()),
             full_name: "Bob Bobson".to_string(),
-            job_title: "Weebler of Bobs".to_string(),
+            job_title: Some("Weebler of Bobs".to_string()),
             personal_email: test_email.to_string(),
             provisional_start_date: Some(start_date),
             type_: crate::types::EmploymentBasicParamsType::Employee,
