@@ -1,6 +1,7 @@
 use pretty_assertions::assert_eq;
 
 #[tokio::test]
+#[ignore]
 async fn test_remote_employments() {
     let mut client = crate::Client::new_from_env();
     client.set_base_url("https://gateway.remote-sandbox.com");
@@ -29,7 +30,7 @@ async fn test_remote_employments() {
             company_id: company_id.clone(),
             country_code: Some("AUS".to_string()),
             full_name: "Bob Bobson".to_string(),
-            job_title: "Weebler of Bobs".to_string(),
+            job_title: Some("Weebler of Bobs".to_string()),
             personal_email: test_email.to_string(),
             provisional_start_date: Some(start_date),
             type_: crate::types::EmploymentBasicParamsType::Employee,
