@@ -1,30 +1,5 @@
 openapitor_exe = kittycad.rs/target/debug/openapitor
 
-.PHONY: commonroom
-commonroom: openapitor
-	pwd
-	$(openapitor_exe) \
-		--input specs/commonroom.json \
-		--target-version 0.1.0 \
-		--output ./commonroom \
-		--name commonroom-api \
-		--description "A fully generated & opinionated API client for the Common Room API." \
-		--request-timeout-seconds 60 \
-		--base-url "https://api.commonroom.io/community/v1" $(EXTRA_ARGS)
-
-.PHONY: gusto
-gusto: openapitor
-	$(openapitor_exe) \
-		--input specs/gusto.v1.yaml \
-		--target-version 2.1.17 \
-		--output ./gusto \
-		--name gusto-api \
-		--base-url https://api.gusto.com \
-		--description "A fully generated & opinionated API client for the Gusto API." \
-		--token-endpoint "https://api.gusto.com/oauth/token" \
-		--request-timeout-seconds 60 \
-		--user-consent-endpoint "https://api.gusto.com/oauth/authorize"
-
 # root spec for hubspot api:
 # https://api.hubspot.com/api-catalog-public/v1/apis
 # We've just plucked crm -> contacts api spec below.
@@ -71,19 +46,6 @@ hubspot-users: openapitor
 		--description "A fully generated & opinionated API client for the Hubspot Users API." \
 		--request-timeout-seconds 60 \
 
-# Spec is from: npx swagger2openapi --outfile ./specs/mailchimp.json --patch https://api.mailchimp.com/schema/3.0/Swagger.json?expand
-.PHONY: mailchimp
-mailchimp: openapitor
-	$(openapitor_exe) \
-		--input specs/mailchimp.json \
-		--target-version 0.0.2 \
-		--output ./mailchimp \
-		--name mailchimp-api \
-		--base-url https://us1.api.mailchimp.com \
-		--description "A fully generated & opinionated API client for the MailChimp API." \
-		--token-endpoint "https://login.mailchimp.com/oauth2/token" \
-		--request-timeout-seconds 60 \
-		--user-consent-endpoint "https://login.mailchimp.com/oauth2/authorize"
 
 .PHONY: ramp
 ramp: openapitor
@@ -156,8 +118,6 @@ openapitor:
 .PHONY: all
 all:
 	make openapitor
-	make commonroom
-	make gusto
 	make ramp
 	make remote
 	make twilio
