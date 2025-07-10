@@ -1,14 +1,12 @@
 [workspace]
 members = [
-	"commonroom",
-	"gusto",
 	"hubspot-contacts",
 	"hubspot-tickets",
 	"hubspot-users",
-	"pagerduty",
 	"ramp",
 	"remote",
 	"rippling",
 	"twilio",
 	"vercel",
 ]
+resolver = "2"
