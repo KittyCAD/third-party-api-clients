@@ -121,3 +121,8 @@ all:
 	make ramp
 	make remote
 	make twilio
+	make vercel
+	make rippling
+	make hubspot-contacts
+	make hubspot-tickets
+	make hubspot-users
