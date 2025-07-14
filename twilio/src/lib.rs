@@ -104,7 +104,7 @@ impl Client {
     /// Create a new Client struct. It takes a type that can convert into
     /// an &str (`String` or `Vec<u8>` for example). As long as the function is
     /// given a valid API key your requests will work.
-    #[tracing::instrument]
+    #[tracing::instrument(skip_all)]
     pub fn new<T>(username: T, password: T) -> Self
     where
         T: ToString + std::fmt::Debug,
