@@ -1,6 +1,4 @@
 #![doc = r" This module contains the generated types for the library."]
-
-use std::collections::HashMap;
 #[cfg(feature = "tabled")]
 use tabled::Tabled;
 pub mod base64 {
@@ -491,12 +489,6 @@ pub mod error {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct StandardError {
-    #[serde(
-        rename = "subCategory",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub sub_category: Option<HashMap<String, String>>,
     pub context: std::collections::HashMap<String, Vec<String>>,
     pub links: std::collections::HashMap<String, String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -888,6 +880,86 @@ impl tabled::Tabled for SimplePublicObjectId {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct BatchResponseSimplePublicUpsertObjectWithErrors {
+    #[serde(rename = "completedAt")]
+    pub completed_at: chrono::DateTime<chrono::Utc>,
+    #[serde(rename = "numErrors", default, skip_serializing_if = "Option::is_none")]
+    pub num_errors: Option<i32>,
+    #[serde(
+        rename = "requestedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub requested_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(rename = "startedAt")]
+    pub started_at: chrono::DateTime<chrono::Utc>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub links: Option<std::collections::HashMap<String, String>>,
+    pub results: Vec<SimplePublicUpsertObject>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub errors: Option<Vec<StandardError>>,
+    pub status: Status,
+}
+
+impl std::fmt::Display for BatchResponseSimplePublicUpsertObjectWithErrors {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BatchResponseSimplePublicUpsertObjectWithErrors {
+    const LENGTH: usize = 8;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.completed_at).into(),
+            if let Some(num_errors) = &self.num_errors {
+                format!("{:?}", num_errors).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(requested_at) = &self.requested_at {
+                format!("{:?}", requested_at).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.started_at).into(),
+            if let Some(links) = &self.links {
+                format!("{:?}", links).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            if let Some(errors) = &self.errors {
+                format!("{:?}", errors).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.status).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "completed_at".into(),
+            "num_errors".into(),
+            "requested_at".into(),
+            "started_at".into(),
+            "links".into(),
+            "results".into(),
+            "errors".into(),
+            "status".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct BatchReadInputSimplePublicObjectId {
     #[serde(rename = "propertiesWithHistory")]
     pub properties_with_history: Vec<String>,
@@ -933,6 +1005,70 @@ impl tabled::Tabled for BatchReadInputSimplePublicObjectId {
             "id_property".into(),
             "inputs".into(),
             "properties".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct BatchResponseSimplePublicUpsertObject {
+    #[serde(rename = "completedAt")]
+    pub completed_at: chrono::DateTime<chrono::Utc>,
+    #[serde(
+        rename = "requestedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub requested_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(rename = "startedAt")]
+    pub started_at: chrono::DateTime<chrono::Utc>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub links: Option<std::collections::HashMap<String, String>>,
+    pub results: Vec<SimplePublicUpsertObject>,
+    pub status: Status,
+}
+
+impl std::fmt::Display for BatchResponseSimplePublicUpsertObject {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BatchResponseSimplePublicUpsertObject {
+    const LENGTH: usize = 6;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.completed_at).into(),
+            if let Some(requested_at) = &self.requested_at {
+                format!("{:?}", requested_at).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.started_at).into(),
+            if let Some(links) = &self.links {
+                format!("{:?}", links).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.results).into(),
+            format!("{:?}", self.status).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "completed_at".into(),
+            "requested_at".into(),
+            "started_at".into(),
+            "links".into(),
+            "results".into(),
+            "status".into(),
         ]
     }
 }
@@ -1035,6 +1171,35 @@ impl tabled::Tabled for ValueWithTimestamp {
             "value".into(),
             "timestamp".into(),
         ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct BatchInputSimplePublicObjectBatchInputUpsert {
+    pub inputs: Vec<SimplePublicObjectBatchInputUpsert>,
+}
+
+impl std::fmt::Display for BatchInputSimplePublicObjectBatchInputUpsert {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for BatchInputSimplePublicObjectBatchInputUpsert {
+    const LENGTH: usize = 1;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![format!("{:?}", self.inputs).into()]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec!["inputs".into()]
     }
 }
 
@@ -1232,12 +1397,20 @@ impl tabled::Tabled for Paging {
 pub struct PublicObjectSearchRequest {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub query: Option<String>,
-    pub limit: i32,
-    pub after: String,
-    pub sorts: Vec<String>,
-    pub properties: Vec<String>,
-    #[serde(rename = "filterGroups")]
-    pub filter_groups: Vec<FilterGroup>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub limit: Option<i32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub after: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sorts: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub properties: Option<Vec<String>>,
+    #[serde(
+        rename = "filterGroups",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub filter_groups: Option<Vec<FilterGroup>>,
 }
 
 impl std::fmt::Display for PublicObjectSearchRequest {
@@ -1260,11 +1433,31 @@ impl tabled::Tabled for PublicObjectSearchRequest {
             } else {
                 String::new().into()
             },
-            format!("{:?}", self.limit).into(),
-            self.after.clone().into(),
-            format!("{:?}", self.sorts).into(),
-            format!("{:?}", self.properties).into(),
-            format!("{:?}", self.filter_groups).into(),
+            if let Some(limit) = &self.limit {
+                format!("{:?}", limit).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(after) = &self.after {
+                format!("{:?}", after).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(sorts) = &self.sorts {
+                format!("{:?}", sorts).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(properties) = &self.properties {
+                format!("{:?}", properties).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(filter_groups) = &self.filter_groups {
+                format!("{:?}", filter_groups).into()
+            } else {
+                String::new().into()
+            },
         ]
     }
 
@@ -1369,6 +1562,66 @@ impl tabled::Tabled for Error {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct SimplePublicObjectBatchInputUpsert {
+    #[serde(
+        rename = "idProperty",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub id_property: Option<String>,
+    #[serde(
+        rename = "objectWriteTraceId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub object_write_trace_id: Option<String>,
+    pub id: String,
+    pub properties: std::collections::HashMap<String, String>,
+}
+
+impl std::fmt::Display for SimplePublicObjectBatchInputUpsert {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for SimplePublicObjectBatchInputUpsert {
+    const LENGTH: usize = 4;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            if let Some(id_property) = &self.id_property {
+                format!("{:?}", id_property).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(object_write_trace_id) = &self.object_write_trace_id {
+                format!("{:?}", object_write_trace_id).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            format!("{:?}", self.properties).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "id_property".into(),
+            "object_write_trace_id".into(),
+            "id".into(),
+            "properties".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct BatchResponseSimplePublicObjectWithErrors {
     #[serde(rename = "completedAt")]
     pub completed_at: chrono::DateTime<chrono::Utc>,
@@ -1449,50 +1702,13 @@ impl tabled::Tabled for BatchResponseSimplePublicObjectWithErrors {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
-pub struct PublicGdprDeleteInput {
+pub struct SimplePublicObjectInput {
     #[serde(
-        rename = "idProperty",
+        rename = "objectWriteTraceId",
         default,
         skip_serializing_if = "Option::is_none"
     )]
-    pub id_property: Option<String>,
-    #[serde(rename = "objectId")]
-    pub object_id: String,
-}
-
-impl std::fmt::Display for PublicGdprDeleteInput {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(
-            f,
-            "{}",
-            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
-        )
-    }
-}
-
-#[cfg(feature = "tabled")]
-impl tabled::Tabled for PublicGdprDeleteInput {
-    const LENGTH: usize = 2;
-    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![
-            if let Some(id_property) = &self.id_property {
-                format!("{:?}", id_property).into()
-            } else {
-                String::new().into()
-            },
-            self.object_id.clone().into(),
-        ]
-    }
-
-    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["id_property".into(), "object_id".into()]
-    }
-}
-
-#[derive(
-    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
-)]
-pub struct SimplePublicObjectInput {
+    pub object_write_trace_id: Option<String>,
     pub properties: std::collections::HashMap<String, String>,
 }
 
@@ -1508,13 +1724,20 @@ impl std::fmt::Display for SimplePublicObjectInput {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for SimplePublicObjectInput {
-    const LENGTH: usize = 1;
+    const LENGTH: usize = 2;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
-        vec![format!("{:?}", self.properties).into()]
+        vec![
+            if let Some(object_write_trace_id) = &self.object_write_trace_id {
+                format!("{:?}", object_write_trace_id).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.properties).into(),
+        ]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["properties".into()]
+        vec!["object_write_trace_id".into(), "properties".into()]
     }
 }
 
@@ -1952,6 +2175,85 @@ impl tabled::Tabled for PreviousPage {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct SimplePublicUpsertObject {
+    #[serde(rename = "createdAt")]
+    pub created_at: chrono::DateTime<chrono::Utc>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub archived: Option<bool>,
+    #[serde(
+        rename = "archivedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub archived_at: Option<chrono::DateTime<chrono::Utc>>,
+    pub new: bool,
+    #[serde(
+        rename = "propertiesWithHistory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub properties_with_history: Option<std::collections::HashMap<String, Vec<ValueWithTimestamp>>>,
+    pub id: String,
+    pub properties: std::collections::HashMap<String, String>,
+    #[serde(rename = "updatedAt")]
+    pub updated_at: chrono::DateTime<chrono::Utc>,
+}
+
+impl std::fmt::Display for SimplePublicUpsertObject {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for SimplePublicUpsertObject {
+    const LENGTH: usize = 8;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            format!("{:?}", self.created_at).into(),
+            if let Some(archived) = &self.archived {
+                format!("{:?}", archived).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(archived_at) = &self.archived_at {
+                format!("{:?}", archived_at).into()
+            } else {
+                String::new().into()
+            },
+            format!("{:?}", self.new).into(),
+            if let Some(properties_with_history) = &self.properties_with_history {
+                format!("{:?}", properties_with_history).into()
+            } else {
+                String::new().into()
+            },
+            self.id.clone().into(),
+            format!("{:?}", self.properties).into(),
+            format!("{:?}", self.updated_at).into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "created_at".into(),
+            "archived".into(),
+            "archived_at".into(),
+            "new".into(),
+            "properties_with_history".into(),
+            "id".into(),
+            "properties".into(),
+            "updated_at".into(),
+        ]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct SimplePublicObjectBatchInput {
     #[serde(
         rename = "idProperty",
@@ -1959,6 +2261,12 @@ pub struct SimplePublicObjectBatchInput {
         skip_serializing_if = "Option::is_none"
     )]
     pub id_property: Option<String>,
+    #[serde(
+        rename = "objectWriteTraceId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub object_write_trace_id: Option<String>,
     pub id: String,
     pub properties: std::collections::HashMap<String, String>,
 }
@@ -1975,11 +2283,16 @@ impl std::fmt::Display for SimplePublicObjectBatchInput {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for SimplePublicObjectBatchInput {
-    const LENGTH: usize = 3;
+    const LENGTH: usize = 4;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             if let Some(id_property) = &self.id_property {
                 format!("{:?}", id_property).into()
+            } else {
+                String::new().into()
+            },
+            if let Some(object_write_trace_id) = &self.object_write_trace_id {
+                format!("{:?}", object_write_trace_id).into()
             } else {
                 String::new().into()
             },
@@ -1989,7 +2302,12 @@ impl tabled::Tabled for SimplePublicObjectBatchInput {
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["id_property".into(), "id".into(), "properties".into()]
+        vec![
+            "id_property".into(),
+            "object_write_trace_id".into(),
+            "id".into(),
+            "properties".into(),
+        ]
     }
 }
 
@@ -2067,6 +2385,12 @@ impl tabled::Tabled for NextPage {
 )]
 pub struct SimplePublicObjectInputForCreate {
     pub associations: Vec<PublicAssociationsForObject>,
+    #[serde(
+        rename = "objectWriteTraceId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub object_write_trace_id: Option<String>,
     pub properties: std::collections::HashMap<String, String>,
 }
 
@@ -2082,15 +2406,24 @@ impl std::fmt::Display for SimplePublicObjectInputForCreate {
 
 #[cfg(feature = "tabled")]
 impl tabled::Tabled for SimplePublicObjectInputForCreate {
-    const LENGTH: usize = 2;
+    const LENGTH: usize = 3;
     fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
         vec![
             format!("{:?}", self.associations).into(),
+            if let Some(object_write_trace_id) = &self.object_write_trace_id {
+                format!("{:?}", object_write_trace_id).into()
+            } else {
+                String::new().into()
+            },
             format!("{:?}", self.properties).into(),
         ]
     }
 
     fn headers() -> Vec<std::borrow::Cow<'static, str>> {
-        vec!["associations".into(), "properties".into()]
+        vec![
+            "associations".into(),
+            "object_write_trace_id".into(),
+            "properties".into(),
+        ]
     }
 }

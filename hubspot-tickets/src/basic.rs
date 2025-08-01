@@ -12,7 +12,7 @@ impl Basic {
         Self { client }
     }
 
-    #[doc = "Read\n\nRead an Object identified by `{ticketId}`. `{ticketId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `id_property: Option<String>`: The name of a property whose values are unique for this object type\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `ticket_id: &'astr` (required)\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_ticket_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_tickets_ticket_id_get_by_id(\n            Some(true),\n            Some(vec![\"some-string\".to_string()]),\n            Some(\"some-string\".to_string()),\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve a ticket\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `id_property: Option<String>`: The name of a property whose values are unique for this object\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `ticket_id: &'astr`: The ID of the ticket. (required)\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_ticket_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_tickets_ticket_id_get_by_id(\n            Some(true),\n            Some(vec![\"some-string\".to_string()]),\n            Some(\"some-string\".to_string()),\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_crm_v_3_objects_tickets_ticket_id_get_by_id<'a>(
         &'a self,
@@ -73,13 +73,7 @@ impl Basic {
         }
     }
 
-    #[doc = "Archive\n\nMove an Object identified by `{ticketId}` to the recycling \
-             bin.\n\n**Parameters:**\n\n- `ticket_id: &'astr` (required)\n\n```rust,no_run\nasync \
-             fn example_basic_delete_crm_v_3_objects_tickets_ticket_id_archive() -> \
-             anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    \
-             client\n        .basic()\n        \
-             .delete_crm_v_3_objects_tickets_ticket_id_archive(\"some-string\")\n        \
-             .await?;\n    Ok(())\n}\n```"]
+    #[doc = "Archive a ticket\n\nArchive a ticket, sending it to the recycling bin. Deleted tickets can be restored within 90 days of deletion. Learn more about [restoring records](https://knowledge.hubspot.com/records/restore-deleted-records).\n\n**Parameters:**\n\n- `ticket_id: &'astr`: The ID of the ticket to delete. (required)\n\n```rust,no_run\nasync fn example_basic_delete_crm_v_3_objects_tickets_ticket_id_archive() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    client\n        .basic()\n        .delete_crm_v_3_objects_tickets_ticket_id_archive(\"some-string\")\n        .await?;\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn delete_crm_v_3_objects_tickets_ticket_id_archive<'a>(
         &'a self,
@@ -107,7 +101,7 @@ impl Basic {
         }
     }
 
-    #[doc = "Update\n\nPerform a partial update of an Object identified by `{ticketId}`. `{ticketId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param. Provided property values will be overwritten. Read-only and non-existent properties will be ignored. Properties values can be cleared by passing an empty string.\n\n**Parameters:**\n\n- `id_property: Option<String>`: The name of a property whose values are unique for this object type\n- `ticket_id: &'astr` (required)\n\n```rust,no_run\nasync fn example_basic_patch_crm_v_3_objects_tickets_ticket_id_update() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObject = client\n        .basic()\n        .patch_crm_v_3_objects_tickets_ticket_id_update(\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            &hubspot_tickets::types::SimplePublicObjectInput {\n                properties: std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Update a ticket\n\n\nUpdate a ticket by ID (`ticketId`) or unique property value (`idProperty`). Provided property values will be overwritten. Read-only and non-existent properties will result in an error. Properties values can be cleared by passing an empty string.\n\n**Parameters:**\n\n- `id_property: Option<String>`: The name of a property whose values are unique for this object\n- `ticket_id: &'astr` (required)\n\n```rust,no_run\nasync fn example_basic_patch_crm_v_3_objects_tickets_ticket_id_update() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObject = client\n        .basic()\n        .patch_crm_v_3_objects_tickets_ticket_id_update(\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            &hubspot_tickets::types::SimplePublicObjectInput {\n                object_write_trace_id: Some(\"some-string\".to_string()),\n                properties: std::collections::HashMap::from([(\n                    \"some-key\".to_string(),\n                    \"some-string\".to_string(),\n                )]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn patch_crm_v_3_objects_tickets_ticket_id_update<'a>(
         &'a self,
@@ -150,7 +144,49 @@ impl Basic {
         }
     }
 
-    #[doc = "List\n\nRead a page of tickets. Control what is returned via the `properties` query param.\n\n**Parameters:**\n\n- `after: Option<String>`: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `limit: Option<i32>`: The maximum number of results to display per page.\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_get_page() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging =\n        client\n            .basic()\n            .get_crm_v_3_objects_tickets_get_page(\n                Some(\"some-string\".to_string()),\n                Some(true),\n                Some(vec![\"some-string\".to_string()]),\n                Some(4 as i32),\n                Some(vec![\"some-string\".to_string()]),\n                Some(vec![\"some-string\".to_string()]),\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Merge two tickets with same type\n\nMerge two tickets, combining them into one ticket \
+             record.\n\n```rust,no_run\nasync fn \
+             example_basic_post_crm_v_3_objects_tickets_merge_merge() -> anyhow::Result<()> {\n    \
+             let client = hubspot_tickets::Client::new_from_env();\n    let result: \
+             hubspot_tickets::types::SimplePublicObject = client\n        .basic()\n        \
+             .post_crm_v_3_objects_tickets_merge_merge(&hubspot_tickets::types::PublicMergeInput \
+             {\n            object_id_to_merge: \"some-string\".to_string(),\n            \
+             primary_object_id: \"some-string\".to_string(),\n        })\n        .await?;\n    \
+             println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[tracing::instrument]
+    pub async fn post_crm_v_3_objects_tickets_merge_merge<'a>(
+        &'a self,
+        body: &crate::types::PublicMergeInput,
+    ) -> Result<crate::types::SimplePublicObject, crate::types::error::Error> {
+        let mut req = self.client.client.request(
+            http::Method::POST,
+            format!(
+                "{}/{}",
+                self.client.base_url, "crm/v3/objects/tickets/merge"
+            ),
+        );
+        req = req.bearer_auth(&self.client.token);
+        req = req.json(body);
+        let resp = req.send().await?;
+        let status = resp.status();
+        if status.is_success() {
+            let text = resp.text().await.unwrap_or_default();
+            serde_json::from_str(&text).map_err(|err| {
+                crate::types::error::Error::from_serde_error(
+                    format_serde_error::SerdeError::new(text.to_string(), err),
+                    status,
+                )
+            })
+        } else {
+            let text = resp.text().await.unwrap_or_default();
+            Err(crate::types::error::Error::Server {
+                body: text.to_string(),
+                status,
+            })
+        }
+    }
+
+    #[doc = "Retrieve tickets\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `after: Option<String>`: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `limit: Option<i32>`: The maximum number of results to display per page.\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_get_page() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging =\n        client\n            .basic()\n            .get_crm_v_3_objects_tickets_get_page(\n                Some(\"some-string\".to_string()),\n                Some(true),\n                Some(vec![\"some-string\".to_string()]),\n                Some(4 as i32),\n                Some(vec![\"some-string\".to_string()]),\n                Some(vec![\"some-string\".to_string()]),\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_crm_v_3_objects_tickets_get_page<'a>(
         &'a self,
@@ -214,7 +250,7 @@ impl Basic {
         }
     }
 
-    #[doc = "Create\n\nCreate a ticket with the given properties and return a copy of the object, including the ID. Documentation and examples for creating standard tickets is provided.\n\n```rust,no_run\nasync fn example_basic_post_crm_v_3_objects_tickets_create() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObject = client\n        .basic()\n        .post_crm_v_3_objects_tickets_create(&hubspot_tickets::types::SimplePublicObjectInputForCreate {\n            associations: vec![hubspot_tickets::types::PublicAssociationsForObject {\n                types: vec![hubspot_tickets::types::AssociationSpec {\n                    association_category: hubspot_tickets::types::AssociationCategory::UserDefined,\n                    association_type_id: 4 as i32,\n                }],\n                to: hubspot_tickets::types::PublicObjectId {\n                    id: \"some-string\".to_string(),\n                },\n            }],\n            properties: std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Create a ticket\n\nCreate a single ticket. Include a `properties` object to define [property values](https://developers.hubspot.com/docs/guides/api/crm/properties) for the ticket, along with an `associations` array to define [associations](https://developers.hubspot.com/docs/guides/api/crm/associations/associations-v4) with other CRM records.\n\n```rust,no_run\nasync fn example_basic_post_crm_v_3_objects_tickets_create() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObject = client\n        .basic()\n        .post_crm_v_3_objects_tickets_create(&hubspot_tickets::types::SimplePublicObjectInputForCreate {\n            associations: vec![hubspot_tickets::types::PublicAssociationsForObject {\n                types: vec![hubspot_tickets::types::AssociationSpec {\n                    association_category: hubspot_tickets::types::AssociationCategory::UserDefined,\n                    association_type_id: 4 as i32,\n                }],\n                to: hubspot_tickets::types::PublicObjectId {\n                    id: \"some-string\".to_string(),\n                },\n            }],\n            object_write_trace_id: Some(\"some-string\".to_string()),\n            properties: std::collections::HashMap::from([(\n                \"some-key\".to_string(),\n                \"some-string\".to_string(),\n            )]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_crm_v_3_objects_tickets_create<'a>(
         &'a self,
