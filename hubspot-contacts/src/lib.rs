@@ -61,11 +61,7 @@
 pub mod basic;
 #[cfg(feature = "requests")]
 pub mod batch;
-#[cfg(feature = "requests")]
-pub mod gdpr;
 mod methods;
-#[cfg(feature = "requests")]
-pub mod public_object;
 #[cfg(feature = "requests")]
 pub mod search;
 #[cfg(test)]
@@ -319,16 +315,6 @@ impl Client {
     /// Return a reference to an interface that provides access to Basic operations.
     pub fn basic(&self) -> basic::Basic {
         basic::Basic::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to Public_Object operations.
-    pub fn public_object(&self) -> public_object::PublicObject {
-        public_object::PublicObject::new(self.clone())
-    }
-
-    /// Return a reference to an interface that provides access to GDPR operations.
-    pub fn gdpr(&self) -> gdpr::Gdpr {
-        gdpr::Gdpr::new(self.clone())
     }
 
     /// Return a reference to an interface that provides access to Search operations.
