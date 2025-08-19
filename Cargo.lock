@@ -96,9 +96,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.98"
+version = "1.0.99"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487"
+checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
 
 [[package]]
 name = "arrayvec"
@@ -108,9 +108,9 @@ checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
 name = "async-trait"
-version = "0.1.88"
+version = "0.1.89"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e539d3fca749fcee5236ab05e93a52867dd549cc157c8cb7f99595f3cedffdb5"
+checksum = "9035ad2d096bed7955a320ee7e2230574d28fd3c3a0f186cbea1ff3c7eed5dbb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -265,9 +265,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.43"
+version = "4.5.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50fd97c9dc2399518aa331917ac6f274280ec5eb34e555dd291899745c48ec6f"
+checksum = "1fc0e74a703892159f5ae7d3aac52c8e6c392f5ae5f359c70b5881d60aaac318"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -275,9 +275,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.5.43"
+version = "4.5.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c35b5830294e1fa0462034af85cc95225a4cb07092c088c55bda3147cfcd8f65"
+checksum = "b3e7f4214277f3c7aa526a59dd3fbe306a370daee1f8b7b8c987069cd8e888a8"
 dependencies = [
  "anstream",
  "anstyle",
@@ -289,9 +289,9 @@ dependencies = [
 
 [[package]]
 name = "clap_derive"
-version = "4.5.41"
+version = "4.5.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef4f52386a59ca4c860f7393bcf8abd8dfd91ecccc0f774635ff68e92eeef491"
+checksum = "14cb31bb0a7d536caef2639baa7fad459e15c3144efefa6dbd1c84562c4739f6"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -739,7 +739,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -784,7 +784,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -829,7 +829,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -1541,7 +1541,7 @@ dependencies = [
  "rustc-hash",
  "rustls",
  "socket2 0.5.8",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tracing",
 ]
@@ -1560,7 +1560,7 @@ dependencies = [
  "rustls",
  "rustls-pki-types",
  "slab",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tinyvec",
  "tracing",
  "web-time",
@@ -1631,7 +1631,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -1715,7 +1715,7 @@ checksum = "dd6f9d3d47bdd2ad6945c5015a226ec6155d0bcdfd8f7cd29f86b71f8de99d2b"
 dependencies = [
  "getrandom 0.2.15",
  "libredox",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
 ]
 
 [[package]]
@@ -1801,7 +1801,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -1811,9 +1811,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.12.22"
+version = "0.12.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbc931937e6ca3a06e3b6c0aa7841849b160a90351d6ab467a8b9b9959767531"
+checksum = "d429f34c8092b2d42c7c93cec323bb4adeb7c67698f70839adec842ec10c7ceb"
 dependencies = [
  "base64",
  "bytes",
@@ -1977,7 +1977,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -2401,11 +2401,11 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "2.0.12"
+version = "2.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "567b8a2dae586314f7be2a752ec7474332959c6460e02bde30d702a66d488708"
+checksum = "80d76d3f064b981389ecb4b6b7f45a0bf9fdac1d5b9204c7bd6714fecc302850"
 dependencies = [
- "thiserror-impl 2.0.12",
+ "thiserror-impl 2.0.15",
 ]
 
 [[package]]
@@ -2421,9 +2421,9 @@ dependencies = [
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.12"
+version = "2.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f7cf42b4507d8ea322120659672cf1b9dbb93f8f2d4ecfd6e51350ff5b17a1d"
+checksum = "44d29feb33e986b6ea906bd9c3559a856983f92371b3eaa5e83782a351623de0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2665,7 +2665,7 @@ dependencies = [
  "log",
  "rand 0.9.2",
  "sha1",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "utf-8",
 ]
 
@@ -2706,7 +2706,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
@@ -2841,7 +2841,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "tabled",
- "thiserror 2.0.12",
+ "thiserror 2.0.15",
  "tokio",
  "tokio-tungstenite",
  "tracing",
