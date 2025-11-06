@@ -489,6 +489,12 @@ pub mod error {
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct StandardError {
+    #[serde(
+        rename = "subCategory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sub_category: Option<SubCategory>,
     pub context: std::collections::HashMap<String, Vec<String>>,
     pub links: std::collections::HashMap<String, String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

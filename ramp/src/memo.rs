@@ -129,7 +129,7 @@ impl Memo {
         }
     }
 
-    #[doc = "Upload a new memo for a transaction\n\n**Parameters:**\n\n- `transaction_id: uuid::Uuid` (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_post_create_single_resource() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::Memo = client\n        .memo()\n        .post_create_single_resource(\n            uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n            &ramp_api::types::ApiMemoCreateRequestBody {\n                is_memo_recurring: false,\n                memo: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Upload a new memo for a transaction\n\n**Parameters:**\n\n- `transaction_id: uuid::Uuid` (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_post_create_single_resource() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::Memo = client\n        .memo()\n        .post_create_single_resource(\n            uuid::Uuid::from_str(\"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\")?,\n            &ramp_api::types::ApiMemoCreateRequestBody {\n                is_memo_recurring: true,\n                memo: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn post_create_single_resource<'a>(
         &'a self,
