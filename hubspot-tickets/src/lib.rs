@@ -4,7 +4,7 @@
 //!
 //! ## API Details
 //!
-//!
+//! API description.
 //!
 //!
 //!
