@@ -18,5 +18,6 @@ Crates owned by Zoo:
   
 Unpublished crates:
 - commonroom
+- discourse
 - twilio
 - vercel

@@ -1,0 +1,754 @@
+[
+  {
+    "op": "add",
+    "path": "/info/x-rust",
+    "value": {
+      "client": "// Authenticate via an API token.\nlet client = discourse-api::Client::new(\"$TOKEN\");\n\n// - OR -\n\n// Authenticate with your token and host parsed from the environment variables:\n// `DISCOURSE_API_TOKEN`.\nlet client = discourse_api::Client::new_from_env();",
+      "install": "[dependencies]\ndiscourse-api = \"0.1.0\""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1backups.json/get/x-rust",
+    "value": {
+      "example": "/// List backups\nasync fn example_backups_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: Vec<discourse_api::types::GetBackupsResponse> = client.backups().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/backups/struct.Backups.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1backups.json/post/x-rust",
+    "value": {
+      "example": "/// Create backup\nasync fn example_backups_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateBackupResponse = client\n        .backups()\n        .create(&discourse_api::types::CreateBackupRequestBody { with_uploads: true })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/backups/struct.Backups.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1backups~1{filename}/get/x-rust",
+    "value": {
+      "example": "/// Download backup\n/// \n/// **Parameters:**\n/// \n/// - `filename: &'astr` (required)\n/// - `token: &'astr` (required)\nasync fn example_backups_download() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client\n        .backups()\n        .download(\"some-string\", \"some-string\")\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/backups/struct.Backups.html#method.download"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1backups~1{filename}/put/x-rust",
+    "value": {
+      "example": "/// Send download backup email\n/// \n/// **Parameters:**\n/// \n/// - `filename: &'astr` (required)\nasync fn example_backups_send_download_email() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client.backups().send_download_email(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/backups/struct.Backups.html#method.send_download_email"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1badges.json/get/x-rust",
+    "value": {
+      "example": "/// List badges\nasync fn example_badges_admin_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::AdminListBadgesResponse = client.badges().admin_list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/badges/struct.Badges.html#method.admin_list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1badges.json/post/x-rust",
+    "value": {
+      "example": "/// Create badge\nasync fn example_badges_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateBadgeResponse = client\n        .badges()\n        .create(&discourse_api::types::CreateBadgeRequestBody {\n            name: \"some-string\".to_string(),\n            badge_type_id: 4 as i64,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/badges/struct.Badges.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1badges~1{id}.json/delete/x-rust",
+    "value": {
+      "example": "/// Delete badge\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_badges_delete() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client.badges().delete(4 as i64).await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/badges/struct.Badges.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1badges~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Update badge\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_badges_update() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateBadgeResponse = client\n        .badges()\n        .update(\n            4 as i64,\n            &discourse_api::types::UpdateBadgeRequestBody {\n                name: \"some-string\".to_string(),\n                badge_type_id: 4 as i64,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/badges/struct.Badges.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1groups.json/post/x-rust",
+    "value": {
+      "example": "/// Create a group\nasync fn example_groups_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateGroupResponse = client\n        .groups()\n        .create(&discourse_api::types::CreateGroupRequestBody {\n            group: discourse_api::types::Group {\n                name: \"some-string\".to_string(),\n                full_name: Some(\"some-string\".to_string()),\n                bio_raw: Some(\"some-string\".to_string()),\n                usernames: Some(\"some-string\".to_string()),\n                owner_usernames: Some(\"some-string\".to_string()),\n                automatic_membership_email_domains: Some(\"some-string\".to_string()),\n                visibility_level: Some(4 as i64),\n                primary_group: Some(true),\n                flair_icon: Some(\"some-string\".to_string()),\n                flair_upload_id: Some(4 as i64),\n                flair_bg_color: Some(\"some-string\".to_string()),\n                public_admission: Some(true),\n                public_exit: Some(true),\n                default_notification_level: Some(4 as i64),\n                muted_category_ids: Some(vec![4 as i64]),\n                regular_category_ids: Some(vec![4 as i64]),\n                watching_category_ids: Some(vec![4 as i64]),\n                tracking_category_ids: Some(vec![4 as i64]),\n                watching_first_post_category_ids: Some(vec![4 as i64]),\n            },\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1groups~1{id}.json/delete/x-rust",
+    "value": {
+      "example": "/// Delete a group\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_groups_delete() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::DeleteGroupResponse = client.groups().delete(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users.json/get/x-rust",
+    "value": {
+      "example": "/// List users\n/// \n/// **Parameters:**\n/// \n/// - `asc: Option<crate::types::Asc>`\n/// - `email: Option<String>`: Filter to the user with this email address\n/// - `ip: Option<String>`: Filter to users with this IP address\n/// - `order: Option<crate::types::AdminListOrder>`\n/// - `page: Option<i64>`\n/// - `show_emails: Option<bool>`: Include user email addresses in response. These requests will\n/// be logged in the staff action logs.\n/// - `stats: Option<bool>`: Include user stats information\nasync fn example_users_admin_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: Vec<discourse_api::types::AdminListUsersResponse> = client\n        .users()\n        .admin_list(discourse_api::users::AdminListParams {\n            asc: Some(discourse_api::types::Asc::True),\n            email: Some(\"some-string\".to_string()),\n            ip: Some(\"some-string\".to_string()),\n            order: Some(discourse_api::types::AdminListOrder::DaysVisited),\n            page: Some(4 as i64),\n            show_emails: Some(true),\n            stats: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.admin_list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1list~1{flag}.json/get/x-rust",
+    "value": {
+      "example": "/// List users by flag\n/// \n/// **Parameters:**\n/// \n/// - `asc: Option<crate::types::Asc>`\n/// - `email: Option<String>`: Filter to the user with this email address\n/// - `flag: crate::types::Flag` (required)\n/// - `ip: Option<String>`: Filter to users with this IP address\n/// - `order: Option<crate::types::AdminListFlagOrder>`\n/// - `page: Option<i64>`\n/// - `show_emails: Option<bool>`: Include user email addresses in response. These requests will\n/// be logged in the staff action logs.\n/// - `stats: Option<bool>`: Include user stats information\nasync fn example_users_admin_list_flag() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: Vec<discourse_api::types::AdminListUsersFlagResponse> = client\n        .users()\n        .admin_list_flag(discourse_api::users::AdminListFlagParams {\n            asc: Some(discourse_api::types::Asc::True),\n            email: Some(\"some-string\".to_string()),\n            flag: discourse_api::types::Flag::Suspended,\n            ip: Some(\"some-string\".to_string()),\n            order: Some(discourse_api::types::AdminListFlagOrder::DaysVisited),\n            page: Some(4 as i64),\n            show_emails: Some(true),\n            stats: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.admin_list_flag"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}.json/delete/x-rust",
+    "value": {
+      "example": "/// Delete a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_delete() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::DeleteUserResponse = client\n        .users()\n        .delete(\n            4 as i64,\n            &discourse_api::types::DeleteUserRequestBody {\n                delete_posts: Some(true),\n                block_email: Some(true),\n                block_urls: Some(true),\n                block_ip: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a user by id\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_admin_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::AdminGetUserResponse = client.users().admin_get(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.admin_get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1activate.json/put/x-rust",
+    "value": {
+      "example": "/// Activate a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_activate() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ActivateUserResponse = client.users().activate(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.activate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1anonymize.json/put/x-rust",
+    "value": {
+      "example": "/// Anonymize a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_anonymize() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::AnonymizeUserResponse = client.users().anonymize(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.anonymize"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1deactivate.json/put/x-rust",
+    "value": {
+      "example": "/// Deactivate a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_deactivate() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::DeactivateUserResponse = client.users().deactivate(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.deactivate"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1log_out.json/post/x-rust",
+    "value": {
+      "example": "/// Log a user out\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_log_out() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::LogOutUserResponse = client.users().log_out(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.log_out"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1silence.json/put/x-rust",
+    "value": {
+      "example": "/// Silence a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_silence() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::SilenceUserResponse = client\n        .users()\n        .silence(\n            4 as i64,\n            &discourse_api::types::SilenceUserRequestBody {\n                silenced_till: \"some-string\".to_string(),\n                reason: \"some-string\".to_string(),\n                message: Some(\"some-string\".to_string()),\n                post_action: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.silence"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1admin~1users~1{id}~1suspend.json/put/x-rust",
+    "value": {
+      "example": "/// Suspend a user\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_users_suspend() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::SuspendUserResponse = client\n        .users()\n        .suspend(\n            4 as i64,\n            &discourse_api::types::SuspendUserRequestBody {\n                suspend_until: \"some-string\".to_string(),\n                reason: \"some-string\".to_string(),\n                message: Some(\"some-string\".to_string()),\n                post_action: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.suspend"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1c~1{id}~1show.json/get/x-rust",
+    "value": {
+      "example": "/// Show category\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_categories_get_category() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetCategoryResponse =\n        client.categories().get_category(4 as i64).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/categories/struct.Categories.html#method.get_category"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1c~1{slug}~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// List topics\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\n/// - `slug: &'astr` (required)\nasync fn example_categories_list_category_topics() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListCategoryTopicsResponse = client\n        .categories()\n        .list_category_topics(4 as i64, \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/categories/struct.Categories.html#method.list_category_topics"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1categories.json/get/x-rust",
+    "value": {
+      "example": "/// Retrieves a list of categories\n/// \n/// **Parameters:**\n/// \n/// - `include_subcategories: Option<bool>`\nasync fn example_categories_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListCategoriesResponse = client.categories().list(Some(true)).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/categories/struct.Categories.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1categories.json/post/x-rust",
+    "value": {
+      "example": "/// Creates a category\nasync fn example_categories_create_category() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateCategoryResponse = client\n        .categories()\n        .create_category(&discourse_api::types::CreateCategoryRequestBody {\n            name: \"some-string\".to_string(),\n            color: Some(\"some-string\".to_string()),\n            text_color: Some(\"some-string\".to_string()),\n            style_type: Some(\"some-string\".to_string()),\n            emoji: Some(\"some-string\".to_string()),\n            icon: Some(\"some-string\".to_string()),\n            parent_category_id: Some(4 as i64),\n            allow_badges: Some(true),\n            slug: Some(\"some-string\".to_string()),\n            topic_featured_links_allowed: Some(true),\n            permissions: Some(discourse_api::types::Permissions {\n                everyone: Some(4 as i64),\n                staff: Some(4 as i64),\n            }),\n            search_priority: Some(4 as i64),\n            form_template_ids: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n            category_localizations: Some(vec![discourse_api::types::CategoryLocalizations {\n                id: Some(4 as i64),\n                locale: \"some-string\".to_string(),\n                name: \"some-string\".to_string(),\n                description: Some(\"some-string\".to_string()),\n            }]),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/categories/struct.Categories.html#method.create_category"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1categories~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Updates a category\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_categories_update_category() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateCategoryResponse = client\n        .categories()\n        .update_category(\n            4 as i64,\n            &discourse_api::types::UpdateCategoryRequestBody {\n                name: \"some-string\".to_string(),\n                color: Some(\"some-string\".to_string()),\n                text_color: Some(\"some-string\".to_string()),\n                style_type: Some(\"some-string\".to_string()),\n                emoji: Some(\"some-string\".to_string()),\n                icon: Some(\"some-string\".to_string()),\n                parent_category_id: Some(4 as i64),\n                allow_badges: Some(true),\n                slug: Some(\"some-string\".to_string()),\n                topic_featured_links_allowed: Some(true),\n                permissions: Some(discourse_api::types::Permissions {\n                    everyone: Some(4 as i64),\n                    staff: Some(4 as i64),\n                }),\n                search_priority: Some(4 as i64),\n                form_template_ids: Some(vec![serde_json::Value::String(\"some-string\".to_string())]),\n                category_localizations: Some(vec![discourse_api::types::CategoryLocalizations {\n                    id: Some(4 as i64),\n                    locale: \"some-string\".to_string(),\n                    name: \"some-string\".to_string(),\n                    description: Some(\"some-string\".to_string()),\n                }]),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/categories/struct.Categories.html#method.update_category"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1directory_items.json/get/x-rust",
+    "value": {
+      "example": "/// Get a public list of users\n/// \n/// **Parameters:**\n/// \n/// - `asc: Option<crate::types::Asc>`\n/// - `order: crate::types::ListPublicOrder` (required)\n/// - `page: Option<i64>`\n/// - `period: crate::types::ListPublicPeriod` (required)\nasync fn example_users_list_public() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListUsersPublicResponse = client\n        .users()\n        .list_public(\n            Some(discourse_api::types::Asc::True),\n            discourse_api::types::ListPublicOrder::TopicsEntered,\n            Some(4 as i64),\n            discourse_api::types::ListPublicPeriod::Quarterly,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.list_public"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1discourse-post-event~1events.ics/get/x-rust",
+    "value": {
+      "example": "/// Export calendar events in iCalendar format\n/// \n/// **Parameters:**\n/// \n/// - `after: Option<chrono::DateTime<chrono::Utc>>`: Return events starting after this date/time (ISO 8601 format)\n/// - `attending_user: Option<String>`: Filter to events where the specified user (username) has RSVP'd\n/// as going\n/// - `before: Option<chrono::DateTime<chrono::Utc>>`: Return events starting before this date/time (ISO 8601 format)\n/// - `category_id: Option<i64>`: Filter events by category ID\n/// - `include_subcategories: Option<crate::types::IncludeSubcategories>`: Include events from subcategories when filtering by category\n/// - `limit: Option<i64>`: Maximum number of events to return (default: 200)\n/// - `order: Option<crate::types::Order>`: Sort order for events by start date (default: asc)\nasync fn example_discourse_calendar_events_export_events_ics() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: String = client\n        .discourse_calendar_events()\n        .export_events_ics(discourse_api::discourse_calendar_events::ExportEventsIcsParams {\n            after: Some(chrono::Utc::now()),\n            attending_user: Some(\"some-string\".to_string()),\n            before: Some(chrono::Utc::now()),\n            category_id: Some(4 as i64),\n            include_subcategories: Some(discourse_api::types::IncludeSubcategories::False),\n            limit: Some(4 as i64),\n            order: Some(discourse_api::types::Order::Desc),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/discourse_calendar_events/struct.DiscourseCalendarEvents.html#method.export_events_ics"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1discourse-post-event~1events.json/get/x-rust",
+    "value": {
+      "example": "/// List calendar events\n/// \n/// **Parameters:**\n/// \n/// - `after: Option<chrono::DateTime<chrono::Utc>>`: Return events starting after this date/time (ISO 8601 format)\n/// - `attending_user: Option<String>`: Filter to events where the specified user (username) has RSVP'd\n/// as going\n/// - `before: Option<chrono::DateTime<chrono::Utc>>`: Return events starting before this date/time (ISO 8601 format)\n/// - `category_id: Option<i64>`: Filter events by category ID\n/// - `include_details: Option<crate::types::IncludeDetails>`: Include detailed event information (creator, invitees, stats,\n/// etc.)\n/// - `include_subcategories: Option<crate::types::IncludeSubcategories>`: Include events from subcategories when filtering by category\n/// - `limit: Option<i64>`: Maximum number of events to return (default: 200)\n/// - `order: Option<crate::types::Order>`: Sort order for events by start date (default: asc)\n/// - `post_id: Option<i64>`: Filter to events associated with a specific post ID\nasync fn example_discourse_calendar_events_list_events() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListEventsResponse = client\n        .discourse_calendar_events()\n        .list_events(discourse_api::discourse_calendar_events::ListEventsParams {\n            after: Some(chrono::Utc::now()),\n            attending_user: Some(\"some-string\".to_string()),\n            before: Some(chrono::Utc::now()),\n            category_id: Some(4 as i64),\n            include_details: Some(discourse_api::types::IncludeDetails::False),\n            include_subcategories: Some(discourse_api::types::IncludeSubcategories::False),\n            limit: Some(4 as i64),\n            order: Some(discourse_api::types::Order::Desc),\n            post_id: Some(4 as i64),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/discourse_calendar_events/struct.DiscourseCalendarEvents.html#method.list_events"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups.json/get/x-rust",
+    "value": {
+      "example": "/// List groups\nasync fn example_groups_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListGroupsResponse = client.groups().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1by-id~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a group by id\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr`: Use group name instead of id (required)\nasync fn example_groups_get_by_id() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetGroupByIdResponse =\n        client.groups().get_by_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.get_by_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Update a group\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_groups_update() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateGroupResponse = client\n        .groups()\n        .update(\n            4 as i64,\n            &discourse_api::types::UpdateGroupRequestBody {\n                group: discourse_api::types::Group {\n                    name: \"some-string\".to_string(),\n                    full_name: Some(\"some-string\".to_string()),\n                    bio_raw: Some(\"some-string\".to_string()),\n                    usernames: Some(\"some-string\".to_string()),\n                    owner_usernames: Some(\"some-string\".to_string()),\n                    automatic_membership_email_domains: Some(\"some-string\".to_string()),\n                    visibility_level: Some(4 as i64),\n                    primary_group: Some(true),\n                    flair_icon: Some(\"some-string\".to_string()),\n                    flair_upload_id: Some(4 as i64),\n                    flair_bg_color: Some(\"some-string\".to_string()),\n                    public_admission: Some(true),\n                    public_exit: Some(true),\n                    default_notification_level: Some(4 as i64),\n                    muted_category_ids: Some(vec![4 as i64]),\n                    regular_category_ids: Some(vec![4 as i64]),\n                    watching_category_ids: Some(vec![4 as i64]),\n                    tracking_category_ids: Some(vec![4 as i64]),\n                    watching_first_post_category_ids: Some(vec![4 as i64]),\n                },\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1{id}~1members.json/delete/x-rust",
+    "value": {
+      "example": "/// Remove group members\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_groups_remove_members() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::RemoveGroupMembersResponse = client\n        .groups()\n        .remove_members(\n            4 as i64,\n            &discourse_api::types::RemoveGroupMembersRequestBody {\n                usernames: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.remove_members"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1{id}~1members.json/put/x-rust",
+    "value": {
+      "example": "/// Add group members\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_groups_add_members() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::AddGroupMembersResponse = client\n        .groups()\n        .add_members(\n            4 as i64,\n            &discourse_api::types::AddGroupMembersRequestBody {\n                usernames: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.add_members"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1{name}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a group\n/// \n/// **Parameters:**\n/// \n/// - `name: &'astr`: Use group name instead of id (required)\nasync fn example_groups_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetGroupResponse = client.groups().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1groups~1{name}~1members.json/get/x-rust",
+    "value": {
+      "example": "/// List group members\n/// \n/// **Parameters:**\n/// \n/// - `name: &'astr`: Use group name instead of id (required)\nasync fn example_groups_list_members() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListGroupMembersResponse =\n        client.groups().list_members(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/groups/struct.Groups.html#method.list_members"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1invites.json/post/x-rust",
+    "value": {
+      "example": "/// Create an invite\nasync fn example_invites_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateInviteResponse = client\n        .invites()\n        .create(&discourse_api::types::CreateInviteRequestBody {\n            email: Some(\"some-string\".to_string()),\n            skip_email: true,\n            custom_message: Some(\"some-string\".to_string()),\n            max_redemptions_allowed: Some(4 as i64),\n            topic_id: Some(4 as i64),\n            group_ids: Some(\"some-string\".to_string()),\n            group_names: Some(\"some-string\".to_string()),\n            expires_at: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/invites/struct.Invites.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1invites~1create-multiple.json/post/x-rust",
+    "value": {
+      "example": "/// Create multiple invites\nasync fn example_invites_create_multiple() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateMultipleInvitesResponse = client\n        .invites()\n        .create_multiple(&discourse_api::types::CreateMultipleInvitesRequestBody {\n            email: Some(\"some-string\".to_string()),\n            skip_email: true,\n            custom_message: Some(\"some-string\".to_string()),\n            max_redemptions_allowed: Some(4 as i64),\n            topic_id: Some(4 as i64),\n            group_ids: Some(\"some-string\".to_string()),\n            group_names: Some(\"some-string\".to_string()),\n            expires_at: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/invites/struct.Invites.html#method.create_multiple"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1latest.json/get/x-rust",
+    "value": {
+      "example": "/// Get the latest topics\n/// \n/// **Parameters:**\n/// \n/// - `ascending: Option<String>`: Defaults to `desc`, add `ascending=true` to sort asc\n/// - `order: Option<String>`: Enum: `default`, `created`, `activity`, `views`, `posts`, `category`,\n/// `likes`, `op_likes`, `posters`\n/// - `per_page: Option<i64>`: Maximum number of topics returned, between 1-100\nasync fn example_topics_list_latest() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListLatestTopicsResponse = client\n        .topics()\n        .list_latest(\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.list_latest"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1notifications.json/get/x-rust",
+    "value": {
+      "example": "/// Get the notifications that belong to the current user\nasync fn example_notifications_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetNotificationsResponse = client.notifications().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/notifications/struct.Notifications.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1notifications~1mark-read.json/put/x-rust",
+    "value": {
+      "example": "/// Mark notifications as read\nasync fn example_notifications_mark_as_read() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::MarkNotificationsAsReadResponse = client\n        .notifications()\n        .mark_as_read(&discourse_api::types::MarkNotificationsAsReadRequestBody { id: Some(4 as i64) })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/notifications/struct.Notifications.html#method.mark_as_read"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1post_actions.json/post/x-rust",
+    "value": {
+      "example": "/// Like a post and other actions\nasync fn example_posts_perform_action() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::PerformPostActionResponse = client\n        .posts()\n        .perform_action(&discourse_api::types::PerformPostActionRequestBody {\n            id: 4 as i64,\n            post_action_type_id: 4 as i64,\n            flag_topic: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.perform_action"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts.json/get/x-rust",
+    "value": {
+      "example": "/// List latest posts across topics\n/// \n/// **Parameters:**\n/// \n/// - `before: Option<i64>`: Load posts with an id lower than this value. Useful for pagination.\nasync fn example_posts_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListPostsResponse = client.posts().list(Some(4 as i64)).await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts.json/post/x-rust",
+    "value": {
+      "example": "/// Creates a new topic, a new post, or a private message\nasync fn example_posts_create_topic_pm() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateTopicPostPMResponse = client\n        .posts()\n        .create_topic_pm(&discourse_api::types::CreateTopicPostPMRequestBody {\n            title: Some(\"some-string\".to_string()),\n            raw: \"some-string\".to_string(),\n            topic_id: Some(4 as i64),\n            category: Some(4 as i64),\n            target_recipients: Some(\"some-string\".to_string()),\n            target_usernames: Some(\"some-string\".to_string()),\n            archetype: Some(\"some-string\".to_string()),\n            created_at: Some(\"some-string\".to_string()),\n            reply_to_post_number: Some(4 as i64),\n            embed_url: Some(\"some-string\".to_string()),\n            external_id: Some(\"some-string\".to_string()),\n            auto_track: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.create_topic_pm"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts~1{id}.json/delete/x-rust",
+    "value": {
+      "example": "/// delete a single post\n/// \n/// **Parameters:**\n/// \n/// - `id: i64` (required)\nasync fn example_posts_delete() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client\n        .posts()\n        .delete(\n            4 as i64,\n            &discourse_api::types::DeletePostRequestBody {\n                force_destroy: Some(true),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.delete"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// Retrieve a single post\n/// \n/// This endpoint can be used to get the number of likes on a post using the\n/// `actions_summary` property in the response. `actions_summary` responses\n/// with the id of `2` signify a `like`. If there are no `actions_summary`\n/// items with the id of `2`, that means there are 0 likes. Other ids likely\n/// refer to various different flag types.\n/// \n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_posts_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetPostResponse = client.posts().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Update a single post\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_posts_update() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdatePostResponse = client\n        .posts()\n        .update(\n            \"some-string\",\n            &discourse_api::types::UpdatePostRequestBody {\n                post: Some(discourse_api::types::UpdatePostRequestBodyPost {\n                    raw: \"some-string\".to_string(),\n                    edit_reason: Some(\"some-string\".to_string()),\n                }),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts~1{id}~1locked.json/put/x-rust",
+    "value": {
+      "example": "/// Lock a post from being edited\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_posts_lock() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::LockPostResponse = client\n        .posts()\n        .lock(\n            \"some-string\",\n            &discourse_api::types::LockPostRequestBody {\n                locked: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.lock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1posts~1{id}~1replies.json/get/x-rust",
+    "value": {
+      "example": "/// List replies to a post\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_posts_replies() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: Vec<discourse_api::types::PostRepliesResponse> =\n        client.posts().replies(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/posts/struct.Posts.html#method.replies"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1search.json/get/x-rust",
+    "value": {
+      "example": "/// Search for a term\n/// \n/// **Parameters:**\n/// \n/// - `page: Option<i64>`\n/// - `q: Option<String>`: The query string needs to be url encoded and is made up of the following options:\n/// - Search term. This is just a string. Usually it would be the first item in the query.\n/// - `@<username>`: Use the `@` followed by the username to specify posts by this user.\n/// - `#<category>`: Use the `#` followed by the category slug to search within this category.\n/// - `tags:`: `api,solved` or for posts that have all the specified tags `api+solved`.\n/// - `before:`: `yyyy-mm-dd`\n/// - `after:`: `yyyy-mm-dd`\n/// - `order:`: `latest`, `likes`, `views`, `latest_topic`\n/// - `assigned:`: username (without `@`)\n/// - `in:`: `title`, `likes`, `personal`, `messages`, `seen`, `unseen`, `posted`, `created`, `watching`, `tracking`, `bookmarks`, `assigned`, `unassigned`, `first`, `pinned`, `wiki`\n/// - `with:`: `images`\n/// - `status:`: `open`, `closed`, `public`, `archived`, `noreplies`, `single_user`, `solved`, `unsolved`\n/// - `group:`: group_name or group_id\n/// - `group_messages:`: group_name or group_id\n/// - `min_posts:`: 1\n/// - `max_posts:`: 10\n/// - `min_views:`: 1\n/// - `max_views:`: 10\n/// \n/// If you are using cURL you can use the `-G` and the `--data-urlencode` flags to encode the query:\n/// \n/// ```text\n/// curl -i -sS -X GET -G \"http://localhost:4200/search.json\" \\\n/// --data-urlencode 'q=wordpress @scossar #fun after:2020-01-01'\n/// ```\n/// \nasync fn example_search_search() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::SearchResponse = client\n        .search()\n        .search(Some(4 as i64), Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/search/struct.Search.html#method.search"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1session~1forgot_password.json/post/x-rust",
+    "value": {
+      "example": "/// Send password reset email\nasync fn example_users_send_password_reset_email() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::SendPasswordResetEmailResponse = client\n        .users()\n        .send_password_reset_email(&discourse_api::types::SendPasswordResetEmailRequestBody {\n            login: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.send_password_reset_email"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1site.json/get/x-rust",
+    "value": {
+      "example": "/// Get site info\n/// \n/// Can be used to fetch all categories and subcategories\nasync fn example_site_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetSiteResponse = client.site().get().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/site/struct.Site.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1site~1basic-info.json/get/x-rust",
+    "value": {
+      "example": "/// Get site basic info\n/// \n/// Can be used to fetch basic info about a site\nasync fn example_site_get_basic_info() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetSiteBasicInfoResponse = client.site().get_basic_info().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/site/struct.Site.html#method.get_basic_info"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1-~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Update a topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_update() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateTopicResponse = client\n        .topics()\n        .update(\n            \"some-string\",\n            &discourse_api::types::UpdateTopicRequestBody {\n                topic: Some(discourse_api::types::UpdateTopicRequestBodyTopic {\n                    title: Some(\"some-string\".to_string()),\n                    category_id: Some(4 as i64),\n                }),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1external_id~1{external_id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get topic by external_id\n/// \n/// **Parameters:**\n/// \n/// - `external_id: &'astr` (required)\nasync fn example_topics_get_by_external_id() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client.topics().get_by_external_id(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.get_by_external_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}.json/delete/x-rust",
+    "value": {
+      "example": "/// Remove a topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_remove() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client.topics().remove(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.remove"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a single topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetTopicResponse = client.topics().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1bookmark.json/put/x-rust",
+    "value": {
+      "example": "/// Bookmark topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_bookmark() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client.topics().bookmark(\"some-string\").await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.bookmark"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1change-timestamp.json/put/x-rust",
+    "value": {
+      "example": "/// Update topic timestamp\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_update_timestamp() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateTopicTimestampResponse = client\n        .topics()\n        .update_timestamp(\n            \"some-string\",\n            &discourse_api::types::UpdateTopicTimestampRequestBody {\n                timestamp: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.update_timestamp"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1invite-group.json/post/x-rust",
+    "value": {
+      "example": "/// Invite group to topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_invite_group_to() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::InviteGroupToTopicResponse = client\n        .topics()\n        .invite_group_to(\n            \"some-string\",\n            &discourse_api::types::InviteGroupToTopicRequestBody {\n                group: Some(\"some-string\".to_string()),\n                should_notify: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.invite_group_to"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1invite.json/post/x-rust",
+    "value": {
+      "example": "/// Invite to topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_invite_to() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::InviteToTopicResponse = client\n        .topics()\n        .invite_to(\n            \"some-string\",\n            &discourse_api::types::InviteToTopicRequestBody {\n                user: Some(\"some-string\".to_string()),\n                email: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.invite_to"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1notifications.json/post/x-rust",
+    "value": {
+      "example": "/// Set notification level\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_set_notification_level() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::SetNotificationLevelResponse = client\n        .topics()\n        .set_notification_level(\n            \"some-string\",\n            &discourse_api::types::SetNotificationLevelRequestBody {\n                notification_level: discourse_api::types::NotificationLevel::Two,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.set_notification_level"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1posts.json/get/x-rust",
+    "value": {
+      "example": "/// Get specific posts from a topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_get_specific_posts_from() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetSpecificPostsFromTopicResponse = client\n        .topics()\n        .get_specific_posts_from(\n            \"some-string\",\n            &discourse_api::types::GetSpecificPostsFromTopicRequestBody { post_ids: 4 as i64 },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.get_specific_posts_from"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1status.json/put/x-rust",
+    "value": {
+      "example": "/// Update the status of a topic\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_update_status() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateTopicStatusResponse = client\n        .topics()\n        .update_status(\n            \"some-string\",\n            &discourse_api::types::UpdateTopicStatusRequestBody {\n                status: discourse_api::types::UpdateTopicStatusRequestBodyStatus::Archived,\n                enabled: discourse_api::types::Enabled::False,\n                until: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.update_status"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1t~1{id}~1timer.json/post/x-rust",
+    "value": {
+      "example": "/// Create topic timer\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_topics_create_timer() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateTopicTimerResponse = client\n        .topics()\n        .create_timer(\n            \"some-string\",\n            &discourse_api::types::CreateTopicTimerRequestBody {\n                time: Some(\"some-string\".to_string()),\n                status_type: Some(\"some-string\".to_string()),\n                based_on_last_post: Some(true),\n                category_id: Some(4 as i64),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.create_timer"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tag~1{name}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a specific tag\n/// \n/// **Parameters:**\n/// \n/// - `name: &'astr` (required)\nasync fn example_tags_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetTagResponse = client.tags().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tag_groups.json/get/x-rust",
+    "value": {
+      "example": "/// Get a list of tag groups\nasync fn example_tags_list_groups() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListTagGroupsResponse = client.tags().list_groups().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.list_groups"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tag_groups.json/post/x-rust",
+    "value": {
+      "example": "/// Creates a tag group\nasync fn example_tags_create_group() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateTagGroupResponse = client\n        .tags()\n        .create_group(&discourse_api::types::CreateTagGroupRequestBody {\n            name: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.create_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tag_groups~1{id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a single tag group\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_tags_get_group() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetTagGroupResponse = client.tags().get_group(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.get_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tag_groups~1{id}.json/put/x-rust",
+    "value": {
+      "example": "/// Update tag group\n/// \n/// **Parameters:**\n/// \n/// - `id: &'astr` (required)\nasync fn example_tags_update_group() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateTagGroupResponse = client\n        .tags()\n        .update_group(\n            \"some-string\",\n            &discourse_api::types::UpdateTagGroupRequestBody {\n                name: Some(\"some-string\".to_string()),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.update_group"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1tags.json/get/x-rust",
+    "value": {
+      "example": "/// Get a list of tags\nasync fn example_tags_list() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListTagsResponse = client.tags().list().await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/tags/struct.Tags.html#method.list"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1top.json/get/x-rust",
+    "value": {
+      "example": "/// Get the top topics filtered by period\n/// \n/// **Parameters:**\n/// \n/// - `per_page: Option<i64>`: Maximum number of topics returned, between 1-100\n/// - `period: Option<String>`: Enum: `all`, `yearly`, `quarterly`, `monthly`, `weekly`, `daily`\nasync fn example_topics_list_top() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListTopTopicsResponse = client\n        .topics()\n        .list_top(Some(4 as i64), Some(\"some-string\".to_string()))\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/topics/struct.Topics.html#method.list_top"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1topics~1private-messages-sent~1{username}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a list of private messages sent for a user\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_private_messages_get_user_sent() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetUserSentPrivateMessagesResponse = client\n        .private_messages()\n        .get_user_sent(\"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/private_messages/struct.PrivateMessages.html#method.get_user_sent"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1topics~1private-messages~1{username}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a list of private messages for a user\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_private_messages_list_user() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListUserPrivateMessagesResponse =\n        client.private_messages().list_user(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/private_messages/struct.PrivateMessages.html#method.list_user"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1by-external~1{external_id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a user by external_id\n/// \n/// **Parameters:**\n/// \n/// - `external_id: &'astr` (required)\nasync fn example_users_get_external_id() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetUserExternalIdResponse =\n        client.users().get_external_id(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.get_external_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1by-external~1{provider}~1{external_id}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a user by identity provider external ID\n/// \n/// **Parameters:**\n/// \n/// - `external_id: &'astr` (required)\n/// - `provider: &'astr`: Authentication provider name. Can be found in the provider callback\n/// URL: `/auth/{provider}/callback` (required)\nasync fn example_users_get_identiy_provider_external_id() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetUserIdentiyProviderExternalIdResponse = client\n        .users()\n        .get_identiy_provider_external_id(\"some-string\", \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.get_identiy_provider_external_id"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}.json/get/x-rust",
+    "value": {
+      "example": "/// Get a single user by username\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_get() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetUserResponse = client.users().get(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.get"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}.json/put/x-rust",
+    "value": {
+      "example": "/// Update a user\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_update() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateUserResponse = client\n        .users()\n        .update(\n            \"some-string\",\n            &discourse_api::types::UpdateUserRequestBody {\n                name: Some(\"some-string\".to_string()),\n                external_ids: Some(discourse_api::types::ExternalIds {}),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.update"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}~1emails.json/get/x-rust",
+    "value": {
+      "example": "/// Get email addresses belonging to a user\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_get_emails() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GetUserEmailsResponse =\n        client.users().get_emails(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.get_emails"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}~1preferences~1avatar~1pick.json/put/x-rust",
+    "value": {
+      "example": "/// Update avatar\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_update_avatar() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::UpdateAvatarResponse = client\n        .users()\n        .update_avatar(\n            \"some-string\",\n            &discourse_api::types::UpdateAvatarRequestBody {\n                upload_id: 4 as i64,\n                type_: discourse_api::types::UpdateAvatarRequestBodyType::Gravatar,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.update_avatar"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}~1preferences~1email.json/put/x-rust",
+    "value": {
+      "example": "/// Update email\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_update_email() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client\n        .users()\n        .update_email(\n            \"some-string\",\n            &discourse_api::types::UpdateEmailRequestBody {\n                email: \"email@example.com\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.update_email"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1u~1{username}~1preferences~1username.json/put/x-rust",
+    "value": {
+      "example": "/// Update username\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_update_username() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client\n        .users()\n        .update_username(\n            \"some-string\",\n            &discourse_api::types::UpdateUsernameRequestBody {\n                new_username: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.update_username"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads.json/post/x-rust",
+    "value": {
+      "example": "/// Creates an upload\nasync fn example_uploads_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateUploadResponse = client\n        .uploads()\n        .create(\n            vec![discourse_api::types::multipart::Attachment {\n                name: \"thing\".to_string(),\n                filepath: Some(\"myfile.json\".into()),\n                content_type: Some(\"application/json\".to_string()),\n                data: std::fs::read(\"myfile.json\").unwrap(),\n            }],\n            &discourse_api::types::CreateUploadRequestBody {\n                type_: discourse_api::types::Type::CustomEmoji,\n                user_id: Some(4 as i64),\n                synchronous: Some(true),\n                file: Some(bytes::Bytes::from(\"some-string\")),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1abort-multipart.json/post/x-rust",
+    "value": {
+      "example": "/// Abort multipart upload\n/// \n/// This endpoint aborts the multipart upload initiated with /create-multipart.\n/// This should be used when cancelling the upload. It does not matter if parts\n/// were already uploaded into the external storage provider.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_abort_multipart() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::AbortMultipartResponse = client\n        .uploads()\n        .abort_multipart(&discourse_api::types::AbortMultipartRequestBody {\n            external_upload_identifier: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.abort_multipart"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1batch-presign-multipart-parts.json/post/x-rust",
+    "value": {
+      "example": "/// Generates batches of presigned URLs for multipart parts\n/// \n/// Multipart uploads are uploaded in chunks or parts to individual presigned\n/// URLs, similar to the one generated by /generate-presigned-put. The part\n/// numbers provided must be between 1 and 10000. The total number of parts\n/// will depend on the chunk size in bytes that you intend to use to upload\n/// each chunk. For example a 12MB file may have 2 5MB chunks and a final\n/// 2MB chunk, for part numbers 1, 2, and 3.\n/// \n/// This endpoint will return a presigned URL for each part number provided,\n/// which you can then use to send PUT requests for the binary chunk corresponding\n/// to that part. When the part is uploaded, the provider should return an\n/// ETag for the part, and this should be stored along with the part number,\n/// because this is needed to complete the multipart upload.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_batch_presign_multipart_parts() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::BatchPresignMultipartPartsResponse = client\n        .uploads()\n        .batch_presign_multipart_parts(&discourse_api::types::BatchPresignMultipartPartsRequestBody {\n            part_numbers: vec![serde_json::Value::String(\"some-string\".to_string())],\n            unique_identifier: \"some-string\".to_string(),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.batch_presign_multipart_parts"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1complete-external-upload.json/post/x-rust",
+    "value": {
+      "example": "/// Completes a direct external upload\n/// \n/// Completes an external upload initialized with /get-presigned-put. The\n/// file will be moved from its temporary location in external storage to\n/// a final destination in the S3 bucket. An Upload record will also be\n/// created in the database in most cases.\n/// \n/// If a sha1-checksum was provided in the initial request it will also\n/// be compared with the uploaded file in storage to make sure the same\n/// file was uploaded. The file size will be compared for the same reason.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_complete_external() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CompleteExternalUploadResponse = client\n        .uploads()\n        .complete_external(&discourse_api::types::CompleteExternalUploadRequestBody {\n            unique_identifier: \"some-string\".to_string(),\n            for_private_message: Some(\"some-string\".to_string()),\n            for_site_setting: Some(\"some-string\".to_string()),\n            pasted: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.complete_external"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1complete-multipart.json/post/x-rust",
+    "value": {
+      "example": "/// Complete multipart upload\n/// \n/// Completes the multipart upload in the external store, and copies the\n/// file from its temporary location to its final location in the store.\n/// All of the parts must have been uploaded to the external storage provider.\n/// An Upload record will be completed in most cases once the file is copied\n/// to its final location.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_complete_multipart() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CompleteMultipartResponse = client\n        .uploads()\n        .complete_multipart(&discourse_api::types::CompleteMultipartRequestBody {\n            unique_identifier: \"some-string\".to_string(),\n            parts: vec![serde_json::Value::String(\"some-string\".to_string())],\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.complete_multipart"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1create-multipart.json/post/x-rust",
+    "value": {
+      "example": "/// Creates a multipart external upload\n/// \n/// Creates a multipart upload in the external storage provider, storing\n/// a temporary reference to the external upload similar to /get-presigned-put.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_create_multipart() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateMultipartUploadResponse = client\n        .uploads()\n        .create_multipart(&discourse_api::types::CreateMultipartUploadRequestBody {\n            upload_type: discourse_api::types::UploadType::CustomEmoji,\n            file_name: \"some-string\".to_string(),\n            file_size: 4 as i64,\n            metadata: Some(discourse_api::types::Metadata {\n                sha_1_checksum: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.create_multipart"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1uploads~1generate-presigned-put.json/post/x-rust",
+    "value": {
+      "example": "/// Initiates a direct external upload\n/// \n/// Direct external uploads bypass the usual method of creating uploads\n/// via the POST /uploads route, and upload directly to an external provider,\n/// which by default is S3. This route begins the process, and will return\n/// a unique identifier for the external upload as well as a presigned URL\n/// which is where the file binary blob should be uploaded to.\n/// \n/// Once the upload is complete to the external service, you must call the\n/// POST /complete-external-upload route using the unique identifier returned\n/// by this route, which will create any required Upload record in the Discourse\n/// database and also move file from its temporary location to the final\n/// destination in the external storage service.\n/// \n/// You must have the correct permissions and CORS settings configured in your\n/// external provider. We support AWS S3 as the default. See:\n/// \n/// https://meta.discourse.org/t/-/210469#s3-multipart-direct-uploads-4.\n/// \n/// An external file store must be set up and `enable_direct_s3_uploads` must\n/// be set to true for this endpoint to function.\n/// \n/// \nasync fn example_uploads_generate_presigned_put() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::GeneratePresignedPutResponse = client\n        .uploads()\n        .generate_presigned_put(&discourse_api::types::GeneratePresignedPutRequestBody {\n            type_: discourse_api::types::Type::CustomEmoji,\n            file_name: \"some-string\".to_string(),\n            file_size: 4 as i64,\n            metadata: Some(discourse_api::types::Metadata {\n                sha_1_checksum: Some(\"some-string\".to_string()),\n            }),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/uploads/struct.Uploads.html#method.generate_presigned_put"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user-badges~1{username}.json/get/x-rust",
+    "value": {
+      "example": "/// List badges for a user\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_badges_list_user() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListUserBadgesResponse =\n        client.badges().list_user(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/badges/struct.Badges.html#method.list_user"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user_actions.json/get/x-rust",
+    "value": {
+      "example": "/// Get a list of user actions\n/// \n/// **Parameters:**\n/// \n/// - `filter: &'astr` (required)\n/// - `offset: i64` (required)\n/// - `username: &'astr` (required)\nasync fn example_users_list_actions() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::ListUserActionsResponse = client\n        .users()\n        .list_actions(\"some-string\", 4 as i64, \"some-string\")\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.list_actions"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user_avatar~1{username}~1refresh_gravatar.json/post/x-rust",
+    "value": {
+      "example": "/// Refresh gravatar\n/// \n/// **Parameters:**\n/// \n/// - `username: &'astr` (required)\nasync fn example_users_refresh_gravatar() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::RefreshGravatarResponse =\n        client.users().refresh_gravatar(\"some-string\").await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.refresh_gravatar"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users.json/post/x-rust",
+    "value": {
+      "example": "/// Creates a user\nasync fn example_users_create() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    let result: discourse_api::types::CreateUserResponse = client\n        .users()\n        .create(&discourse_api::types::CreateUserRequestBody {\n            name: \"some-string\".to_string(),\n            email: \"some-string\".to_string(),\n            password: \"some-string\".to_string(),\n            username: \"some-string\".to_string(),\n            active: Some(true),\n            approved: Some(true),\n            user_fields: Some(discourse_api::types::UserFields {\n                field_1: Some(true),\n            }),\n            external_ids: Some(discourse_api::types::ExternalIds {}),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.create"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users~1password-reset~1{token}.json/put/x-rust",
+    "value": {
+      "example": "/// Change password\n/// \n/// **Parameters:**\n/// \n/// - `token: &'astr` (required)\nasync fn example_users_change_password() -> anyhow::Result<()> {\n    let client = discourse_api::Client::new_from_env();\n    client\n        .users()\n        .change_password(\n            \"some-string\",\n            &discourse_api::types::ChangePasswordRequestBody {\n                username: \"some-string\".to_string(),\n                password: \"some-string\".to_string(),\n            },\n        )\n        .await?;\n    Ok(())\n}\n",
+      "libDocsLink": "https://docs.rs/discourse-api/latest/discourse-api/users/struct.Users.html#method.change_password"
+    }
+  }
+]

@@ -1,5 +1,6 @@
 [workspace]
 members = [
+	"discourse",
 	"hubspot-contacts",
 	"hubspot-tickets",
 	"hubspot-users",
