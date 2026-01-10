@@ -1,8 +1,8 @@
 [package]
-name = "hubspot-tickets"
-description = "A fully generated & opinionated API client for the Hubspot Tickets API."
+name = "discourse-api"
+description = "A fully generated & opinionated API client for the Discourse API."
 version = "0.1.0"
-documentation = "https://docs.rs/hubspot-tickets"
+documentation = "https://docs.rs/discourse-api"
 readme = "README.md"
 
 edition = "2021"

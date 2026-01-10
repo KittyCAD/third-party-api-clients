@@ -6,7 +6,7 @@ A fully generated & opinionated API client for the Hubspot Tickets API.
 
 ## API Details
 
-
+API description.
 
 
 

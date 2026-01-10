@@ -2,6 +2,39 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
+pub struct GetCrmV3ObjectsTicketsTicketIdGetByIdParams<'a> {
+    pub archived: Option<bool>,
+    pub associations: Option<Vec<String>>,
+    pub id_property: Option<String>,
+    pub properties: Option<Vec<String>>,
+    pub properties_with_history: Option<Vec<String>>,
+    pub ticket_id: &'a str,
+}
+
+impl<'a> GetCrmV3ObjectsTicketsTicketIdGetByIdParams<'a> {
+    pub fn new(ticket_id: &'a str) -> Self {
+        Self {
+            archived: Default::default(),
+            associations: Default::default(),
+            id_property: Default::default(),
+            properties: Default::default(),
+            properties_with_history: Default::default(),
+            ticket_id,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct GetCrmV3ObjectsTicketsGetPageParams {
+    pub after: Option<String>,
+    pub archived: Option<bool>,
+    pub associations: Option<Vec<String>>,
+    pub limit: Option<i32>,
+    pub properties: Option<Vec<String>>,
+    pub properties_with_history: Option<Vec<String>>,
+}
+
+#[derive(Clone, Debug)]
 pub struct Basic {
     pub client: Client,
 }
@@ -12,17 +45,20 @@ impl Basic {
         Self { client }
     }
 
-    #[doc = "Retrieve a ticket\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `id_property: Option<String>`: The name of a property whose values are unique for this object\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `ticket_id: &'astr`: The ID of the ticket. (required)\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_ticket_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_tickets_ticket_id_get_by_id(\n            Some(true),\n            Some(vec![\"some-string\".to_string()]),\n            Some(\"some-string\".to_string()),\n            Some(vec![\"some-string\".to_string()]),\n            Some(vec![\"some-string\".to_string()]),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve a ticket\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `id_property: Option<String>`: The name of a property whose values are unique for this object\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `ticket_id: &'astr`: The ID of the ticket. (required)\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_ticket_id_get_by_id() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::SimplePublicObjectWithAssociations = client\n        .basic()\n        .get_crm_v_3_objects_tickets_ticket_id_get_by_id(\n            hubspot_tickets::basic::GetCrmV3ObjectsTicketsTicketIdGetByIdParams {\n                archived: Some(true),\n                associations: Some(vec![\"some-string\".to_string()]),\n                id_property: Some(\"some-string\".to_string()),\n                properties: Some(vec![\"some-string\".to_string()]),\n                properties_with_history: Some(vec![\"some-string\".to_string()]),\n                ticket_id: \"some-string\",\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_crm_v_3_objects_tickets_ticket_id_get_by_id<'a>(
         &'a self,
-        archived: Option<bool>,
-        associations: Option<Vec<String>>,
-        id_property: Option<String>,
-        properties: Option<Vec<String>>,
-        properties_with_history: Option<Vec<String>>,
-        ticket_id: &'a str,
+        params: GetCrmV3ObjectsTicketsTicketIdGetByIdParams<'a>,
     ) -> Result<crate::types::SimplePublicObjectWithAssociations, crate::types::error::Error> {
+        let GetCrmV3ObjectsTicketsTicketIdGetByIdParams {
+            archived,
+            associations,
+            id_property,
+            properties,
+            properties_with_history,
+            ticket_id,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -186,20 +222,23 @@ impl Basic {
         }
     }
 
-    #[doc = "Retrieve tickets\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `after: Option<String>`: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `limit: Option<i32>`: The maximum number of results to display per page.\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_get_page() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging =\n        client\n            .basic()\n            .get_crm_v_3_objects_tickets_get_page(\n                Some(\"some-string\".to_string()),\n                Some(true),\n                Some(vec![\"some-string\".to_string()]),\n                Some(4 as i32),\n                Some(vec![\"some-string\".to_string()]),\n                Some(vec![\"some-string\".to_string()]),\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Retrieve tickets\n\nRetrieve a ticket by its ID (`ticketId`) or by a unique property (`idProperty`). You can specify what is returned using the `properties` query parameter.\n\n**Parameters:**\n\n- `after: Option<String>`: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.\n- `archived: Option<bool>`: Whether to return only results that have been archived.\n- `associations: Option<Vec<String>>`: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.\n- `limit: Option<i32>`: The maximum number of results to display per page.\n- `properties: Option<Vec<String>>`: A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.\n- `properties_with_history: Option<Vec<String>>`: A comma separated list of the properties to be returned along with their history of previous values. If any of the specified properties are not present on the requested object(s), they will be ignored. Usage of this parameter will reduce the maximum number of objects that can be read by a single request.\n\n```rust,no_run\nasync fn example_basic_get_crm_v_3_objects_tickets_get_page() -> anyhow::Result<()> {\n    let client = hubspot_tickets::Client::new_from_env();\n    let result: hubspot_tickets::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging =\n        client\n            .basic()\n            .get_crm_v_3_objects_tickets_get_page(\n                hubspot_tickets::basic::GetCrmV3ObjectsTicketsGetPageParams {\n                    after: Some(\"some-string\".to_string()),\n                    archived: Some(true),\n                    associations: Some(vec![\"some-string\".to_string()]),\n                    limit: Some(4 as i32),\n                    properties: Some(vec![\"some-string\".to_string()]),\n                    properties_with_history: Some(vec![\"some-string\".to_string()]),\n                },\n            )\n            .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_crm_v_3_objects_tickets_get_page<'a>(
         &'a self,
-        after: Option<String>,
-        archived: Option<bool>,
-        associations: Option<Vec<String>>,
-        limit: Option<i32>,
-        properties: Option<Vec<String>>,
-        properties_with_history: Option<Vec<String>>,
+        params: GetCrmV3ObjectsTicketsGetPageParams,
     ) -> Result<
         crate::types::CollectionResponseSimplePublicObjectWithAssociationsForwardPaging,
         crate::types::error::Error,
     > {
+        let GetCrmV3ObjectsTicketsGetPageParams {
+            after,
+            archived,
+            associations,
+            limit,
+            properties,
+            properties_with_history,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "crm/v3/objects/tickets"),

@@ -1,14 +1,76 @@
-//! A fully generated & opinionated API client for the Hubspot Tickets API.
+//! A fully generated & opinionated API client for the Discourse API.
 //!
-//! [![docs.rs](https://docs.rs/hubspot-tickets/badge.svg)](https://docs.rs/hubspot-tickets)
+//! [![docs.rs](https://docs.rs/discourse-api/badge.svg)](https://docs.rs/discourse-api)
 //!
 //! ## API Details
 //!
-//! API description.
+//! This page contains the documentation on how to use Discourse through API calls.
+//!
+//! > Note: For any endpoints not listed you can follow the
+//! [reverse engineer the Discourse API](https://meta.discourse.org/t/-/20576)
+//! guide to figure out how to use an API endpoint.
+//!
+//! ### Request Content-Type
+//!
+//! The Content-Type for POST and PUT requests can be set to `application/x-www-form-urlencoded`,
+//! `multipart/form-data`, or `application/json`.
+//!
+//! ### Endpoint Names and Response Content-Type
+//!
+//! Most API endpoints provide the same content as their HTML counterparts. For example
+//! the URL `/categories` serves a list of categories, the `/categories.json` API provides the
+//! same information in JSON format.
+//!
+//! Instead of sending API requests to `/categories.json` you may also send them to `/categories`
+//! and add an `Accept: application/json` header to the request to get the JSON response.
+//! Sending requests with the `Accept` header is necessary if you want to use URLs
+//! for related endpoints returned by the API, such as pagination URLs.
+//! These URLs are returned without the `.json` prefix so you need to add the header in
+//! order to get the correct response format.
+//!
+//! ### Authentication
+//!
+//! Some endpoints do not require any authentication, pretty much anything else will
+//! require you to be authenticated.
+//!
+//! To become authenticated you will need to create an API Key from the admin panel.
+//!
+//! Once you have your API Key you can pass it in along with your API Username
+//! as an HTTP header like this:
+//!
+//! ```text
+//! curl -X GET "http://127.0.0.1:3000/admin/users/list/active.json" \
+//! -H "Api-Key: 714552c6148e1617aeab526d0606184b94a80ec048fc09894ff1a72b740c5f19" \
+//! -H "Api-Username: system"
+//! ```
+//!
+//! and this is how POST requests will look:
+//!
+//! ```text
+//! curl -X POST "http://127.0.0.1:3000/categories" \
+//! -H "Content-Type: multipart/form-data;" \
+//! -H "Api-Key: 714552c6148e1617aeab526d0606184b94a80ec048fc09894ff1a72b740c5f19" \
+//! -H "Api-Username: system" \
+//! -F "name=89853c20-4409-e91a-a8ea-f6cdff96aaaa" \
+//! -F "color=49d9e9" \
+//! -F "text_color=f0fcfd"
+//! ```
+//!
+//! ### Boolean values
+//!
+//! If an endpoint accepts a boolean be sure to specify it as a lowercase
+//! `true` or `false` value unless noted otherwise.
 //!
 //!
 //!
 //!
+//!
+//! ### License
+//!
+//!
+//! | name | url |
+//! |----|----|
+//! | MIT | <https://docs.discourse.org/LICENSE.txt> |
 //!
 //!
 //! ## Client Details
@@ -23,7 +85,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! hubspot-tickets = "0.1.0"
+//! discourse-api = "0.1.0"
 //! ```
 //!
 //! ## Basic example
@@ -32,7 +94,7 @@
 //! a user agent string and set of credentials.
 //!
 //! ```rust,no_run
-//! use hubspot_tickets::Client;
+//! use discourse_api::Client;
 //!
 //! let client = Client::new(String::from("api-key"));
 //! ```
@@ -40,13 +102,13 @@
 //! Alternatively, the library can search for most of the variables required for
 //! the client in the environment:
 //!
-//! - `HUBSPOT_TICKETS_API_TOKEN`
+//! - `DISCOURSE_API_TOKEN`
 //!
 //!
 //! And then you can create a client from the environment.
 //!
 //! ```rust,no_run
-//! use hubspot_tickets::Client;
+//! use discourse_api::Client;
 //!
 //! let client = Client::new_from_env();
 //! ```
@@ -58,15 +120,39 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "requests")]
-pub mod basic;
+pub mod backups;
 #[cfg(feature = "requests")]
-pub mod batch;
+pub mod badges;
+#[cfg(feature = "requests")]
+pub mod categories;
+#[cfg(feature = "requests")]
+pub mod discourse_calendar_events;
+#[cfg(feature = "requests")]
+pub mod groups;
+#[cfg(feature = "requests")]
+pub mod invites;
 mod methods;
 #[cfg(feature = "requests")]
+pub mod notifications;
+#[cfg(feature = "requests")]
+pub mod posts;
+#[cfg(feature = "requests")]
+pub mod private_messages;
+#[cfg(feature = "requests")]
 pub mod search;
+#[cfg(feature = "requests")]
+pub mod site;
+#[cfg(feature = "requests")]
+pub mod tags;
 #[cfg(test)]
 mod tests;
+#[cfg(feature = "requests")]
+pub mod topics;
 pub mod types;
+#[cfg(feature = "requests")]
+pub mod uploads;
+#[cfg(feature = "requests")]
+pub mod users;
 
 #[cfg(feature = "requests")]
 use std::env;
@@ -146,7 +232,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.hubapi.com".to_string(),
+                        base_url: "https://discourse.example.com".to_string(),
 
                         client,
                         client_http1_only,
@@ -160,7 +246,7 @@ impl Client {
             match (builder_http.build(), builder_websocket.build()) {
                 (Ok(c), Ok(c1)) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.hubapi.com".to_string(),
+                    base_url: "https://discourse.example.com".to_string(),
 
                     client: c,
                     client_http1_only: c1,
@@ -198,7 +284,7 @@ impl Client {
                         .build();
                     Client {
                         token: token.to_string(),
-                        base_url: "https://api.hubapi.com".to_string(),
+                        base_url: "https://discourse.example.com".to_string(),
 
                         client,
                     }
@@ -211,7 +297,7 @@ impl Client {
             match builder_http.build() {
                 Ok(c) => Client {
                     token: token.to_string(),
-                    base_url: "https://api.hubapi.com".to_string(),
+                    base_url: "https://discourse.example.com".to_string(),
 
                     client: c,
                 },
@@ -249,7 +335,7 @@ impl Client {
         Self::new_from_reqwest(token, client)
     }
 
-    /// Set the base URL for the client to something other than the default: <https://api.hubapi.com>.
+    /// Set the base URL for the client to something other than the default: <https://discourse.example.com>.
     #[tracing::instrument]
     pub fn set_base_url<H>(&mut self, base_url: H)
     where
@@ -261,10 +347,9 @@ impl Client {
     /// Create a new Client struct from the environment variable: `ENV_VARIABLE_PREFIX_API_TOKEN`.
     #[tracing::instrument]
     pub fn new_from_env() -> Self {
-        let token =
-            env::var("HUBSPOT_TICKETS_API_TOKEN").expect("must set HUBSPOT_TICKETS_API_TOKEN");
+        let token = env::var("DISCOURSE_API_TOKEN").expect("must set DISCOURSE_API_TOKEN");
         let base_url =
-            env::var("HUBSPOT_TICKETS_HOST").unwrap_or("https://api.hubapi.com".to_string());
+            env::var("DISCOURSE_HOST").unwrap_or("https://discourse.example.com".to_string());
 
         let mut c = Client::new(token);
         c.set_base_url(base_url);
@@ -307,18 +392,78 @@ impl Client {
         Ok(RequestBuilder(req))
     }
 
-    /// Return a reference to an interface that provides access to Batch operations.
-    pub fn batch(&self) -> batch::Batch {
-        batch::Batch::new(self.clone())
+    /// Return a reference to an interface that provides access to Discourse Calendar - Events operations.
+    pub fn discourse_calendar_events(&self) -> discourse_calendar_events::DiscourseCalendarEvents {
+        discourse_calendar_events::DiscourseCalendarEvents::new(self.clone())
     }
 
-    /// Return a reference to an interface that provides access to Basic operations.
-    pub fn basic(&self) -> basic::Basic {
-        basic::Basic::new(self.clone())
+    /// Return a reference to an interface that provides access to Backups operations.
+    pub fn backups(&self) -> backups::Backups {
+        backups::Backups::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Badges operations.
+    pub fn badges(&self) -> badges::Badges {
+        badges::Badges::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Categories operations.
+    pub fn categories(&self) -> categories::Categories {
+        categories::Categories::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Groups operations.
+    pub fn groups(&self) -> groups::Groups {
+        groups::Groups::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Invites operations.
+    pub fn invites(&self) -> invites::Invites {
+        invites::Invites::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Notifications operations.
+    pub fn notifications(&self) -> notifications::Notifications {
+        notifications::Notifications::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Posts operations.
+    pub fn posts(&self) -> posts::Posts {
+        posts::Posts::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Private Messages operations.
+    pub fn private_messages(&self) -> private_messages::PrivateMessages {
+        private_messages::PrivateMessages::new(self.clone())
     }
 
     /// Return a reference to an interface that provides access to Search operations.
     pub fn search(&self) -> search::Search {
         search::Search::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Site operations.
+    pub fn site(&self) -> site::Site {
+        site::Site::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Tags operations.
+    pub fn tags(&self) -> tags::Tags {
+        tags::Tags::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Topics operations.
+    pub fn topics(&self) -> topics::Topics {
+        topics::Topics::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Uploads operations.
+    pub fn uploads(&self) -> uploads::Uploads {
+        uploads::Uploads::new(self.clone())
+    }
+
+    /// Return a reference to an interface that provides access to Users operations.
+    pub fn users(&self) -> users::Users {
+        users::Users::new(self.clone())
     }
 }

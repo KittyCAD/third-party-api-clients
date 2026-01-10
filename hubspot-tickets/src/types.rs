@@ -488,7 +488,40 @@ pub mod error {
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
+pub struct SubCategory {}
+
+impl std::fmt::Display for SubCategory {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for SubCategory {
+    const LENGTH: usize = 0;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+}
+
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
 pub struct StandardError {
+    #[serde(
+        rename = "subCategory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sub_category: Option<SubCategory>,
     pub context: std::collections::HashMap<String, Vec<String>>,
     pub links: std::collections::HashMap<String, String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

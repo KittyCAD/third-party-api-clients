@@ -84,6 +84,18 @@ rippling: openapitor
 		--request-timeout-seconds 60 \
 		--date-time-format "%Y-%m-%dT%H:%M:%S" $(EXTRA_ARGS)
 
+# Spec is from https://raw.githubusercontent.com/discourse/discourse_api_docs/main/openapi.json
+.PHONY: discourse
+discourse: openapitor
+	$(openapitor_exe) \
+		--input specs/discourse.json \
+		--target-version 0.1.0 \
+		--output ./discourse \
+		--name discourse-api \
+		--description "A fully generated & opinionated API client for the Discourse API." \
+		--base-url "https://discourse.example.com" \
+		--request-timeout-seconds 60 \
+
 # Spec is from https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
 .PHONY: twilio
 twilio: openapitor
@@ -123,6 +135,7 @@ all:
 	make twilio
 	make vercel
 	make rippling
+	make discourse
 	make hubspot-contacts
 	make hubspot-tickets
 	make hubspot-users
