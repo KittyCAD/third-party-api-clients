@@ -41,7 +41,6 @@ jobs:
           cargo test --all
         env:
           RUST_BACKTRACE: 1
-          FRONT_API_TOKEN: ${{secrets.FRONT_API_TOKEN}}
           REMOTE_API_TOKEN: ${{secrets.REMOTE_API_TOKEN_DEV_CI}}
 
           # TODO: turn back on coverage.
