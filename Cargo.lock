@@ -430,7 +430,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -693,21 +693,21 @@ dependencies = [
  "cfg-if",
  "js-sys",
  "libc",
- "r-efi",
+ "r-efi 5.3.0",
  "wasip2",
  "wasm-bindgen",
 ]
 
 [[package]]
 name = "getrandom"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "139ef39800118c7683f2fd3c98c1b23c09ae076556b435f8e9064ae108aaeeec"
+checksum = "0de51e6874e94e7bf76d726fc5d13ba782deca734ff60d5bb2fb2607c7406555"
 dependencies = [
  "cfg-if",
  "js-sys",
  "libc",
- "r-efi",
+ "r-efi 6.0.0",
  "rand_core 0.10.0",
  "wasip2",
  "wasip3",
@@ -839,7 +839,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -884,7 +884,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -929,7 +929,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -1672,6 +1672,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
 
 [[package]]
+name = "r-efi"
+version = "6.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
+
+[[package]]
 name = "ramp-api"
 version = "0.0.2"
 dependencies = [
@@ -1688,7 +1694,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -1733,7 +1739,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc266eb313df6c5c09c1c7b1fbe2510961e5bcd3add930c1e31f7ed9da0feff8"
 dependencies = [
  "chacha20",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "rand_core 0.10.0",
 ]
 
@@ -1846,7 +1852,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -2020,7 +2026,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -2748,7 +2754,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
@@ -2855,7 +2861,7 @@ version = "1.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a68d3c8f01c0cfa54a75291d83601161799e4a89a39e0929f4b0354d88757a37"
 dependencies = [
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "js-sys",
  "serde_core",
  "wasm-bindgen",
@@ -2878,7 +2884,7 @@ dependencies = [
  "format_serde_error",
  "futures",
  "futures-util",
- "getrandom 0.4.1",
+ "getrandom 0.4.2",
  "http",
  "itertools",
  "log",
