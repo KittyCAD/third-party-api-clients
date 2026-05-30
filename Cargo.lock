@@ -439,9 +439,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -848,9 +848,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -893,9 +893,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -938,9 +938,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -1703,9 +1703,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -1861,9 +1861,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -1890,7 +1890,6 @@ dependencies = [
  "bytes",
  "futures-core",
  "futures-util",
- "h2",
  "http",
  "http-body",
  "http-body-util",
@@ -1923,6 +1922,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "reqwest"
+version = "0.13.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "219c5811de6525e5416c7d5d53bb656d3afdbc6c5af816e0802bcfa42dbdc1c3"
+dependencies = [
+ "base64",
+ "bytes",
+ "futures-core",
+ "futures-util",
+ "h2",
+ "http",
+ "http-body",
+ "http-body-util",
+ "hyper",
+ "hyper-rustls",
+ "hyper-util",
+ "js-sys",
+ "log",
+ "mime_guess",
+ "percent-encoding",
+ "pin-project-lite",
+ "serde",
+ "serde_json",
+ "sync_wrapper",
+ "tokio",
+ "tower",
+ "tower-http",
+ "tower-service",
+ "url",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
 name = "reqwest-conditional-middleware"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1930,8 +1964,8 @@ checksum = "f67ad7fdf5c0a015763fcd164bee294b13fb7b6f89f1b55961d40f00c3e32d6b"
 dependencies = [
  "async-trait",
  "http",
- "reqwest",
- "reqwest-middleware",
+ "reqwest 0.12.28",
+ "reqwest-middleware 0.4.2",
 ]
 
 [[package]]
@@ -1943,9 +1977,24 @@ dependencies = [
  "anyhow",
  "async-trait",
  "http",
- "reqwest",
+ "reqwest 0.12.28",
  "serde",
  "thiserror 1.0.69",
+ "tower-service",
+]
+
+[[package]]
+name = "reqwest-middleware"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07bc3f1384cffa4f274dad2d4ddd73aed32fed8f786d96c6be8aa4e5fd3c3b58"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "http",
+ "reqwest 0.13.4",
+ "serde",
+ "thiserror 2.0.18",
  "tower-service",
 ]
 
@@ -1961,8 +2010,8 @@ dependencies = [
  "getrandom 0.2.16",
  "http",
  "hyper",
- "reqwest",
- "reqwest-middleware",
+ "reqwest 0.12.28",
+ "reqwest-middleware 0.4.2",
  "retry-policies",
  "thiserror 2.0.18",
  "tokio",
@@ -1981,8 +2030,8 @@ dependencies = [
  "getrandom 0.2.16",
  "http",
  "matchit",
- "reqwest",
- "reqwest-middleware",
+ "reqwest 0.12.28",
+ "reqwest-middleware 0.4.2",
  "tracing",
 ]
 
@@ -2035,9 +2084,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -2762,9 +2811,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
@@ -2886,9 +2935,9 @@ dependencies = [
  "phonenumber",
  "pretty_assertions",
  "rand 0.10.1",
- "reqwest",
+ "reqwest 0.12.28",
  "reqwest-conditional-middleware",
- "reqwest-middleware",
+ "reqwest-middleware 0.5.2",
  "reqwest-retry",
  "reqwest-tracing",
  "schemars",
