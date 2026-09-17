@@ -1,6 +1,20 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetListWithPaginationParams {
+    pub card_id: Option<uuid::Uuid>,
+    pub department_id: Option<uuid::Uuid>,
+    pub from_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub location_id: Option<uuid::Uuid>,
+    pub manager_id: Option<uuid::Uuid>,
+    pub merchant_id: Option<uuid::Uuid>,
+    pub page_size: Option<i64>,
+    pub start: Option<uuid::Uuid>,
+    pub to_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub user_id: Option<uuid::Uuid>,
+}
+
 #[derive(Clone, Debug)]
 pub struct Memo {
     pub client: Client,
@@ -12,22 +26,25 @@ impl Memo {
         Self { client }
     }
 
-    #[doc = "List memos\n\n**Parameters:**\n\n- `card_id: Option<uuid::Uuid>`\n- `department_id: Option<uuid::Uuid>`\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `location_id: Option<uuid::Uuid>`\n- `manager_id: Option<uuid::Uuid>`\n- `merchant_id: Option<uuid::Uuid>`\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`\n- `user_id: Option<uuid::Uuid>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMemoResourceSchema = client\n        .memo()\n        .get_list_with_pagination(\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(chrono::Utc::now()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List memos\n\n**Parameters:**\n\n- `card_id: Option<uuid::Uuid>`\n- `department_id: Option<uuid::Uuid>`\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`\n- `location_id: Option<uuid::Uuid>`\n- `manager_id: Option<uuid::Uuid>`\n- `merchant_id: Option<uuid::Uuid>`\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`\n- `user_id: Option<uuid::Uuid>`\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_memo_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiMemoResourceSchema = client\n        .memo()\n        .get_list_with_pagination(ramp_api::memo::GetListWithPaginationParams {\n            card_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            department_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            from_date: Some(chrono::Utc::now()),\n            location_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            manager_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            merchant_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            page_size: Some(4 as i64),\n            start: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            to_date: Some(chrono::Utc::now()),\n            user_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
         &'a self,
-        card_id: Option<uuid::Uuid>,
-        department_id: Option<uuid::Uuid>,
-        from_date: Option<chrono::DateTime<chrono::Utc>>,
-        location_id: Option<uuid::Uuid>,
-        manager_id: Option<uuid::Uuid>,
-        merchant_id: Option<uuid::Uuid>,
-        page_size: Option<i64>,
-        start: Option<uuid::Uuid>,
-        to_date: Option<chrono::DateTime<chrono::Utc>>,
-        user_id: Option<uuid::Uuid>,
+        params: GetListWithPaginationParams,
     ) -> Result<crate::types::PaginatedResponseApiMemoResourceSchema, crate::types::error::Error>
     {
+        let GetListWithPaginationParams {
+            card_id,
+            department_id,
+            from_date,
+            location_id,
+            manager_id,
+            merchant_id,
+            page_size,
+            start,
+            to_date,
+            user_id,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/memos"),

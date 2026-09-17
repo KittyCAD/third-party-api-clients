@@ -196,6 +196,15 @@ pub mod paginate {
             &self,
             req: reqwest::Request,
         ) -> Result<reqwest::Request, crate::types::error::Error>;
+        #[doc = " Modify a request to get the next page using the operation's page parameter."]
+        fn next_page_with_param(
+            &self,
+            req: reqwest::Request,
+            _page_param: &str,
+        ) -> Result<reqwest::Request, crate::types::error::Error> {
+            self.next_page(req)
+        }
+
         #[doc = " Get the items from a page."]
         fn items(&self) -> Vec<Self::Item>;
     }
@@ -374,8 +383,8 @@ pub mod error {
             #[cfg(not(feature = "retry"))]
             #[doc = " The error."]
             error: reqwest::Error,
-            #[doc = " The full response."]
-            response: reqwest::Response,
+            #[doc = " The full response, boxed to keep the error compact."]
+            response: Box<reqwest::Response>,
         },
         #[doc = " An error from the server."]
         Server {
@@ -386,7 +395,16 @@ pub mod error {
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
-        UnexpectedResponse(reqwest::Response),
+        UnexpectedResponse {
+            #[doc = " HTTP status response code from server"]
+            status: reqwest::StatusCode,
+            #[doc = " URL that caused the error."]
+            url: String,
+            #[doc = " HTTP response body from the server, rendered as text."]
+            body: String,
+            #[doc = " HTTP headers, boxed to keep the error compact."]
+            headers: Box<reqwest::header::HeaderMap>,
+        },
     }
 
     impl Error {
@@ -402,7 +420,7 @@ pub mod error {
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
                 Error::Server { body: _, status } => Some(*status),
-                Error::UnexpectedResponse(r) => Some(r.status()),
+                Error::UnexpectedResponse { status, .. } => Some(*status),
             }
         }
 
@@ -459,8 +477,17 @@ pub mod error {
                 Error::Server { body, status } => {
                     write!(f, "Server Error: {} {}", status, body)
                 }
-                Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {:?}", r)
+                Error::UnexpectedResponse {
+                    headers,
+                    status,
+                    body,
+                    url,
+                } => {
+                    write!(
+                        f,
+                        "Unexpected Response for {url} (HTTP {}). Headers: {:?}, body: {}",
+                        status, headers, body
+                    )
                 }
             }
         }
@@ -1489,6 +1516,7 @@ impl tabled::Tabled for ListTimeoffTypesResponse {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -1504,13 +1532,8 @@ impl tabled::Tabled for ListTimeoffTypesResponse {
 pub enum CreateApprovedTimeoffParamsStatus {
     #[serde(rename = "approved")]
     #[display("approved")]
+    #[default]
     Approved,
-}
-
-impl std::default::Default for CreateApprovedTimeoffParamsStatus {
-    fn default() -> Self {
-        CreateApprovedTimeoffParamsStatus::Approved
-    }
 }
 
 #[doc = "Approved timeoff creation params"]
@@ -3119,13 +3142,40 @@ impl tabled::Tabled for RemoteEntity {
     }
 }
 
+#[derive(
+    serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
+)]
+pub struct CountryFormResponseData {}
+
+impl std::fmt::Display for CountryFormResponseData {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(self).map_err(|_| std::fmt::Error)?
+        )
+    }
+}
+
+#[cfg(feature = "tabled")]
+impl tabled::Tabled for CountryFormResponseData {
+    const LENGTH: usize = 0;
+    fn fields(&self) -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![]
+    }
+}
+
 #[doc = "Object with required and optional fields, its descriptions and suggested presentation"]
 #[derive(
     serde :: Serialize, serde :: Deserialize, PartialEq, Debug, Clone, schemars :: JsonSchema,
 )]
 pub struct CountryFormResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub data: Option<Data>,
+    pub data: Option<CountryFormResponseData>,
 }
 
 impl std::fmt::Display for CountryFormResponse {

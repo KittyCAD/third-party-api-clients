@@ -27,7 +27,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-remote-api = "0.1.2"
+remote-api = "0.2.0"
 ```
 
 ## Basic example

@@ -1,6 +1,18 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetListWithPaginationParams {
+    pub card_program_id: Option<uuid::Uuid>,
+    pub display_name: Option<String>,
+    pub entity_id: Option<uuid::Uuid>,
+    pub is_activated: Option<bool>,
+    pub is_terminated: Option<bool>,
+    pub page_size: Option<i64>,
+    pub start: Option<uuid::Uuid>,
+    pub user_id: Option<uuid::Uuid>,
+}
+
 #[derive(Clone, Debug)]
 pub struct Card {
     pub client: Client,
@@ -12,20 +24,23 @@ impl Card {
         Self { client }
     }
 
-    #[doc = "List cards\n\n**Parameters:**\n\n- `card_program_id: Option<uuid::Uuid>`: Filter by card program.\n- `display_name: Option<String>`: Filter by display name.\n- `entity_id: Option<uuid::Uuid>`: Filter by business entity.\n- `is_activated: Option<bool>`: Filter only for activated cards. Defaults to True if not specified\n- `is_terminated: Option<bool>`: Filter only for terminated cards. Defaults to False if not specified\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `user_id: Option<uuid::Uuid>`: Filter by card owner.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_card_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiCardResourceSchema = client\n        .card()\n        .get_list_with_pagination(\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(\"some-string\".to_string()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(true),\n            Some(true),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List cards\n\n**Parameters:**\n\n- `card_program_id: Option<uuid::Uuid>`: Filter by card program.\n- `display_name: Option<String>`: Filter by display name.\n- `entity_id: Option<uuid::Uuid>`: Filter by business entity.\n- `is_activated: Option<bool>`: Filter only for activated cards. Defaults to True if not specified\n- `is_terminated: Option<bool>`: Filter only for terminated cards. Defaults to False if not specified\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `user_id: Option<uuid::Uuid>`: Filter by card owner.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_card_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiCardResourceSchema = client\n        .card()\n        .get_list_with_pagination(ramp_api::card::GetListWithPaginationParams {\n            card_program_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            display_name: Some(\"some-string\".to_string()),\n            entity_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            is_activated: Some(true),\n            is_terminated: Some(true),\n            page_size: Some(4 as i64),\n            start: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            user_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
         &'a self,
-        card_program_id: Option<uuid::Uuid>,
-        display_name: Option<String>,
-        entity_id: Option<uuid::Uuid>,
-        is_activated: Option<bool>,
-        is_terminated: Option<bool>,
-        page_size: Option<i64>,
-        start: Option<uuid::Uuid>,
-        user_id: Option<uuid::Uuid>,
+        params: GetListWithPaginationParams,
     ) -> Result<crate::types::PaginatedResponseApiCardResourceSchema, crate::types::error::Error>
     {
+        let GetListWithPaginationParams {
+            card_program_id,
+            display_name,
+            entity_id,
+            is_activated,
+            is_terminated,
+            page_size,
+            start,
+            user_id,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/cards"),

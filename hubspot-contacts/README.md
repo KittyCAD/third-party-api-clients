@@ -25,7 +25,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-hubspot-contacts = "0.1.2"
+hubspot-contacts = "0.2.0"
 ```
 
 ## Basic example

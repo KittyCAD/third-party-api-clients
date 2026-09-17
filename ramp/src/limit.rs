@@ -1,6 +1,17 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetSpendListWithPaginationParams {
+    pub display_name: Option<String>,
+    pub entity_id: Option<uuid::Uuid>,
+    pub is_terminated: Option<bool>,
+    pub page_size: Option<i64>,
+    pub spend_program_id: Option<uuid::Uuid>,
+    pub start: Option<uuid::Uuid>,
+    pub user_id: Option<uuid::Uuid>,
+}
+
 #[derive(Clone, Debug)]
 pub struct Limit {
     pub client: Client,
@@ -12,21 +23,24 @@ impl Limit {
         Self { client }
     }
 
-    #[doc = "List limits\n\n**Parameters:**\n\n- `display_name: Option<String>`: Filter by display name.\n- `entity_id: Option<uuid::Uuid>`: Filter for limits by associated business entity.\n- `is_terminated: Option<bool>`: Filter only for terminated spend limits.\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `spend_program_id: Option<uuid::Uuid>`: Filter for limits that are associated with the specified spend program\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `user_id: Option<uuid::Uuid>`: Filter for limits that are owned by the user.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_limit_get_spend_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiSpendLimitResourceSchema = client\n        .limit()\n        .get_spend_list_with_pagination(\n            Some(\"some-string\".to_string()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(true),\n            Some(4 as i64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List limits\n\n**Parameters:**\n\n- `display_name: Option<String>`: Filter by display name.\n- `entity_id: Option<uuid::Uuid>`: Filter for limits by associated business entity.\n- `is_terminated: Option<bool>`: Filter only for terminated spend limits.\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `spend_program_id: Option<uuid::Uuid>`: Filter for limits that are associated with the specified spend program\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `user_id: Option<uuid::Uuid>`: Filter for limits that are owned by the user.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_limit_get_spend_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiSpendLimitResourceSchema = client\n        .limit()\n        .get_spend_list_with_pagination(ramp_api::limit::GetSpendListWithPaginationParams {\n            display_name: Some(\"some-string\".to_string()),\n            entity_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            is_terminated: Some(true),\n            page_size: Some(4 as i64),\n            spend_program_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            start: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            user_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_spend_list_with_pagination<'a>(
         &'a self,
-        display_name: Option<String>,
-        entity_id: Option<uuid::Uuid>,
-        is_terminated: Option<bool>,
-        page_size: Option<i64>,
-        spend_program_id: Option<uuid::Uuid>,
-        start: Option<uuid::Uuid>,
-        user_id: Option<uuid::Uuid>,
+        params: GetSpendListWithPaginationParams,
     ) -> Result<
         crate::types::PaginatedResponseApiSpendLimitResourceSchema,
         crate::types::error::Error,
     > {
+        let GetSpendListWithPaginationParams {
+            display_name,
+            entity_id,
+            is_terminated,
+            page_size,
+            spend_program_id,
+            start,
+            user_id,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/limits"),

@@ -1,6 +1,17 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetIndexTimeoffParams {
+    pub employment_id: Option<String>,
+    pub order_by: Option<crate::types::OrderBy>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub sort_by: Option<crate::types::SortBy>,
+    pub status: Option<crate::types::GetIndexTimeoffStatus>,
+    pub timeoff_type: Option<crate::types::TimeoffType>,
+}
+
 #[derive(Clone, Debug)]
 pub struct TimeOff {
     pub client: Client,
@@ -12,18 +23,21 @@ impl TimeOff {
         Self { client }
     }
 
-    #[doc = "List Time Off\n\nLists all Time Off records.\n\n**Parameters:**\n\n- `employment_id: Option<String>`: Only show time off for a specific employment\n- `order_by: Option<crate::types::OrderBy>`: Sort order\n- `page: Option<i64>`: Starts fetching records after the given page\n- `page_size: Option<i64>`: Change the amount of records returned per page, defaults to 20, limited to 100\n- `sort_by: Option<crate::types::SortBy>`: Field to sort by\n- `status: Option<crate::types::GetIndexTimeoffStatus>`: Filter time off by its status\n- `timeoff_type: Option<crate::types::TimeoffType>`: Filter time off by its type\n\n```rust,no_run\nasync fn example_time_off_get_index_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::ListTimeoffResponse = client\n        .time_off()\n        .get_index_timeoff(\n            Some(\"some-string\".to_string()),\n            Some(remote_api::types::OrderBy::Desc),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(remote_api::types::SortBy::Status),\n            Some(remote_api::types::GetIndexTimeoffStatus::Requested),\n            Some(remote_api::types::TimeoffType::PaternityLeave),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List Time Off\n\nLists all Time Off records.\n\n**Parameters:**\n\n- `employment_id: Option<String>`: Only show time off for a specific employment\n- `order_by: Option<crate::types::OrderBy>`: Sort order\n- `page: Option<i64>`: Starts fetching records after the given page\n- `page_size: Option<i64>`: Change the amount of records returned per page, defaults to 20, limited to 100\n- `sort_by: Option<crate::types::SortBy>`: Field to sort by\n- `status: Option<crate::types::GetIndexTimeoffStatus>`: Filter time off by its status\n- `timeoff_type: Option<crate::types::TimeoffType>`: Filter time off by its type\n\n```rust,no_run\nasync fn example_time_off_get_index_timeoff() -> anyhow::Result<()> {\n    let client = remote_api::Client::new_from_env();\n    let result: remote_api::types::ListTimeoffResponse = client\n        .time_off()\n        .get_index_timeoff(remote_api::time_off::GetIndexTimeoffParams {\n            employment_id: Some(\"some-string\".to_string()),\n            order_by: Some(remote_api::types::OrderBy::Desc),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            sort_by: Some(remote_api::types::SortBy::Status),\n            status: Some(remote_api::types::GetIndexTimeoffStatus::Requested),\n            timeoff_type: Some(remote_api::types::TimeoffType::PaternityLeave),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_index_timeoff<'a>(
         &'a self,
-        employment_id: Option<String>,
-        order_by: Option<crate::types::OrderBy>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        sort_by: Option<crate::types::SortBy>,
-        status: Option<crate::types::GetIndexTimeoffStatus>,
-        timeoff_type: Option<crate::types::TimeoffType>,
+        params: GetIndexTimeoffParams,
     ) -> Result<crate::types::ListTimeoffResponse, crate::types::error::Error> {
+        let GetIndexTimeoffParams {
+            employment_id,
+            order_by,
+            page,
+            page_size,
+            sort_by,
+            status,
+            timeoff_type,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "v1/timeoff"),

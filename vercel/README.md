@@ -31,7 +31,7 @@ To install the library, add the following to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-vercel-api = "0.1.1"
+vercel-api = "0.2.0"
 ```
 
 ## Basic example

@@ -1,6 +1,16 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetListParams {
+    pub created_after: Option<chrono::DateTime<chrono::Utc>>,
+    pub created_before: Option<chrono::DateTime<chrono::Utc>>,
+    pub from_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub page_size: Option<i64>,
+    pub start: Option<uuid::Uuid>,
+    pub to_date: Option<chrono::DateTime<chrono::Utc>>,
+}
+
 #[derive(Clone, Debug)]
 pub struct Receipt {
     pub client: Client,
@@ -12,42 +22,21 @@ impl Receipt {
         Self { client }
     }
 
-    #[doc = "List receipts\n\n**Parameters:**\n\n- `created_after: \
-             Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts that were created after \
-             the specified date. Input need to be presented in ISO8601 format, e.g. \
-             2020-12-02T00:00:00\n- `created_before: Option<chrono::DateTime<chrono::Utc>>`: \
-             Filter for receipts that were created before the specified date. Input need to be \
-             presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n- `from_date: \
-             Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts related to transactions \
-             which occurred after the specified date. Input need to be presented in ISO8601 \
-             format, e.g. 2020-12-02T00:00:00\n- `page_size: Option<i64>`: The number of results \
-             to be returned in each page. The value must be between 2 and 10,000. If not \
-             specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The \
-             ID of the last entity of the previous page, used for pagination to get the next \
-             page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts \
-             related to transactions which occurred before the specified date. Input need to be \
-             presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n\n```rust,no_run\nuse \
-             std::str::FromStr;\nasync fn example_receipt_get_list() -> anyhow::Result<()> {\n    \
-             let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), \
-             String::from(\"refresh-token\"));\n    let result: \
-             ramp_api::types::PaginatedResponseApiReceiptResourceSchema = client\n        \
-             .receipt()\n        .get_list(\n            Some(chrono::Utc::now()),\n            \
-             Some(chrono::Utc::now()),\n            Some(chrono::Utc::now()),\n            Some(4 \
-             as i64),\n            Some(uuid::Uuid::from_str(\n                \
-             \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            \
-             Some(chrono::Utc::now()),\n        )\n        .await?;\n    println!(\"{:?}\", \
-             result);\n    Ok(())\n}\n```"]
+    #[doc = "List receipts\n\n**Parameters:**\n\n- `created_after: Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts that were created after the specified date. Input need to be presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n- `created_before: Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts that were created before the specified date. Input need to be presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts related to transactions which occurred after the specified date. Input need to be presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for receipts related to transactions which occurred before the specified date. Input need to be presented in ISO8601 format, e.g. 2020-12-02T00:00:00\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_receipt_get_list() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiReceiptResourceSchema = client\n        .receipt()\n        .get_list(ramp_api::receipt::GetListParams {\n            created_after: Some(chrono::Utc::now()),\n            created_before: Some(chrono::Utc::now()),\n            from_date: Some(chrono::Utc::now()),\n            page_size: Some(4 as i64),\n            start: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            to_date: Some(chrono::Utc::now()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list<'a>(
         &'a self,
-        created_after: Option<chrono::DateTime<chrono::Utc>>,
-        created_before: Option<chrono::DateTime<chrono::Utc>>,
-        from_date: Option<chrono::DateTime<chrono::Utc>>,
-        page_size: Option<i64>,
-        start: Option<uuid::Uuid>,
-        to_date: Option<chrono::DateTime<chrono::Utc>>,
+        params: GetListParams,
     ) -> Result<crate::types::PaginatedResponseApiReceiptResourceSchema, crate::types::error::Error>
     {
+        let GetListParams {
+            created_after,
+            created_before,
+            from_date,
+            page_size,
+            start,
+            to_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/receipts"),

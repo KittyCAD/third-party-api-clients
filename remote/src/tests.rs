@@ -39,9 +39,8 @@ async fn test_remote_employments() {
     let new_employee_response = match new_employee_response {
         Ok(x) => x,
         Err(e) => match e {
-            crate::types::error::Error::UnexpectedResponse(resp) => {
-                let t = resp.text().await.unwrap();
-                panic!("{}", t);
+            crate::types::error::Error::UnexpectedResponse { body, .. } => {
+                panic!("{}", body);
             }
             e => panic!("{:?}", e),
         },
@@ -79,7 +78,7 @@ async fn test_remote_employments() {
 
     let timeoffs = client
         .time_off()
-        .get_index_timeoff(None, None, None, None, None, None, None)
+        .get_index_timeoff(crate::time_off::GetIndexTimeoffParams::default())
         .await
         .expect("Timeoffs failed to fetch")
         .data

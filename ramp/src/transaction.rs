@@ -1,6 +1,39 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetTransactionsCanonicalListWithPaginationParams {
+    pub card_id: Option<uuid::Uuid>,
+    pub department_id: Option<uuid::Uuid>,
+    pub entity_id: Option<uuid::Uuid>,
+    pub expense_policy_interaction_has_alert: Option<serde_json::Value>,
+    pub expense_policy_interaction_needs_review: Option<bool>,
+    pub from_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub has_no_sync_commits: Option<bool>,
+    pub include_merchant_data: Option<bool>,
+    pub limit_id: Option<uuid::Uuid>,
+    pub location_id: Option<uuid::Uuid>,
+    pub manager_id: Option<serde_json::Value>,
+    pub max_amount: Option<f64>,
+    pub merchant_id: Option<uuid::Uuid>,
+    pub min_amount: Option<f64>,
+    pub order_by_amount_asc: Option<bool>,
+    pub order_by_amount_desc: Option<bool>,
+    pub order_by_date_asc: Option<bool>,
+    pub order_by_date_desc: Option<bool>,
+    pub page_size: Option<i64>,
+    pub requires_memo: Option<bool>,
+    pub sk_category_id: Option<String>,
+    pub start: Option<uuid::Uuid>,
+    pub state: Option<crate::types::GetTransactionsCanonicalListWithPaginationState>,
+    pub statement_id: Option<uuid::Uuid>,
+    pub sync_ready: Option<bool>,
+    pub synced_after: Option<chrono::DateTime<chrono::Utc>>,
+    pub to_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub trip_id: Option<uuid::Uuid>,
+    pub user_id: Option<uuid::Uuid>,
+}
+
 #[derive(Clone, Debug)]
 pub struct Transaction {
     pub client: Client,
@@ -12,43 +45,46 @@ impl Transaction {
         Self { client }
     }
 
-    #[doc = "List transactions\n\nThis endpoint supports filtering and ordering. Note that setting multiple ordering parameters is unsupported.\n\n**Parameters:**\n\n- `card_id: Option<uuid::Uuid>`: Filter by physical card.\n- `department_id: Option<uuid::Uuid>`: Filter by department.\n- `entity_id: Option<uuid::Uuid>`: Filter transactions by business entity.\n- `expense_policy_interaction_has_alert: Option<serde_json::Value>`\n- `expense_policy_interaction_needs_review: Option<bool>`: Filter for transactions that require expense policy review.\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that happens after the given date.\n- `has_no_sync_commits: Option<bool>`: Filter for transactions that have not been synced to ERP systems yet.\n- `include_merchant_data: Option<bool>`: Include all purchase data provided by the merchant.\n- `limit_id: Option<uuid::Uuid>`: Filter by limit.\n- `location_id: Option<uuid::Uuid>`: Filter by location.\n- `manager_id: Option<serde_json::Value>`\n- `max_amount: Option<f64>`: Filter for transactions that have smaller amount that the given amount. This is a U.S. Dollar denominated amount.\n- `merchant_id: Option<uuid::Uuid>`: Filter by merchant.\n- `min_amount: Option<f64>`: Filter for transactions that have larger amount that the given amount. This is a U.S. Dollar denominated amount.\n- `order_by_amount_asc: Option<bool>`: Sort transactions by amount in ascending order.\n- `order_by_amount_desc: Option<bool>`: Sort transactions by amount in descending order.\n- `order_by_date_asc: Option<bool>`: Sort transactions by date in ascending order.\n- `order_by_date_desc: Option<bool>`: Sort transactions by date in descending order.\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `requires_memo: Option<bool>`: Filters for transactions which require a memo, but do not have one. This can only be set to true.\n- `sk_category_id: Option<String>`: Filter by a Ramp category code (integer).\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `state: Option<crate::types::GetTransactionsCanonicalListWithPaginationState>`: Filter by transaction state.\n- `statement_id: Option<uuid::Uuid>`: Filter by statement.\n- `sync_ready: Option<bool>`: Filter for transactions that are coded with accounting fields and ready to sync to ERP systems.\n- `synced_after: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that have been synced after the given date.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that happens before the given date.\n- `trip_id: Option<uuid::Uuid>`: Filter for trip ID.\n- `user_id: Option<uuid::Uuid>`: Filter by user.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_transaction_get_transactions_canonical_list_with_pagination() -> anyhow::Result<()>\n{\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiTransactionCanonicalSchema = client\n        .transaction()\n        .get_transactions_canonical_list_with_pagination(\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(serde_json::Value::String(\"some-string\".to_string())),\n            Some(true),\n            Some(chrono::Utc::now()),\n            Some(true),\n            Some(true),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(serde_json::Value::String(\"some-string\".to_string())),\n            Some(3.14 as f64),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(3.14 as f64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(ramp_api::types::GetTransactionsCanonicalListWithPaginationState::Error),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(true),\n            Some(chrono::Utc::now()),\n            Some(chrono::Utc::now()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List transactions\n\nThis endpoint supports filtering and ordering. Note that setting multiple ordering parameters is unsupported.\n\n**Parameters:**\n\n- `card_id: Option<uuid::Uuid>`: Filter by physical card.\n- `department_id: Option<uuid::Uuid>`: Filter by department.\n- `entity_id: Option<uuid::Uuid>`: Filter transactions by business entity.\n- `expense_policy_interaction_has_alert: Option<serde_json::Value>`\n- `expense_policy_interaction_needs_review: Option<bool>`: Filter for transactions that require expense policy review.\n- `from_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that happens after the given date.\n- `has_no_sync_commits: Option<bool>`: Filter for transactions that have not been synced to ERP systems yet.\n- `include_merchant_data: Option<bool>`: Include all purchase data provided by the merchant.\n- `limit_id: Option<uuid::Uuid>`: Filter by limit.\n- `location_id: Option<uuid::Uuid>`: Filter by location.\n- `manager_id: Option<serde_json::Value>`\n- `max_amount: Option<f64>`: Filter for transactions that have smaller amount that the given amount. This is a U.S. Dollar denominated amount.\n- `merchant_id: Option<uuid::Uuid>`: Filter by merchant.\n- `min_amount: Option<f64>`: Filter for transactions that have larger amount that the given amount. This is a U.S. Dollar denominated amount.\n- `order_by_amount_asc: Option<bool>`: Sort transactions by amount in ascending order.\n- `order_by_amount_desc: Option<bool>`: Sort transactions by amount in descending order.\n- `order_by_date_asc: Option<bool>`: Sort transactions by date in ascending order.\n- `order_by_date_desc: Option<bool>`: Sort transactions by date in descending order.\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `requires_memo: Option<bool>`: Filters for transactions which require a memo, but do not have one. This can only be set to true.\n- `sk_category_id: Option<String>`: Filter by a Ramp category code (integer).\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n- `state: Option<crate::types::GetTransactionsCanonicalListWithPaginationState>`: Filter by transaction state.\n- `statement_id: Option<uuid::Uuid>`: Filter by statement.\n- `sync_ready: Option<bool>`: Filter for transactions that are coded with accounting fields and ready to sync to ERP systems.\n- `synced_after: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that have been synced after the given date.\n- `to_date: Option<chrono::DateTime<chrono::Utc>>`: Filter for transactions that happens before the given date.\n- `trip_id: Option<uuid::Uuid>`: Filter for trip ID.\n- `user_id: Option<uuid::Uuid>`: Filter by user.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_transaction_get_transactions_canonical_list_with_pagination() -> anyhow::Result<()>\n{\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiTransactionCanonicalSchema = client\n        .transaction()\n        .get_transactions_canonical_list_with_pagination(\n            ramp_api::transaction::GetTransactionsCanonicalListWithPaginationParams {\n                card_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                department_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                entity_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                expense_policy_interaction_has_alert: Some(serde_json::Value::String(\n                    \"some-string\".to_string(),\n                )),\n                expense_policy_interaction_needs_review: Some(true),\n                from_date: Some(chrono::Utc::now()),\n                has_no_sync_commits: Some(true),\n                include_merchant_data: Some(true),\n                limit_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                location_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                manager_id: Some(serde_json::Value::String(\"some-string\".to_string())),\n                max_amount: Some(3.14 as f64),\n                merchant_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                min_amount: Some(3.14 as f64),\n                order_by_amount_asc: Some(true),\n                order_by_amount_desc: Some(true),\n                order_by_date_asc: Some(true),\n                order_by_date_desc: Some(true),\n                page_size: Some(4 as i64),\n                requires_memo: Some(true),\n                sk_category_id: Some(\"some-string\".to_string()),\n                start: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                state: Some(ramp_api::types::GetTransactionsCanonicalListWithPaginationState::Error),\n                statement_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                sync_ready: Some(true),\n                synced_after: Some(chrono::Utc::now()),\n                to_date: Some(chrono::Utc::now()),\n                trip_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n                user_id: Some(uuid::Uuid::from_str(\n                    \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n                )?),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_transactions_canonical_list_with_pagination<'a>(
         &'a self,
-        card_id: Option<uuid::Uuid>,
-        department_id: Option<uuid::Uuid>,
-        entity_id: Option<uuid::Uuid>,
-        expense_policy_interaction_has_alert: Option<serde_json::Value>,
-        expense_policy_interaction_needs_review: Option<bool>,
-        from_date: Option<chrono::DateTime<chrono::Utc>>,
-        has_no_sync_commits: Option<bool>,
-        include_merchant_data: Option<bool>,
-        limit_id: Option<uuid::Uuid>,
-        location_id: Option<uuid::Uuid>,
-        manager_id: Option<serde_json::Value>,
-        max_amount: Option<f64>,
-        merchant_id: Option<uuid::Uuid>,
-        min_amount: Option<f64>,
-        order_by_amount_asc: Option<bool>,
-        order_by_amount_desc: Option<bool>,
-        order_by_date_asc: Option<bool>,
-        order_by_date_desc: Option<bool>,
-        page_size: Option<i64>,
-        requires_memo: Option<bool>,
-        sk_category_id: Option<String>,
-        start: Option<uuid::Uuid>,
-        state: Option<crate::types::GetTransactionsCanonicalListWithPaginationState>,
-        statement_id: Option<uuid::Uuid>,
-        sync_ready: Option<bool>,
-        synced_after: Option<chrono::DateTime<chrono::Utc>>,
-        to_date: Option<chrono::DateTime<chrono::Utc>>,
-        trip_id: Option<uuid::Uuid>,
-        user_id: Option<uuid::Uuid>,
+        params: GetTransactionsCanonicalListWithPaginationParams,
     ) -> Result<
         crate::types::PaginatedResponseApiTransactionCanonicalSchema,
         crate::types::error::Error,
     > {
+        let GetTransactionsCanonicalListWithPaginationParams {
+            card_id,
+            department_id,
+            entity_id,
+            expense_policy_interaction_has_alert,
+            expense_policy_interaction_needs_review,
+            from_date,
+            has_no_sync_commits,
+            include_merchant_data,
+            limit_id,
+            location_id,
+            manager_id,
+            max_amount,
+            merchant_id,
+            min_amount,
+            order_by_amount_asc,
+            order_by_amount_desc,
+            order_by_date_asc,
+            order_by_date_desc,
+            page_size,
+            requires_memo,
+            sk_category_id,
+            start,
+            state,
+            statement_id,
+            sync_ready,
+            synced_after,
+            to_date,
+            trip_id,
+            user_id,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/transactions"),

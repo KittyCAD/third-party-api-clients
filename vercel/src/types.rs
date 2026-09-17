@@ -196,6 +196,15 @@ pub mod paginate {
             &self,
             req: reqwest::Request,
         ) -> Result<reqwest::Request, crate::types::error::Error>;
+        #[doc = " Modify a request to get the next page using the operation's page parameter."]
+        fn next_page_with_param(
+            &self,
+            req: reqwest::Request,
+            _page_param: &str,
+        ) -> Result<reqwest::Request, crate::types::error::Error> {
+            self.next_page(req)
+        }
+
         #[doc = " Get the items from a page."]
         fn items(&self) -> Vec<Self::Item>;
     }
@@ -374,8 +383,8 @@ pub mod error {
             #[cfg(not(feature = "retry"))]
             #[doc = " The error."]
             error: reqwest::Error,
-            #[doc = " The full response."]
-            response: reqwest::Response,
+            #[doc = " The full response, boxed to keep the error compact."]
+            response: Box<reqwest::Response>,
         },
         #[doc = " An error from the server."]
         Server {
@@ -386,7 +395,16 @@ pub mod error {
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
-        UnexpectedResponse(reqwest::Response),
+        UnexpectedResponse {
+            #[doc = " HTTP status response code from server"]
+            status: reqwest::StatusCode,
+            #[doc = " URL that caused the error."]
+            url: String,
+            #[doc = " HTTP response body from the server, rendered as text."]
+            body: String,
+            #[doc = " HTTP headers, boxed to keep the error compact."]
+            headers: Box<reqwest::header::HeaderMap>,
+        },
     }
 
     impl Error {
@@ -402,7 +420,7 @@ pub mod error {
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
                 Error::Server { body: _, status } => Some(*status),
-                Error::UnexpectedResponse(r) => Some(r.status()),
+                Error::UnexpectedResponse { status, .. } => Some(*status),
             }
         }
 
@@ -459,8 +477,17 @@ pub mod error {
                 Error::Server { body, status } => {
                     write!(f, "Server Error: {} {}", status, body)
                 }
-                Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {:?}", r)
+                Error::UnexpectedResponse {
+                    headers,
+                    status,
+                    body,
+                    url,
+                } => {
+                    write!(
+                        f,
+                        "Unexpected Response for {url} (HTTP {}). Headers: {:?}, body: {}",
+                        status, headers, body
+                    )
                 }
             }
         }
@@ -2117,6 +2144,7 @@ impl tabled::Tabled for Address {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -2132,13 +2160,8 @@ impl tabled::Tabled for Address {
 pub enum Interval {
     #[serde(rename = "month")]
     #[display("month")]
+    #[default]
     Month,
-}
-
-impl std::default::Default for Interval {
-    fn default() -> Self {
-        Interval::Month
-    }
 }
 
 #[derive(
@@ -8091,6 +8114,7 @@ pub enum Status {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8106,13 +8130,8 @@ pub enum Status {
 pub enum PricingExperiment {
     #[serde(rename = "august-2022")]
     #[display("august-2022")]
+    #[default]
     August2022,
-}
-
-impl std::default::Default for PricingExperiment {
-    fn default() -> Self {
-        PricingExperiment::August2022
-    }
 }
 
 #[derive(
@@ -9323,6 +9342,7 @@ impl tabled::Tabled for NorthstarMigration {
 
 #[doc = "The user's version. Will either be unset or `northstar`."]
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -9338,13 +9358,8 @@ impl tabled::Tabled for NorthstarMigration {
 pub enum Version {
     #[serde(rename = "northstar")]
     #[display("northstar")]
+    #[default]
     Northstar,
-}
-
-impl std::default::Default for Version {
-    fn default() -> Self {
-        Version::Northstar
-    }
 }
 
 #[doc = "Data for the currently authenticated User."]

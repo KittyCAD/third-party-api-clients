@@ -14,11 +14,11 @@ pub struct GetCrmV3ObjectsTicketsTicketIdGetByIdParams<'a> {
 impl<'a> GetCrmV3ObjectsTicketsTicketIdGetByIdParams<'a> {
     pub fn new(ticket_id: &'a str) -> Self {
         Self {
-            archived: Default::default(),
-            associations: Default::default(),
-            id_property: Default::default(),
-            properties: Default::default(),
-            properties_with_history: Default::default(),
+            archived: std::default::Default::default(),
+            associations: std::default::Default::default(),
+            id_property: std::default::Default::default(),
+            properties: std::default::Default::default(),
+            properties_with_history: std::default::Default::default(),
             ticket_id,
         }
     }

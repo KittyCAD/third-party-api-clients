@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! hubspot-contacts = "0.1.2"
+//! hubspot-contacts = "0.2.0"
 //! ```
 //!
 //! ## Basic example
@@ -50,9 +50,10 @@
 //!
 //! let client = Client::new_from_env();
 //! ```
-#![allow(elided_named_lifetimes)]
+#![allow(mismatched_lifetime_syntaxes)]
 #![allow(missing_docs)]
 #![allow(unused_imports)]
+#![allow(clippy::large_enum_variant)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::too_many_arguments)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
@@ -67,6 +68,29 @@ pub mod search;
 #[cfg(test)]
 mod tests;
 pub mod types;
+
+/// Retry only requests whose bodies can be replayed.
+#[cfg(all(feature = "requests", feature = "retry"))]
+struct RetryIfCloneable<T>(T);
+
+#[cfg(all(feature = "requests", feature = "retry"))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+impl<T: reqwest_middleware::Middleware> reqwest_middleware::Middleware for RetryIfCloneable<T> {
+    async fn handle(
+        &self,
+        req: reqwest::Request,
+        extensions: &mut http::Extensions,
+        next: reqwest_middleware::Next<'_>,
+    ) -> reqwest_middleware::Result<reqwest::Response> {
+        if req.try_clone().is_some() {
+            self.0.handle(req, extensions, next).await
+        } else {
+            // Streaming bodies cannot be replayed, but must still be sent once.
+            next.run(req, extensions).await
+        }
+    }
+}
 
 #[cfg(feature = "requests")]
 use std::env;
@@ -132,16 +156,14 @@ impl Client {
                         // Trace HTTP requests. See the tracing crate to make use of these traces.
                         .with(reqwest_tracing::TracingMiddleware::default())
                         // Retry failed requests.
-                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                        .with(RetryIfCloneable(
                             reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                            |req: &reqwest::Request| req.try_clone().is_some(),
                         ))
                         .build();
                     let client_http1_only = reqwest_middleware::ClientBuilder::new(c1)
                         .with(reqwest_tracing::TracingMiddleware::default())
-                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                        .with(RetryIfCloneable(
                             reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                            |req: &reqwest::Request| req.try_clone().is_some(),
                         ))
                         .build();
                     Client {
@@ -191,9 +213,8 @@ impl Client {
                         // Trace HTTP requests. See the tracing crate to make use of these traces.
                         .with(reqwest_tracing::TracingMiddleware::default())
                         // Retry failed requests.
-                        .with(reqwest_conditional_middleware::ConditionalMiddleware::new(
+                        .with(RetryIfCloneable(
                             reqwest_retry::RetryTransientMiddleware::new_with_policy(retry_policy),
-                            |req: &reqwest::Request| req.try_clone().is_some(),
                         ))
                         .build();
                     Client {
