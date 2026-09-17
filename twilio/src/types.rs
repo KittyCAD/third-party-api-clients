@@ -196,6 +196,15 @@ pub mod paginate {
             &self,
             req: reqwest::Request,
         ) -> Result<reqwest::Request, crate::types::error::Error>;
+        #[doc = " Modify a request to get the next page using the operation's page parameter."]
+        fn next_page_with_param(
+            &self,
+            req: reqwest::Request,
+            _page_param: &str,
+        ) -> Result<reqwest::Request, crate::types::error::Error> {
+            self.next_page(req)
+        }
+
         #[doc = " Get the items from a page."]
         fn items(&self) -> Vec<Self::Item>;
     }
@@ -374,8 +383,8 @@ pub mod error {
             #[cfg(not(feature = "retry"))]
             #[doc = " The error."]
             error: reqwest::Error,
-            #[doc = " The full response."]
-            response: reqwest::Response,
+            #[doc = " The full response, boxed to keep the error compact."]
+            response: Box<reqwest::Response>,
         },
         #[doc = " An error from the server."]
         Server {
@@ -386,7 +395,16 @@ pub mod error {
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
-        UnexpectedResponse(reqwest::Response),
+        UnexpectedResponse {
+            #[doc = " HTTP status response code from server"]
+            status: reqwest::StatusCode,
+            #[doc = " URL that caused the error."]
+            url: String,
+            #[doc = " HTTP response body from the server, rendered as text."]
+            body: String,
+            #[doc = " HTTP headers, boxed to keep the error compact."]
+            headers: Box<reqwest::header::HeaderMap>,
+        },
     }
 
     impl Error {
@@ -402,7 +420,7 @@ pub mod error {
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
                 Error::Server { body: _, status } => Some(*status),
-                Error::UnexpectedResponse(r) => Some(r.status()),
+                Error::UnexpectedResponse { status, .. } => Some(*status),
             }
         }
 
@@ -459,8 +477,17 @@ pub mod error {
                 Error::Server { body, status } => {
                     write!(f, "Server Error: {} {}", status, body)
                 }
-                Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {:?}", r)
+                Error::UnexpectedResponse {
+                    headers,
+                    status,
+                    body,
+                    url,
+                } => {
+                    write!(
+                        f,
+                        "Unexpected Response for {url} (HTTP {}). Headers: {:?}, body: {}",
+                        status, headers, body
+                    )
                 }
             }
         }
@@ -4716,6 +4743,7 @@ pub enum ConferenceEnumStatus {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -4731,13 +4759,8 @@ pub enum ConferenceEnumStatus {
 pub enum ConferenceEnumUpdateStatus {
     #[serde(rename = "completed")]
     #[display("completed")]
+    #[default]
     Completed,
-}
-
-impl std::default::Default for ConferenceEnumUpdateStatus {
-    fn default() -> Self {
-        ConferenceEnumUpdateStatus::Completed
-    }
 }
 
 #[derive(
@@ -8347,6 +8370,7 @@ pub enum MessageEnumStatus {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8362,13 +8386,8 @@ pub enum MessageEnumStatus {
 pub enum MessageEnumUpdateStatus {
     #[serde(rename = "canceled")]
     #[display("canceled")]
+    #[default]
     Canceled,
-}
-
-impl std::default::Default for MessageEnumUpdateStatus {
-    fn default() -> Self {
-        MessageEnumUpdateStatus::Canceled
-    }
 }
 
 #[derive(
@@ -8400,6 +8419,7 @@ pub enum MessageEnumDirection {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8415,16 +8435,12 @@ pub enum MessageEnumDirection {
 pub enum MessageEnumContentRetention {
     #[serde(rename = "retain")]
     #[display("retain")]
+    #[default]
     Retain,
 }
 
-impl std::default::Default for MessageEnumContentRetention {
-    fn default() -> Self {
-        MessageEnumContentRetention::Retain
-    }
-}
-
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8440,16 +8456,12 @@ impl std::default::Default for MessageEnumContentRetention {
 pub enum MessageEnumAddressRetention {
     #[serde(rename = "retain")]
     #[display("retain")]
+    #[default]
     Retain,
 }
 
-impl std::default::Default for MessageEnumAddressRetention {
-    fn default() -> Self {
-        MessageEnumAddressRetention::Retain
-    }
-}
-
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8465,16 +8477,12 @@ impl std::default::Default for MessageEnumAddressRetention {
 pub enum MessageEnumTrafficType {
     #[serde(rename = "free")]
     #[display("free")]
+    #[default]
     Free,
 }
 
-impl std::default::Default for MessageEnumTrafficType {
-    fn default() -> Self {
-        MessageEnumTrafficType::Free
-    }
-}
-
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -8490,13 +8498,8 @@ impl std::default::Default for MessageEnumTrafficType {
 pub enum MessageEnumScheduleType {
     #[serde(rename = "fixed")]
     #[display("fixed")]
+    #[default]
     Fixed,
-}
-
-impl std::default::Default for MessageEnumScheduleType {
-    fn default() -> Self {
-        MessageEnumScheduleType::Fixed
-    }
 }
 
 #[derive(
@@ -12255,6 +12258,7 @@ pub enum SiprecEnumStatus {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -12270,13 +12274,8 @@ pub enum SiprecEnumStatus {
 pub enum SiprecEnumUpdateStatus {
     #[serde(rename = "stopped")]
     #[display("stopped")]
+    #[default]
     Stopped,
-}
-
-impl std::default::Default for SiprecEnumUpdateStatus {
-    fn default() -> Self {
-        SiprecEnumUpdateStatus::Stopped
-    }
 }
 
 #[derive(
@@ -12426,6 +12425,7 @@ pub enum StreamEnumStatus {
 }
 
 #[derive(
+    Default,
     serde :: Serialize,
     serde :: Deserialize,
     PartialEq,
@@ -12441,13 +12441,8 @@ pub enum StreamEnumStatus {
 pub enum StreamEnumUpdateStatus {
     #[serde(rename = "stopped")]
     #[display("stopped")]
+    #[default]
     Stopped,
-}
-
-impl std::default::Default for StreamEnumUpdateStatus {
-    fn default() -> Self {
-        StreamEnumUpdateStatus::Stopped
-    }
 }
 
 #[derive(

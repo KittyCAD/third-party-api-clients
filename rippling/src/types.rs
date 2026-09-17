@@ -196,6 +196,15 @@ pub mod paginate {
             &self,
             req: reqwest::Request,
         ) -> Result<reqwest::Request, crate::types::error::Error>;
+        #[doc = " Modify a request to get the next page using the operation's page parameter."]
+        fn next_page_with_param(
+            &self,
+            req: reqwest::Request,
+            _page_param: &str,
+        ) -> Result<reqwest::Request, crate::types::error::Error> {
+            self.next_page(req)
+        }
+
         #[doc = " Get the items from a page."]
         fn items(&self) -> Vec<Self::Item>;
     }
@@ -374,8 +383,8 @@ pub mod error {
             #[cfg(not(feature = "retry"))]
             #[doc = " The error."]
             error: reqwest::Error,
-            #[doc = " The full response."]
-            response: reqwest::Response,
+            #[doc = " The full response, boxed to keep the error compact."]
+            response: Box<reqwest::Response>,
         },
         #[doc = " An error from the server."]
         Server {
@@ -386,7 +395,16 @@ pub mod error {
         },
         #[doc = " A response not listed in the API description. This may represent a"]
         #[doc = " success or failure response; check `status().is_success()`."]
-        UnexpectedResponse(reqwest::Response),
+        UnexpectedResponse {
+            #[doc = " HTTP status response code from server"]
+            status: reqwest::StatusCode,
+            #[doc = " URL that caused the error."]
+            url: String,
+            #[doc = " HTTP response body from the server, rendered as text."]
+            body: String,
+            #[doc = " HTTP headers, boxed to keep the error compact."]
+            headers: Box<reqwest::header::HeaderMap>,
+        },
     }
 
     impl Error {
@@ -402,7 +420,7 @@ pub mod error {
                 Error::SerdeError { error: _, status } => Some(*status),
                 Error::InvalidResponsePayload { error: _, response } => Some(response.status()),
                 Error::Server { body: _, status } => Some(*status),
-                Error::UnexpectedResponse(r) => Some(r.status()),
+                Error::UnexpectedResponse { status, .. } => Some(*status),
             }
         }
 
@@ -459,8 +477,17 @@ pub mod error {
                 Error::Server { body, status } => {
                     write!(f, "Server Error: {} {}", status, body)
                 }
-                Error::UnexpectedResponse(r) => {
-                    write!(f, "Unexpected Response: {:?}", r)
+                Error::UnexpectedResponse {
+                    headers,
+                    status,
+                    body,
+                    url,
+                } => {
+                    write!(
+                        f,
+                        "Unexpected Response for {url} (HTTP {}). Headers: {:?}, body: {}",
+                        status, headers, body
+                    )
                 }
             }
         }
@@ -10478,6 +10505,14 @@ impl crate::types::paginate::Pagination for ListCandidatesResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -10559,6 +10594,14 @@ impl crate::types::paginate::Pagination for ListCandidateApplicationsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -10644,6 +10687,14 @@ impl crate::types::paginate::Pagination for ListCompaniesResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -10725,6 +10776,14 @@ impl crate::types::paginate::Pagination for ListCompensationsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -10993,6 +11052,14 @@ impl crate::types::paginate::Pagination for ListCustomFieldsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -11071,6 +11138,14 @@ impl crate::types::paginate::Pagination for ListCustomObjectsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -11271,6 +11346,14 @@ impl crate::types::paginate::Pagination for ListDepartmentsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -11433,6 +11516,14 @@ impl crate::types::paginate::Pagination for ListEmploymentTypesResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -11646,6 +11737,14 @@ impl crate::types::paginate::Pagination for ListEntitlementsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -11727,6 +11826,14 @@ impl crate::types::paginate::Pagination for ListJobCodesResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -11897,6 +12004,14 @@ impl crate::types::paginate::Pagination for ListJobDimensionsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -12043,6 +12158,14 @@ impl crate::types::paginate::Pagination for ListJobRequisitionsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -12124,6 +12247,14 @@ impl crate::types::paginate::Pagination for ListLeaveBalancesResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -12319,6 +12450,14 @@ impl crate::types::paginate::Pagination for ListLeaveRequestsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -12638,6 +12777,14 @@ impl crate::types::paginate::Pagination for ListLeaveTypesResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -12795,6 +12942,14 @@ impl crate::types::paginate::Pagination for ListLegalEntitiesResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -13044,6 +13199,14 @@ impl crate::types::paginate::Pagination for ListLevelsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -13245,6 +13408,14 @@ impl crate::types::paginate::Pagination for ListObjectCategoriesResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -13407,6 +13578,14 @@ impl crate::types::paginate::Pagination for ListShiftInputsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -13586,6 +13765,14 @@ impl crate::types::paginate::Pagination for ListTeamsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -13739,6 +13926,14 @@ impl crate::types::paginate::Pagination for ListTimeCardsResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -13903,6 +14098,14 @@ impl crate::types::paginate::Pagination for ListTimeEntriesResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -14234,6 +14437,14 @@ impl crate::types::paginate::Pagination for ListTracksResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -14369,6 +14580,14 @@ impl crate::types::paginate::Pagination for ListUsersResponse {
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -14608,6 +14827,14 @@ impl crate::types::paginate::Pagination for ListWorkLocationsResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -14749,6 +14976,14 @@ impl crate::types::paginate::Pagination for ListWorkersResponse {
         Ok(req)
     }
 
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
+    }
+
     fn items(&self) -> Vec<Self::Item> {
         self.results.clone()
     }
@@ -14827,6 +15062,14 @@ impl crate::types::paginate::Pagination for ListCustomObjectsCustomObjectApiName
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {
@@ -15168,6 +15411,14 @@ impl crate::types::paginate::Pagination for ListCustomObjectsCustomObjectApiName
                 ))
             })?;
         Ok(req)
+    }
+
+    fn next_page_with_param(
+        &self,
+        req: reqwest::Request,
+        _page_param: &str,
+    ) -> anyhow::Result<reqwest::Request, crate::types::error::Error> {
+        self.next_page(req)
     }
 
     fn items(&self) -> Vec<Self::Item> {

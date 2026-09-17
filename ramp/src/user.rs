@@ -1,6 +1,17 @@
 use anyhow::Result;
 
 use crate::Client;
+#[derive(Clone, Debug, Default)]
+pub struct GetListWithPaginationParams {
+    pub department_id: Option<uuid::Uuid>,
+    pub email: Option<String>,
+    pub entity_id: Option<uuid::Uuid>,
+    pub location_id: Option<uuid::Uuid>,
+    pub page_size: Option<i64>,
+    pub role: Option<crate::types::GetListWithPaginationRole>,
+    pub start: Option<uuid::Uuid>,
+}
+
 #[derive(Clone, Debug)]
 pub struct User {
     pub client: Client,
@@ -12,19 +23,22 @@ impl User {
         Self { client }
     }
 
-    #[doc = "List users\n\n**Parameters:**\n\n- `department_id: Option<uuid::Uuid>`: filter by department\n- `email: Option<String>`: filter by email\n- `entity_id: Option<uuid::Uuid>`: filter by business entity\n- `location_id: Option<uuid::Uuid>`: filter by location\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `role: Option<crate::types::GetListWithPaginationRole>`: Filter by user role\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_user_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiUserResourceSchema = client\n        .user()\n        .get_list_with_pagination(\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(\"email@example.com\".to_string()),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            Some(4 as i64),\n            Some(ramp_api::types::GetListWithPaginationRole::BusinessUser),\n            Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "List users\n\n**Parameters:**\n\n- `department_id: Option<uuid::Uuid>`: filter by department\n- `email: Option<String>`: filter by email\n- `entity_id: Option<uuid::Uuid>`: filter by business entity\n- `location_id: Option<uuid::Uuid>`: filter by location\n- `page_size: Option<i64>`: The number of results to be returned in each page. The value must be between 2 and 10,000. If not specified, the default value 1,000 will be used.\n- `role: Option<crate::types::GetListWithPaginationRole>`: Filter by user role\n- `start: Option<uuid::Uuid>`: The ID of the last entity of the previous page, used for pagination to get the next page.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_user_get_list_with_pagination() -> anyhow::Result<()> {\n    let client =\n        ramp_api::Client::new_from_env(String::from(\"token\"), String::from(\"refresh-token\"));\n    let result: ramp_api::types::PaginatedResponseApiUserResourceSchema = client\n        .user()\n        .get_list_with_pagination(ramp_api::user::GetListWithPaginationParams {\n            department_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            email: Some(\"email@example.com\".to_string()),\n            entity_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            location_id: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n            page_size: Some(4 as i64),\n            role: Some(ramp_api::types::GetListWithPaginationRole::BusinessUser),\n            start: Some(uuid::Uuid::from_str(\n                \"d9797f8d-9ad6-4e08-90d7-2ec17e13471c\",\n            )?),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn get_list_with_pagination<'a>(
         &'a self,
-        department_id: Option<uuid::Uuid>,
-        email: Option<String>,
-        entity_id: Option<uuid::Uuid>,
-        location_id: Option<uuid::Uuid>,
-        page_size: Option<i64>,
-        role: Option<crate::types::GetListWithPaginationRole>,
-        start: Option<uuid::Uuid>,
+        params: GetListWithPaginationParams,
     ) -> Result<crate::types::PaginatedResponseApiUserResourceSchema, crate::types::error::Error>
     {
+        let GetListWithPaginationParams {
+            department_id,
+            email,
+            entity_id,
+            location_id,
+            page_size,
+            role,
+            start,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!("{}/{}", self.client.base_url, "developer/v1/users"),

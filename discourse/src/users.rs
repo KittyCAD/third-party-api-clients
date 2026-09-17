@@ -27,14 +27,14 @@ pub struct AdminListFlagParams {
 impl AdminListFlagParams {
     pub fn new(flag: crate::types::Flag) -> Self {
         Self {
-            asc: Default::default(),
-            email: Default::default(),
+            asc: std::default::Default::default(),
+            email: std::default::Default::default(),
             flag,
-            ip: Default::default(),
-            order: Default::default(),
-            page: Default::default(),
-            show_emails: Default::default(),
-            stats: Default::default(),
+            ip: std::default::Default::default(),
+            order: std::default::Default::default(),
+            page: std::default::Default::default(),
+            show_emails: std::default::Default::default(),
+            stats: std::default::Default::default(),
         }
     }
 }
@@ -899,9 +899,9 @@ impl Users {
         );
         req = req.bearer_auth(&self.client.token);
         let query_params = vec![
-            ("filter", format!("{}", filter)),
+            ("filter", filter.to_string()),
             ("offset", format!("{}", offset)),
-            ("username", format!("{}", username)),
+            ("username", username.to_string()),
         ];
         req = req.query(&query_params);
         let resp = req.send().await?;

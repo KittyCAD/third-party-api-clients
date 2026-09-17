@@ -91,7 +91,7 @@ impl Backups {
             ),
         );
         req = req.bearer_auth(&self.client.token);
-        let query_params = vec![("token", format!("{}", token))];
+        let query_params = vec![("token", token.to_string())];
         req = req.query(&query_params);
         let resp = req.send().await?;
         let status = resp.status();

@@ -8,7 +8,7 @@ openapitor_exe = kittycad.rs/target/debug/openapitor
 hubspot-contacts: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-contacts.json \
-		--target-version 0.1.2 \
+		--target-version 0.2.0 \
 		--output ./hubspot-contacts \
 		--name hubspot-contacts \
 		--base-url https://api.hubapi.com \
@@ -24,7 +24,7 @@ hubspot-contacts: openapitor
 hubspot-tickets: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-tickets.json \
-		--target-version 0.1.0 \
+		--target-version 0.2.0 \
 		--output ./hubspot-tickets \
 		--name hubspot-tickets \
 		--base-url https://api.hubapi.com \
@@ -39,7 +39,7 @@ hubspot-tickets: openapitor
 hubspot-users: openapitor
 	$(openapitor_exe) \
 		--input specs/hubspot-users.json \
-		--target-version 0.1.2 \
+		--target-version 0.2.0 \
 		--output ./hubspot-users \
 		--name hubspot-users \
 		--base-url https://api.hubspot.com \
@@ -51,7 +51,7 @@ hubspot-users: openapitor
 ramp: openapitor
 	$(openapitor_exe) \
 		--input specs/ramp.json \
-		--target-version 0.0.2 \
+		--target-version 0.1.0 \
 		--output ./ramp \
 		--name ramp-api \
 		--base-url https://api.ramp.com \
@@ -64,7 +64,7 @@ ramp: openapitor
 remote: openapitor
 	$(openapitor_exe) \
 		--input specs/remote.json \
-		--target-version 0.1.2 \
+		--target-version 0.2.0 \
 		--output ./remote \
 		--name remote-api \
 		--description "A fully generated & opinionated API client for the Remote API." \
@@ -76,7 +76,7 @@ remote: openapitor
 rippling: openapitor
 	$(openapitor_exe) \
 		--input specs/rippling.yaml \
-		--target-version 0.1.10 \
+		--target-version 0.2.0 \
 		--output ./rippling \
 		--name rippling-api \
 		--description "A fully generated & opinionated API client for the Rippling API." \
@@ -89,7 +89,7 @@ rippling: openapitor
 discourse: openapitor
 	$(openapitor_exe) \
 		--input specs/discourse.json \
-		--target-version 0.1.0 \
+		--target-version 0.2.0 \
 		--output ./discourse \
 		--name discourse-api \
 		--description "A fully generated & opinionated API client for the Discourse API." \
@@ -101,7 +101,7 @@ discourse: openapitor
 twilio: openapitor
 	$(openapitor_exe) \
 		--input specs/twilio.json \
-		--target-version 0.1.0 \
+		--target-version 0.2.0 \
 		--output ./twilio \
 		--name twilio-api \
 		--description "A fully generated & opinionated API client for the Twilio API." \
@@ -114,7 +114,7 @@ twilio: openapitor
 vercel: openapitor
 	$(openapitor_exe) \
 		--input specs/vercel.json \
-		--target-version 0.1.1 \
+		--target-version 0.2.0 \
 		--output ./vercel \
 		--name vercel-api \
 		--description "A fully generated & opinionated API client for the Vercel API." \

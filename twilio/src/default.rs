@@ -2,6 +2,1152 @@ use anyhow::Result;
 
 use crate::Client;
 #[derive(Clone, Debug)]
+pub struct ListAddressParams<'a> {
+    pub account_sid: &'a str,
+    pub customer_name: Option<String>,
+    pub friendly_name: Option<String>,
+    pub iso_country: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListAddressParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            customer_name: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            iso_country: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberLocalParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberLocalParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberMachineToMachineParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberMachineToMachineParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberMobileParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberMobileParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberNationalParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberNationalParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberSharedCostParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberSharedCostParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberTollFreeParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberTollFreeParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListAvailablePhoneNumberVoipParams<'a> {
+    pub account_sid: &'a str,
+    pub area_code: Option<i64>,
+    pub beta: Option<bool>,
+    pub contains: Option<String>,
+    pub country_code: &'a str,
+    pub distance: Option<i64>,
+    pub exclude_all_address_required: Option<bool>,
+    pub exclude_foreign_address_required: Option<bool>,
+    pub exclude_local_address_required: Option<bool>,
+    pub fax_enabled: Option<bool>,
+    pub in_lata: Option<String>,
+    pub in_locality: Option<String>,
+    pub in_postal_code: Option<String>,
+    pub in_rate_center: Option<String>,
+    pub in_region: Option<String>,
+    pub mms_enabled: Option<bool>,
+    pub near_lat_long: Option<String>,
+    pub near_number: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub sms_enabled: Option<bool>,
+    pub voice_enabled: Option<bool>,
+}
+
+impl<'a> ListAvailablePhoneNumberVoipParams<'a> {
+    pub fn new(account_sid: &'a str, country_code: &'a str) -> Self {
+        Self {
+            account_sid,
+            area_code: std::default::Default::default(),
+            beta: std::default::Default::default(),
+            contains: std::default::Default::default(),
+            country_code,
+            distance: std::default::Default::default(),
+            exclude_all_address_required: std::default::Default::default(),
+            exclude_foreign_address_required: std::default::Default::default(),
+            exclude_local_address_required: std::default::Default::default(),
+            fax_enabled: std::default::Default::default(),
+            in_lata: std::default::Default::default(),
+            in_locality: std::default::Default::default(),
+            in_postal_code: std::default::Default::default(),
+            in_rate_center: std::default::Default::default(),
+            in_region: std::default::Default::default(),
+            mms_enabled: std::default::Default::default(),
+            near_lat_long: std::default::Default::default(),
+            near_number: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            sms_enabled: std::default::Default::default(),
+            voice_enabled: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListCallParams<'a> {
+    pub account_sid: &'a str,
+    pub end_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub from: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub parent_call_sid: Option<String>,
+    pub start_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub status: Option<crate::types::CallEnumStatus>,
+    pub to: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListCallParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            end_time: std::default::Default::default(),
+            from: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            parent_call_sid: std::default::Default::default(),
+            start_time: std::default::Default::default(),
+            status: std::default::Default::default(),
+            to: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListCallNotificationParams<'a> {
+    pub account_sid: &'a str,
+    pub call_sid: &'a str,
+    pub log: Option<i64>,
+    pub message_date: Option<chrono::NaiveDate>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListCallNotificationParams<'a> {
+    pub fn new(account_sid: &'a str, call_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            call_sid,
+            log: std::default::Default::default(),
+            message_date: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListCallRecordingParams<'a> {
+    pub account_sid: &'a str,
+    pub call_sid: &'a str,
+    pub date_created: Option<chrono::NaiveDate>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListCallRecordingParams<'a> {
+    pub fn new(account_sid: &'a str, call_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            call_sid,
+            date_created: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListConferenceParams<'a> {
+    pub account_sid: &'a str,
+    pub date_created: Option<chrono::NaiveDate>,
+    pub date_updated: Option<chrono::NaiveDate>,
+    pub friendly_name: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub status: Option<crate::types::ConferenceEnumStatus>,
+}
+
+impl<'a> ListConferenceParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            date_created: std::default::Default::default(),
+            date_updated: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            status: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListConferenceRecordingParams<'a> {
+    pub account_sid: &'a str,
+    pub conference_sid: &'a str,
+    pub date_created: Option<chrono::NaiveDate>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListConferenceRecordingParams<'a> {
+    pub fn new(account_sid: &'a str, conference_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            conference_sid,
+            date_created: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListIncomingPhoneNumberParams<'a> {
+    pub account_sid: &'a str,
+    pub beta: Option<bool>,
+    pub friendly_name: Option<String>,
+    pub origin: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub phone_number: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListIncomingPhoneNumberParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            beta: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            origin: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            phone_number: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListIncomingPhoneNumberAssignedAddOnExtensionParams<'a> {
+    pub account_sid: &'a str,
+    pub assigned_add_on_sid: &'a str,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub resource_sid: &'a str,
+}
+
+impl<'a> ListIncomingPhoneNumberAssignedAddOnExtensionParams<'a> {
+    pub fn new(account_sid: &'a str, assigned_add_on_sid: &'a str, resource_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            assigned_add_on_sid,
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            resource_sid,
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListIncomingPhoneNumberLocalParams<'a> {
+    pub account_sid: &'a str,
+    pub beta: Option<bool>,
+    pub friendly_name: Option<String>,
+    pub origin: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub phone_number: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListIncomingPhoneNumberLocalParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            beta: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            origin: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            phone_number: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListIncomingPhoneNumberMobileParams<'a> {
+    pub account_sid: &'a str,
+    pub beta: Option<bool>,
+    pub friendly_name: Option<String>,
+    pub origin: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub phone_number: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListIncomingPhoneNumberMobileParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            beta: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            origin: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            phone_number: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListIncomingPhoneNumberTollFreeParams<'a> {
+    pub account_sid: &'a str,
+    pub beta: Option<bool>,
+    pub friendly_name: Option<String>,
+    pub origin: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub phone_number: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListIncomingPhoneNumberTollFreeParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            beta: std::default::Default::default(),
+            friendly_name: std::default::Default::default(),
+            origin: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            phone_number: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListMediaParams<'a> {
+    pub account_sid: &'a str,
+    pub date_created: Option<chrono::DateTime<chrono::Utc>>,
+    pub message_sid: &'a str,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListMediaParams<'a> {
+    pub fn new(account_sid: &'a str, message_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            date_created: std::default::Default::default(),
+            message_sid,
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListMessageParams<'a> {
+    pub account_sid: &'a str,
+    pub date_sent: Option<chrono::DateTime<chrono::Utc>>,
+    pub from: crate::types::phone_number::PhoneNumber,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub to: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListMessageParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            date_sent: std::default::Default::default(),
+            from: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            to: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListNotificationParams<'a> {
+    pub account_sid: &'a str,
+    pub log: Option<i64>,
+    pub message_date: Option<chrono::NaiveDate>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListNotificationParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            log: std::default::Default::default(),
+            message_date: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListOutgoingCallerIdParams<'a> {
+    pub account_sid: &'a str,
+    pub friendly_name: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub phone_number: crate::types::phone_number::PhoneNumber,
+}
+
+impl<'a> ListOutgoingCallerIdParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            friendly_name: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            phone_number: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListParticipantParams<'a> {
+    pub account_sid: &'a str,
+    pub coaching: Option<bool>,
+    pub conference_sid: &'a str,
+    pub hold: Option<bool>,
+    pub muted: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListParticipantParams<'a> {
+    pub fn new(account_sid: &'a str, conference_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            coaching: std::default::Default::default(),
+            conference_sid,
+            hold: std::default::Default::default(),
+            muted: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListRecordingParams<'a> {
+    pub account_sid: &'a str,
+    pub call_sid: Option<String>,
+    pub conference_sid: Option<String>,
+    pub date_created: Option<chrono::DateTime<chrono::Utc>>,
+    pub include_soft_deleted: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+}
+
+impl<'a> ListRecordingParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            call_sid: std::default::Default::default(),
+            conference_sid: std::default::Default::default(),
+            date_created: std::default::Default::default(),
+            include_soft_deleted: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListRecordingAddOnResultPayloadParams<'a> {
+    pub account_sid: &'a str,
+    pub add_on_result_sid: &'a str,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub reference_sid: &'a str,
+}
+
+impl<'a> ListRecordingAddOnResultPayloadParams<'a> {
+    pub fn new(account_sid: &'a str, add_on_result_sid: &'a str, reference_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            add_on_result_sid,
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            reference_sid,
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListShortCodeParams<'a> {
+    pub account_sid: &'a str,
+    pub friendly_name: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub short_code: Option<String>,
+}
+
+impl<'a> ListShortCodeParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            friendly_name: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            short_code: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordAllTimeParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordAllTimeEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordAllTimeParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordDailyParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordDailyEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordDailyParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordLastMonthParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordLastMonthEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordLastMonthParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordMonthlyParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordMonthlyEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordMonthlyParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordThisMonthParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordThisMonthEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordThisMonthParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordTodayParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordTodayEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordTodayParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordYearlyParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordYearlyEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordYearlyParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageRecordYesterdayParams<'a> {
+    pub account_sid: &'a str,
+    pub category: Option<crate::types::UsageRecordYesterdayEnumCategory>,
+    pub end_date: Option<chrono::NaiveDate>,
+    pub include_subaccounts: Option<bool>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub start_date: Option<chrono::NaiveDate>,
+}
+
+impl<'a> ListUsageRecordYesterdayParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            category: std::default::Default::default(),
+            end_date: std::default::Default::default(),
+            include_subaccounts: std::default::Default::default(),
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            start_date: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ListUsageTriggerParams<'a> {
+    pub account_sid: &'a str,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
+    pub page_token: Option<String>,
+    pub recurring: Option<crate::types::UsageTriggerEnumRecurring>,
+    pub trigger_by: Option<crate::types::UsageTriggerEnumTriggerField>,
+    pub usage_category: Option<crate::types::UsageTriggerEnumUsageCategory>,
+}
+
+impl<'a> ListUsageTriggerParams<'a> {
+    pub fn new(account_sid: &'a str) -> Self {
+        Self {
+            account_sid,
+            page: std::default::Default::default(),
+            page_size: std::default::Default::default(),
+            page_token: std::default::Default::default(),
+            recurring: std::default::Default::default(),
+            trigger_by: std::default::Default::default(),
+            usage_category: std::default::Default::default(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
 pub struct Default {
     pub client: Client,
 }
@@ -183,18 +1329,21 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Addresses.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Addresses.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that is responsible for the Address resource to read. (required)\n- `customer_name: Option<String>`: The `customer_name` of the Address resources to read.\n- `friendly_name: Option<String>`: The string that identifies the Address resources to read.\n- `iso_country: Option<String>`: The ISO country code of the Address resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_address() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAddressResponse = client\n        .default()\n        .list_address(\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Addresses.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Addresses.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that is responsible for the Address resource to read. (required)\n- `customer_name: Option<String>`: The `customer_name` of the Address resources to read.\n- `friendly_name: Option<String>`: The string that identifies the Address resources to read.\n- `iso_country: Option<String>`: The ISO country code of the Address resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_address() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAddressResponse = client\n        .default()\n        .list_address(twilio_api::default::ListAddressParams {\n            account_sid: \"some-string\",\n            customer_name: Some(\"some-string\".to_string()),\n            friendly_name: Some(\"some-string\".to_string()),\n            iso_country: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_address<'a>(
         &'a self,
-        account_sid: &'a str,
-        customer_name: Option<String>,
-        friendly_name: Option<String>,
-        iso_country: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListAddressParams<'a>,
     ) -> Result<crate::types::ListAddressResponse, crate::types::error::Error> {
+        let ListAddressParams {
+            account_sid,
+            customer_name,
+            friendly_name,
+            iso_country,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -775,35 +1924,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource?code-sample=code-find-phone-numbers-by-number-pattern) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource?code-sample=code-find-phone-numbers-by-character-pattern). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_local() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberLocalResponse = client\n        .default()\n        .list_available_phone_number_local(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource?code-sample=code-find-phone-numbers-by-number-pattern) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource?code-sample=code-find-phone-numbers-by-character-pattern). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_local() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberLocalResponse = client\n        .default()\n        .list_available_phone_number_local(twilio_api::default::ListAvailablePhoneNumberLocalParams {\n            account_sid: \"some-string\",\n            area_code: Some(4 as i64),\n            beta: Some(true),\n            contains: Some(\"some-string\".to_string()),\n            country_code: \"some-string\",\n            distance: Some(4 as i64),\n            exclude_all_address_required: Some(true),\n            exclude_foreign_address_required: Some(true),\n            exclude_local_address_required: Some(true),\n            fax_enabled: Some(true),\n            in_lata: Some(\"some-string\".to_string()),\n            in_locality: Some(\"some-string\".to_string()),\n            in_postal_code: Some(\"some-string\".to_string()),\n            in_rate_center: Some(\"some-string\".to_string()),\n            in_region: Some(\"some-string\".to_string()),\n            mms_enabled: Some(true),\n            near_lat_long: Some(\"some-string\".to_string()),\n            near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            sms_enabled: Some(true),\n            voice_enabled: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_local<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberLocalParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberLocalResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberLocalParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -920,37 +2072,40 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_machine_to_machine() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberMachineToMachineResponse = client\n        .default()\n        .list_available_phone_number_machine_to_machine(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_machine_to_machine() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberMachineToMachineResponse = client\n        .default()\n        .list_available_phone_number_machine_to_machine(\n            twilio_api::default::ListAvailablePhoneNumberMachineToMachineParams {\n                account_sid: \"some-string\",\n                area_code: Some(4 as i64),\n                beta: Some(true),\n                contains: Some(\"some-string\".to_string()),\n                country_code: \"some-string\",\n                distance: Some(4 as i64),\n                exclude_all_address_required: Some(true),\n                exclude_foreign_address_required: Some(true),\n                exclude_local_address_required: Some(true),\n                fax_enabled: Some(true),\n                in_lata: Some(\"some-string\".to_string()),\n                in_locality: Some(\"some-string\".to_string()),\n                in_postal_code: Some(\"some-string\".to_string()),\n                in_rate_center: Some(\"some-string\".to_string()),\n                in_region: Some(\"some-string\".to_string()),\n                mms_enabled: Some(true),\n                near_lat_long: Some(\"some-string\".to_string()),\n                near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                sms_enabled: Some(true),\n                voice_enabled: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_machine_to_machine<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberMachineToMachineParams<'a>,
     ) -> Result<
         crate::types::ListAvailablePhoneNumberMachineToMachineResponse,
         crate::types::error::Error,
     > {
+        let ListAvailablePhoneNumberMachineToMachineParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1068,35 +2223,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_mobile() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberMobileResponse = client\n        .default()\n        .list_available_phone_number_mobile(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_mobile() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberMobileResponse = client\n        .default()\n        .list_available_phone_number_mobile(twilio_api::default::ListAvailablePhoneNumberMobileParams {\n            account_sid: \"some-string\",\n            area_code: Some(4 as i64),\n            beta: Some(true),\n            contains: Some(\"some-string\".to_string()),\n            country_code: \"some-string\",\n            distance: Some(4 as i64),\n            exclude_all_address_required: Some(true),\n            exclude_foreign_address_required: Some(true),\n            exclude_local_address_required: Some(true),\n            fax_enabled: Some(true),\n            in_lata: Some(\"some-string\".to_string()),\n            in_locality: Some(\"some-string\".to_string()),\n            in_postal_code: Some(\"some-string\".to_string()),\n            in_rate_center: Some(\"some-string\".to_string()),\n            in_region: Some(\"some-string\".to_string()),\n            mms_enabled: Some(true),\n            near_lat_long: Some(\"some-string\".to_string()),\n            near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            sms_enabled: Some(true),\n            voice_enabled: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_mobile<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberMobileParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberMobileResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberMobileParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1213,35 +2371,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_national() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberNationalResponse = client\n        .default()\n        .list_available_phone_number_national(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_national() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberNationalResponse = client\n        .default()\n        .list_available_phone_number_national(\n            twilio_api::default::ListAvailablePhoneNumberNationalParams {\n                account_sid: \"some-string\",\n                area_code: Some(4 as i64),\n                beta: Some(true),\n                contains: Some(\"some-string\".to_string()),\n                country_code: \"some-string\",\n                distance: Some(4 as i64),\n                exclude_all_address_required: Some(true),\n                exclude_foreign_address_required: Some(true),\n                exclude_local_address_required: Some(true),\n                fax_enabled: Some(true),\n                in_lata: Some(\"some-string\".to_string()),\n                in_locality: Some(\"some-string\".to_string()),\n                in_postal_code: Some(\"some-string\".to_string()),\n                in_rate_center: Some(\"some-string\".to_string()),\n                in_region: Some(\"some-string\".to_string()),\n                mms_enabled: Some(true),\n                near_lat_long: Some(\"some-string\".to_string()),\n                near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                sms_enabled: Some(true),\n                voice_enabled: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_national<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberNationalParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberNationalResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberNationalParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1359,35 +2520,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_shared_cost() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberSharedCostResponse = client\n        .default()\n        .list_available_phone_number_shared_cost(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_shared_cost() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberSharedCostResponse = client\n        .default()\n        .list_available_phone_number_shared_cost(\n            twilio_api::default::ListAvailablePhoneNumberSharedCostParams {\n                account_sid: \"some-string\",\n                area_code: Some(4 as i64),\n                beta: Some(true),\n                contains: Some(\"some-string\".to_string()),\n                country_code: \"some-string\",\n                distance: Some(4 as i64),\n                exclude_all_address_required: Some(true),\n                exclude_foreign_address_required: Some(true),\n                exclude_local_address_required: Some(true),\n                fax_enabled: Some(true),\n                in_lata: Some(\"some-string\".to_string()),\n                in_locality: Some(\"some-string\".to_string()),\n                in_postal_code: Some(\"some-string\".to_string()),\n                in_rate_center: Some(\"some-string\".to_string()),\n                in_region: Some(\"some-string\".to_string()),\n                mms_enabled: Some(true),\n                near_lat_long: Some(\"some-string\".to_string()),\n                near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                sms_enabled: Some(true),\n                voice_enabled: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_shared_cost<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberSharedCostParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberSharedCostResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberSharedCostParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1505,35 +2669,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberTollFreeResponse = client\n        .default()\n        .list_available_phone_number_toll_free(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberTollFreeResponse = client\n        .default()\n        .list_available_phone_number_toll_free(\n            twilio_api::default::ListAvailablePhoneNumberTollFreeParams {\n                account_sid: \"some-string\",\n                area_code: Some(4 as i64),\n                beta: Some(true),\n                contains: Some(\"some-string\".to_string()),\n                country_code: \"some-string\",\n                distance: Some(4 as i64),\n                exclude_all_address_required: Some(true),\n                exclude_foreign_address_required: Some(true),\n                exclude_local_address_required: Some(true),\n                fax_enabled: Some(true),\n                in_lata: Some(\"some-string\".to_string()),\n                in_locality: Some(\"some-string\".to_string()),\n                in_postal_code: Some(\"some-string\".to_string()),\n                in_rate_center: Some(\"some-string\".to_string()),\n                in_region: Some(\"some-string\".to_string()),\n                mms_enabled: Some(true),\n                near_lat_long: Some(\"some-string\".to_string()),\n                near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                sms_enabled: Some(true),\n                voice_enabled: Some(true),\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_toll_free<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberTollFreeParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberTollFreeResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberTollFreeParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1651,35 +2818,38 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_voip() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberVoipResponse = client\n        .default()\n        .list_available_phone_number_voip(\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(true),\n            Some(true),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json`.\n\n/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) requesting the AvailablePhoneNumber resources. (required)\n- `area_code: Option<i64>`: The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.\n- `beta: Option<bool>`: Whether to read phone numbers that are new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `contains: Option<String>`: The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.\n- `country_code: &'astr`: The [ISO-3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the country from which to read phone numbers. (required)\n- `distance: Option<i64>`: The search radius, in miles, for a `near_` query.  Can be up to `500` and the default is `25`. Applies to only phone numbers in the US and Canada.\n- `exclude_all_address_required: Option<bool>`: Whether to exclude phone numbers that require an [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_foreign_address_required: Option<bool>`: Whether to exclude phone numbers that require a foreign [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `exclude_local_address_required: Option<bool>`: Whether to exclude phone numbers that require a local [Address](https://www.twilio.com/docs/usage/api/address). Can be: `true` or `false` and the default is `false`.\n- `fax_enabled: Option<bool>`: Whether the phone numbers can receive faxes. Can be: `true` or `false`.\n- `in_lata: Option<String>`: Limit results to a specific local access and transport area ([LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area)). Given a phone number, search within the same [LATA](https://en.wikipedia.org/wiki/Local_access_and_transport_area) as that number. Applies to only phone numbers in the US and Canada.\n- `in_locality: Option<String>`: Limit results to a particular locality or city. Given a phone number, search within the same Locality as that number.\n- `in_postal_code: Option<String>`: Limit results to a particular postal code. Given a phone number, search within the same postal code as that number. Applies to only phone numbers in the US and Canada.\n- `in_rate_center: Option<String>`: Limit results to a specific rate center, or given a phone number search within the same rate center as that number. Requires `in_lata` to be set as well. Applies to only phone numbers in the US and Canada.\n- `in_region: Option<String>`: Limit results to a particular region, state, or province. Given a phone number, search within the same region as that number. Applies to only phone numbers in the US and Canada.\n- `mms_enabled: Option<bool>`: Whether the phone numbers can receive MMS messages. Can be: `true` or `false`.\n- `near_lat_long: Option<String>`: Given a latitude/longitude pair `lat,long` find geographically close numbers within `distance` miles. Applies to only phone numbers in the US and Canada.\n- `near_number: crate::types::phone_number::PhoneNumber`: Given a phone number, find a geographically close number within `distance` miles. Distance defaults to 25 miles. Applies to only phone numbers in the US and Canada.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `sms_enabled: Option<bool>`: Whether the phone numbers can receive text messages. Can be: `true` or `false`.\n- `voice_enabled: Option<bool>`: Whether the phone numbers can receive calls. Can be: `true` or `false`.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_available_phone_number_voip() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListAvailablePhoneNumberVoipResponse = client\n        .default()\n        .list_available_phone_number_voip(twilio_api::default::ListAvailablePhoneNumberVoipParams {\n            account_sid: \"some-string\",\n            area_code: Some(4 as i64),\n            beta: Some(true),\n            contains: Some(\"some-string\".to_string()),\n            country_code: \"some-string\",\n            distance: Some(4 as i64),\n            exclude_all_address_required: Some(true),\n            exclude_foreign_address_required: Some(true),\n            exclude_local_address_required: Some(true),\n            fax_enabled: Some(true),\n            in_lata: Some(\"some-string\".to_string()),\n            in_locality: Some(\"some-string\".to_string()),\n            in_postal_code: Some(\"some-string\".to_string()),\n            in_rate_center: Some(\"some-string\".to_string()),\n            in_region: Some(\"some-string\".to_string()),\n            mms_enabled: Some(true),\n            near_lat_long: Some(\"some-string\".to_string()),\n            near_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            sms_enabled: Some(true),\n            voice_enabled: Some(true),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_available_phone_number_voip<'a>(
         &'a self,
-        account_sid: &'a str,
-        area_code: Option<i64>,
-        beta: Option<bool>,
-        contains: Option<String>,
-        country_code: &'a str,
-        distance: Option<i64>,
-        exclude_all_address_required: Option<bool>,
-        exclude_foreign_address_required: Option<bool>,
-        exclude_local_address_required: Option<bool>,
-        fax_enabled: Option<bool>,
-        in_lata: Option<String>,
-        in_locality: Option<String>,
-        in_postal_code: Option<String>,
-        in_rate_center: Option<String>,
-        in_region: Option<String>,
-        mms_enabled: Option<bool>,
-        near_lat_long: Option<String>,
-        near_number: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        sms_enabled: Option<bool>,
-        voice_enabled: Option<bool>,
+        params: ListAvailablePhoneNumberVoipParams<'a>,
     ) -> Result<crate::types::ListAvailablePhoneNumberVoipResponse, crate::types::error::Error>
     {
+        let ListAvailablePhoneNumberVoipParams {
+            account_sid,
+            area_code,
+            beta,
+            contains,
+            country_code,
+            distance,
+            exclude_all_address_required,
+            exclude_foreign_address_required,
+            exclude_local_address_required,
+            fax_enabled,
+            in_lata,
+            in_locality,
+            in_postal_code,
+            in_rate_center,
+            in_region,
+            mms_enabled,
+            near_lat_long,
+            near_number,
+            page,
+            page_size,
+            page_token,
+            sms_enabled,
+            voice_enabled,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -1840,21 +3010,24 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls.json`.\n\nRetrieves a collection of calls made to and from your account\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Call resource(s) to read. (required)\n- `end_time: Option<chrono::DateTime<chrono::Utc>>`: Only include calls that ended on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read only calls that ended on this date. You can also specify an inequality, such as `EndTime<=YYYY-MM-DD`, to read calls that ended on or before midnight of this date, and `EndTime>=YYYY-MM-DD` to read calls that ended on or after midnight of this date.\n- `from: crate::types::phone_number::PhoneNumber`: Only include calls from this phone number, SIP address, Client identifier or SIM SID.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `parent_call_sid: Option<String>`: Only include calls spawned by calls with this SID.\n- `start_time: Option<chrono::DateTime<chrono::Utc>>`: Only include calls that started on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read only calls that started on this date. You can also specify an inequality, such as `StartTime<=YYYY-MM-DD`, to read calls that started on or before midnight of this date, and `StartTime>=YYYY-MM-DD` to read calls that started on or after midnight of this date.\n- `status: Option<crate::types::CallEnumStatus>`: The status of the calls to include. Can be: `queued`, `ringing`, `in-progress`, `canceled`, `completed`, `failed`, `busy`, or `no-answer`.\n- `to: crate::types::phone_number::PhoneNumber`: Only show calls made to this phone number, SIP address, Client identifier or SIM SID.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_call() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallResponse = client\n        .default()\n        .list_call(\n            \"some-string\",\n            Some(chrono::Utc::now()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now()),\n            Some(twilio_api::types::CallEnumStatus::Busy),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls.json`.\n\nRetrieves a collection of calls made to and from your account\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Call resource(s) to read. (required)\n- `end_time: Option<chrono::DateTime<chrono::Utc>>`: Only include calls that ended on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read only calls that ended on this date. You can also specify an inequality, such as `EndTime<=YYYY-MM-DD`, to read calls that ended on or before midnight of this date, and `EndTime>=YYYY-MM-DD` to read calls that ended on or after midnight of this date.\n- `from: crate::types::phone_number::PhoneNumber`: Only include calls from this phone number, SIP address, Client identifier or SIM SID.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `parent_call_sid: Option<String>`: Only include calls spawned by calls with this SID.\n- `start_time: Option<chrono::DateTime<chrono::Utc>>`: Only include calls that started on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read only calls that started on this date. You can also specify an inequality, such as `StartTime<=YYYY-MM-DD`, to read calls that started on or before midnight of this date, and `StartTime>=YYYY-MM-DD` to read calls that started on or after midnight of this date.\n- `status: Option<crate::types::CallEnumStatus>`: The status of the calls to include. Can be: `queued`, `ringing`, `in-progress`, `canceled`, `completed`, `failed`, `busy`, or `no-answer`.\n- `to: crate::types::phone_number::PhoneNumber`: Only show calls made to this phone number, SIP address, Client identifier or SIM SID.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_call() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallResponse = client\n        .default()\n        .list_call(twilio_api::default::ListCallParams {\n            account_sid: \"some-string\",\n            end_time: Some(chrono::Utc::now()),\n            from: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            parent_call_sid: Some(\"some-string\".to_string()),\n            start_time: Some(chrono::Utc::now()),\n            status: Some(twilio_api::types::CallEnumStatus::Busy),\n            to: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_call<'a>(
         &'a self,
-        account_sid: &'a str,
-        end_time: Option<chrono::DateTime<chrono::Utc>>,
-        from: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        parent_call_sid: Option<String>,
-        start_time: Option<chrono::DateTime<chrono::Utc>>,
-        status: Option<crate::types::CallEnumStatus>,
-        to: crate::types::phone_number::PhoneNumber,
+        params: ListCallParams<'a>,
     ) -> Result<crate::types::ListCallResponse, crate::types::error::Error> {
+        let ListCallParams {
+            account_sid,
+            end_time,
+            from,
+            page,
+            page_size,
+            page_token,
+            parent_call_sid,
+            start_time,
+            status,
+            to,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -2341,18 +3514,21 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Call Notification resources to read. (required)\n- `call_sid: &'astr`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the Call Notification resources to read. (required)\n- `log: Option<i64>`: Only read notifications of the specified log level. Can be:  `0` to read only ERROR notifications or `1` to read only WARNING notifications. By default, all notifications are read.\n- `message_date: Option<chrono::NaiveDate>`: Only show notifications for the specified date, formatted as `YYYY-MM-DD`. You can also specify an inequality, such as `<=YYYY-MM-DD` for messages logged at or before midnight on a date, or `>=YYYY-MM-DD` for messages logged at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_call_notification() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallNotificationResponse = client\n        .default()\n        .list_call_notification(\n            \"some-string\",\n            \"some-string\",\n            Some(4 as i64),\n            Some(chrono::Utc::now().date_naive()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Call Notification resources to read. (required)\n- `call_sid: &'astr`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the Call Notification resources to read. (required)\n- `log: Option<i64>`: Only read notifications of the specified log level. Can be:  `0` to read only ERROR notifications or `1` to read only WARNING notifications. By default, all notifications are read.\n- `message_date: Option<chrono::NaiveDate>`: Only show notifications for the specified date, formatted as `YYYY-MM-DD`. You can also specify an inequality, such as `<=YYYY-MM-DD` for messages logged at or before midnight on a date, or `>=YYYY-MM-DD` for messages logged at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_call_notification() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallNotificationResponse = client\n        .default()\n        .list_call_notification(twilio_api::default::ListCallNotificationParams {\n            account_sid: \"some-string\",\n            call_sid: \"some-string\",\n            log: Some(4 as i64),\n            message_date: Some(chrono::Utc::now().date_naive()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_call_notification<'a>(
         &'a self,
-        account_sid: &'a str,
-        call_sid: &'a str,
-        log: Option<i64>,
-        message_date: Option<chrono::NaiveDate>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListCallNotificationParams<'a>,
     ) -> Result<crate::types::ListCallNotificationResponse, crate::types::error::Error> {
+        let ListCallNotificationParams {
+            account_sid,
+            call_sid,
+            log,
+            message_date,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -2405,17 +3581,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the call used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resources to read. (required)\n- `call_sid: &'astr`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the resources to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. You can also specify inequality: `DateCreated<=YYYY-MM-DD` will return recordings generated at or before midnight on a given date, and `DateCreated>=YYYY-MM-DD` returns recordings generated at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_call_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallRecordingResponse = client\n        .default()\n        .list_call_recording(\n            \"some-string\",\n            \"some-string\",\n            Some(chrono::Utc::now().date_naive()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the call used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resources to read. (required)\n- `call_sid: &'astr`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the resources to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. You can also specify inequality: `DateCreated<=YYYY-MM-DD` will return recordings generated at or before midnight on a given date, and `DateCreated>=YYYY-MM-DD` returns recordings generated at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_call_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListCallRecordingResponse = client\n        .default()\n        .list_call_recording(twilio_api::default::ListCallRecordingParams {\n            account_sid: \"some-string\",\n            call_sid: \"some-string\",\n            date_created: Some(chrono::Utc::now().date_naive()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_call_recording<'a>(
         &'a self,
-        account_sid: &'a str,
-        call_sid: &'a str,
-        date_created: Option<chrono::NaiveDate>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListCallRecordingParams<'a>,
     ) -> Result<crate::types::ListCallRecordingResponse, crate::types::error::Error> {
+        let ListCallRecordingParams {
+            account_sid,
+            call_sid,
+            date_created,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -2692,19 +3871,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences.json`.\n\nRetrieve a list of conferences belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Conference resource(s) to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. To read conferences that started on or before midnight on a date, use `<=YYYY-MM-DD`, and to specify  conferences that started on or after midnight on a date, use `>=YYYY-MM-DD`.\n- `date_updated: Option<chrono::NaiveDate>`: The `date_updated` value, specified as `YYYY-MM-DD`, of the resources to read. To read conferences that were last updated on or before midnight on a date, use `<=YYYY-MM-DD`, and to specify conferences that were last updated on or after midnight on a given date, use  `>=YYYY-MM-DD`.\n- `friendly_name: Option<String>`: The string that identifies the Conference resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `status: Option<crate::types::ConferenceEnumStatus>`: The status of the resources to read. Can be: `init`, `in-progress`, or `completed`.\n\n```rust,no_run\nasync fn example_default_list_conference() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListConferenceResponse = client\n        .default()\n        .list_conference(\n            \"some-string\",\n            Some(chrono::Utc::now().date_naive()),\n            Some(chrono::Utc::now().date_naive()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(twilio_api::types::ConferenceEnumStatus::InProgress),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences.json`.\n\nRetrieve a list of conferences belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Conference resource(s) to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. To read conferences that started on or before midnight on a date, use `<=YYYY-MM-DD`, and to specify  conferences that started on or after midnight on a date, use `>=YYYY-MM-DD`.\n- `date_updated: Option<chrono::NaiveDate>`: The `date_updated` value, specified as `YYYY-MM-DD`, of the resources to read. To read conferences that were last updated on or before midnight on a date, use `<=YYYY-MM-DD`, and to specify conferences that were last updated on or after midnight on a given date, use  `>=YYYY-MM-DD`.\n- `friendly_name: Option<String>`: The string that identifies the Conference resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `status: Option<crate::types::ConferenceEnumStatus>`: The status of the resources to read. Can be: `init`, `in-progress`, or `completed`.\n\n```rust,no_run\nasync fn example_default_list_conference() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListConferenceResponse = client\n        .default()\n        .list_conference(twilio_api::default::ListConferenceParams {\n            account_sid: \"some-string\",\n            date_created: Some(chrono::Utc::now().date_naive()),\n            date_updated: Some(chrono::Utc::now().date_naive()),\n            friendly_name: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            status: Some(twilio_api::types::ConferenceEnumStatus::InProgress),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_conference<'a>(
         &'a self,
-        account_sid: &'a str,
-        date_created: Option<chrono::NaiveDate>,
-        date_updated: Option<chrono::NaiveDate>,
-        friendly_name: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        status: Option<crate::types::ConferenceEnumStatus>,
+        params: ListConferenceParams<'a>,
     ) -> Result<crate::types::ListConferenceResponse, crate::types::error::Error> {
+        let ListConferenceParams {
+            account_sid,
+            date_created,
+            date_updated,
+            friendly_name,
+            page,
+            page_size,
+            page_token,
+            status,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -2886,17 +4068,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the call used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Conference Recording resources to read. (required)\n- `conference_sid: &'astr`: The Conference SID that identifies the conference associated with the recording to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. You can also specify inequality: `DateCreated<=YYYY-MM-DD` will return recordings generated at or before midnight on a given date, and `DateCreated>=YYYY-MM-DD` returns recordings generated at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_conference_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListConferenceRecordingResponse = client\n        .default()\n        .list_conference_recording(\n            \"some-string\",\n            \"some-string\",\n            Some(chrono::Utc::now().date_naive()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the call used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Conference Recording resources to read. (required)\n- `conference_sid: &'astr`: The Conference SID that identifies the conference associated with the recording to read. (required)\n- `date_created: Option<chrono::NaiveDate>`: The `date_created` value, specified as `YYYY-MM-DD`, of the resources to read. You can also specify inequality: `DateCreated<=YYYY-MM-DD` will return recordings generated at or before midnight on a given date, and `DateCreated>=YYYY-MM-DD` returns recordings generated at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_conference_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListConferenceRecordingResponse = client\n        .default()\n        .list_conference_recording(twilio_api::default::ListConferenceRecordingParams {\n            account_sid: \"some-string\",\n            conference_sid: \"some-string\",\n            date_created: Some(chrono::Utc::now().date_naive()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_conference_recording<'a>(
         &'a self,
-        account_sid: &'a str,
-        conference_sid: &'a str,
-        date_created: Option<chrono::NaiveDate>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListConferenceRecordingParams<'a>,
     ) -> Result<crate::types::ListConferenceRecordingResponse, crate::types::error::Error> {
+        let ListConferenceRecordingParams {
+            account_sid,
+            conference_sid,
+            date_created,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3266,19 +4451,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json`.\n\nRetrieve a list of incoming-phone-numbers belonging to the account used to make the request.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IncomingPhoneNumber resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the IncomingPhoneNumber resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberResponse = client\n        .default()\n        .list_incoming_phone_number(\n            \"some-string\",\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json`.\n\nRetrieve a list of incoming-phone-numbers belonging to the account used to make the request.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IncomingPhoneNumber resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the IncomingPhoneNumber resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberResponse = client\n        .default()\n        .list_incoming_phone_number(twilio_api::default::ListIncomingPhoneNumberParams {\n            account_sid: \"some-string\",\n            beta: Some(true),\n            friendly_name: Some(\"some-string\".to_string()),\n            origin: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            phone_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_incoming_phone_number<'a>(
         &'a self,
-        account_sid: &'a str,
-        beta: Option<bool>,
-        friendly_name: Option<String>,
-        origin: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        phone_number: crate::types::phone_number::PhoneNumber,
+        params: ListIncomingPhoneNumberParams<'a>,
     ) -> Result<crate::types::ListIncomingPhoneNumberResponse, crate::types::error::Error> {
+        let ListIncomingPhoneNumberParams {
+            account_sid,
+            beta,
+            friendly_name,
+            origin,
+            page,
+            page_size,
+            page_token,
+            phone_number,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3553,7 +4741,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json`.\n\nFetch an instance of an Extension for the Assigned Add-on.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resource to fetch. (required)\n- `assigned_add_on_sid: &'astr`: The SID that uniquely identifies the assigned Add-on installation. (required)\n- `resource_sid: &'astr`: The SID of the Phone Number to which the Add-on is assigned. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_incoming_phone_number_assigned_add_on_extension(\n) -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension = client . default () . fetch_incoming_phone_number_assigned_add_on_extension (\"some-string\" , \"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json`.\n\nFetch an instance of an Extension for the Assigned Add-on.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resource to fetch. (required)\n- `assigned_add_on_sid: &'astr`: The SID that uniquely identifies the assigned Add-on installation. (required)\n- `resource_sid: &'astr`: The SID of the Phone Number to which the Add-on is assigned. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_incoming_phone_number_assigned_add_on_extension(\n) -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension = client . default () . fetch_incoming_phone_number_assigned_add_on_extension (\"some-string\" , \"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn fetch_incoming_phone_number_assigned_add_on_extension < 'a > (& 'a self , account_sid : & 'a str , assigned_add_on_sid : & 'a str , resource_sid : & 'a str , sid : & 'a str) -> Result < crate :: types :: ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberAssignedAddOnIncomingPhoneNumberAssignedAddOnExtension , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::GET,
@@ -3588,20 +4776,23 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json`.\n\nRetrieve a list of Extensions for the Assigned Add-on.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `assigned_add_on_sid: &'astr`: The SID that uniquely identifies the assigned Add-on installation. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `resource_sid: &'astr`: The SID of the Phone Number to which the Add-on is assigned. (required)\n\n```rust,no_run\nasync fn example_default_list_incoming_phone_number_assigned_add_on_extension() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberAssignedAddOnExtensionResponse = client\n        .default()\n        .list_incoming_phone_number_assigned_add_on_extension(\n            \"some-string\",\n            \"some-string\",\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json`.\n\nRetrieve a list of Extensions for the Assigned Add-on.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `assigned_add_on_sid: &'astr`: The SID that uniquely identifies the assigned Add-on installation. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `resource_sid: &'astr`: The SID of the Phone Number to which the Add-on is assigned. (required)\n\n```rust,no_run\nasync fn example_default_list_incoming_phone_number_assigned_add_on_extension() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberAssignedAddOnExtensionResponse = client\n        .default()\n        .list_incoming_phone_number_assigned_add_on_extension(\n            twilio_api::default::ListIncomingPhoneNumberAssignedAddOnExtensionParams {\n                account_sid: \"some-string\",\n                assigned_add_on_sid: \"some-string\",\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                resource_sid: \"some-string\",\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_incoming_phone_number_assigned_add_on_extension<'a>(
         &'a self,
-        account_sid: &'a str,
-        assigned_add_on_sid: &'a str,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        resource_sid: &'a str,
+        params: ListIncomingPhoneNumberAssignedAddOnExtensionParams<'a>,
     ) -> Result<
         crate::types::ListIncomingPhoneNumberAssignedAddOnExtensionResponse,
         crate::types::error::Error,
     > {
+        let ListIncomingPhoneNumberAssignedAddOnExtensionParams {
+            account_sid,
+            assigned_add_on_sid,
+            page,
+            page_size,
+            page_token,
+            resource_sid,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3648,20 +4839,23 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_local() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberLocalResponse = client\n        .default()\n        .list_incoming_phone_number_local(\n            \"some-string\",\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_local() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberLocalResponse = client\n        .default()\n        .list_incoming_phone_number_local(twilio_api::default::ListIncomingPhoneNumberLocalParams {\n            account_sid: \"some-string\",\n            beta: Some(true),\n            friendly_name: Some(\"some-string\".to_string()),\n            origin: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            phone_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_incoming_phone_number_local<'a>(
         &'a self,
-        account_sid: &'a str,
-        beta: Option<bool>,
-        friendly_name: Option<String>,
-        origin: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        phone_number: crate::types::phone_number::PhoneNumber,
+        params: ListIncomingPhoneNumberLocalParams<'a>,
     ) -> Result<crate::types::ListIncomingPhoneNumberLocalResponse, crate::types::error::Error>
     {
+        let ListIncomingPhoneNumberLocalParams {
+            account_sid,
+            beta,
+            friendly_name,
+            origin,
+            page,
+            page_size,
+            page_token,
+            phone_number,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3761,20 +4955,23 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_mobile() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberMobileResponse = client\n        .default()\n        .list_incoming_phone_number_mobile(\n            \"some-string\",\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_mobile() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberMobileResponse = client\n        .default()\n        .list_incoming_phone_number_mobile(twilio_api::default::ListIncomingPhoneNumberMobileParams {\n            account_sid: \"some-string\",\n            beta: Some(true),\n            friendly_name: Some(\"some-string\".to_string()),\n            origin: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            phone_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_incoming_phone_number_mobile<'a>(
         &'a self,
-        account_sid: &'a str,
-        beta: Option<bool>,
-        friendly_name: Option<String>,
-        origin: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        phone_number: crate::types::phone_number::PhoneNumber,
+        params: ListIncomingPhoneNumberMobileParams<'a>,
     ) -> Result<crate::types::ListIncomingPhoneNumberMobileResponse, crate::types::error::Error>
     {
+        let ListIncomingPhoneNumberMobileParams {
+            account_sid,
+            beta,
+            friendly_name,
+            origin,
+            page,
+            page_size,
+            page_token,
+            phone_number,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3874,20 +5071,23 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberTollFreeResponse = client\n        .default()\n        .list_incoming_phone_number_toll_free(\n            \"some-string\",\n            Some(true),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the resources to read. (required)\n- `beta: Option<bool>`: Whether to include phone numbers new to the Twilio platform. Can be: `true` or `false` and the default is `true`.\n- `friendly_name: Option<String>`: A string that identifies the resources to read.\n- `origin: Option<String>`: Whether to include phone numbers based on their origin. Can be: `twilio` or `hosted`. By default, phone numbers of all origin are included.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone numbers of the IncomingPhoneNumber resources to read. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_incoming_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListIncomingPhoneNumberTollFreeResponse = client\n        .default()\n        .list_incoming_phone_number_toll_free(\n            twilio_api::default::ListIncomingPhoneNumberTollFreeParams {\n                account_sid: \"some-string\",\n                beta: Some(true),\n                friendly_name: Some(\"some-string\".to_string()),\n                origin: Some(\"some-string\".to_string()),\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                phone_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_incoming_phone_number_toll_free<'a>(
         &'a self,
-        account_sid: &'a str,
-        beta: Option<bool>,
-        friendly_name: Option<String>,
-        origin: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        phone_number: crate::types::phone_number::PhoneNumber,
+        params: ListIncomingPhoneNumberTollFreeParams<'a>,
     ) -> Result<crate::types::ListIncomingPhoneNumberTollFreeResponse, crate::types::error::Error>
     {
+        let ListIncomingPhoneNumberTollFreeParams {
+            account_sid,
+            beta,
+            friendly_name,
+            origin,
+            page,
+            page_size,
+            page_token,
+            phone_number,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -3947,7 +5147,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_create_incoming_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFree = client . default () . create_incoming_phone_number_toll_free (\"some-string\" , & twilio_api::types::CreateIncomingPhoneNumberTollFreeRequest { phone_number : twilio_api::types::phone_number :: PhoneNumber :: from_str (\"+1555-555-5555\") ? , api_version : Some (\"some-string\" . to_string ()) , friendly_name : Some (\"some-string\" . to_string ()) , sms_application_sid : Some (\"some-string\" . to_string ()) , sms_fallback_method : Some (twilio_api::types::CreateIncomingPhoneNumberTollFreeRequestSmsFallbackMethod :: Patch) , sms_fallback_url : Some (\"https://example.com/foo/bar\" . to_string ()) , sms_method : Some (twilio_api::types::CreateIncomingPhoneNumberTollFreeRequestSmsMethod :: Patch) , sms_url : Some (\"https://example.com/foo/bar\" . to_string ()) , status_callback : Some (\"https://example.com/foo/bar\" . to_string ()) , status_callback_method : Some (twilio_api::types::CreateIncomingPhoneNumberTollFreeRequestStatusCallbackMethod :: Patch) , voice_application_sid : Some (\"some-string\" . to_string ()) , voice_caller_id_lookup : Some (true) , voice_fallback_method : Some (twilio_api::types::CreateIncomingPhoneNumberTollFreeRequestVoiceFallbackMethod :: Patch) , voice_fallback_url : Some (\"https://example.com/foo/bar\" . to_string ()) , voice_method : Some (twilio_api::types::CreateIncomingPhoneNumberTollFreeRequestVoiceMethod :: Patch) , voice_url : Some (\"https://example.com/foo/bar\" . to_string ()) , identity_sid : Some (\"some-string\" . to_string ()) , address_sid : Some (\"some-string\" . to_string ()) , emergency_status : Some (twilio_api::types::IncomingPhoneNumberTollFreeEnumEmergencyStatus :: Inactive) , emergency_address_sid : Some (\"some-string\" . to_string ()) , trunk_sid : Some (\"some-string\" . to_string ()) , voice_receive_mode : Some (twilio_api::types::IncomingPhoneNumberTollFreeEnumVoiceReceiveMode :: Fax) , bundle_sid : Some (\"some-string\" . to_string ()) }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json`.\n\n/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_create_incoming_phone_number_toll_free() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountIncomingPhoneNumberIncomingPhoneNumberTollFree = client . default () . create_incoming_phone_number_toll_free (\"some-string\" , & twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequest { phone_number : twilio_api :: types :: phone_number :: PhoneNumber :: from_str (\"+1555-555-5555\") ? , api_version : Some (\"some-string\" . to_string ()) , friendly_name : Some (\"some-string\" . to_string ()) , sms_application_sid : Some (\"some-string\" . to_string ()) , sms_fallback_method : Some (twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequestSmsFallbackMethod :: Patch) , sms_fallback_url : Some (\"https://example.com/foo/bar\" . to_string ()) , sms_method : Some (twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequestSmsMethod :: Patch) , sms_url : Some (\"https://example.com/foo/bar\" . to_string ()) , status_callback : Some (\"https://example.com/foo/bar\" . to_string ()) , status_callback_method : Some (twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequestStatusCallbackMethod :: Patch) , voice_application_sid : Some (\"some-string\" . to_string ()) , voice_caller_id_lookup : Some (true) , voice_fallback_method : Some (twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequestVoiceFallbackMethod :: Patch) , voice_fallback_url : Some (\"https://example.com/foo/bar\" . to_string ()) , voice_method : Some (twilio_api :: types :: CreateIncomingPhoneNumberTollFreeRequestVoiceMethod :: Patch) , voice_url : Some (\"https://example.com/foo/bar\" . to_string ()) , identity_sid : Some (\"some-string\" . to_string ()) , address_sid : Some (\"some-string\" . to_string ()) , emergency_status : Some (twilio_api :: types :: IncomingPhoneNumberTollFreeEnumEmergencyStatus :: Inactive) , emergency_address_sid : Some (\"some-string\" . to_string ()) , trunk_sid : Some (\"some-string\" . to_string ()) , voice_receive_mode : Some (twilio_api :: types :: IncomingPhoneNumberTollFreeEnumVoiceReceiveMode :: Fax) , bundle_sid : Some (\"some-string\" . to_string ()) }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn create_incoming_phone_number_toll_free<'a>(
         &'a self,
@@ -4253,17 +5453,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json`.\n\nRetrieve a list of Media resources belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Media resource(s) to read. (required)\n- `date_created: Option<chrono::DateTime<chrono::Utc>>`: Only include media that was created on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read media that was created on this date. You can also specify an inequality, such as `StartTime<=YYYY-MM-DD`, to read media that was created on or before midnight of this date, and `StartTime>=YYYY-MM-DD` to read media that was created on or after midnight of this date.\n- `message_sid: &'astr`: The SID of the Message resource that this Media resource belongs to. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_media() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListMediaResponse = client\n        .default()\n        .list_media(\n            \"some-string\",\n            Some(chrono::Utc::now()),\n            \"some-string\",\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json`.\n\nRetrieve a list of Media resources belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Media resource(s) to read. (required)\n- `date_created: Option<chrono::DateTime<chrono::Utc>>`: Only include media that was created on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read media that was created on this date. You can also specify an inequality, such as `StartTime<=YYYY-MM-DD`, to read media that was created on or before midnight of this date, and `StartTime>=YYYY-MM-DD` to read media that was created on or after midnight of this date.\n- `message_sid: &'astr`: The SID of the Message resource that this Media resource belongs to. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_media() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListMediaResponse = client\n        .default()\n        .list_media(twilio_api::default::ListMediaParams {\n            account_sid: \"some-string\",\n            date_created: Some(chrono::Utc::now()),\n            message_sid: \"some-string\",\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_media<'a>(
         &'a self,
-        account_sid: &'a str,
-        date_created: Option<chrono::DateTime<chrono::Utc>>,
-        message_sid: &'a str,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListMediaParams<'a>,
     ) -> Result<crate::types::ListMediaResponse, crate::types::error::Error> {
+        let ListMediaParams {
+            account_sid,
+            date_created,
+            message_sid,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -4446,18 +5649,21 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Messages.json`.\n\nRetrieve a list of messages belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Message resources to read. (required)\n- `date_sent: Option<chrono::DateTime<chrono::Utc>>`: The date of the messages to show. Specify a date as `YYYY-MM-DD` in GMT to read only messages sent on this date. For example: `2009-07-06`. You can also specify an inequality, such as `DateSent<=YYYY-MM-DD`, to read messages sent on or before midnight on a date, and `DateSent>=YYYY-MM-DD` to read messages sent on or after midnight on a date.\n- `from: crate::types::phone_number::PhoneNumber`: Read messages sent from only this phone number or alphanumeric sender ID.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `to: crate::types::phone_number::PhoneNumber`: Read messages sent to only this phone number.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_message() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListMessageResponse = client\n        .default()\n        .list_message(\n            \"some-string\",\n            Some(chrono::Utc::now()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Messages.json`.\n\nRetrieve a list of messages belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Message resources to read. (required)\n- `date_sent: Option<chrono::DateTime<chrono::Utc>>`: The date of the messages to show. Specify a date as `YYYY-MM-DD` in GMT to read only messages sent on this date. For example: `2009-07-06`. You can also specify an inequality, such as `DateSent<=YYYY-MM-DD`, to read messages sent on or before midnight on a date, and `DateSent>=YYYY-MM-DD` to read messages sent on or after midnight on a date.\n- `from: crate::types::phone_number::PhoneNumber`: Read messages sent from only this phone number or alphanumeric sender ID.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `to: crate::types::phone_number::PhoneNumber`: Read messages sent to only this phone number.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_message() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListMessageResponse = client\n        .default()\n        .list_message(twilio_api::default::ListMessageParams {\n            account_sid: \"some-string\",\n            date_sent: Some(chrono::Utc::now()),\n            from: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            to: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_message<'a>(
         &'a self,
-        account_sid: &'a str,
-        date_sent: Option<chrono::DateTime<chrono::Utc>>,
-        from: crate::types::phone_number::PhoneNumber,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        to: crate::types::phone_number::PhoneNumber,
+        params: ListMessageParams<'a>,
     ) -> Result<crate::types::ListMessageResponse, crate::types::error::Error> {
+        let ListMessageParams {
+            account_sid,
+            date_sent,
+            from,
+            page,
+            page_size,
+            page_token,
+            to,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -4823,17 +6029,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Notifications.json`.\n\nRetrieve a list of notifications belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Notification resources to read. (required)\n- `log: Option<i64>`: Only read notifications of the specified log level. Can be:  `0` to read only ERROR notifications or `1` to read only WARNING notifications. By default, all notifications are read.\n- `message_date: Option<chrono::NaiveDate>`: Only show notifications for the specified date, formatted as `YYYY-MM-DD`. You can also specify an inequality, such as `<=YYYY-MM-DD` for messages logged at or before midnight on a date, or `>=YYYY-MM-DD` for messages logged at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_notification() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListNotificationResponse = client\n        .default()\n        .list_notification(\n            \"some-string\",\n            Some(4 as i64),\n            Some(chrono::Utc::now().date_naive()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Notifications.json`.\n\nRetrieve a list of notifications belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Notification resources to read. (required)\n- `log: Option<i64>`: Only read notifications of the specified log level. Can be:  `0` to read only ERROR notifications or `1` to read only WARNING notifications. By default, all notifications are read.\n- `message_date: Option<chrono::NaiveDate>`: Only show notifications for the specified date, formatted as `YYYY-MM-DD`. You can also specify an inequality, such as `<=YYYY-MM-DD` for messages logged at or before midnight on a date, or `>=YYYY-MM-DD` for messages logged at or after midnight on a date.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_notification() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListNotificationResponse = client\n        .default()\n        .list_notification(twilio_api::default::ListNotificationParams {\n            account_sid: \"some-string\",\n            log: Some(4 as i64),\n            message_date: Some(chrono::Utc::now().date_naive()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_notification<'a>(
         &'a self,
-        account_sid: &'a str,
-        log: Option<i64>,
-        message_date: Option<chrono::NaiveDate>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListNotificationParams<'a>,
     ) -> Result<crate::types::ListNotificationResponse, crate::types::error::Error> {
+        let ListNotificationParams {
+            account_sid,
+            log,
+            message_date,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -4992,17 +6201,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json`.\n\nRetrieve a list of outgoing-caller-ids belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the OutgoingCallerId resources to read. (required)\n- `friendly_name: Option<String>`: The string that identifies the OutgoingCallerId resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone number of the OutgoingCallerId resources to read.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_outgoing_caller_id() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListOutgoingCallerIdResponse = client\n        .default()\n        .list_outgoing_caller_id(\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json`.\n\nRetrieve a list of outgoing-caller-ids belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the OutgoingCallerId resources to read. (required)\n- `friendly_name: Option<String>`: The string that identifies the OutgoingCallerId resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `phone_number: crate::types::phone_number::PhoneNumber`: The phone number of the OutgoingCallerId resources to read.\n\n```rust,no_run\nuse std::str::FromStr;\nasync fn example_default_list_outgoing_caller_id() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListOutgoingCallerIdResponse = client\n        .default()\n        .list_outgoing_caller_id(twilio_api::default::ListOutgoingCallerIdParams {\n            account_sid: \"some-string\",\n            friendly_name: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            phone_number: twilio_api::types::phone_number::PhoneNumber::from_str(\"+1555-555-5555\")?,\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_outgoing_caller_id<'a>(
         &'a self,
-        account_sid: &'a str,
-        friendly_name: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        phone_number: crate::types::phone_number::PhoneNumber,
+        params: ListOutgoingCallerIdParams<'a>,
     ) -> Result<crate::types::ListOutgoingCallerIdResponse, crate::types::error::Error> {
+        let ListOutgoingCallerIdParams {
+            account_sid,
+            friendly_name,
+            page,
+            page_size,
+            page_token,
+            phone_number,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -5209,19 +6421,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json`.\n\nRetrieve a list of participants belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Participant resources to read. (required)\n- `coaching: Option<bool>`: Whether to return only participants who are coaching another call. Can be: `true` or `false`.\n- `conference_sid: &'astr`: The SID of the conference with the participants to read. (required)\n- `hold: Option<bool>`: Whether to return only participants that are on hold. Can be: `true` or `false`.\n- `muted: Option<bool>`: Whether to return only participants that are muted. Can be: `true` or `false`.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_participant() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListParticipantResponse = client\n        .default()\n        .list_participant(\n            \"some-string\",\n            Some(true),\n            \"some-string\",\n            Some(true),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json`.\n\nRetrieve a list of participants belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Participant resources to read. (required)\n- `coaching: Option<bool>`: Whether to return only participants who are coaching another call. Can be: `true` or `false`.\n- `conference_sid: &'astr`: The SID of the conference with the participants to read. (required)\n- `hold: Option<bool>`: Whether to return only participants that are on hold. Can be: `true` or `false`.\n- `muted: Option<bool>`: Whether to return only participants that are muted. Can be: `true` or `false`.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_participant() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListParticipantResponse = client\n        .default()\n        .list_participant(twilio_api::default::ListParticipantParams {\n            account_sid: \"some-string\",\n            coaching: Some(true),\n            conference_sid: \"some-string\",\n            hold: Some(true),\n            muted: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_participant<'a>(
         &'a self,
-        account_sid: &'a str,
-        coaching: Option<bool>,
-        conference_sid: &'a str,
-        hold: Option<bool>,
-        muted: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListParticipantParams<'a>,
     ) -> Result<crate::types::ListParticipantResponse, crate::types::error::Error> {
+        let ListParticipantParams {
+            account_sid,
+            coaching,
+            conference_sid,
+            hold,
+            muted,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -5667,19 +6882,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resources to read. (required)\n- `call_sid: Option<String>`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the resources to read.\n- `conference_sid: Option<String>`: The Conference SID that identifies the conference associated with the recording to read.\n- `date_created: Option<chrono::DateTime<chrono::Utc>>`: Only include recordings that were created on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read recordings that were created on this date. You can also specify an inequality, such as `DateCreated<=YYYY-MM-DD`, to read recordings that were created on or before midnight of this date, and `DateCreated>=YYYY-MM-DD` to read recordings that were created on or after midnight of this date.\n- `include_soft_deleted: Option<bool>`: A boolean parameter indicating whether to retrieve soft deleted recordings or not. Recordings metadata are kept after deletion for a retention period of 40 days.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListRecordingResponse = client\n        .default()\n        .list_recording(\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings.json`.\n\nRetrieve a list of recordings belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resources to read. (required)\n- `call_sid: Option<String>`: The [Call](https://www.twilio.com/docs/voice/api/call-resource) SID of the resources to read.\n- `conference_sid: Option<String>`: The Conference SID that identifies the conference associated with the recording to read.\n- `date_created: Option<chrono::DateTime<chrono::Utc>>`: Only include recordings that were created on this date. Specify a date as `YYYY-MM-DD` in GMT, for example: `2009-07-06`, to read recordings that were created on this date. You can also specify an inequality, such as `DateCreated<=YYYY-MM-DD`, to read recordings that were created on or before midnight of this date, and `DateCreated>=YYYY-MM-DD` to read recordings that were created on or after midnight of this date.\n- `include_soft_deleted: Option<bool>`: A boolean parameter indicating whether to retrieve soft deleted recordings or not. Recordings metadata are kept after deletion for a retention period of 40 days.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n\n```rust,no_run\nasync fn example_default_list_recording() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListRecordingResponse = client\n        .default()\n        .list_recording(twilio_api::default::ListRecordingParams {\n            account_sid: \"some-string\",\n            call_sid: Some(\"some-string\".to_string()),\n            conference_sid: Some(\"some-string\".to_string()),\n            date_created: Some(chrono::Utc::now()),\n            include_soft_deleted: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_recording<'a>(
         &'a self,
-        account_sid: &'a str,
-        call_sid: Option<String>,
-        conference_sid: Option<String>,
-        date_created: Option<chrono::DateTime<chrono::Utc>>,
-        include_soft_deleted: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
+        params: ListRecordingParams<'a>,
     ) -> Result<crate::types::ListRecordingResponse, crate::types::error::Error> {
+        let ListRecordingParams {
+            account_sid,
+            call_sid,
+            conference_sid,
+            date_created,
+            include_soft_deleted,
+            page,
+            page_size,
+            page_token,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -5870,7 +7088,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json`.\n\nFetch an instance of a result payload\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording AddOnResult Payload resource to fetch. (required)\n- `add_on_result_sid: &'astr`: The SID of the AddOnResult to which the payload to fetch belongs. (required)\n- `reference_sid: &'astr`: The SID of the recording to which the AddOnResult resource that contains the payload to fetch belongs. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the Recording AddOnResult Payload resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_recording_add_on_result_payload() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPayload = client . default () . fetch_recording_add_on_result_payload (\"some-string\" , \"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json`.\n\nFetch an instance of a result payload\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording AddOnResult Payload resource to fetch. (required)\n- `add_on_result_sid: &'astr`: The SID of the AddOnResult to which the payload to fetch belongs. (required)\n- `reference_sid: &'astr`: The SID of the recording to which the AddOnResult resource that contains the payload to fetch belongs. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the Recording AddOnResult Payload resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_recording_add_on_result_payload() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPayload = client . default () . fetch_recording_add_on_result_payload (\"some-string\" , \"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn fetch_recording_add_on_result_payload<'a>(
         &'a self,
@@ -5951,18 +7169,21 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json`.\n\nRetrieve a list of payloads belonging to the AddOnResult\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording AddOnResult Payload resources to read. (required)\n- `add_on_result_sid: &'astr`: The SID of the AddOnResult to which the payloads to read belongs. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `reference_sid: &'astr`: The SID of the recording to which the AddOnResult resource that contains the payloads to read belongs. (required)\n\n```rust,no_run\nasync fn example_default_list_recording_add_on_result_payload() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListRecordingAddOnResultPayloadResponse = client\n        .default()\n        .list_recording_add_on_result_payload(\n            \"some-string\",\n            \"some-string\",\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            \"some-string\",\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json`.\n\nRetrieve a list of payloads belonging to the AddOnResult\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording AddOnResult Payload resources to read. (required)\n- `add_on_result_sid: &'astr`: The SID of the AddOnResult to which the payloads to read belongs. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `reference_sid: &'astr`: The SID of the recording to which the AddOnResult resource that contains the payloads to read belongs. (required)\n\n```rust,no_run\nasync fn example_default_list_recording_add_on_result_payload() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListRecordingAddOnResultPayloadResponse = client\n        .default()\n        .list_recording_add_on_result_payload(\n            twilio_api::default::ListRecordingAddOnResultPayloadParams {\n                account_sid: \"some-string\",\n                add_on_result_sid: \"some-string\",\n                page: Some(4 as i64),\n                page_size: Some(4 as i64),\n                page_token: Some(\"some-string\".to_string()),\n                reference_sid: \"some-string\",\n            },\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_recording_add_on_result_payload<'a>(
         &'a self,
-        account_sid: &'a str,
-        add_on_result_sid: &'a str,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        reference_sid: &'a str,
+        params: ListRecordingAddOnResultPayloadParams<'a>,
     ) -> Result<crate::types::ListRecordingAddOnResultPayloadResponse, crate::types::error::Error>
     {
+        let ListRecordingAddOnResultPayloadParams {
+            account_sid,
+            add_on_result_sid,
+            page,
+            page_size,
+            page_token,
+            reference_sid,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -6216,17 +7437,20 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json`.\n\nRetrieve a list of short-codes belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ShortCode resource(s) to read. (required)\n- `friendly_name: Option<String>`: The string that identifies the ShortCode resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `short_code: Option<String>`: Only show the ShortCode resources that match this pattern. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nasync fn example_default_list_short_code() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListShortCodeResponse = client\n        .default()\n        .list_short_code(\n            \"some-string\",\n            Some(\"some-string\".to_string()),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(\"some-string\".to_string()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json`.\n\nRetrieve a list of short-codes belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ShortCode resource(s) to read. (required)\n- `friendly_name: Option<String>`: The string that identifies the ShortCode resources to read.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `short_code: Option<String>`: Only show the ShortCode resources that match this pattern. You can specify partial numbers and use '*' as a wildcard for any digit.\n\n```rust,no_run\nasync fn example_default_list_short_code() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListShortCodeResponse = client\n        .default()\n        .list_short_code(twilio_api::default::ListShortCodeParams {\n            account_sid: \"some-string\",\n            friendly_name: Some(\"some-string\".to_string()),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            short_code: Some(\"some-string\".to_string()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_short_code<'a>(
         &'a self,
-        account_sid: &'a str,
-        friendly_name: Option<String>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        short_code: Option<String>,
+        params: ListShortCodeParams<'a>,
     ) -> Result<crate::types::ListShortCodeResponse, crate::types::error::Error> {
+        let ListShortCodeParams {
+            account_sid,
+            friendly_name,
+            page,
+            page_size,
+            page_token,
+            short_code,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -6458,7 +7682,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json`.\n\nCreate a new credential list mapping resource\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_calls_credential_list_mapping() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping = client . default () . create_sip_auth_calls_credential_list_mapping (\"some-string\" , \"some-string\" , & twilio_api::types::CreateSipAuthCallsCredentialListMappingRequest { credential_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json`.\n\nCreate a new credential list mapping resource\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_calls_credential_list_mapping() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping = client . default () . create_sip_auth_calls_credential_list_mapping (\"some-string\" , \"some-string\" , & twilio_api :: types :: CreateSipAuthCallsCredentialListMappingRequest { credential_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn create_sip_auth_calls_credential_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , body : & crate :: types :: CreateSipAuthCallsCredentialListMappingRequest) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -6492,7 +7716,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json`.\n\nFetch a specific instance of a credential list mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CredentialListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the CredentialListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_calls_credential_list_mapping() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping = client . default () . fetch_sip_auth_calls_credential_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json`.\n\nFetch a specific instance of a credential list mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CredentialListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the CredentialListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_calls_credential_list_mapping() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping = client . default () . fetch_sip_auth_calls_credential_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn fetch_sip_auth_calls_credential_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , sid : & 'a str) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsCredentialListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::GET,
@@ -6618,7 +7842,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json`.\n\nCreate a new IP Access Control List mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_calls_ip_access_control_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping = client . default () . create_sip_auth_calls_ip_access_control_list_mapping (\"some-string\" , \"some-string\" , & twilio_api::types::CreateSipAuthCallsIpAccessControlListMappingRequest { ip_access_control_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json`.\n\nCreate a new IP Access Control List mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_calls_ip_access_control_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping = client . default () . create_sip_auth_calls_ip_access_control_list_mapping (\"some-string\" , \"some-string\" , & twilio_api :: types :: CreateSipAuthCallsIpAccessControlListMappingRequest { ip_access_control_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn create_sip_auth_calls_ip_access_control_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , body : & crate :: types :: CreateSipAuthCallsIpAccessControlListMappingRequest) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -6652,7 +7876,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json`.\n\nFetch a specific instance of an IP Access Control List mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IpAccessControlListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the IpAccessControlListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_calls_ip_access_control_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping = client . default () . fetch_sip_auth_calls_ip_access_control_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json`.\n\nFetch a specific instance of an IP Access Control List mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IpAccessControlListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the IpAccessControlListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_calls_ip_access_control_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping = client . default () . fetch_sip_auth_calls_ip_access_control_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn fetch_sip_auth_calls_ip_access_control_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , sid : & 'a str) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthCallsSipAuthCallsIpAccessControlListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::GET,
@@ -6778,7 +8002,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json`.\n\nCreate a new credential list mapping resource\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_registrations_credential_list_mapping(\n) -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping = client . default () . create_sip_auth_registrations_credential_list_mapping (\"some-string\" , \"some-string\" , & twilio_api::types::CreateSipAuthRegistrationsCredentialListMappingRequest { credential_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `POST` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json`.\n\nCreate a new credential list mapping resource\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that will contain the new resource. (required)\n\n```rust,no_run\nasync fn example_default_create_sip_auth_registrations_credential_list_mapping(\n) -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping = client . default () . create_sip_auth_registrations_credential_list_mapping (\"some-string\" , \"some-string\" , & twilio_api :: types :: CreateSipAuthRegistrationsCredentialListMappingRequest { credential_list_sid : \"some-string\" . to_string () }) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn create_sip_auth_registrations_credential_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , body : & crate :: types :: CreateSipAuthRegistrationsCredentialListMappingRequest) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::POST,
@@ -6812,7 +8036,7 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json`.\n\nFetch a specific instance of a credential list mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CredentialListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the CredentialListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_registrations_credential_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api::types::ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping = client . default () . fetch_sip_auth_registrations_credential_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json`.\n\nFetch a specific instance of a credential list mapping\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CredentialListMapping resource to fetch. (required)\n- `domain_sid: &'astr`: The SID of the SIP domain that contains the resource to fetch. (required)\n- `sid: &'astr`: The Twilio-provided string that uniquely identifies the CredentialListMapping resource to fetch. (required)\n\n```rust,no_run\nasync fn example_default_fetch_sip_auth_registrations_credential_list_mapping() -> anyhow::Result<()>\n{\n    let client = twilio_api::Client::new_from_env();\n    let result : twilio_api :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping = client . default () . fetch_sip_auth_registrations_credential_list_mapping (\"some-string\" , \"some-string\" , \"some-string\" ,) . await ? ;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]    pub async fn fetch_sip_auth_registrations_credential_list_mapping < 'a > (& 'a self , account_sid : & 'a str , domain_sid : & 'a str , sid : & 'a str) -> Result < crate :: types :: ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping , crate :: types :: error :: Error >{
         let mut req = self.client.client.request(
             http::Method::GET,
@@ -8623,19 +9847,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records.json`.\n\nRetrieve a list of usage-records belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordResponse = client\n        .default()\n        .list_usage_record(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records.json`.\n\nRetrieve a list of usage-records belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordResponse = client\n        .default()\n        .list_usage_record(twilio_api::default::ListUsageRecordParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordParams<'a>,
     ) -> Result<crate::types::ListUsageRecordResponse, crate::types::error::Error> {
+        let ListUsageRecordParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -8695,19 +9922,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordAllTimeEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_all_time() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordAllTimeResponse = client\n        .default()\n        .list_usage_record_all_time(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordAllTimeEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordAllTimeEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_all_time() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordAllTimeResponse = client\n        .default()\n        .list_usage_record_all_time(twilio_api::default::ListUsageRecordAllTimeParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordAllTimeEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_all_time<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordAllTimeEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordAllTimeParams<'a>,
     ) -> Result<crate::types::ListUsageRecordAllTimeResponse, crate::types::error::Error> {
+        let ListUsageRecordAllTimeParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -8767,19 +9997,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordDailyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_daily() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordDailyResponse = client\n        .default()\n        .list_usage_record_daily(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordDailyEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordDailyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_daily() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordDailyResponse = client\n        .default()\n        .list_usage_record_daily(twilio_api::default::ListUsageRecordDailyParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordDailyEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_daily<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordDailyEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordDailyParams<'a>,
     ) -> Result<crate::types::ListUsageRecordDailyResponse, crate::types::error::Error> {
+        let ListUsageRecordDailyParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -8839,19 +10072,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordLastMonthEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_last_month() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordLastMonthResponse = client\n        .default()\n        .list_usage_record_last_month(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordLastMonthEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordLastMonthEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_last_month() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordLastMonthResponse = client\n        .default()\n        .list_usage_record_last_month(twilio_api::default::ListUsageRecordLastMonthParams {\n            account_sid: \"some-string\",\n            category: Some(\n                twilio_api::types::UsageRecordLastMonthEnumCategory::SmallGroupRoomsDataTrack,\n            ),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_last_month<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordLastMonthEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordLastMonthParams<'a>,
     ) -> Result<crate::types::ListUsageRecordLastMonthResponse, crate::types::error::Error> {
+        let ListUsageRecordLastMonthParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -8911,19 +10147,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordMonthlyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_monthly() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordMonthlyResponse = client\n        .default()\n        .list_usage_record_monthly(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordMonthlyEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordMonthlyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_monthly() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordMonthlyResponse = client\n        .default()\n        .list_usage_record_monthly(twilio_api::default::ListUsageRecordMonthlyParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordMonthlyEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_monthly<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordMonthlyEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordMonthlyParams<'a>,
     ) -> Result<crate::types::ListUsageRecordMonthlyResponse, crate::types::error::Error> {
+        let ListUsageRecordMonthlyParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -8983,19 +10222,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordThisMonthEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_this_month() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordThisMonthResponse = client\n        .default()\n        .list_usage_record_this_month(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordThisMonthEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordThisMonthEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_this_month() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordThisMonthResponse = client\n        .default()\n        .list_usage_record_this_month(twilio_api::default::ListUsageRecordThisMonthParams {\n            account_sid: \"some-string\",\n            category: Some(\n                twilio_api::types::UsageRecordThisMonthEnumCategory::SmallGroupRoomsDataTrack,\n            ),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_this_month<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordThisMonthEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordThisMonthParams<'a>,
     ) -> Result<crate::types::ListUsageRecordThisMonthResponse, crate::types::error::Error> {
+        let ListUsageRecordThisMonthParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -9055,19 +10297,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordTodayEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_today() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordTodayResponse = client\n        .default()\n        .list_usage_record_today(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordTodayEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordTodayEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_today() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordTodayResponse = client\n        .default()\n        .list_usage_record_today(twilio_api::default::ListUsageRecordTodayParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordTodayEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_today<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordTodayEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordTodayParams<'a>,
     ) -> Result<crate::types::ListUsageRecordTodayResponse, crate::types::error::Error> {
+        let ListUsageRecordTodayParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -9127,19 +10372,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordYearlyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_yearly() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordYearlyResponse = client\n        .default()\n        .list_usage_record_yearly(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordYearlyEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordYearlyEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_yearly() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordYearlyResponse = client\n        .default()\n        .list_usage_record_yearly(twilio_api::default::ListUsageRecordYearlyParams {\n            account_sid: \"some-string\",\n            category: Some(twilio_api::types::UsageRecordYearlyEnumCategory::SmallGroupRoomsDataTrack),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_yearly<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordYearlyEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordYearlyParams<'a>,
     ) -> Result<crate::types::ListUsageRecordYearlyResponse, crate::types::error::Error> {
+        let ListUsageRecordYearlyParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -9199,19 +10447,22 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordYesterdayEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_yesterday() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordYesterdayResponse = client\n        .default()\n        .list_usage_record_yesterday(\n            \"some-string\",\n            Some(twilio_api::types::UsageRecordYesterdayEnumCategory::SmallGroupRoomsDataTrack),\n            Some(chrono::Utc::now().date_naive()),\n            Some(true),\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(chrono::Utc::now().date_naive()),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json`.\n\n/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json.\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resources to read. (required)\n- `category: Option<crate::types::UsageRecordYesterdayEnumCategory>`: The [usage category](https://www.twilio.com/docs/usage/api/usage-record#usage-categories) of the UsageRecord resources to read. Only UsageRecord resources in the specified category are retrieved.\n- `end_date: Option<chrono::NaiveDate>`: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.  You can also specify offsets from the current date, such as: `+30days`, which will set the end date to 30 days from the current date.\n- `include_subaccounts: Option<bool>`: Whether to include usage from the master account and all its subaccounts. Can be: `true` (the default) to include usage from the master account and all subaccounts or `false` to retrieve usage from only the specified account.\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `start_date: Option<chrono::NaiveDate>`: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`. You can also specify offsets from the current date, such as: `-30days`, which will set the start date to be 30 days before the current date.\n\n```rust,no_run\nasync fn example_default_list_usage_record_yesterday() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageRecordYesterdayResponse = client\n        .default()\n        .list_usage_record_yesterday(twilio_api::default::ListUsageRecordYesterdayParams {\n            account_sid: \"some-string\",\n            category: Some(\n                twilio_api::types::UsageRecordYesterdayEnumCategory::SmallGroupRoomsDataTrack,\n            ),\n            end_date: Some(chrono::Utc::now().date_naive()),\n            include_subaccounts: Some(true),\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            start_date: Some(chrono::Utc::now().date_naive()),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_record_yesterday<'a>(
         &'a self,
-        account_sid: &'a str,
-        category: Option<crate::types::UsageRecordYesterdayEnumCategory>,
-        end_date: Option<chrono::NaiveDate>,
-        include_subaccounts: Option<bool>,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        start_date: Option<chrono::NaiveDate>,
+        params: ListUsageRecordYesterdayParams<'a>,
     ) -> Result<crate::types::ListUsageRecordYesterdayResponse, crate::types::error::Error> {
+        let ListUsageRecordYesterdayParams {
+            account_sid,
+            category,
+            end_date,
+            include_subaccounts,
+            page,
+            page_size,
+            page_token,
+            start_date,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
@@ -9378,18 +10629,21 @@ impl Default {
         }
     }
 
-    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json`.\n\nRetrieve a list of usage-triggers belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageTrigger resources to read. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `recurring: Option<crate::types::UsageTriggerEnumRecurring>`: The frequency of recurring UsageTriggers to read. Can be: `daily`, `monthly`, or `yearly` to read recurring UsageTriggers. An empty value or a value of `alltime` reads non-recurring UsageTriggers.\n- `trigger_by: Option<crate::types::UsageTriggerEnumTriggerField>`: The trigger field of the UsageTriggers to read.  Can be: `count`, `usage`, or `price` as described in the [UsageRecords documentation](https://www.twilio.com/docs/usage/api/usage-record#usage-count-price).\n- `usage_category: Option<crate::types::UsageTriggerEnumUsageCategory>`: The usage category of the UsageTriggers to read. Must be a supported [usage categories](https://www.twilio.com/docs/usage/api/usage-record#usage-categories).\n\n```rust,no_run\nasync fn example_default_list_usage_trigger() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageTriggerResponse = client\n        .default()\n        .list_usage_trigger(\n            \"some-string\",\n            Some(4 as i64),\n            Some(4 as i64),\n            Some(\"some-string\".to_string()),\n            Some(twilio_api::types::UsageTriggerEnumRecurring::Yearly),\n            Some(twilio_api::types::UsageTriggerEnumTriggerField::Usage),\n            Some(twilio_api::types::UsageTriggerEnumUsageCategory::SmallGroupRoomsDataTrack),\n        )\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
+    #[doc = "Perform a `GET` request to `/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json`.\n\nRetrieve a list of usage-triggers belonging to the account used to make the request\n\n**Parameters:**\n\n- `account_sid: &'astr`: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageTrigger resources to read. (required)\n- `page: Option<i64>`: The page index. This value is simply for client state.\n- `page_size: Option<i64>`: How many resources to return in each list page. The default is 50, and the maximum is 1000.\n- `page_token: Option<String>`: The page token. This is provided by the API.\n- `recurring: Option<crate::types::UsageTriggerEnumRecurring>`: The frequency of recurring UsageTriggers to read. Can be: `daily`, `monthly`, or `yearly` to read recurring UsageTriggers. An empty value or a value of `alltime` reads non-recurring UsageTriggers.\n- `trigger_by: Option<crate::types::UsageTriggerEnumTriggerField>`: The trigger field of the UsageTriggers to read.  Can be: `count`, `usage`, or `price` as described in the [UsageRecords documentation](https://www.twilio.com/docs/usage/api/usage-record#usage-count-price).\n- `usage_category: Option<crate::types::UsageTriggerEnumUsageCategory>`: The usage category of the UsageTriggers to read. Must be a supported [usage categories](https://www.twilio.com/docs/usage/api/usage-record#usage-categories).\n\n```rust,no_run\nasync fn example_default_list_usage_trigger() -> anyhow::Result<()> {\n    let client = twilio_api::Client::new_from_env();\n    let result: twilio_api::types::ListUsageTriggerResponse = client\n        .default()\n        .list_usage_trigger(twilio_api::default::ListUsageTriggerParams {\n            account_sid: \"some-string\",\n            page: Some(4 as i64),\n            page_size: Some(4 as i64),\n            page_token: Some(\"some-string\".to_string()),\n            recurring: Some(twilio_api::types::UsageTriggerEnumRecurring::Yearly),\n            trigger_by: Some(twilio_api::types::UsageTriggerEnumTriggerField::Usage),\n            usage_category: Some(\n                twilio_api::types::UsageTriggerEnumUsageCategory::SmallGroupRoomsDataTrack,\n            ),\n        })\n        .await?;\n    println!(\"{:?}\", result);\n    Ok(())\n}\n```"]
     #[tracing::instrument]
     pub async fn list_usage_trigger<'a>(
         &'a self,
-        account_sid: &'a str,
-        page: Option<i64>,
-        page_size: Option<i64>,
-        page_token: Option<String>,
-        recurring: Option<crate::types::UsageTriggerEnumRecurring>,
-        trigger_by: Option<crate::types::UsageTriggerEnumTriggerField>,
-        usage_category: Option<crate::types::UsageTriggerEnumUsageCategory>,
+        params: ListUsageTriggerParams<'a>,
     ) -> Result<crate::types::ListUsageTriggerResponse, crate::types::error::Error> {
+        let ListUsageTriggerParams {
+            account_sid,
+            page,
+            page_size,
+            page_token,
+            recurring,
+            trigger_by,
+            usage_category,
+        } = params;
         let mut req = self.client.client.request(
             http::Method::GET,
             format!(
